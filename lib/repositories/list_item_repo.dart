@@ -29,6 +29,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     final item = ShoppingItem(
+      id: '',
       path: '',
       name: itemName,
       quantity: quantity,
@@ -52,6 +53,41 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     await fs.doc(item.path).update({
       ShoppingItem.fieldKeys.completed: !item.completed,
     });
+  }
+
+  Future<void> deleteItem(ShoppingItem item) async {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.delete(fs.doc(item.path));
+    batch.update(listDoc, {
+      ListSummary.fieldKeys.itemCount: FieldValue.increment(-1),
+      '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    await batch.commit();
+  }
+
+  Future<void> updateItem({
+    required ShoppingItem item,
+    required String newName,
+    required String newQuantity,
+    required List<String> newCategories,
+  }) async {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final batch = fs.batch();
+    final itemDoc = fs.doc(item.path);
+    final listDoc = fs.doc('lists/$listId');
+    batch.update(itemDoc, {
+      ShoppingItem.fieldKeys.name: newName,
+      ShoppingItem.fieldKeys.quantity: newQuantity,
+      ShoppingItem.fieldKeys.categories: newCategories,
+    });
+    batch.update(listDoc, {
+      '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    await batch.commit();
   }
 
   Future<int> deleteCompletedItems() async {

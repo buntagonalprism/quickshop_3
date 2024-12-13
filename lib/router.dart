@@ -10,7 +10,8 @@ import 'pages/favourites/favourites_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/lists/edit_list_page.dart';
 import 'pages/lists/invites/list_invite_details_page.dart';
-import 'pages/lists/items/new_shopping_item_page.dart';
+import 'pages/lists/items/shopping_item_create_page.dart';
+import 'pages/lists/items/shopping_item_edit_page.dart';
 import 'pages/lists/list_detail_page.dart';
 import 'pages/lists/lists_page.dart';
 import 'pages/lists/new_list_page.dart';
@@ -84,8 +85,17 @@ GoRouter router(Ref ref) {
                       GoRoute(
                         path: '${_RouteSegments.items}/${_RouteSegments.shopping}/new',
                         parentNavigatorKey: _rootNavigatorKey,
-                        builder: (context, state) => NewShoppingItemPage(
+                        builder: (context, state) => ShoppingItemCreatePage(
                           listId: state.pathParameters[_RouteParams.listId]!,
+                        ),
+                      ),
+                      GoRoute(
+                        path:
+                            '${_RouteSegments.items}/${_RouteSegments.shopping}/:${_RouteParams.itemId}',
+                        parentNavigatorKey: _rootNavigatorKey,
+                        builder: (context, state) => ShoppingItemEditPage(
+                          listId: state.pathParameters[_RouteParams.listId]!,
+                          itemId: state.pathParameters[_RouteParams.itemId]!,
                         ),
                       ),
                       GoRoute(
@@ -219,6 +229,7 @@ class _RouteParams {
   static const listId = 'listId';
   static const recipeId = 'recipeId';
   static const inviteId = 'inviteId';
+  static const itemId = 'itemId';
 }
 
 class _RouteSegments {
@@ -259,6 +270,8 @@ class Routes {
   static String editList(String listId) => '${listDetail(listId)}/${_RouteSegments.edit}';
   static String newShoppingListItem(String listId) =>
       '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.shopping}/${_RouteSegments.newItem}';
+  static String editShoppingListItem(String listId, String itemId) =>
+      '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.shopping}/$itemId';
   static String newChecklistItem(String listId) =>
       '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.checklist}/${_RouteSegments.newItem}';
   static String shareList(String listId) => '${listDetail(listId)}/${_RouteSegments.share}';

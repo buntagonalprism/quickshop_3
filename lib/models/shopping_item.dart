@@ -8,6 +8,7 @@ class ShoppingItem with _$ShoppingItem {
   const ShoppingItem._();
 
   const factory ShoppingItem({
+    required String id,
     required String path,
     required String name,
     required String quantity,
@@ -19,9 +20,10 @@ class ShoppingItem with _$ShoppingItem {
   factory ShoppingItem.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     return ShoppingItem(
       path: doc.reference.path,
-      name: doc['name'],
-      quantity: doc['quantity'],
-      categories: (doc['categories'] as List).cast<String>(),
+      id: doc.id,
+      name: doc[fieldKeys.name],
+      quantity: doc[fieldKeys.quantity],
+      categories: (doc[fieldKeys.categories] as List).cast<String>(),
       addedByUserId: doc['addedByUserId'],
       completed: doc[fieldKeys.completed],
     );
@@ -29,9 +31,9 @@ class ShoppingItem with _$ShoppingItem {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'name': name,
-      'quantity': quantity,
-      'categories': categories,
+      fieldKeys.name: name,
+      fieldKeys.quantity: quantity,
+      fieldKeys.categories: categories,
       'addedByUserId': addedByUserId,
       fieldKeys.completed: completed,
     };
@@ -45,4 +47,7 @@ class ShoppingItem with _$ShoppingItem {
 class ShoppingItemFieldKeys {
   const ShoppingItemFieldKeys();
   final String completed = 'completed';
+  final String name = 'name';
+  final String quantity = 'quantity';
+  final String categories = 'categories';
 }

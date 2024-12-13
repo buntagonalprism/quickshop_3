@@ -28,9 +28,7 @@ User buildUser({String? id, String? displayName, String? email}) {
 /// impossible to test the delay duration accurately.
 Duration _oneEventLoop = const Duration(milliseconds: 1);
 
-final _upstreamController = StreamController<int>.broadcast(onCancel: () {
-  print('Cancelling upstream controller');
-});
+final _upstreamController = StreamController<int>.broadcast();
 
 /// A simplistic representation of an upstream data source. keepAlive is set to true because:
 /// - When upstream data changes, all keepalive links are removed from the downstream provider

@@ -86,7 +86,7 @@ class ShoppingCategoryHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       alignment: Alignment.center,
-      color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.5),
       child: Text(
         categoryName,
         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -105,6 +105,7 @@ class ShoppingItemTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       onTap: () => ref.read(shoppingListItemRepoProvider(list.id).notifier).toggleItem(item),
+      onLongPress: () => ref.read(routerProvider).go(Routes.editShoppingListItem(list.id, item.id)),
       title: Text(
         item.displayName,
         style: TextStyle(decoration: item.completed ? TextDecoration.lineThrough : null),
