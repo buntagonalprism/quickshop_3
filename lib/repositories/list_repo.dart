@@ -24,7 +24,8 @@ class ListRepo extends _$ListRepo {
         .where(ListSummary.fields.editorIds, arrayContains: user.id)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map(ListSummary.fromFirestore).toList();
+      return snapshot.docs.map(ListSummary.fromFirestore).toList()
+        ..sort((a, b) => (b.lastModified[user.id] ?? 0).compareTo(a.lastModified[user.id] ?? 0));
     });
   }
 
