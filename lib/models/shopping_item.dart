@@ -21,31 +21,31 @@ class ShoppingItem with _$ShoppingItem {
     return ShoppingItem(
       path: doc.reference.path,
       id: doc.id,
-      name: doc[fieldKeys.name],
-      quantity: doc[fieldKeys.quantity],
-      categories: (doc[fieldKeys.categories] as List).cast<String>(),
+      name: doc[fields.name],
+      quantity: doc[fields.quantity],
+      categories: (doc[fields.categories] as List).cast<String>(),
       addedByUserId: doc['addedByUserId'],
-      completed: doc[fieldKeys.completed],
+      completed: doc[fields.completed],
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      fieldKeys.name: name,
-      fieldKeys.quantity: quantity,
-      fieldKeys.categories: categories,
+      fields.name: name,
+      fields.quantity: quantity,
+      fields.categories: categories,
       'addedByUserId': addedByUserId,
-      fieldKeys.completed: completed,
+      fields.completed: completed,
     };
   }
 
   String get displayName => quantity.isEmpty ? name : '$quantity $name';
 
-  static const ShoppingItemFieldKeys fieldKeys = ShoppingItemFieldKeys();
+  static const ShoppingItemFields fields = ShoppingItemFields();
 }
 
-class ShoppingItemFieldKeys {
-  const ShoppingItemFieldKeys();
+class ShoppingItemFields {
+  const ShoppingItemFields();
   final String completed = 'completed';
   final String name = 'name';
   final String quantity = 'quantity';

@@ -37,21 +37,21 @@ class ListSummary with _$ListSummary {
   factory ListSummary.fromJson(Map<String, dynamic> json, String listId) {
     return ListSummary(
       id: listId,
-      name: json[fieldKeys.name],
+      name: json[fields.name],
       ownerId: json['ownerId'],
-      editorIds: List<String>.from(json[fieldKeys.editorIds]),
+      editorIds: List<String>.from(json[fields.editorIds]),
       editors: List<User>.from(List<Map<String, dynamic>>.from(json['editors']).map(User.fromJson)),
-      itemCount: json[fieldKeys.itemCount],
-      lastModified: Map<String, int>.from(json[fieldKeys.lastModified]),
+      itemCount: json[fields.itemCount],
+      lastModified: Map<String, int>.from(json[fields.lastModified]),
       listType: parseListType(json['listType']),
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      fieldKeys.name: name,
+      fields.name: name,
       'ownerId': ownerId,
-      fieldKeys.editorIds: editorIds,
+      fields.editorIds: editorIds,
       'editors': editors
           .map((e) => {
                 'id': e.id,
@@ -59,17 +59,17 @@ class ListSummary with _$ListSummary {
                 'email': e.email,
               })
           .toList(),
-      fieldKeys.itemCount: itemCount,
-      fieldKeys.lastModified: lastModified,
+      fields.itemCount: itemCount,
+      fields.lastModified: lastModified,
       'listType': listType.name,
     };
   }
 
-  static const ListSummaryFieldKeys fieldKeys = ListSummaryFieldKeys();
+  static const ListSummaryFields fields = ListSummaryFields();
 }
 
-class ListSummaryFieldKeys {
-  const ListSummaryFieldKeys();
+class ListSummaryFields {
+  const ListSummaryFields();
   final String name = 'name';
   final String editorIds = 'editorIds';
   final String itemCount = 'itemCount';

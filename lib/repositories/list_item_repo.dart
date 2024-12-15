@@ -43,8 +43,8 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final listDoc = fs.doc('lists/$listId');
     batch.set(itemDoc, item.toFirestore());
     batch.update(listDoc, {
-      ListSummary.fieldKeys.itemCount: FieldValue.increment(1),
-      '${ListSummary.fieldKeys.lastModified}.${user.id}': DateTime.now().millisecondsSinceEpoch,
+      ListSummary.fields.itemCount: FieldValue.increment(1),
+      '${ListSummary.fields.lastModified}.${user.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemCreated());
@@ -53,7 +53,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   Future<void> toggleItem(ShoppingItem item) async {
     final fs = ref.read(firestoreProvider);
     await fs.doc(item.path).update({
-      ShoppingItem.fieldKeys.completed: !item.completed,
+      ShoppingItem.fields.completed: !item.completed,
     });
   }
 
@@ -64,8 +64,8 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final batch = fs.batch();
     batch.delete(fs.doc(item.path));
     batch.update(listDoc, {
-      ListSummary.fieldKeys.itemCount: FieldValue.increment(-1),
-      '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+      ListSummary.fields.itemCount: FieldValue.increment(-1),
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemDeleted());
@@ -83,12 +83,12 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final itemDoc = fs.doc(item.path);
     final listDoc = fs.doc('lists/$listId');
     batch.update(itemDoc, {
-      ShoppingItem.fieldKeys.name: newName,
-      ShoppingItem.fieldKeys.quantity: newQuantity,
-      ShoppingItem.fieldKeys.categories: newCategories,
+      ShoppingItem.fields.name: newName,
+      ShoppingItem.fields.quantity: newQuantity,
+      ShoppingItem.fields.categories: newCategories,
     });
     batch.update(listDoc, {
-      '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemUpdated());
@@ -111,8 +111,8 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       }
     }
     batch.update(listDoc, {
-      ListSummary.fieldKeys.itemCount: FieldValue.increment(-deletedCount),
-      '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+      ListSummary.fields.itemCount: FieldValue.increment(-deletedCount),
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
 
     // Because we want to prioritize offline support, deletes are not performed in a transaction.

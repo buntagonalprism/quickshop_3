@@ -21,7 +21,7 @@ class ListRepo extends _$ListRepo {
     }
     return fs
         .collection('lists')
-        .where(ListSummary.fieldKeys.editorIds, arrayContains: user.id)
+        .where(ListSummary.fields.editorIds, arrayContains: user.id)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map(ListSummary.fromFirestore).toList();
@@ -54,8 +54,8 @@ class ListRepo extends _$ListRepo {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     await fs.collection('lists').doc(listId).update({
-      ListSummary.fieldKeys.name: name,
-      '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+      ListSummary.fields.name: name,
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListRenamed());
   }
