@@ -154,7 +154,7 @@ class _ListProviderElement
   String get listId => (origin as ListProvider).listId;
 }
 
-String _$listRepoHash() => r'902c9387b6b82aef97765dcd6e8ca68eb9fd9dd3';
+String _$listRepoHash() => r'c96199d8dcc86a193dd85641ec686f9eb42fd280';
 
 /// See also [ListRepo].
 @ProviderFor(ListRepo)

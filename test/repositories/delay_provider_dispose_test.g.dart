@@ -6,7 +6,7 @@ part of 'delay_provider_dispose_test.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$upstreamHash() => r'6743bb4612a492e144c9b0443dacb0005adc96b8';
+String _$upstreamHash() => r'3d1046e2d3f9a4dc479a0115258d2e87059de9c3';
 
 /// A simplistic representation of an upstream data source. keepAlive is set to true because:
 /// - When upstream data changes, all keepalive links are removed from the downstream provider
@@ -21,11 +21,11 @@ String _$upstreamHash() => r'6743bb4612a492e144c9b0443dacb0005adc96b8';
 /// sources could lead to memory leaks, so it is important to use this feature judiciously.
 ///
 /// Each test is still able to access an independent value of this provider, thanks to the use of a
-/// [ProviderContainer] in each test which scopes all providers to the test.
+/// [ProviderContainer] which scopes all providers to the test.
 ///
 /// Copied from [upstream].
 @ProviderFor(upstream)
-final upstreamProvider = AutoDisposeStreamProvider<int>.internal(
+final upstreamProvider = StreamProvider<int>.internal(
   upstream,
   name: r'upstreamProvider',
   debugGetCreateSourceHash:
@@ -36,7 +36,7 @@ final upstreamProvider = AutoDisposeStreamProvider<int>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef UpstreamRef = AutoDisposeStreamProviderRef<int>;
+typedef UpstreamRef = StreamProviderRef<int>;
 String _$delayDisposeHash() => r'08780462aa203cea2d63c4dfa53d264511f51ddc';
 
 /// See also [delayDispose].
