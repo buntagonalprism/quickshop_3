@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../analytics/analytics.dart';
 import '../models/list_summary.dart';
 import '../models/shopping_item.dart';
 import '../services/firestore.dart';
@@ -46,6 +47,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       '${ListSummary.fieldKeys.lastModified}.${user.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemCreated());
   }
 
   Future<void> toggleItem(ShoppingItem item) async {
@@ -66,6 +68,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemDeleted());
   }
 
   Future<void> updateItem({
@@ -88,6 +91,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemUpdated());
   }
 
   Future<int> deleteCompletedItems() async {
@@ -121,6 +125,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       'deletedCount': deletedCount
     });
     await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemsBatchDeleted());
     return deletedCount;
   }
 }

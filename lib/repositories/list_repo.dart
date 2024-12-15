@@ -1,6 +1,7 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../analytics/analytics.dart';
 import '../models/list_summary.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
@@ -45,6 +46,7 @@ class ListRepo extends _$ListRepo {
       listType: listType,
     );
     final listDoc = await fs.collection('lists').add(list.toFirestore());
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListCreated());
     return listDoc.id;
   }
 
@@ -55,23 +57,29 @@ class ListRepo extends _$ListRepo {
       ListSummary.fieldKeys.name: name,
       '${ListSummary.fieldKeys.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListRenamed());
   }
 
   Future<AcceptInviteResult> acceptListInvite(String inviteId) async {
     final client = ref.read(functionsHttpClientProvider);
     final result = await client.post('/acceptListInvite', {'inviteId': inviteId});
-    return switch (result.resultStatus) {
+    final status = switch (result.resultStatus) {
       HttpResultStatus.success => AcceptInviteResult.success,
       HttpResultStatus.retryableError ||
       HttpResultStatus.connectionError =>
         AcceptInviteResult.retryableError,
       HttpResultStatus.unknownError => AcceptInviteResult.unknownError,
     };
+    if (status == AcceptInviteResult.success) {
+      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListInviteAccepted());
+    }
+    return status;
   }
 
-  Future<void> deleteList(String listId) {
+  Future<void> deleteList(String listId) async {
     final fs = ref.read(firestoreProvider);
-    return fs.collection('lists').doc(listId).delete();
+    await fs.collection('lists').doc(listId).delete();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListDeleted());
   }
 }
 

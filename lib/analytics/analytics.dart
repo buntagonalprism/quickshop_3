@@ -42,6 +42,30 @@ class AnalyticsEvent {
 
   const AnalyticsEvent.logout() : this._('logout', const {});
 
+  const AnalyticsEvent.shoppingListCreated() : this._('shopping_list_created', const {});
+
+  const AnalyticsEvent.shoppingListRenamed() : this._('shopping_list_renamed', const {});
+
+  const AnalyticsEvent.shoppingListDeleted() : this._('shopping_list_deleted', const {});
+
+  const AnalyticsEvent.shoppingItemCreated() : this._('shopping_item_created', const {});
+
+  const AnalyticsEvent.shoppingItemUpdated() : this._('shopping_item_updated', const {});
+
+  const AnalyticsEvent.shoppingItemDeleted() : this._('shopping_item_deleted', const {});
+
+  const AnalyticsEvent.shoppingItemsBatchDeleted()
+      : this._('shopping_items_batch_deleted', const {});
+
+  const AnalyticsEvent.shoppingListInviteCreated()
+      : this._('shopping_list_invite_created', const {});
+
+  const AnalyticsEvent.shoppingListInviteDeleted()
+      : this._('shopping_list_invite_deleted', const {});
+
+  const AnalyticsEvent.shoppingListInviteAccepted()
+      : this._('shopping_list_invite_accepted', const {});
+
   AnalyticsEvent.httpConnectionError(
       {required String uri, required int statusCode, required String errorMessage})
       : this._('http_connection_error', {
