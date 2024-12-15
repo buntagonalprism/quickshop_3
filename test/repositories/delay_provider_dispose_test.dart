@@ -43,8 +43,8 @@ final _upstreamController = StreamController<int>.broadcast();
 /// sources could lead to memory leaks, so it is important to use this feature judiciously.
 ///
 /// Each test is still able to access an independent value of this provider, thanks to the use of a
-/// [ProviderContainer] in each test which scopes all providers to the test.
-@Riverpod()
+/// [ProviderContainer] which scopes all providers to the test.
+@Riverpod(keepAlive: true)
 Stream<int> upstream(Ref ref) {
   return _upstreamController.stream;
 }
