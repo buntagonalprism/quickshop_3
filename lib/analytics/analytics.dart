@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -16,15 +17,19 @@ class Analytics {
   Analytics._();
 
   void logEvent(AnalyticsEvent event) {
-    unawaited(FirebaseAnalytics.instance.logEvent(
-      name: event.name,
-      parameters: event.parameters,
-    ));
-    Sentry.addBreadcrumb(Breadcrumb(
-      message: event.name,
-      data: event.parameters,
-      level: SentryLevel.info,
-    ));
+    if (kDebugMode) {
+      print('QSLog-Analytics: ${event.name} ${event.parameters}');
+    } else {
+      unawaited(FirebaseAnalytics.instance.logEvent(
+        name: event.name,
+        parameters: event.parameters,
+      ));
+      Sentry.addBreadcrumb(Breadcrumb(
+        message: event.name,
+        data: event.parameters,
+        level: SentryLevel.info,
+      ));
+    }
   }
 }
 
