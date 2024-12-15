@@ -27,6 +27,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_riverpod: ^2.6.1
+  flutter_svg: ^2.0.16
   freezed_annotation: ^2.4.4
   go_router: ^14.3.0
   google_sign_in: ^6.2.1

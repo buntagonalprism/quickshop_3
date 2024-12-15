@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import '../../analytics/crash_reporter.dart';
@@ -31,6 +32,9 @@ class ListsPage extends ConsumerWidget {
           );
         }
         final lists = listsValue.requireValue;
+        if (lists.isEmpty) {
+          return const ListsEmptyView();
+        }
         return ListView.builder(
           itemCount: lists.length,
           itemBuilder: (context, index) {
@@ -42,10 +46,55 @@ class ListsPage extends ConsumerWidget {
       floatingActionButton: Consumer(builder: (context, ref, _) {
         return FloatingActionButton.extended(
           label: const Text('New list'),
-          icon: const Icon(Icons.list),
+          icon: SvgPicture.asset('assets/images/new_list_icon.svg', height: 20, width: 20),
           onPressed: () => ref.read(routerProvider).push(Routes.newList),
         );
       }),
+    );
+  }
+}
+
+class ListsEmptyView extends StatelessWidget {
+  const ListsEmptyView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SvgPicture.asset('assets/images/lists_tab_icon.svg', height: 150, width: 120),
+          const SizedBox(height: 16),
+          Text(
+            'Here you will find your QuickShop shopping lists and checklists',
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'You can create as many lists as you like, and you can share them with friends and family',
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text.rich(
+            TextSpan(
+              text: 'Use the ',
+              children: [
+                WidgetSpan(
+                  child: SvgPicture.asset('assets/images/new_list_icon.svg', height: 20, width: 20),
+                ),
+                const TextSpan(text: ' button below to get started'),
+              ],
+            ),
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 40),
+        ],
+      ),
     );
   }
 }

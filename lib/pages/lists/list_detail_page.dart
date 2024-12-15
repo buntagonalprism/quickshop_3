@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../models/list_summary.dart';
 import '../../models/shopping_item.dart';
@@ -66,6 +67,9 @@ class ShoppingListContentsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (items.isEmpty) {
+      return const ShoppingListEmptyView();
+    }
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) => items[index].when(
@@ -126,8 +130,46 @@ class ShoppingListEmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('No items in list'),
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SvgPicture.asset('assets/images/list_empty_icon.svg', height: 150, width: 120),
+          const SizedBox(height: 16),
+          Text(
+            'This shopping list is empty. If your cupboard is full, it\'s time to relax!',
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text.rich(
+            const TextSpan(
+              text: 'To add a new item use the ',
+              children: [
+                WidgetSpan(child: Icon(Icons.add)),
+                TextSpan(text: ' button below'),
+              ],
+            ),
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text.rich(
+            const TextSpan(
+              text: 'To share this list with others open the options menu ',
+              children: [
+                WidgetSpan(child: Icon(Icons.more_vert)),
+                TextSpan(text: ' above'),
+              ],
+            ),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 40),
+        ],
+      ),
     );
   }
 }
