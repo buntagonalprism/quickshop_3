@@ -71,6 +71,12 @@ class AnalyticsEvent {
   const AnalyticsEvent.shoppingListInviteAccepted()
       : this._('shopping_list_invite_accepted', const {});
 
+  AnalyticsEvent.httpRetry({required String uri, required String reason})
+      : this._('http_retry', {
+          'uri': uri,
+          'reason': reason,
+        });
+
   AnalyticsEvent.httpConnectionError(
       {required String uri, required int statusCode, required String errorMessage})
       : this._('http_connection_error', {

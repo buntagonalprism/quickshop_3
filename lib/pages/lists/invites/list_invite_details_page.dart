@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../analytics/crash_reporter.dart';
 import '../../../models/list_invite.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/list_repo.dart';
 import '../../../router.dart';
+import '../../../services/http_result.dart';
 import '../../../widgets/button_progress_indicator.dart';
+import '../../../widgets/http_error_dialog.dart';
 import 'list_invite_view_model.dart';
 
 class ListInviteDetailsPage extends ConsumerWidget {
@@ -185,30 +186,14 @@ class _PendingInvitationViewState extends ConsumerState<_PendingInvitationView> 
   }
 
   void _acceptListInvitation() async {
-    try {
-      setState(() => _acceptInProgress = true);
-      final result = await ref.read(listRepoProvider.notifier).acceptListInvite(widget.invite.id);
-      if (mounted) {
-        if (result == AcceptInviteResult.retryableError) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-                'Failed to accept invitation. Please check your network connection and try again later.'),
-          ));
-        } else if (result == AcceptInviteResult.unknownError) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('An unexpected error occured while accepting the invitation.'),
-          ));
-        }
+    setState(() => _acceptInProgress = true);
+    final result = await ref.read(listRepoProvider.notifier).acceptListInvite(widget.invite.id);
+    if (mounted) {
+      if (result is HttpResultError) {
+        final error = result.error;
+        showHttpErrorDialog(context, error);
       }
-    } catch (e, t) {
-      ref.read(crashReporterProvider).report(e, t);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('An unexpected error occured while accepting the invitation.'),
-        ));
-      }
-    } finally {
-      setState(() => _acceptInProgress = false);
     }
+    setState(() => _acceptInProgress = false);
   }
 }

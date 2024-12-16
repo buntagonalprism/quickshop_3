@@ -61,20 +61,13 @@ class ListRepo extends _$ListRepo {
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListRenamed());
   }
 
-  Future<AcceptInviteResult> acceptListInvite(String inviteId) async {
+  Future<HttpResult> acceptListInvite(String inviteId) async {
     final client = ref.read(functionsHttpClientProvider);
     final result = await client.post('/acceptListInvite', {'inviteId': inviteId});
-    final status = switch (result.resultStatus) {
-      HttpResultStatus.success => AcceptInviteResult.success,
-      HttpResultStatus.retryableError ||
-      HttpResultStatus.connectionError =>
-        AcceptInviteResult.retryableError,
-      HttpResultStatus.unknownError => AcceptInviteResult.unknownError,
-    };
-    if (status == AcceptInviteResult.success) {
+    if (result is HttpResultSuccess) {
       ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListInviteAccepted());
     }
-    return status;
+    return result;
   }
 
   Future<void> deleteList(String listId) async {

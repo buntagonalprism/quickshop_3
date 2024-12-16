@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/retry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
@@ -25,8 +28,14 @@ class FunctionsHttpClient {
   FunctionsHttpClient(this.ref);
 
   final Ref ref;
+  Analytics get analytics => ref.read(analyticsProvider);
+  CrashReporter get crashReporter => ref.read(crashReporterProvider);
 
   final host = const String.fromEnvironment('QUICKSHOP_FUNCTIONS_HOST');
+
+  final Duration timeout = const Duration(seconds: 5);
+
+  final int retries = 3;
 
   /// [path] is the path to the function, e.g. '/acceptListInvite'.
   Future<HttpResult> post(String path, Map<String, dynamic> data) async {
@@ -37,49 +46,134 @@ class FunctionsHttpClient {
       {required _Method method, required String path, dynamic data}) async {
     final uri = Uri.parse(host + path);
     final headers = await _buildHeaders();
+    final client = _buildClient(uri);
     try {
-      final response = await switch (method) {
-        _Method.post => http.post(uri, body: data, headers: headers),
+      final request = switch (method) {
+        _Method.post => client.post(uri, body: data, headers: headers),
+        _Method.get => client.get(uri, headers: headers),
       };
-      final result = HttpResult(
-        uri: uri.toString(),
-        response: response.body,
-        statusCode: response.statusCode,
-      );
+      final response = await request.timeout(timeout);
 
-      // Report unknown errors to Sentry for debugging
-      if (result.resultStatus == HttpResultStatus.unknownError) {
-        ref.read(crashReporterProvider).report(
-              Exception(
-                  'Unknown error from HTTP Triggered Function. Uri: $uri. Status code: ${result.statusCode}. Response: ${result.response}'),
-              StackTrace.current,
-            );
-      }
-      // Log retryable errors to analytics
-      else if (result.resultStatus == HttpResultStatus.retryableError) {
-        final event = AnalyticsEvent.httpConnectionError(
+      // Return success results
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return HttpResult.success(
           uri: uri.toString(),
-          statusCode: result.statusCode,
-          errorMessage: result.response,
+          response: response.body,
+          statusCode: response.statusCode,
         );
-        ref.read(analyticsProvider).logEvent(event);
       }
 
-      return result;
-    } catch (e) {
-      // Log connection failures to analytics
+      // Log retryable errors to analytics
+      if (const {429, 503}.contains(response.statusCode)) {
+        return HttpResult.error(
+          uri: uri.toString(),
+          error: HttpError.retryLater(
+            statusCode: response.statusCode,
+            response: response.body,
+          ),
+        );
+      }
+
+      // Report other errors to analytics and to Sentry for debugging
+      crashReporter.report(
+        Exception(
+          'Unknown error from HTTP Triggered Function. Uri: $uri. Status code: ${response.statusCode}. Response: ${response.body}',
+        ),
+        StackTrace.current,
+      );
+      final event = AnalyticsEvent.httpConnectionError(
+        uri: uri.toString(),
+        statusCode: response.statusCode,
+        errorMessage: response.body,
+      );
+      analytics.logEvent(event);
+
+      return HttpResult.error(
+        uri: uri.toString(),
+        error: HttpError.unknownError(
+          statusCode: response.statusCode,
+          response: response.body,
+        ),
+      );
+    }
+    // Log timeouts to analytics
+    on TimeoutException catch (_) {
+      final event = AnalyticsEvent.httpConnectionError(
+        uri: uri.toString(),
+        statusCode: 408,
+        errorMessage: 'Request not completed within $timeout timeout out after $retries retries',
+      );
+      analytics.logEvent(event);
+      return HttpResult.error(
+        uri: uri.toString(),
+        error: const HttpError.timeout(),
+      );
+    }
+    // Log connection failures to analytics
+    on SocketException catch (e) {
+      final event = AnalyticsEvent.httpConnectionError(
+        uri: uri.toString(),
+        statusCode: connectionErrorStatusCode,
+        errorMessage: e.message,
+      );
+      analytics.logEvent(event);
+      return HttpResult.error(
+        uri: uri.toString(),
+        error: HttpError.connectionFailed(
+          errorMessage: e.message,
+        ),
+      );
+    }
+    // Log other unexpected errors to analytics and to Sentry for debugging
+    catch (e, t) {
+      crashReporter.report(e, t);
       final event = AnalyticsEvent.httpConnectionError(
         uri: uri.toString(),
         statusCode: connectionErrorStatusCode,
         errorMessage: e.toString(),
       );
-      ref.read(analyticsProvider).logEvent(event);
-      return HttpResult(
+      analytics.logEvent(event);
+      return HttpResult.error(
         uri: uri.toString(),
-        response: e.toString(),
-        statusCode: connectionErrorStatusCode,
+        error: HttpError.unknownError(
+          statusCode: connectionErrorStatusCode,
+          response: e.toString(),
+        ),
       );
     }
+  }
+
+  RetryClient _buildClient(Uri uri) {
+    return RetryClient(
+      http.Client(),
+      retries: retries,
+      when: (response) {
+        if (const {429, 503}.contains(response.statusCode)) {
+          analytics.logEvent(AnalyticsEvent.httpRetry(
+            uri: uri.toString(),
+            reason: '${response.statusCode} response from functions',
+          ));
+          return true;
+        }
+        return false;
+      },
+      whenError: (error, _) {
+        if (error is SocketException) {
+          analytics.logEvent(AnalyticsEvent.httpRetry(
+            uri: uri.toString(),
+            reason: 'SocketException: ${error.message}',
+          ));
+          return true;
+        } else if (error is TimeoutException) {
+          analytics.logEvent(AnalyticsEvent.httpRetry(
+            uri: uri.toString(),
+            reason: 'TimeoutException: ${error.message}',
+          ));
+          return true;
+        }
+        return false;
+      },
+    );
   }
 
   Future<Map<String, String>> _buildHeaders() async {
@@ -94,4 +188,5 @@ class FunctionsHttpClient {
 
 enum _Method {
   post,
+  get,
 }

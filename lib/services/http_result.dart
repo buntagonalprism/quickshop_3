@@ -6,24 +6,47 @@ part 'http_result.freezed.dart';
 class HttpResult with _$HttpResult {
   const HttpResult._();
 
-  const factory HttpResult({
+  const factory HttpResult.success({
     required String uri,
     required String response,
     required int statusCode,
-  }) = _HttpResult;
+  }) = HttpResultSuccess;
 
-  HttpResultStatus get resultStatus {
-    if (statusCode == connectionErrorStatusCode) {
-      return HttpResultStatus.connectionError;
-    }
-    if (statusCode >= 200 && statusCode < 300) {
-      return HttpResultStatus.success;
-    }
-    if (const {420, 502, 503, 504}.contains(statusCode)) {
-      return HttpResultStatus.retryableError;
-    }
-    return HttpResultStatus.unknownError;
-  }
+  const factory HttpResult.error({
+    required String uri,
+    required HttpError error,
+  }) = HttpResultError;
+}
+
+@freezed
+class HttpError with _$HttpError {
+  const HttpError._();
+
+  /// The request failed because the target server did not respond within the specified timeout.
+  /// A retry may succeed.
+  const factory HttpError.timeout() = _HttpErrorTimeout;
+
+  /// The request failed because the target server could not be reached. A retry may succeed once
+  /// the client device regains network connectivity.
+  const factory HttpError.connectionFailed({
+    required String errorMessage,
+  }) = _HttpErrorNetworkError;
+
+  /// The request failed, with a status code response indicating a future request may succeed, e.g.
+  /// due to rate limiting, server maintenance, or traffic overload.
+  /// Http Status Codes 429, 503
+  const factory HttpError.retryLater({
+    required int statusCode,
+    required String response,
+  }) = _HttpErrorServerBusy;
+
+  /// The request failed with a status code that does not indicate a retry would succeed - most
+  /// likely due to either a malformed client request or a server-side error. Either way, the error
+  /// should be reported and investigated for bug fixes. A retry is unlikely to succeed.
+  const factory HttpError.unknownError({
+    required int statusCode,
+    required String response,
+  }) = _HttpErrorUnknown;
 }
 
 const int connectionErrorStatusCode = -1;
