@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../widgets/center_scrollable_column.dart';
 import '../home/profile_icon.dart';
 
 class RecipesPage extends StatelessWidget {
@@ -37,9 +38,7 @@ class RecipesEmptyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: CenterScrollableColumn(
         children: [
           SvgPicture.asset('assets/images/recipes_tab_icon.svg', height: 140, width: 120),
           const SizedBox(height: 16),

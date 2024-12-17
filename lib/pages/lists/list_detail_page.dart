@@ -6,6 +6,7 @@ import '../../models/list_summary.dart';
 import '../../models/shopping_item.dart';
 import '../../repositories/list_item_repo.dart';
 import '../../router.dart';
+import '../../widgets/center_scrollable_column.dart';
 import 'list_detail_drawer.dart';
 import 'list_detail_view_model.dart';
 
@@ -132,9 +133,7 @@ class ShoppingListEmptyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: CenterScrollableColumn(
         children: [
           SvgPicture.asset('assets/images/list_empty_icon.svg', height: 150, width: 120),
           const SizedBox(height: 16),
