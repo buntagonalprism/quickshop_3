@@ -5,6 +5,7 @@ import '../../repositories/list_item_repo.dart';
 import '../../repositories/list_repo.dart';
 import '../../repositories/user_repo.dart';
 import '../../router.dart';
+import '../../widgets/http_request_confirmation_dialog.dart';
 
 class ListDetailDrawer extends ConsumerStatefulWidget {
   const ListDetailDrawer({required this.listId, super.key});
@@ -66,12 +67,12 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             title: const Text('Remove checked items'),
             onTap: onRemoveCheckedItems,
           ),
+          const Divider(
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
           if (isOwner) ...[
-            const Divider(
-              thickness: 1,
-              indent: 16,
-              endIndent: 16,
-            ),
             ListTile(
               leading: const Icon(Icons.edit),
               title: const Text('Rename list'),
@@ -85,6 +86,12 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               onTap: onDeleteList,
             )
           ],
+          if (!isOwner)
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Leave list'),
+              onTap: onLeaveList,
+            )
         ],
       ),
     );
@@ -136,6 +143,33 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               child: const Text('Delete'),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  void onLeaveList() {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return HttpRequestConfirmationDialog(
+          confirmationTitle: 'Leave list',
+          confirmationMessage:
+              'Are you sure you want to leave this list? You will no longer be able to view or edit this list.',
+          confirmationAction: 'Leave',
+          requestInProgressMessage: 'Leaving list...',
+          onConfirm: () => ref.read(listRepoProvider.notifier).leaveList(widget.listId),
+          onSuccess: (_) {
+            Navigator.of(dialogContext).pop();
+            Scaffold.of(context).closeEndDrawer();
+            ref.read(routerProvider).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('List left'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          },
         );
       },
     );

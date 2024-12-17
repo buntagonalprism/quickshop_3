@@ -70,6 +70,15 @@ class ListRepo extends _$ListRepo {
     return result;
   }
 
+  Future<HttpResult> leaveList(String listId) async {
+    final client = ref.read(functionsHttpClientProvider);
+    final result = await client.post('/leaveList', {'listId': listId});
+    if (result is HttpResultSuccess) {
+      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListLeft());
+    }
+    return result;
+  }
+
   Future<void> deleteList(String listId) async {
     final fs = ref.read(firestoreProvider);
     await fs.collection('lists').doc(listId).delete();

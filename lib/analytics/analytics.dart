@@ -71,6 +71,8 @@ class AnalyticsEvent {
   const AnalyticsEvent.shoppingListInviteAccepted()
       : this._('shopping_list_invite_accepted', const {});
 
+  const AnalyticsEvent.shoppingListLeft() : this._('shopping_list_left', const {});
+
   AnalyticsEvent.httpRetry({required String uri, required String reason})
       : this._('http_retry', {
           'uri': uri,
