@@ -9,7 +9,7 @@ publish_to: 'none'
 # - Increment minor version for standard releases / new features
 # - Increment patch version for bug fixes
 # Ensure to add an entry in CHANGELOG.md for each release describing the changes.
-version: 0.1.6
+version: 0.2.0
 
 environment:
   sdk: ^3.5.4

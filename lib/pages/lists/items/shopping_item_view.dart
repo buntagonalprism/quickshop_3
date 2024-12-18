@@ -68,28 +68,6 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                 children: [
                   TextField(
                     autofocus: true,
-                    focusNode: quantityFocusNode,
-                    textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: const InputDecoration(
-                      labelText: 'Quantity (optional)',
-                      hintText: 'Enter quantity',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                    controller: quantityController,
-                    onSubmitted: (_) => nameFocusNode.requestFocus(),
-                  ),
-                  const ToggleTooltip(
-                    type: TooltipType.shoppingItemQuantity,
-                    message:
-                        'E.g. one, 2, 3 kg, four litres, 5 cans, two dozen, a few, several, or leave blank',
-                  ),
-                  const SizedBox(height: 24),
-                  TextField(
                     focusNode: nameFocusNode,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.sentences,
@@ -104,12 +82,34 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                       errorText: nameError,
                     ),
                     controller: nameController,
-                    onSubmitted: (value) => categoriesFocusNode.requestFocus(),
+                    onSubmitted: (value) => quantityFocusNode.requestFocus(),
                   ),
                   const ToggleTooltip(
                     type: TooltipType.shoppingItemName,
                     message:
                         'E.g. milk, tomato sauce, cucumbers, chicken thigh, sourdough bread, paprika, fabric softener',
+                  ),
+                  const SizedBox(height: 24),
+                  TextField(
+                    focusNode: quantityFocusNode,
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.sentences,
+                    decoration: const InputDecoration(
+                      labelText: 'Quantity (optional)',
+                      hintText: 'Enter quantity',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: quantityController,
+                    onSubmitted: (_) => categoriesFocusNode.requestFocus(),
+                  ),
+                  const ToggleTooltip(
+                    type: TooltipType.shoppingItemQuantity,
+                    message:
+                        'E.g. one, 2, 3 kg, four litres, 5 cans, two dozen, a few, several, or leave blank',
                   ),
                   const SizedBox(height: 28),
                   CategorySelector(
@@ -223,7 +223,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
     quantityController.clear();
     categoriesController.clear();
     selectedCategories.clear();
-    quantityFocusNode.requestFocus();
+    nameFocusNode.requestFocus();
   }
 }
 

@@ -1,3 +1,6 @@
+# 0.2.0 - 2024-12-18
+Shopping lists can be created and shared. Shopping list items are grouped by category. 
+
 # 0.1.6 - 2024-11-05
 Fix an issue with google sign in
 
