@@ -6,6 +6,7 @@ import '../models/list_summary.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
 import '../services/http_result.dart';
+import 'list_leave_in_progress_repo.dart';
 import 'user_repo.dart';
 
 part 'list_repo.g.dart';
@@ -72,9 +73,12 @@ class ListRepo extends _$ListRepo {
 
   Future<HttpResult> leaveList(String listId) async {
     final client = ref.read(functionsHttpClientProvider);
+    ref.read(listLeaveInProgressRepoProvider.notifier).add(listId);
     final result = await client.post('/leaveList', {'listId': listId});
     if (result is HttpResultSuccess) {
       ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListLeft());
+    } else {
+      ref.read(listLeaveInProgressRepoProvider.notifier).remove(listId);
     }
     return result;
   }

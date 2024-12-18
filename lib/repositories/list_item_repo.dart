@@ -6,6 +6,7 @@ import '../models/list_summary.dart';
 import '../models/shopping_item.dart';
 import '../services/firestore.dart';
 import 'delay_provider_dispose.dart';
+import 'list_leave_in_progress_repo.dart';
 import 'user_repo.dart';
 
 part 'list_item_repo.g.dart';
@@ -14,6 +15,10 @@ part 'list_item_repo.g.dart';
 class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   @override
   Stream<List<ShoppingItem>> build(String listId) {
+    // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
+    if (ref.watch(listLeaveInProgressRepoProvider).contains(listId)) {
+      return const Stream.empty();
+    }
     ref.delayDispose(const Duration(minutes: 15));
     final fs = ref.watch(firestoreProvider);
     return fs.collection('lists/$listId/items').snapshots().map((snapshot) {
