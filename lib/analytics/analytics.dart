@@ -6,6 +6,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import '../models/list_summary.dart';
+
 part 'analytics.g.dart';
 
 @riverpod
@@ -47,11 +49,15 @@ class AnalyticsEvent {
 
   const AnalyticsEvent.logout() : this._('logout', const {});
 
-  const AnalyticsEvent.shoppingListCreated() : this._('shopping_list_created', const {});
+  AnalyticsEvent.listCreated(ListType type) : this._('list_created', {'type': type.name});
 
-  const AnalyticsEvent.shoppingListRenamed() : this._('shopping_list_renamed', const {});
+  const AnalyticsEvent.listRenamed() : this._('list_renamed', const {});
 
-  const AnalyticsEvent.shoppingListDeleted() : this._('shopping_list_deleted', const {});
+  const AnalyticsEvent.listDeleted() : this._('list_deleted', const {});
+
+  const AnalyticsEvent.listInviteAccepted() : this._('shopping_list_invite_accepted', const {});
+
+  const AnalyticsEvent.listLeft() : this._('shopping_list_left', const {});
 
   const AnalyticsEvent.shoppingItemCreated() : this._('shopping_item_created', const {});
 
@@ -67,11 +73,6 @@ class AnalyticsEvent {
 
   const AnalyticsEvent.shoppingListInviteDeleted()
       : this._('shopping_list_invite_deleted', const {});
-
-  const AnalyticsEvent.shoppingListInviteAccepted()
-      : this._('shopping_list_invite_accepted', const {});
-
-  const AnalyticsEvent.shoppingListLeft() : this._('shopping_list_left', const {});
 
   AnalyticsEvent.httpRetry({required String uri, required String reason})
       : this._('http_retry', {

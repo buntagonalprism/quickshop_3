@@ -3,11 +3,11 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../analytics/crash_reporter.dart';
-import '../../models/checklist_item.dart';
+import '../../models/checklist_entry.dart';
 import '../../models/list_summary.dart';
 import '../../models/shopping_item.dart';
-import '../../repositories/list_item_repo.dart';
 import '../../repositories/list_repo.dart';
+import '../../repositories/shopping_list_item_repo.dart';
 
 part 'list_detail_view_model.freezed.dart';
 part 'list_detail_view_model.g.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../models/list_summary.dart';
 import '../../models/shopping_item.dart';
-import '../../repositories/list_item_repo.dart';
+import '../../repositories/shopping_list_item_repo.dart';
 import '../../router.dart';
 import '../../widgets/center_scrollable_column.dart';
 import 'list_detail_drawer.dart';

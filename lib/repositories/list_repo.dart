@@ -48,7 +48,7 @@ class ListRepo extends _$ListRepo {
       listType: listType,
     );
     final listDoc = await fs.collection('lists').add(list.toFirestore());
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListCreated());
+    ref.read(analyticsProvider).logEvent(AnalyticsEvent.listCreated(listType));
     return listDoc.id;
   }
 
@@ -59,14 +59,14 @@ class ListRepo extends _$ListRepo {
       ListSummary.fields.name: name,
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListRenamed());
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listRenamed());
   }
 
   Future<HttpResult> acceptListInvite(String inviteId) async {
     final client = ref.read(functionsHttpClientProvider);
     final result = await client.post('/acceptListInvite', {'inviteId': inviteId});
     if (result is HttpResultSuccess) {
-      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListInviteAccepted());
+      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listInviteAccepted());
     }
     return result;
   }
@@ -76,7 +76,7 @@ class ListRepo extends _$ListRepo {
     ref.read(listLeaveInProgressRepoProvider.notifier).add(listId);
     final result = await client.post('/leaveList', {'listId': listId});
     if (result is HttpResultSuccess) {
-      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListLeft());
+      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listLeft());
     } else {
       ref.read(listLeaveInProgressRepoProvider.notifier).remove(listId);
     }
@@ -86,7 +86,7 @@ class ListRepo extends _$ListRepo {
   Future<void> deleteList(String listId) async {
     final fs = ref.read(firestoreProvider);
     await fs.collection('lists').doc(listId).delete();
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListDeleted());
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listDeleted());
   }
 }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../repositories/list_item_repo.dart';
 import '../../repositories/list_repo.dart';
+import '../../repositories/shopping_list_item_repo.dart';
 import '../../repositories/user_repo.dart';
 import '../../router.dart';
 import '../../widgets/http_request_confirmation_dialog.dart';

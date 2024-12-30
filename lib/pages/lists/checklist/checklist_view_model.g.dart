@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'list_item_repo.dart';
+part of 'checklist_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingListItemRepoHash() =>
-    r'9ac9362bde6cce928c3ab87b40a742d364b5b846';
+String _$checklistViewModelHash() =>
+    r'436cd1c9f8c641df9da9336acc4bb879c07f9d20';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,37 +30,27 @@ class _SystemHash {
   }
 }
 
-abstract class _$ShoppingListItemRepo
-    extends BuildlessAutoDisposeStreamNotifier<List<ShoppingItem>> {
-  late final String listId;
+/// See also [checklistViewModel].
+@ProviderFor(checklistViewModel)
+const checklistViewModelProvider = ChecklistViewModelFamily();
 
-  Stream<List<ShoppingItem>> build(
-    String listId,
-  );
-}
+/// See also [checklistViewModel].
+class ChecklistViewModelFamily extends Family<ChecklistViewModel> {
+  /// See also [checklistViewModel].
+  const ChecklistViewModelFamily();
 
-/// See also [ShoppingListItemRepo].
-@ProviderFor(ShoppingListItemRepo)
-const shoppingListItemRepoProvider = ShoppingListItemRepoFamily();
-
-/// See also [ShoppingListItemRepo].
-class ShoppingListItemRepoFamily
-    extends Family<AsyncValue<List<ShoppingItem>>> {
-  /// See also [ShoppingListItemRepo].
-  const ShoppingListItemRepoFamily();
-
-  /// See also [ShoppingListItemRepo].
-  ShoppingListItemRepoProvider call(
+  /// See also [checklistViewModel].
+  ChecklistViewModelProvider call(
     String listId,
   ) {
-    return ShoppingListItemRepoProvider(
+    return ChecklistViewModelProvider(
       listId,
     );
   }
 
   @override
-  ShoppingListItemRepoProvider getProviderOverride(
-    covariant ShoppingListItemRepoProvider provider,
+  ChecklistViewModelProvider getProviderOverride(
+    covariant ChecklistViewModelProvider provider,
   ) {
     return call(
       provider.listId,
@@ -79,31 +69,33 @@ class ShoppingListItemRepoFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'shoppingListItemRepoProvider';
+  String? get name => r'checklistViewModelProvider';
 }
 
-/// See also [ShoppingListItemRepo].
-class ShoppingListItemRepoProvider
-    extends AutoDisposeStreamNotifierProviderImpl<ShoppingListItemRepo,
-        List<ShoppingItem>> {
-  /// See also [ShoppingListItemRepo].
-  ShoppingListItemRepoProvider(
+/// See also [checklistViewModel].
+class ChecklistViewModelProvider
+    extends AutoDisposeProvider<ChecklistViewModel> {
+  /// See also [checklistViewModel].
+  ChecklistViewModelProvider(
     String listId,
   ) : this._internal(
-          () => ShoppingListItemRepo()..listId = listId,
-          from: shoppingListItemRepoProvider,
-          name: r'shoppingListItemRepoProvider',
+          (ref) => checklistViewModel(
+            ref as ChecklistViewModelRef,
+            listId,
+          ),
+          from: checklistViewModelProvider,
+          name: r'checklistViewModelProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$shoppingListItemRepoHash,
-          dependencies: ShoppingListItemRepoFamily._dependencies,
+                  : _$checklistViewModelHash,
+          dependencies: ChecklistViewModelFamily._dependencies,
           allTransitiveDependencies:
-              ShoppingListItemRepoFamily._allTransitiveDependencies,
+              ChecklistViewModelFamily._allTransitiveDependencies,
           listId: listId,
         );
 
-  ShoppingListItemRepoProvider._internal(
+  ChecklistViewModelProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -116,20 +108,13 @@ class ShoppingListItemRepoProvider
   final String listId;
 
   @override
-  Stream<List<ShoppingItem>> runNotifierBuild(
-    covariant ShoppingListItemRepo notifier,
+  Override overrideWith(
+    ChecklistViewModel Function(ChecklistViewModelRef provider) create,
   ) {
-    return notifier.build(
-      listId,
-    );
-  }
-
-  @override
-  Override overrideWith(ShoppingListItemRepo Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ShoppingListItemRepoProvider._internal(
-        () => create()..listId = listId,
+      override: ChecklistViewModelProvider._internal(
+        (ref) => create(ref as ChecklistViewModelRef),
         from: from,
         name: null,
         dependencies: null,
@@ -141,14 +126,13 @@ class ShoppingListItemRepoProvider
   }
 
   @override
-  AutoDisposeStreamNotifierProviderElement<ShoppingListItemRepo,
-      List<ShoppingItem>> createElement() {
-    return _ShoppingListItemRepoProviderElement(this);
+  AutoDisposeProviderElement<ChecklistViewModel> createElement() {
+    return _ChecklistViewModelProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ShoppingListItemRepoProvider && other.listId == listId;
+    return other is ChecklistViewModelProvider && other.listId == listId;
   }
 
   @override
@@ -162,19 +146,18 @@ class ShoppingListItemRepoProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ShoppingListItemRepoRef
-    on AutoDisposeStreamNotifierProviderRef<List<ShoppingItem>> {
+mixin ChecklistViewModelRef on AutoDisposeProviderRef<ChecklistViewModel> {
   /// The parameter `listId` of this provider.
   String get listId;
 }
 
-class _ShoppingListItemRepoProviderElement
-    extends AutoDisposeStreamNotifierProviderElement<ShoppingListItemRepo,
-        List<ShoppingItem>> with ShoppingListItemRepoRef {
-  _ShoppingListItemRepoProviderElement(super.provider);
+class _ChecklistViewModelProviderElement
+    extends AutoDisposeProviderElement<ChecklistViewModel>
+    with ChecklistViewModelRef {
+  _ChecklistViewModelProviderElement(super.provider);
 
   @override
-  String get listId => (origin as ShoppingListItemRepoProvider).listId;
+  String get listId => (origin as ChecklistViewModelProvider).listId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
