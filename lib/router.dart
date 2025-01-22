@@ -8,6 +8,7 @@ import 'analytics/crash_reporter.dart';
 import 'analytics/logger.dart';
 import 'pages/favourites/favourites_page.dart';
 import 'pages/home/home_page.dart';
+import 'pages/lists/checklist/checklist_page.dart';
 import 'pages/lists/edit_list_page.dart';
 import 'pages/lists/invites/list_invite_details_page.dart';
 import 'pages/lists/items/shopping_item_create_page.dart';
@@ -67,6 +68,12 @@ GoRouter router(Ref ref) {
                     path: '${_RouteSegments.invites}/:${_RouteParams.inviteId}',
                     builder: (context, state) => ListInviteDetailsPage(
                       inviteId: state.pathParameters[_RouteParams.inviteId]!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: '${_RouteSegments.checklist}/:${_RouteParams.listId}',
+                    builder: (context, state) => ChecklistPage(
+                      listId: state.pathParameters[_RouteParams.listId]!,
                     ),
                   ),
                   GoRoute(
@@ -259,6 +266,7 @@ class Routes {
   /// A path that does not correspond to an actual page, but which allows the redirect routing logic
   /// to decide which page the user should be redirected to after logging in.
   static const postLogin = '/post-login';
+
   static const loginForInvite = '/${_RouteSegments.login}-invite';
   static const loginEmail = '$login/${_RouteSegments.email}';
   static const loginSetName = '$login/${_RouteSegments.setName}';
@@ -266,14 +274,30 @@ class Routes {
   static const settings = '/${_RouteSegments.settings}';
   static const lists = '/${_RouteSegments.lists}';
   static const newList = '$lists/${_RouteSegments.newItem}';
+
+  static RoutePath checklistDetail(String listId) => RoutePath([
+        _RouteSegments.lists,
+        _RouteSegments.checklist,
+        listId,
+      ]);
+
+  static RoutePath checklistNewItem(String listId) => checklistDetail(listId).extend([
+        _RouteSegments.items,
+        _RouteSegments.newItem,
+      ]);
+
+  static RoutePath checklistEditItem(String listId, String itemId) =>
+      checklistDetail(listId).extend([
+        _RouteSegments.items,
+        itemId,
+      ]);
+
   static String listDetail(String listId) => '$lists/$listId';
   static String editList(String listId) => '${listDetail(listId)}/${_RouteSegments.edit}';
   static String newShoppingListItem(String listId) =>
       '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.shopping}/${_RouteSegments.newItem}';
   static String editShoppingListItem(String listId, String itemId) =>
       '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.shopping}/$itemId';
-  static String newChecklistItem(String listId) =>
-      '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.checklist}/${_RouteSegments.newItem}';
   static String shareList(String listId) => '${listDetail(listId)}/${_RouteSegments.share}';
 
   static const recipes = '/${_RouteSegments.recipes}';
@@ -283,4 +307,15 @@ class Routes {
   static const favourites = '/${_RouteSegments.favourites}';
   static const notFound = '/${_RouteSegments.notFound}';
   static String listInviteDetails(String inviteId) => '$lists/${_RouteSegments.invites}/$inviteId';
+}
+
+class RoutePath {
+  RoutePath(this.segments) : path = '/${segments.join('/')}';
+  RoutePath.extend(RoutePath parent, List<String> segments)
+      : this([...parent.segments, ...segments]);
+
+  final List<String> segments;
+  final String path;
+
+  RoutePath extend(List<String> segments) => RoutePath([...this.segments, ...segments]);
 }

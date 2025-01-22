@@ -120,7 +120,16 @@ class ListSummaryTile extends ConsumerWidget {
               Text(formatLastModified(ref), style: Theme.of(context).textTheme.bodySmall),
             ],
           ),
-          onTap: () => ref.read(routerProvider).push(Routes.listDetail(listSummary.id)),
+          onTap: () {
+            switch (listSummary.listType) {
+              case ListType.shoppingList:
+                ref.read(routerProvider).push(Routes.listDetail(listSummary.id));
+                break;
+              case ListType.checklist:
+                ref.read(routerProvider).push(Routes.checklistDetail(listSummary.id).path);
+                break;
+            }
+          },
           subtitle: Row(
             children: [
               Text('${listSummary.itemCount} item${listSummary.itemCount == 1 ? '' : 's'}'),

@@ -21,7 +21,7 @@ class ListDetailPage extends ConsumerWidget {
     final listTitle = state.maybeWhen(
       shoppingList: (list, _) => list.name,
       checklist: (list, _) => list.name,
-      orElse: () => 'Shopping list',
+      orElse: () => '',
     );
     return Scaffold(
       appBar: AppBar(
@@ -51,7 +51,9 @@ class ListDetailPage extends ConsumerWidget {
           state.maybeWhen(
             shoppingList: (list, _) =>
                 ref.read(routerProvider).go(Routes.newShoppingListItem(list.id)),
-            checklist: (list, _) => ref.read(routerProvider).go(Routes.newChecklistItem(list.id)),
+            // TODO: Disentangle checklist from shopping list
+            checklist: (list, _) =>
+                throw UnimplementedError('Checklist functionality has been moved to ChecklistPage'),
             orElse: () {},
           );
         },

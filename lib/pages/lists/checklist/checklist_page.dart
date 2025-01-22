@@ -1,7 +1,8 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class ChecklistPage extends StatefulWidget {
-  const ChecklistPage({super.key});
+  const ChecklistPage({required this.listId, super.key});
+  final String listId;
 
   @override
   State<ChecklistPage> createState() => _ChecklistPageState();
@@ -10,6 +11,13 @@ class ChecklistPage extends StatefulWidget {
 class _ChecklistPageState extends State<ChecklistPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Checklist'),
+      ),
+      body: Center(
+        child: Text('Checklist page for list ${widget.listId}'),
+      ),
+    );
   }
 }
