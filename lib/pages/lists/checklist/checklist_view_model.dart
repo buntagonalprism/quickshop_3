@@ -3,7 +3,6 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
-import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
 import '../../../repositories/list_repo.dart';
@@ -76,23 +75,26 @@ ChecklistViewModel checklistViewModel(Ref ref, String listId) {
   final entries = entriesAsyncValue.requireValue;
   final pageEntries = <ChecklistPageEntry>[];
   for (final entry in entries) {
-    if (entry is ChecklistItem) {
-      pageEntries.add(ChecklistPageEntry.ungroupedItem(
-        name: entry.name,
-        completed: entry.completed,
-      ));
-    } else if (entry is ChecklistHeader) {
-      pageEntries.add(ChecklistPageEntry.header(
-        name: entry.name,
-      ));
-      for (final item in entry.items) {
-        pageEntries.add(ChecklistPageEntry.groupedItem(
+    entry.when(
+      item: (item) {
+        pageEntries.add(ChecklistPageEntry.ungroupedItem(
           name: item.name,
           completed: item.completed,
-          lastInGroup: item == entry.items.last,
         ));
-      }
-    }
+      },
+      group: (group) {
+        pageEntries.add(ChecklistPageEntry.header(
+          name: group.name,
+        ));
+        for (final item in group.items) {
+          pageEntries.add(ChecklistPageEntry.groupedItem(
+            name: item.name,
+            completed: item.completed,
+            lastInGroup: item == group.items.last,
+          ));
+        }
+      },
+    );
   }
   return ChecklistViewModel.success(
     list: list,
