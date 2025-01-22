@@ -7,7 +7,7 @@ part of 'checklist_view_model.dart';
 // **************************************************************************
 
 String _$checklistViewModelHash() =>
-    r'8ba64bac83c0a45578c32a0804dcbee20e2f0546';
+    r'c9a43c95ef1aa60639d06c0f8dfe7c52dce45b82';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -394,6 +394,7 @@ mixin _$ChecklistItem {
   String get name => throw _privateConstructorUsedError;
   bool get completed => throw _privateConstructorUsedError;
   UserSortKey get sortKey => throw _privateConstructorUsedError;
+  String? get groupId => throw _privateConstructorUsedError;
 
   /// Create a copy of ChecklistItem
   /// with the given fields replaced by the non-null parameter values.
@@ -408,7 +409,12 @@ abstract class $ChecklistItemCopyWith<$Res> {
           ChecklistItem value, $Res Function(ChecklistItem) then) =
       _$ChecklistItemCopyWithImpl<$Res, ChecklistItem>;
   @useResult
-  $Res call({String id, String name, bool completed, UserSortKey sortKey});
+  $Res call(
+      {String id,
+      String name,
+      bool completed,
+      UserSortKey sortKey,
+      String? groupId});
 
   $UserSortKeyCopyWith<$Res> get sortKey;
 }
@@ -432,6 +438,7 @@ class _$ChecklistItemCopyWithImpl<$Res, $Val extends ChecklistItem>
     Object? name = null,
     Object? completed = null,
     Object? sortKey = null,
+    Object? groupId = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -450,6 +457,10 @@ class _$ChecklistItemCopyWithImpl<$Res, $Val extends ChecklistItem>
           ? _value.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
               as UserSortKey,
+      groupId: freezed == groupId
+          ? _value.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -472,7 +483,12 @@ abstract class _$$ChecklistItemImplCopyWith<$Res>
       __$$ChecklistItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, bool completed, UserSortKey sortKey});
+  $Res call(
+      {String id,
+      String name,
+      bool completed,
+      UserSortKey sortKey,
+      String? groupId});
 
   @override
   $UserSortKeyCopyWith<$Res> get sortKey;
@@ -495,6 +511,7 @@ class __$$ChecklistItemImplCopyWithImpl<$Res>
     Object? name = null,
     Object? completed = null,
     Object? sortKey = null,
+    Object? groupId = freezed,
   }) {
     return _then(_$ChecklistItemImpl(
       id: null == id
@@ -513,6 +530,10 @@ class __$$ChecklistItemImplCopyWithImpl<$Res>
           ? _value.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
               as UserSortKey,
+      groupId: freezed == groupId
+          ? _value.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -524,7 +545,8 @@ class _$ChecklistItemImpl extends _ChecklistItem {
       {required this.id,
       required this.name,
       required this.completed,
-      required this.sortKey})
+      required this.sortKey,
+      this.groupId})
       : super._();
 
   @override
@@ -535,10 +557,12 @@ class _$ChecklistItemImpl extends _ChecklistItem {
   final bool completed;
   @override
   final UserSortKey sortKey;
+  @override
+  final String? groupId;
 
   @override
   String toString() {
-    return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey)';
+    return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey, groupId: $groupId)';
   }
 
   @override
@@ -550,11 +574,13 @@ class _$ChecklistItemImpl extends _ChecklistItem {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.completed, completed) ||
                 other.completed == completed) &&
-            (identical(other.sortKey, sortKey) || other.sortKey == sortKey));
+            (identical(other.sortKey, sortKey) || other.sortKey == sortKey) &&
+            (identical(other.groupId, groupId) || other.groupId == groupId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, completed, sortKey);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, completed, sortKey, groupId);
 
   /// Create a copy of ChecklistItem
   /// with the given fields replaced by the non-null parameter values.
@@ -570,7 +596,8 @@ abstract class _ChecklistItem extends ChecklistItem {
       {required final String id,
       required final String name,
       required final bool completed,
-      required final UserSortKey sortKey}) = _$ChecklistItemImpl;
+      required final UserSortKey sortKey,
+      final String? groupId}) = _$ChecklistItemImpl;
   const _ChecklistItem._() : super._();
 
   @override
@@ -581,6 +608,8 @@ abstract class _ChecklistItem extends ChecklistItem {
   bool get completed;
   @override
   UserSortKey get sortKey;
+  @override
+  String? get groupId;
 
   /// Create a copy of ChecklistItem
   /// with the given fields replaced by the non-null parameter values.
@@ -594,7 +623,6 @@ abstract class _ChecklistItem extends ChecklistItem {
 mixin _$ChecklistGroup {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  List<ChecklistItem> get items => throw _privateConstructorUsedError;
   UserSortKey get sortKey => throw _privateConstructorUsedError;
 
   /// Create a copy of ChecklistGroup
@@ -610,8 +638,7 @@ abstract class $ChecklistGroupCopyWith<$Res> {
           ChecklistGroup value, $Res Function(ChecklistGroup) then) =
       _$ChecklistGroupCopyWithImpl<$Res, ChecklistGroup>;
   @useResult
-  $Res call(
-      {String id, String name, List<ChecklistItem> items, UserSortKey sortKey});
+  $Res call({String id, String name, UserSortKey sortKey});
 
   $UserSortKeyCopyWith<$Res> get sortKey;
 }
@@ -633,7 +660,6 @@ class _$ChecklistGroupCopyWithImpl<$Res, $Val extends ChecklistGroup>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? items = null,
     Object? sortKey = null,
   }) {
     return _then(_value.copyWith(
@@ -645,10 +671,6 @@ class _$ChecklistGroupCopyWithImpl<$Res, $Val extends ChecklistGroup>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      items: null == items
-          ? _value.items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<ChecklistItem>,
       sortKey: null == sortKey
           ? _value.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
@@ -675,8 +697,7 @@ abstract class _$$ChecklistGroupImplCopyWith<$Res>
       __$$ChecklistGroupImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id, String name, List<ChecklistItem> items, UserSortKey sortKey});
+  $Res call({String id, String name, UserSortKey sortKey});
 
   @override
   $UserSortKeyCopyWith<$Res> get sortKey;
@@ -697,7 +718,6 @@ class __$$ChecklistGroupImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? items = null,
     Object? sortKey = null,
   }) {
     return _then(_$ChecklistGroupImpl(
@@ -709,10 +729,6 @@ class __$$ChecklistGroupImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      items: null == items
-          ? _value._items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<ChecklistItem>,
       sortKey: null == sortKey
           ? _value.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
@@ -725,31 +741,19 @@ class __$$ChecklistGroupImplCopyWithImpl<$Res>
 
 class _$ChecklistGroupImpl extends _ChecklistGroup {
   const _$ChecklistGroupImpl(
-      {required this.id,
-      required this.name,
-      required final List<ChecklistItem> items,
-      required this.sortKey})
-      : _items = items,
-        super._();
+      {required this.id, required this.name, required this.sortKey})
+      : super._();
 
   @override
   final String id;
   @override
   final String name;
-  final List<ChecklistItem> _items;
-  @override
-  List<ChecklistItem> get items {
-    if (_items is EqualUnmodifiableListView) return _items;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_items);
-  }
-
   @override
   final UserSortKey sortKey;
 
   @override
   String toString() {
-    return 'ChecklistGroup(id: $id, name: $name, items: $items, sortKey: $sortKey)';
+    return 'ChecklistGroup(id: $id, name: $name, sortKey: $sortKey)';
   }
 
   @override
@@ -759,13 +763,11 @@ class _$ChecklistGroupImpl extends _ChecklistGroup {
             other is _$ChecklistGroupImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality().equals(other._items, _items) &&
             (identical(other.sortKey, sortKey) || other.sortKey == sortKey));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name,
-      const DeepCollectionEquality().hash(_items), sortKey);
+  int get hashCode => Object.hash(runtimeType, id, name, sortKey);
 
   /// Create a copy of ChecklistGroup
   /// with the given fields replaced by the non-null parameter values.
@@ -781,7 +783,6 @@ abstract class _ChecklistGroup extends ChecklistGroup {
   const factory _ChecklistGroup(
       {required final String id,
       required final String name,
-      required final List<ChecklistItem> items,
       required final UserSortKey sortKey}) = _$ChecklistGroupImpl;
   const _ChecklistGroup._() : super._();
 
@@ -789,8 +790,6 @@ abstract class _ChecklistGroup extends ChecklistGroup {
   String get id;
   @override
   String get name;
-  @override
-  List<ChecklistItem> get items;
   @override
   UserSortKey get sortKey;
 

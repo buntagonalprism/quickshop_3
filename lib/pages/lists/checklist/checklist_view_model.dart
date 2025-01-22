@@ -86,13 +86,6 @@ ChecklistViewModel checklistViewModel(Ref ref, String listId) {
         pageEntries.add(ChecklistPageEntry.header(
           name: group.name,
         ));
-        for (final item in group.items) {
-          pageEntries.add(ChecklistPageEntry.groupedItem(
-            name: item.name,
-            completed: item.completed,
-            lastInGroup: item == group.items.last,
-          ));
-        }
       },
     );
   }
