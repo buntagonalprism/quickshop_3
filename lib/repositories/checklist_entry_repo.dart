@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/checklist_entry.dart';
+import '../models/user_sortable.dart';
 import '../services/firestore.dart';
 import 'delay_provider_dispose.dart';
 import 'list_leave_in_progress_repo.dart';
@@ -18,7 +20,100 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     ref.delayDispose(const Duration(minutes: 15));
     final fs = ref.watch(firestoreProvider);
     return fs.collection('lists/$listId/items').snapshots().map((snapshot) {
-      return snapshot.docs.map(ChecklistEntry.fromFirestore).toList();
+      final entries = snapshot.docs.map(_fromFirestore);
+      return _mergeAndSort(entries);
     });
   }
 }
+
+List<ChecklistEntry> _mergeAndSort(Iterable<ChecklistEntry> entries) {
+  final ungroupedItems = <ChecklistItem>[];
+  final groupedItems = <String, List<ChecklistItem>>{};
+  final groups = <ChecklistGroup>[];
+  for (var entry in entries) {
+    entry.when(
+      item: (item) {
+        final groupId = item.groupId;
+        if (groupId == null) {
+          ungroupedItems.add(item);
+        } else {
+          groupedItems.putIfAbsent(groupId, () => []).add(item);
+        }
+      },
+      group: (group) {
+        groups.add(group);
+      },
+    );
+  }
+  final groupsWithItems = <ChecklistGroup>[];
+  for (var group in groups) {
+    final groupItems = groupedItems[group.id] ?? [];
+    groupItems.userSort();
+    groupsWithItems.add(group.copyWith(items: groupItems));
+  }
+  final allTopLevelEntries = [
+    ...ungroupedItems.map((i) => ChecklistEntry.item(i)),
+    ...groupsWithItems.map((g) => ChecklistEntry.group(g)),
+  ];
+  allTopLevelEntries.userSort();
+  return allTopLevelEntries;
+}
+
+ChecklistEntry _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+  final id = doc.id;
+  final json = doc.data()!;
+  final type = json[_Fields.type] as String;
+  return switch (type) {
+    _itemTypeName => _itemFromFirestore(id, json),
+    _groupTypeName => _groupFromFirestore(id, json),
+    _ => throw ArgumentError.value(type, _Fields.type, 'Invalid value for checklist entry type')
+  };
+}
+
+ChecklistEntry _itemFromFirestore(String id, Map<String, dynamic> json) {
+  return ChecklistEntry.item(ChecklistItem(
+    id: id,
+    name: json[_Fields.name] as String,
+    completed: json[_Fields.completed] as bool,
+    sortKey: UserSortKey.fromJson(json[_Fields.sortKey] as Map<String, dynamic>),
+    groupId: json[_Fields.groupId] as String?,
+  ));
+}
+
+ChecklistEntry _groupFromFirestore(String id, Map<String, dynamic> json) {
+  return ChecklistEntry.group(ChecklistGroup(
+    id: id,
+    name: json[_Fields.name] as String,
+    sortKey: UserSortKey.fromJson(json[_Fields.sortKey] as Map<String, dynamic>),
+    items: [],
+  ));
+}
+
+Map<String, dynamic> _itemToFirestore(ChecklistItem item) {
+  return {
+    _Fields.type: _itemTypeName,
+    _Fields.name: item.name,
+    _Fields.completed: item.completed,
+    _Fields.groupId: item.groupId,
+    _Fields.sortKey: item.sortKey.toJson(),
+  };
+}
+
+Map<String, dynamic> _groupToFirestore(ChecklistGroup group) {
+  return {
+    _Fields.type: _groupTypeName,
+    _Fields.name: group.name,
+    _Fields.sortKey: group.sortKey.toJson(),
+  };
+}
+
+class _Fields {
+  static const type = 'type';
+  static const name = 'name';
+  static const completed = 'completed';
+  static const groupId = 'groupId';
+  static const sortKey = 'sortKey';
+}
+
+const String _itemTypeName = 'item';
+const String _groupTypeName = 'group';
