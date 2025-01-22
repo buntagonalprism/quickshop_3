@@ -112,7 +112,7 @@ class ListSummaryTile extends ConsumerWidget {
           border: Border.all(color: Theme.of(context).dividerColor),
         ),
         child: ListTile(
-          leading: const Icon(Icons.shopping_cart),
+          leading: ListSummaryIcon(listSummary: listSummary),
           title: Row(
             children: [
               Expanded(child: Text(listSummary.name)),
@@ -149,5 +149,21 @@ class ListSummaryTile extends ConsumerWidget {
   bool isToday(DateTime time) {
     final now = DateTime.now();
     return now.day == time.day && now.month == time.month && now.year == time.year;
+  }
+}
+
+class ListSummaryIcon extends StatelessWidget {
+  const ListSummaryIcon({
+    required this.listSummary,
+    super.key,
+  });
+  final ListSummary listSummary;
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (listSummary.listType) {
+      ListType.shoppingList => const Icon(Icons.shopping_cart),
+      ListType.checklist => const Icon(Icons.check_box_outlined),
+    };
   }
 }
