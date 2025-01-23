@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'list_detail_view_model.dart';
+part of 'shopping_list_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listDetailViewModelHash() =>
-    r'0128ca8330427a6c719a35ed4bfb901c4539be94';
+String _$shoppingListViewModelHash() =>
+    r'3d1b486dc06840653731d6bdf59d5c1c060f4e9e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,27 +30,27 @@ class _SystemHash {
   }
 }
 
-/// See also [listDetailViewModel].
-@ProviderFor(listDetailViewModel)
-const listDetailViewModelProvider = ListDetailViewModelFamily();
+/// See also [shoppingListViewModel].
+@ProviderFor(shoppingListViewModel)
+const shoppingListViewModelProvider = ShoppingListViewModelFamily();
 
-/// See also [listDetailViewModel].
-class ListDetailViewModelFamily extends Family<ListDetailViewModel> {
-  /// See also [listDetailViewModel].
-  const ListDetailViewModelFamily();
+/// See also [shoppingListViewModel].
+class ShoppingListViewModelFamily extends Family<ShoppingListViewModel> {
+  /// See also [shoppingListViewModel].
+  const ShoppingListViewModelFamily();
 
-  /// See also [listDetailViewModel].
-  ListDetailViewModelProvider call(
+  /// See also [shoppingListViewModel].
+  ShoppingListViewModelProvider call(
     String listId,
   ) {
-    return ListDetailViewModelProvider(
+    return ShoppingListViewModelProvider(
       listId,
     );
   }
 
   @override
-  ListDetailViewModelProvider getProviderOverride(
-    covariant ListDetailViewModelProvider provider,
+  ShoppingListViewModelProvider getProviderOverride(
+    covariant ShoppingListViewModelProvider provider,
   ) {
     return call(
       provider.listId,
@@ -69,33 +69,33 @@ class ListDetailViewModelFamily extends Family<ListDetailViewModel> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'listDetailViewModelProvider';
+  String? get name => r'shoppingListViewModelProvider';
 }
 
-/// See also [listDetailViewModel].
-class ListDetailViewModelProvider
-    extends AutoDisposeProvider<ListDetailViewModel> {
-  /// See also [listDetailViewModel].
-  ListDetailViewModelProvider(
+/// See also [shoppingListViewModel].
+class ShoppingListViewModelProvider
+    extends AutoDisposeProvider<ShoppingListViewModel> {
+  /// See also [shoppingListViewModel].
+  ShoppingListViewModelProvider(
     String listId,
   ) : this._internal(
-          (ref) => listDetailViewModel(
-            ref as ListDetailViewModelRef,
+          (ref) => shoppingListViewModel(
+            ref as ShoppingListViewModelRef,
             listId,
           ),
-          from: listDetailViewModelProvider,
-          name: r'listDetailViewModelProvider',
+          from: shoppingListViewModelProvider,
+          name: r'shoppingListViewModelProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$listDetailViewModelHash,
-          dependencies: ListDetailViewModelFamily._dependencies,
+                  : _$shoppingListViewModelHash,
+          dependencies: ShoppingListViewModelFamily._dependencies,
           allTransitiveDependencies:
-              ListDetailViewModelFamily._allTransitiveDependencies,
+              ShoppingListViewModelFamily._allTransitiveDependencies,
           listId: listId,
         );
 
-  ListDetailViewModelProvider._internal(
+  ShoppingListViewModelProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,12 +109,12 @@ class ListDetailViewModelProvider
 
   @override
   Override overrideWith(
-    ListDetailViewModel Function(ListDetailViewModelRef provider) create,
+    ShoppingListViewModel Function(ShoppingListViewModelRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: ListDetailViewModelProvider._internal(
-        (ref) => create(ref as ListDetailViewModelRef),
+      override: ShoppingListViewModelProvider._internal(
+        (ref) => create(ref as ShoppingListViewModelRef),
         from: from,
         name: null,
         dependencies: null,
@@ -126,13 +126,13 @@ class ListDetailViewModelProvider
   }
 
   @override
-  AutoDisposeProviderElement<ListDetailViewModel> createElement() {
-    return _ListDetailViewModelProviderElement(this);
+  AutoDisposeProviderElement<ShoppingListViewModel> createElement() {
+    return _ShoppingListViewModelProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ListDetailViewModelProvider && other.listId == listId;
+    return other is ShoppingListViewModelProvider && other.listId == listId;
   }
 
   @override
@@ -146,18 +146,19 @@ class ListDetailViewModelProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ListDetailViewModelRef on AutoDisposeProviderRef<ListDetailViewModel> {
+mixin ShoppingListViewModelRef
+    on AutoDisposeProviderRef<ShoppingListViewModel> {
   /// The parameter `listId` of this provider.
   String get listId;
 }
 
-class _ListDetailViewModelProviderElement
-    extends AutoDisposeProviderElement<ListDetailViewModel>
-    with ListDetailViewModelRef {
-  _ListDetailViewModelProviderElement(super.provider);
+class _ShoppingListViewModelProviderElement
+    extends AutoDisposeProviderElement<ShoppingListViewModel>
+    with ShoppingListViewModelRef {
+  _ShoppingListViewModelProviderElement(super.provider);
 
   @override
-  String get listId => (origin as ListDetailViewModelProvider).listId;
+  String get listId => (origin as ShoppingListViewModelProvider).listId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

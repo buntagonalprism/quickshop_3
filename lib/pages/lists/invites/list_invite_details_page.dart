@@ -66,7 +66,7 @@ class _InvitationAcceptedView extends ConsumerWidget {
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
-              ref.read(routerProvider).replace(Routes.listDetail(invite.listId));
+              ref.read(routerProvider).replace(Routes.shoppingListDetail(invite.listId).path);
             },
             child: const Text('Open list'),
           ),

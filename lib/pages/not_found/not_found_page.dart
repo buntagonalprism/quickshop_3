@@ -24,7 +24,7 @@ class NotFoundPage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               TextButton(
-                onPressed: () => ref.read(routerProvider).go(Routes.lists),
+                onPressed: () => ref.read(routerProvider).go(Routes.lists.path),
                 child: const Text('Home'),
               ),
             ],

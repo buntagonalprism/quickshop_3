@@ -54,7 +54,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             leading: const Icon(Icons.people),
             title: const Text('Share list'),
             onTap: () {
-              ref.read(routerProvider).push(Routes.shareList(widget.listId));
+              ref.read(routerProvider).push(Routes.shareList(widget.listId).path);
             },
           ),
           const Divider(
@@ -77,7 +77,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               leading: const Icon(Icons.edit),
               title: const Text('Rename list'),
               onTap: () {
-                ref.read(routerProvider).push(Routes.editList(widget.listId));
+                ref.read(routerProvider).push(Routes.editList(widget.listId).path);
               },
             ),
             ListTile(

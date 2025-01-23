@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../models/list_summary.dart';
-import '../../models/shopping_item.dart';
-import '../../repositories/shopping_list_item_repo.dart';
-import '../../router.dart';
-import '../../widgets/center_scrollable_column.dart';
-import 'list_detail_drawer.dart';
-import 'list_detail_view_model.dart';
+import '../../../models/list_summary.dart';
+import '../../../models/shopping_item.dart';
+import '../../../repositories/shopping_list_item_repo.dart';
+import '../../../router.dart';
+import '../../../widgets/center_scrollable_column.dart';
+import '../list_detail_drawer.dart';
+import 'shopping_list_view_model.dart';
 
-class ListDetailPage extends ConsumerWidget {
-  const ListDetailPage({required this.listId, super.key});
+class ShoppingListPage extends ConsumerWidget {
+  const ShoppingListPage({required this.listId, super.key});
 
   final String listId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(listDetailViewModelProvider(listId));
+    final state = ref.watch(shoppingListViewModelProvider(listId));
     final listTitle = state.maybeWhen(
-      shoppingList: (list, _) => list.name,
-      checklist: (list, _) => list.name,
+      success: (list, _) => list.name,
       orElse: () => '',
     );
     return Scaffold(
@@ -41,19 +40,15 @@ class ListDetailPage extends ConsumerWidget {
         notFound: () => const Center(child: Text('List not found')),
         error: () => const Center(child: Text('Failed to load list')),
         loading: () => const Center(child: CircularProgressIndicator()),
-        shoppingList: (list, items) => ShoppingListContentsView(list: list, items: items),
-        checklist: (list, _) => ChecklistItemsView(list: list),
+        success: (list, items) => ShoppingListContentsView(list: list, items: items),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Add item'),
         icon: const Icon(Icons.add),
         onPressed: () {
           state.maybeWhen(
-            shoppingList: (list, _) =>
-                ref.read(routerProvider).go(Routes.newShoppingListItem(list.id)),
-            // TODO: Disentangle checklist from shopping list
-            checklist: (list, _) =>
-                throw UnimplementedError('Checklist functionality has been moved to ChecklistPage'),
+            success: (list, _) =>
+                ref.read(routerProvider).go(Routes.shoppingListNewItem(list.id).path),
             orElse: () {},
           );
         },
@@ -112,7 +107,8 @@ class ShoppingItemTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       onTap: () => ref.read(shoppingListItemRepoProvider(list.id).notifier).toggleItem(item),
-      onLongPress: () => ref.read(routerProvider).go(Routes.editShoppingListItem(list.id, item.id)),
+      onLongPress: () =>
+          ref.read(routerProvider).go(Routes.shoppingListEditItem(list.id, item.id).path),
       title: Text(
         item.displayName,
         style: TextStyle(decoration: item.completed ? TextDecoration.lineThrough : null),
@@ -172,15 +168,5 @@ class ShoppingListEmptyView extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class ChecklistItemsView extends StatelessWidget {
-  const ChecklistItemsView({required this.list, super.key});
-  final ListSummary list;
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

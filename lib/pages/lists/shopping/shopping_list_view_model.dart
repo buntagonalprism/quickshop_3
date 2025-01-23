@@ -2,31 +2,26 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../analytics/crash_reporter.dart';
-import '../../models/checklist_entry.dart';
-import '../../models/list_summary.dart';
-import '../../models/shopping_item.dart';
-import '../../repositories/list_repo.dart';
-import '../../repositories/shopping_list_item_repo.dart';
+import '../../../analytics/crash_reporter.dart';
+import '../../../models/list_summary.dart';
+import '../../../models/shopping_item.dart';
+import '../../../repositories/list_repo.dart';
+import '../../../repositories/shopping_list_item_repo.dart';
 
-part 'list_detail_view_model.freezed.dart';
-part 'list_detail_view_model.g.dart';
+part 'shopping_list_view_model.freezed.dart';
+part 'shopping_list_view_model.g.dart';
 
 @freezed
-class ListDetailViewModel with _$ListDetailViewModel {
-  const ListDetailViewModel._();
+class ShoppingListViewModel with _$ShoppingListViewModel {
+  const ShoppingListViewModel._();
 
-  const factory ListDetailViewModel.error() = _Error;
-  const factory ListDetailViewModel.loading() = _Loading;
-  const factory ListDetailViewModel.notFound() = _NotFound;
-  const factory ListDetailViewModel.shoppingList({
+  const factory ShoppingListViewModel.error() = _Error;
+  const factory ShoppingListViewModel.loading() = _Loading;
+  const factory ShoppingListViewModel.notFound() = _NotFound;
+  const factory ShoppingListViewModel.success({
     required ListSummary list,
     required List<ShoppingListPageItem> items,
   }) = _ShoppingList;
-  const factory ListDetailViewModel.checklist({
-    required ListSummary list,
-    required List<ChecklistItem> items,
-  }) = _Checklist;
 }
 
 @freezed
@@ -40,40 +35,38 @@ class ShoppingListPageItem with _$ShoppingListPageItem {
 }
 
 @riverpod
-ListDetailViewModel listDetailViewModel(Ref ref, String listId) {
+ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
   final listAsyncValue = ref.watch(listProvider(listId));
   if (listAsyncValue.isLoading) {
-    return const ListDetailViewModel.loading();
+    return const ShoppingListViewModel.loading();
   }
 
   if (listAsyncValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(listAsyncValue);
-    return const ListDetailViewModel.error();
+    return const ShoppingListViewModel.error();
   }
 
   final list = listAsyncValue.requireValue;
   if (list == null) {
-    return const ListDetailViewModel.notFound();
+    return const ShoppingListViewModel.notFound();
   }
 
-  switch (list.listType) {
-    case ListType.shoppingList:
-      return _shoppingList(ref, list);
-    case ListType.checklist:
-      return _checklist(ref, list);
+  if (list.listType != ListType.shoppingList) {
+    ref.read(crashReporterProvider).report(
+          'ShoppingListViewModel was invoked with list id $listId, which is not a shopping list',
+          StackTrace.current,
+        );
   }
-}
 
-ListDetailViewModel _shoppingList(Ref ref, ListSummary list) {
   final itemsAsyncValue = ref.watch(shoppingListItemRepoProvider(list.id));
 
   if (itemsAsyncValue.isLoading) {
-    return const ListDetailViewModel.loading();
+    return const ShoppingListViewModel.loading();
   }
 
   if (itemsAsyncValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(itemsAsyncValue);
-    return const ListDetailViewModel.error();
+    return const ShoppingListViewModel.error();
   }
 
   final items = itemsAsyncValue.requireValue;
@@ -98,9 +91,5 @@ ListDetailViewModel _shoppingList(Ref ref, ListSummary list) {
       pageItems.add(ShoppingListPageItem.item(item: item));
     }
   }
-  return ListDetailViewModel.shoppingList(list: list, items: pageItems);
-}
-
-ListDetailViewModel _checklist(Ref ref, ListSummary list) {
-  throw UnimplementedError();
+  return ShoppingListViewModel.success(list: list, items: pageItems);
 }

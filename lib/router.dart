@@ -13,10 +13,10 @@ import 'pages/lists/edit_list_page.dart';
 import 'pages/lists/invites/list_invite_details_page.dart';
 import 'pages/lists/items/shopping_item_create_page.dart';
 import 'pages/lists/items/shopping_item_edit_page.dart';
-import 'pages/lists/list_detail_page.dart';
 import 'pages/lists/lists_page.dart';
 import 'pages/lists/new_list_page.dart';
 import 'pages/lists/sharing/list_sharing_page.dart';
+import 'pages/lists/shopping/shopping_list_page.dart';
 import 'pages/login/login_email_page.dart';
 import 'pages/login/login_landing_page.dart';
 import 'pages/login/login_name_page.dart';
@@ -56,7 +56,7 @@ GoRouter router(Ref ref) {
             navigatorKey: _listsNavigatorKey,
             routes: [
               GoRoute(
-                path: Routes.lists,
+                path: _RouteSegments.lists,
                 builder: (context, state) => const ListsPage(),
                 routes: [
                   GoRoute(
@@ -78,7 +78,7 @@ GoRouter router(Ref ref) {
                   ),
                   GoRoute(
                     path: ':${_RouteParams.listId}',
-                    builder: (context, state) => ListDetailPage(
+                    builder: (context, state) => ShoppingListPage(
                       listId: state.pathParameters[_RouteParams.listId]!,
                     ),
                     routes: [
@@ -209,12 +209,12 @@ GoRouter router(Ref ref) {
         }
 
         // Otherwise redirect to the lists page
-        return Routes.lists;
+        return Routes.lists.path;
       }
 
       // Redirect home to lists subpath
       if (state.uri.path == _RouteSegments.home) {
-        return Routes.lists;
+        return Routes.lists.path;
       }
       return null;
     },
@@ -272,33 +272,51 @@ class Routes {
   static const loginSetName = '$login/${_RouteSegments.setName}';
 
   static const settings = '/${_RouteSegments.settings}';
-  static const lists = '/${_RouteSegments.lists}';
-  static const newList = '$lists/${_RouteSegments.newItem}';
+
+  static RoutePath lists = RoutePath([
+    _RouteSegments.lists,
+  ]);
+  static RoutePath newList = lists.extend([
+    _RouteSegments.newItem,
+  ]);
+  static RoutePath editList(String listId) => lists.extend([
+        listId,
+        _RouteSegments.edit,
+      ]);
+  static RoutePath shareList(String listId) => lists.extend([
+        listId,
+        _RouteSegments.share,
+      ]);
 
   static RoutePath checklistDetail(String listId) => RoutePath([
         _RouteSegments.lists,
         _RouteSegments.checklist,
         listId,
       ]);
-
   static RoutePath checklistNewItem(String listId) => checklistDetail(listId).extend([
         _RouteSegments.items,
         _RouteSegments.newItem,
       ]);
-
   static RoutePath checklistEditItem(String listId, String itemId) =>
       checklistDetail(listId).extend([
         _RouteSegments.items,
         itemId,
       ]);
 
-  static String listDetail(String listId) => '$lists/$listId';
-  static String editList(String listId) => '${listDetail(listId)}/${_RouteSegments.edit}';
-  static String newShoppingListItem(String listId) =>
-      '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.shopping}/${_RouteSegments.newItem}';
-  static String editShoppingListItem(String listId, String itemId) =>
-      '${listDetail(listId)}/${_RouteSegments.items}/${_RouteSegments.shopping}/$itemId';
-  static String shareList(String listId) => '${listDetail(listId)}/${_RouteSegments.share}';
+  static RoutePath shoppingListDetail(String listId) => RoutePath([
+        _RouteSegments.lists,
+        _RouteSegments.shopping,
+        listId,
+      ]);
+  static RoutePath shoppingListNewItem(String listId) => shoppingListDetail(listId).extend([
+        _RouteSegments.items,
+        _RouteSegments.newItem,
+      ]);
+  static RoutePath shoppingListEditItem(String listId, String itemId) =>
+      shoppingListDetail(listId).extend([
+        _RouteSegments.items,
+        itemId,
+      ]);
 
   static const recipes = '/${_RouteSegments.recipes}';
   static const newRecipe = '${Routes.recipes}/${_RouteSegments.newItem}';

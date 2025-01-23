@@ -48,7 +48,7 @@ class ListsPage extends ConsumerWidget {
         return FloatingActionButton.extended(
           label: const Text('New list'),
           icon: SvgPicture.asset('assets/images/new_list_icon.svg', height: 20, width: 20),
-          onPressed: () => ref.read(routerProvider).push(Routes.newList),
+          onPressed: () => ref.read(routerProvider).push(Routes.newList.path),
         );
       }),
     );
@@ -123,7 +123,7 @@ class ListSummaryTile extends ConsumerWidget {
           onTap: () {
             switch (listSummary.listType) {
               case ListType.shoppingList:
-                ref.read(routerProvider).push(Routes.listDetail(listSummary.id));
+                ref.read(routerProvider).push(Routes.shoppingListDetail(listSummary.id).path);
                 break;
               case ListType.checklist:
                 ref.read(routerProvider).push(Routes.checklistDetail(listSummary.id).path);
