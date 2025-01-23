@@ -58,13 +58,13 @@ class ShoppingListPage extends ConsumerWidget {
 }
 
 @visibleForTesting
-class ShoppingListContentsView extends ConsumerWidget {
+class ShoppingListContentsView extends StatelessWidget {
   const ShoppingListContentsView({required this.list, required this.items, super.key});
   final ListSummary list;
   final List<ShoppingListPageItem> items;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (items.isEmpty) {
       return const ShoppingListEmptyView();
     }
@@ -143,10 +143,10 @@ class ShoppingListEmptyView extends StatelessWidget {
           const SizedBox(height: 16),
           Text.rich(
             const TextSpan(
-              text: 'To add a new item use the ',
+              text: 'To add a new item use the add button ',
               children: [
                 WidgetSpan(child: Icon(Icons.add)),
-                TextSpan(text: ' button below'),
+                TextSpan(text: ' below'),
               ],
             ),
             style: Theme.of(context).textTheme.bodyLarge,

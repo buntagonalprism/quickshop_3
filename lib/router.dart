@@ -36,7 +36,7 @@ final _listsNavigatorKey = GlobalKey<NavigatorState>();
 /// before viewing the invite.
 String? _pendingListInviteId;
 
-@riverpod
+@Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
   final loggedInNotifier = ValueNotifier<bool>(false);
   ref.listen<bool>(
@@ -56,7 +56,7 @@ GoRouter router(Ref ref) {
             navigatorKey: _listsNavigatorKey,
             routes: [
               GoRoute(
-                path: _RouteSegments.lists,
+                path: Routes.lists.path,
                 builder: (context, state) => const ListsPage(),
                 routes: [
                   GoRoute(
@@ -223,7 +223,8 @@ GoRouter router(Ref ref) {
     ],
     // Handle unknown routes with the not found page
     onException: (context, state, router) {
-      ref.read(crashReporterProvider).report(state.error, StackTrace.current);
+      dynamic error = state.error ?? 'Unknown error attempting to navigate to ${state.uri}';
+      ref.read(crashReporterProvider).report(error, StackTrace.current);
       router.go(Routes.notFound);
     },
   );
