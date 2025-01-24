@@ -189,7 +189,6 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
     final name = nameController.text.trim();
     final quantity = quantityController.text.trim();
     ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addItem(
-          listId: widget.listId,
           itemName: name,
           quantity: quantity,
           categories: selectedCategories,

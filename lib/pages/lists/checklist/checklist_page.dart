@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../models/list_summary.dart';
+import '../../../repositories/checklist_entry_repo.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
 import 'checklist_view_model.dart';
@@ -88,12 +89,24 @@ class ChecklistContentsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty && !isEditing) {
+    if (isEditing) {
+      return ListView.builder(
+        itemCount: items.length + 2,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return ChecklistAddActions(listId: list.id, addPosition: ChecklistAddPosition.start);
+          }
+          if (index == items.length + 1) {
+            return ChecklistAddActions(listId: list.id, addPosition: ChecklistAddPosition.end);
+          }
+          return const SizedBox(height: 16);
+        },
+      );
+    }
+    if (items.isEmpty) {
       return const ChecklistEmptyView();
     }
-    return Center(
-        child: Text(
-            'ChecklistContentsView is in editing mode: $isEditing. List contains ${items.length} items'));
+    return Center(child: Text('ChecklistContentsView with list containing ${items.length} items'));
   }
 }
 
@@ -142,5 +155,121 @@ class ChecklistEmptyView extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ChecklistAddActions extends ConsumerWidget {
+  const ChecklistAddActions({
+    required this.addPosition,
+    required this.listId,
+    super.key,
+  });
+  final ChecklistAddPosition addPosition;
+  final String listId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: OutlinedButton.icon(
+              onPressed: () => showDialog(
+                context: context,
+                builder: (ctx) => ChecklistTextDialog(
+                  dialogTitle: 'Add group',
+                  fieldName: 'Group name',
+                  onComplete: (value) => ref
+                      .read(checklistEntryRepoProvider(listId).notifier)
+                      .addGroup(value, addPosition),
+                ),
+              ),
+              label: const Text('Add group'),
+              icon: const Icon(Icons.category),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: OutlinedButton.icon(
+              onPressed: () => showDialog(
+                context: context,
+                builder: (ctx) => ChecklistTextDialog(
+                  dialogTitle: 'Add item',
+                  fieldName: 'Item name',
+                  onComplete: (value) => ref
+                      .read(checklistEntryRepoProvider(listId).notifier)
+                      .addItem(value, addPosition),
+                ),
+              ),
+              label: const Text('Add item'),
+              icon: const Icon(Icons.add),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChecklistTextDialog extends StatefulWidget {
+  const ChecklistTextDialog({
+    required this.dialogTitle,
+    required this.onComplete,
+    this.fieldName,
+    this.initialValue,
+    super.key,
+  });
+  final String dialogTitle;
+  final String? fieldName;
+  final String? initialValue;
+  final Function(String) onComplete;
+
+  @override
+  State<ChecklistTextDialog> createState() => _ChecklistTextDialogState();
+}
+
+class _ChecklistTextDialogState extends State<ChecklistTextDialog> {
+  late final TextEditingController controller;
+  String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.dialogTitle),
+      content: TextField(
+        autofocus: true,
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: widget.fieldName,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => onSave(),
+          child: const Text('Save'),
+        ),
+      ],
+    );
+  }
+
+  void onSave() {
+    final text = controller.text.trim();
+    if (text.isEmpty) {
+      setState(() => error = 'Please enter a value');
+      return;
+    }
+    widget.onComplete(text);
+    Navigator.pop(context);
   }
 }

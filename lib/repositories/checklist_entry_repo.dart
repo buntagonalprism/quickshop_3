@@ -2,12 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/checklist_entry.dart';
+import '../models/list_summary.dart';
 import '../models/user_sortable.dart';
 import '../services/firestore.dart';
 import 'delay_provider_dispose.dart';
 import 'list_leave_in_progress_repo.dart';
+import 'user_repo.dart';
 
 part 'checklist_entry_repo.g.dart';
+
+/// When adding items to a checklist, they may either be added to the start or end of the list.
+enum ChecklistAddPosition {
+  start,
+  end,
+}
 
 @riverpod
 class ChecklistEntryRepo extends _$ChecklistEntryRepo {
@@ -23,6 +31,62 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       final entries = snapshot.docs.map(_fromFirestore);
       return _mergeAndSort(entries);
     });
+  }
+
+  Future addItem(String itemName, ChecklistAddPosition position) async {
+    if (!state.hasValue) {
+      throw StateError('Cannot add item to a list that has not been loaded');
+    }
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+
+    final entries = state.requireValue;
+    final newItem = ChecklistItem(
+      id: '',
+      name: itemName,
+      completed: false,
+      groupId: null,
+      sortKey: UserSortKey(
+        primary: getPrimarySortIdx(entries, position),
+        secondary: '',
+      ),
+    );
+    final itemDoc = fs.collection('lists/$listId/items').doc();
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.set(itemDoc, _itemToFirestore(newItem));
+    batch.update(listDoc, {
+      ListSummary.fields.itemCount: FieldValue.increment(1),
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    await batch.commit();
+  }
+
+  void addGroup(String groupName, ChecklistAddPosition position) {
+    if (!state.hasValue) {
+      throw StateError('Cannot add group to a list that has not been loaded');
+    }
+    final entries = state.requireValue;
+    final newGroup = ChecklistGroup(
+      id: '',
+      name: groupName,
+      items: [],
+      sortKey: UserSortKey(
+        primary: getPrimarySortIdx(entries, position),
+        secondary: '',
+      ),
+    );
+    ref.watch(firestoreProvider).collection('lists/$listId/items').add(_groupToFirestore(newGroup));
+  }
+
+  int getPrimarySortIdx(List<ChecklistEntry> items, ChecklistAddPosition position) {
+    if (items.isEmpty) {
+      return 0;
+    }
+    return switch (position) {
+      ChecklistAddPosition.start => items.first.sortKey.primary - 1,
+      ChecklistAddPosition.end => items.last.sortKey.primary + 1
+    };
   }
 }
 

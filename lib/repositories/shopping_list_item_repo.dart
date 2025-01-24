@@ -27,7 +27,6 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   }
 
   Future<void> addItem({
-    required String listId,
     required String itemName,
     required String quantity,
     required List<String> categories,
