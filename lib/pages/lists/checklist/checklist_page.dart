@@ -6,6 +6,7 @@ import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
+import 'checklist_tiles.dart';
 import 'checklist_view_model.dart';
 
 class ChecklistPage extends ConsumerStatefulWidget {
@@ -99,14 +100,19 @@ class ChecklistContentsView extends StatelessWidget {
           if (index == items.length + 1) {
             return ChecklistAddActions(listId: list.id, addPosition: ChecklistAddPosition.end);
           }
-          return const SizedBox(height: 16);
+          return ChecklistPageEntryTile(entry: items[index - 1], listId: list.id);
         },
       );
     }
     if (items.isEmpty) {
       return const ChecklistEmptyView();
     }
-    return Center(child: Text('ChecklistContentsView with list containing ${items.length} items'));
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return ChecklistPageEntryTile(entry: items[index], listId: list.id);
+      },
+    );
   }
 }
 
@@ -177,7 +183,7 @@ class ChecklistAddActions extends ConsumerWidget {
             child: OutlinedButton.icon(
               onPressed: () => showDialog(
                 context: context,
-                builder: (ctx) => ChecklistTextDialog(
+                builder: (ctx) => ChecklistTextEditDialog(
                   dialogTitle: 'Add group',
                   fieldName: 'Group name',
                   onComplete: (value) => ref
@@ -194,7 +200,7 @@ class ChecklistAddActions extends ConsumerWidget {
             child: OutlinedButton.icon(
               onPressed: () => showDialog(
                 context: context,
-                builder: (ctx) => ChecklistTextDialog(
+                builder: (ctx) => ChecklistTextEditDialog(
                   dialogTitle: 'Add item',
                   fieldName: 'Item name',
                   onComplete: (value) => ref
@@ -212,8 +218,8 @@ class ChecklistAddActions extends ConsumerWidget {
   }
 }
 
-class ChecklistTextDialog extends StatefulWidget {
-  const ChecklistTextDialog({
+class ChecklistTextEditDialog extends StatefulWidget {
+  const ChecklistTextEditDialog({
     required this.dialogTitle,
     required this.onComplete,
     this.fieldName,
@@ -226,10 +232,10 @@ class ChecklistTextDialog extends StatefulWidget {
   final Function(String) onComplete;
 
   @override
-  State<ChecklistTextDialog> createState() => _ChecklistTextDialogState();
+  State<ChecklistTextEditDialog> createState() => _ChecklistTextEditDialogState();
 }
 
-class _ChecklistTextDialogState extends State<ChecklistTextDialog> {
+class _ChecklistTextEditDialogState extends State<ChecklistTextEditDialog> {
   late final TextEditingController controller;
   String? error;
 

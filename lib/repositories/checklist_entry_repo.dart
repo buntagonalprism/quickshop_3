@@ -33,7 +33,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     });
   }
 
-  Future addItem(String itemName, ChecklistAddPosition position) async {
+  Future<void> addItem(String itemName, ChecklistAddPosition position) async {
     if (!state.hasValue) {
       throw StateError('Cannot add item to a list that has not been loaded');
     }
@@ -47,7 +47,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       completed: false,
       groupId: null,
       sortKey: UserSortKey(
-        primary: getPrimarySortIdx(entries, position),
+        primary: _getPrimarySortIdx(entries, position),
         secondary: '',
       ),
     );
@@ -62,24 +62,34 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     await batch.commit();
   }
 
-  void addGroup(String groupName, ChecklistAddPosition position) {
+  Future<void> addGroup(String groupName, ChecklistAddPosition position) async {
     if (!state.hasValue) {
       throw StateError('Cannot add group to a list that has not been loaded');
     }
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+
     final entries = state.requireValue;
     final newGroup = ChecklistGroup(
       id: '',
       name: groupName,
       items: [],
       sortKey: UserSortKey(
-        primary: getPrimarySortIdx(entries, position),
+        primary: _getPrimarySortIdx(entries, position),
         secondary: '',
       ),
     );
-    ref.watch(firestoreProvider).collection('lists/$listId/items').add(_groupToFirestore(newGroup));
+    final groupDoc = fs.collection('lists/$listId/items').doc();
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.set(groupDoc, _groupToFirestore(newGroup));
+    batch.update(listDoc, {
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    await batch.commit();
   }
 
-  int getPrimarySortIdx(List<ChecklistEntry> items, ChecklistAddPosition position) {
+  int _getPrimarySortIdx(List<ChecklistEntry> items, ChecklistAddPosition position) {
     if (items.isEmpty) {
       return 0;
     }
@@ -87,6 +97,13 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       ChecklistAddPosition.start => items.first.sortKey.primary - 1,
       ChecklistAddPosition.end => items.last.sortKey.primary + 1
     };
+  }
+
+  Future<void> toggleItem(ChecklistItem item) {
+    final fs = ref.read(firestoreProvider);
+    return fs.doc('lists/$listId/items/${item.id}').update({
+      _Fields.completed: !item.completed,
+    });
   }
 }
 

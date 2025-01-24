@@ -650,29 +650,25 @@ abstract class _Checklist extends ChecklistViewModel {
 
 /// @nodoc
 mixin _$ChecklistPageEntry {
-  String get name => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name, bool completed) ungroupedItem,
-    required TResult Function(String name) header,
-    required TResult Function(String name, bool completed, bool lastInGroup)
-        groupedItem,
+    required TResult Function(ChecklistItem item) ungroupedItem,
+    required TResult Function(ChecklistGroup group) header,
+    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String name, bool completed)? ungroupedItem,
-    TResult? Function(String name)? header,
-    TResult? Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult? Function(ChecklistItem item)? ungroupedItem,
+    TResult? Function(ChecklistGroup group)? header,
+    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, bool completed)? ungroupedItem,
-    TResult Function(String name)? header,
-    TResult Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult Function(ChecklistItem item)? ungroupedItem,
+    TResult Function(ChecklistGroup group)? header,
+    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -698,12 +694,6 @@ mixin _$ChecklistPageEntry {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ChecklistPageEntryCopyWith<ChecklistPageEntry> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -711,8 +701,6 @@ abstract class $ChecklistPageEntryCopyWith<$Res> {
   factory $ChecklistPageEntryCopyWith(
           ChecklistPageEntry value, $Res Function(ChecklistPageEntry) then) =
       _$ChecklistPageEntryCopyWithImpl<$Res, ChecklistPageEntry>;
-  @useResult
-  $Res call({String name});
 }
 
 /// @nodoc
@@ -727,29 +715,17 @@ class _$ChecklistPageEntryCopyWithImpl<$Res, $Val extends ChecklistPageEntry>
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? name = null,
-  }) {
-    return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$ItemImplCopyWith<$Res>
-    implements $ChecklistPageEntryCopyWith<$Res> {
+abstract class _$$ItemImplCopyWith<$Res> {
   factory _$$ItemImplCopyWith(
           _$ItemImpl value, $Res Function(_$ItemImpl) then) =
       __$$ItemImplCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({String name, bool completed});
+  $Res call({ChecklistItem item});
+
+  $ChecklistItemCopyWith<$Res> get item;
 }
 
 /// @nodoc
@@ -764,35 +740,38 @@ class __$$ItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? completed = null,
+    Object? item = null,
   }) {
     return _then(_$ItemImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      completed: null == completed
-          ? _value.completed
-          : completed // ignore: cast_nullable_to_non_nullable
-              as bool,
+      item: null == item
+          ? _value.item
+          : item // ignore: cast_nullable_to_non_nullable
+              as ChecklistItem,
     ));
+  }
+
+  /// Create a copy of ChecklistPageEntry
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ChecklistItemCopyWith<$Res> get item {
+    return $ChecklistItemCopyWith<$Res>(_value.item, (value) {
+      return _then(_value.copyWith(item: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$ItemImpl implements _Item {
-  const _$ItemImpl({required this.name, required this.completed});
+  const _$ItemImpl({required this.item});
 
   @override
-  final String name;
-  @override
-  final bool completed;
+  final ChecklistItem item;
 
   @override
   String toString() {
-    return 'ChecklistPageEntry.ungroupedItem(name: $name, completed: $completed)';
+    return 'ChecklistPageEntry.ungroupedItem(item: $item)';
   }
 
   @override
@@ -800,13 +779,11 @@ class _$ItemImpl implements _Item {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ItemImpl &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.completed, completed) ||
-                other.completed == completed));
+            (identical(other.item, item) || other.item == item));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, completed);
+  int get hashCode => Object.hash(runtimeType, item);
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -819,36 +796,33 @@ class _$ItemImpl implements _Item {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name, bool completed) ungroupedItem,
-    required TResult Function(String name) header,
-    required TResult Function(String name, bool completed, bool lastInGroup)
-        groupedItem,
+    required TResult Function(ChecklistItem item) ungroupedItem,
+    required TResult Function(ChecklistGroup group) header,
+    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
   }) {
-    return ungroupedItem(name, completed);
+    return ungroupedItem(item);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String name, bool completed)? ungroupedItem,
-    TResult? Function(String name)? header,
-    TResult? Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult? Function(ChecklistItem item)? ungroupedItem,
+    TResult? Function(ChecklistGroup group)? header,
+    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
   }) {
-    return ungroupedItem?.call(name, completed);
+    return ungroupedItem?.call(item);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, bool completed)? ungroupedItem,
-    TResult Function(String name)? header,
-    TResult Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult Function(ChecklistItem item)? ungroupedItem,
+    TResult Function(ChecklistGroup group)? header,
+    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
     required TResult orElse(),
   }) {
     if (ungroupedItem != null) {
-      return ungroupedItem(name, completed);
+      return ungroupedItem(item);
     }
     return orElse();
   }
@@ -889,30 +863,26 @@ class _$ItemImpl implements _Item {
 }
 
 abstract class _Item implements ChecklistPageEntry {
-  const factory _Item(
-      {required final String name, required final bool completed}) = _$ItemImpl;
+  const factory _Item({required final ChecklistItem item}) = _$ItemImpl;
 
-  @override
-  String get name;
-  bool get completed;
+  ChecklistItem get item;
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$HeaderImplCopyWith<$Res>
-    implements $ChecklistPageEntryCopyWith<$Res> {
+abstract class _$$HeaderImplCopyWith<$Res> {
   factory _$$HeaderImplCopyWith(
           _$HeaderImpl value, $Res Function(_$HeaderImpl) then) =
       __$$HeaderImplCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({String name});
+  $Res call({ChecklistGroup group});
+
+  $ChecklistGroupCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -928,28 +898,38 @@ class __$$HeaderImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? group = null,
   }) {
     return _then(_$HeaderImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
+      group: null == group
+          ? _value.group
+          : group // ignore: cast_nullable_to_non_nullable
+              as ChecklistGroup,
     ));
+  }
+
+  /// Create a copy of ChecklistPageEntry
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ChecklistGroupCopyWith<$Res> get group {
+    return $ChecklistGroupCopyWith<$Res>(_value.group, (value) {
+      return _then(_value.copyWith(group: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$HeaderImpl implements _Header {
-  const _$HeaderImpl({required this.name});
+  const _$HeaderImpl({required this.group});
 
   @override
-  final String name;
+  final ChecklistGroup group;
 
   @override
   String toString() {
-    return 'ChecklistPageEntry.header(name: $name)';
+    return 'ChecklistPageEntry.header(group: $group)';
   }
 
   @override
@@ -957,11 +937,11 @@ class _$HeaderImpl implements _Header {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HeaderImpl &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.group, group) || other.group == group));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name);
+  int get hashCode => Object.hash(runtimeType, group);
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -974,36 +954,33 @@ class _$HeaderImpl implements _Header {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name, bool completed) ungroupedItem,
-    required TResult Function(String name) header,
-    required TResult Function(String name, bool completed, bool lastInGroup)
-        groupedItem,
+    required TResult Function(ChecklistItem item) ungroupedItem,
+    required TResult Function(ChecklistGroup group) header,
+    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
   }) {
-    return header(name);
+    return header(group);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String name, bool completed)? ungroupedItem,
-    TResult? Function(String name)? header,
-    TResult? Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult? Function(ChecklistItem item)? ungroupedItem,
+    TResult? Function(ChecklistGroup group)? header,
+    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
   }) {
-    return header?.call(name);
+    return header?.call(group);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, bool completed)? ungroupedItem,
-    TResult Function(String name)? header,
-    TResult Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult Function(ChecklistItem item)? ungroupedItem,
+    TResult Function(ChecklistGroup group)? header,
+    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
     required TResult orElse(),
   }) {
     if (header != null) {
-      return header(name);
+      return header(group);
     }
     return orElse();
   }
@@ -1044,28 +1021,26 @@ class _$HeaderImpl implements _Header {
 }
 
 abstract class _Header implements ChecklistPageEntry {
-  const factory _Header({required final String name}) = _$HeaderImpl;
+  const factory _Header({required final ChecklistGroup group}) = _$HeaderImpl;
 
-  @override
-  String get name;
+  ChecklistGroup get group;
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HeaderImplCopyWith<_$HeaderImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$GroupedItemImplCopyWith<$Res>
-    implements $ChecklistPageEntryCopyWith<$Res> {
+abstract class _$$GroupedItemImplCopyWith<$Res> {
   factory _$$GroupedItemImplCopyWith(
           _$GroupedItemImpl value, $Res Function(_$GroupedItemImpl) then) =
       __$$GroupedItemImplCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({String name, bool completed, bool lastInGroup});
+  $Res call({ChecklistItem item, bool lastInGroup});
+
+  $ChecklistItemCopyWith<$Res> get item;
 }
 
 /// @nodoc
@@ -1081,43 +1056,45 @@ class __$$GroupedItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? completed = null,
+    Object? item = null,
     Object? lastInGroup = null,
   }) {
     return _then(_$GroupedItemImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      completed: null == completed
-          ? _value.completed
-          : completed // ignore: cast_nullable_to_non_nullable
-              as bool,
+      item: null == item
+          ? _value.item
+          : item // ignore: cast_nullable_to_non_nullable
+              as ChecklistItem,
       lastInGroup: null == lastInGroup
           ? _value.lastInGroup
           : lastInGroup // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
+
+  /// Create a copy of ChecklistPageEntry
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ChecklistItemCopyWith<$Res> get item {
+    return $ChecklistItemCopyWith<$Res>(_value.item, (value) {
+      return _then(_value.copyWith(item: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$GroupedItemImpl implements _GroupedItem {
-  const _$GroupedItemImpl(
-      {required this.name, required this.completed, required this.lastInGroup});
+  const _$GroupedItemImpl({required this.item, required this.lastInGroup});
 
   @override
-  final String name;
-  @override
-  final bool completed;
+  final ChecklistItem item;
   @override
   final bool lastInGroup;
 
   @override
   String toString() {
-    return 'ChecklistPageEntry.groupedItem(name: $name, completed: $completed, lastInGroup: $lastInGroup)';
+    return 'ChecklistPageEntry.groupedItem(item: $item, lastInGroup: $lastInGroup)';
   }
 
   @override
@@ -1125,15 +1102,13 @@ class _$GroupedItemImpl implements _GroupedItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GroupedItemImpl &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.completed, completed) ||
-                other.completed == completed) &&
+            (identical(other.item, item) || other.item == item) &&
             (identical(other.lastInGroup, lastInGroup) ||
                 other.lastInGroup == lastInGroup));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, completed, lastInGroup);
+  int get hashCode => Object.hash(runtimeType, item, lastInGroup);
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -1146,36 +1121,33 @@ class _$GroupedItemImpl implements _GroupedItem {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name, bool completed) ungroupedItem,
-    required TResult Function(String name) header,
-    required TResult Function(String name, bool completed, bool lastInGroup)
-        groupedItem,
+    required TResult Function(ChecklistItem item) ungroupedItem,
+    required TResult Function(ChecklistGroup group) header,
+    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
   }) {
-    return groupedItem(name, completed, lastInGroup);
+    return groupedItem(item, lastInGroup);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String name, bool completed)? ungroupedItem,
-    TResult? Function(String name)? header,
-    TResult? Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult? Function(ChecklistItem item)? ungroupedItem,
+    TResult? Function(ChecklistGroup group)? header,
+    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
   }) {
-    return groupedItem?.call(name, completed, lastInGroup);
+    return groupedItem?.call(item, lastInGroup);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, bool completed)? ungroupedItem,
-    TResult Function(String name)? header,
-    TResult Function(String name, bool completed, bool lastInGroup)?
-        groupedItem,
+    TResult Function(ChecklistItem item)? ungroupedItem,
+    TResult Function(ChecklistGroup group)? header,
+    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
     required TResult orElse(),
   }) {
     if (groupedItem != null) {
-      return groupedItem(name, completed, lastInGroup);
+      return groupedItem(item, lastInGroup);
     }
     return orElse();
   }
@@ -1217,18 +1189,14 @@ class _$GroupedItemImpl implements _GroupedItem {
 
 abstract class _GroupedItem implements ChecklistPageEntry {
   const factory _GroupedItem(
-      {required final String name,
-      required final bool completed,
+      {required final ChecklistItem item,
       required final bool lastInGroup}) = _$GroupedItemImpl;
 
-  @override
-  String get name;
-  bool get completed;
+  ChecklistItem get item;
   bool get lastInGroup;
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GroupedItemImplCopyWith<_$GroupedItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
