@@ -35,7 +35,16 @@ class ShoppingListPage extends ConsumerWidget {
           }),
         ],
       ),
-      endDrawer: ListDetailDrawer(listId: listId),
+      endDrawer: ListDetailDrawer(
+        listId: listId,
+        actions: [
+          ListAction(
+            name: 'Delete completed items',
+            icon: const Icon(Icons.delete),
+            onTap: () => onRemoveCheckedItems(context, ref, listId),
+          )
+        ],
+      ),
       body: state.when(
         notFound: () => const Center(child: Text('List not found')),
         error: () => const Center(child: Text('Failed to load list')),
@@ -54,6 +63,21 @@ class ShoppingListPage extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  void onRemoveCheckedItems(BuildContext context, WidgetRef ref, String listId) async {
+    final deleteFuture =
+        ref.read(shoppingListItemRepoProvider(listId).notifier).deleteCompletedItems();
+    Navigator.pop(context);
+    final deletedCount = await deleteFuture;
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Deleted $deletedCount items'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 }
 

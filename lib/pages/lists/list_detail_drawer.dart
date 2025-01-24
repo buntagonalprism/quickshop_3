@@ -2,14 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../repositories/list_repo.dart';
-import '../../repositories/shopping_list_item_repo.dart';
 import '../../repositories/user_repo.dart';
 import '../../router.dart';
 import '../../widgets/http_request_confirmation_dialog.dart';
 
+class ListAction {
+  const ListAction({
+    required this.name,
+    required this.icon,
+    required this.onTap,
+  });
+  final String name;
+  final Icon icon;
+  final VoidCallback onTap;
+}
+
 class ListDetailDrawer extends ConsumerStatefulWidget {
-  const ListDetailDrawer({required this.listId, super.key});
+  const ListDetailDrawer({required this.listId, required this.actions, super.key});
   final String listId;
+  final List<ListAction> actions;
 
   @override
   ConsumerState<ListDetailDrawer> createState() => _ListDetailDrawerState();
@@ -62,11 +73,13 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             indent: 16,
             endIndent: 16,
           ),
-          ListTile(
-            leading: const Icon(Icons.check_box_outlined),
-            title: const Text('Remove checked items'),
-            onTap: onRemoveCheckedItems,
-          ),
+          ...widget.actions.map((action) {
+            return ListTile(
+              leading: action.icon,
+              title: Text(action.name),
+              onTap: action.onTap,
+            );
+          }),
           const Divider(
             thickness: 1,
             indent: 16,
@@ -95,21 +108,6 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
         ],
       ),
     );
-  }
-
-  void onRemoveCheckedItems() async {
-    final deleteFuture =
-        ref.read(shoppingListItemRepoProvider(widget.listId).notifier).deleteCompletedItems();
-    Scaffold.of(context).closeEndDrawer();
-    final deletedCount = await deleteFuture;
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Deleted $deletedCount items'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
   }
 
   void onDeleteList() {

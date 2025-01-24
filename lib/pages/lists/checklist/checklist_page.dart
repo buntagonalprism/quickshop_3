@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../models/list_summary.dart';
 import '../../../widgets/center_scrollable_column.dart';
+import '../list_detail_drawer.dart';
 import 'checklist_view_model.dart';
 
 class ChecklistPage extends ConsumerStatefulWidget {
@@ -27,6 +28,25 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(listTitle),
+        actions: [
+          Builder(builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.more_vert),
+              tooltip: 'Show menu',
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+            );
+          }),
+        ],
+      ),
+      endDrawer: ListDetailDrawer(
+        listId: widget.listId,
+        actions: [
+          ListAction(
+            name: 'Delete completed items',
+            icon: const Icon(Icons.delete),
+            onTap: () => onRemoveCheckedItems(),
+          )
+        ],
       ),
       body: state.when(
         notFound: () => const Center(child: Text('List not found')),
@@ -46,6 +66,11 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
         },
       ),
     );
+  }
+
+  void onRemoveCheckedItems() async {
+    Navigator.pop(context);
+    throw UnimplementedError('onRemoveCheckedItems is not implemented');
   }
 }
 
