@@ -82,7 +82,7 @@ class ChecklistGroupTileEditing extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: EdgeInsets.fromLTRB(8, 4, 8, group.items.isEmpty ? 4 : 0),
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border(
@@ -159,7 +159,7 @@ class ChecklistGroupedItemTileEditing extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.fromLTRB(8, 0, 8, isLast ? 4 : 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -72,9 +72,28 @@ class ChecklistGroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      visualDensity: VisualDensity.compact,
-      title: Text(group.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(8, 4, 8, group.items.isEmpty ? 4 : 0),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            left: const BorderSide(),
+            right: const BorderSide(),
+            top: const BorderSide(),
+            bottom: group.items.isEmpty ? const BorderSide() : BorderSide.none,
+          ),
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(4),
+            topRight: const Radius.circular(4),
+            bottomLeft: group.items.isEmpty ? const Radius.circular(4) : Radius.zero,
+            bottomRight: group.items.isEmpty ? const Radius.circular(4) : Radius.zero,
+          ),
+        ),
+        child: ListTile(
+          visualDensity: VisualDensity.compact,
+          title: Text(group.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ),
     );
   }
 }
@@ -93,13 +112,20 @@ class ChecklistGroupedItemTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.fromLTRB(8, 0, 8, isLast ? 4 : 0),
       child: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
-            left: BorderSide(),
-            right: BorderSide(),
+            left: const BorderSide(),
+            right: const BorderSide(),
+            bottom: isLast ? const BorderSide() : BorderSide.none,
           ),
+          borderRadius: isLast
+              ? const BorderRadius.only(
+                  bottomLeft: Radius.circular(4),
+                  bottomRight: Radius.circular(4),
+                )
+              : null,
         ),
         child: ListTile(
           onTap: () => toggleItemCompleted(ref),
