@@ -34,6 +34,7 @@ class ChecklistPageEntry with _$ChecklistPageEntry {
   }) = _Header;
   const factory ChecklistPageEntry.groupedItem({
     required ChecklistItem item,
+    required ChecklistGroup group,
     required bool lastInGroup,
   }) = _GroupedItem;
 }
@@ -87,6 +88,7 @@ ChecklistViewModel checklistViewModel(Ref ref, String listId) {
         for (final item in group.items) {
           pageEntries.add(ChecklistPageEntry.groupedItem(
             item: item,
+            group: group,
             lastInGroup: item == group.items.last,
           ));
         }

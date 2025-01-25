@@ -89,7 +89,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     await batch.commit();
   }
 
-  int _getPrimarySortIdx(List<ChecklistEntry> items, ChecklistAddPosition position) {
+  int _getPrimarySortIdx(List<UserSortable> items, ChecklistAddPosition position) {
     if (items.isEmpty) {
       return 0;
     }
@@ -104,6 +104,62 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     return fs.doc('lists/$listId/items/${item.id}').update({
       _Fields.completed: !item.completed,
     });
+  }
+
+  Future<void> editItem(ChecklistItem item, String newName) {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final itemDoc = fs.doc('lists/$listId/items/${item.id}');
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.update(itemDoc, {
+      _Fields.name: newName,
+    });
+    batch.update(listDoc, {
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    return batch.commit();
+  }
+
+  Future<void> editGroup(ChecklistGroup group, String newName) {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final groupDoc = fs.doc('lists/$listId/items/${group.id}');
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.update(groupDoc, {
+      _Fields.name: newName,
+    });
+    batch.update(listDoc, {
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    return batch.commit();
+  }
+
+  Future<void> addItemToGroup(
+      ChecklistGroup group, String itemName, ChecklistAddPosition position) {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+
+    final newItem = ChecklistItem(
+      id: '',
+      name: itemName,
+      completed: false,
+      groupId: group.id,
+      sortKey: UserSortKey(
+        primary: _getPrimarySortIdx(group.items, position),
+        secondary: '',
+      ),
+    );
+    final itemDoc = fs.collection('lists/$listId/items').doc();
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.set(itemDoc, _itemToFirestore(newItem));
+    batch.update(listDoc, {
+      ListSummary.fields.itemCount: FieldValue.increment(1),
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    return batch.commit();
   }
 }
 

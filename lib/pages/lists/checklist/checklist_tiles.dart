@@ -24,7 +24,7 @@ class ChecklistPageEntryTile extends StatelessWidget {
       header: (header) => ChecklistGroupTile(
         group: header,
       ),
-      groupedItem: (item, isLast) => ChecklistGroupedItemTile(
+      groupedItem: (item, group, isLast) => ChecklistGroupedItemTile(
         item: item,
         isLast: isLast,
         listId: listId,

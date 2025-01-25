@@ -654,21 +654,27 @@ mixin _$ChecklistPageEntry {
   TResult when<TResult extends Object?>({
     required TResult Function(ChecklistItem item) ungroupedItem,
     required TResult Function(ChecklistGroup group) header,
-    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
+    required TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
+        groupedItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ChecklistItem item)? ungroupedItem,
     TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult? Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ChecklistItem item)? ungroupedItem,
     TResult Function(ChecklistGroup group)? header,
-    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -798,7 +804,9 @@ class _$ItemImpl implements _Item {
   TResult when<TResult extends Object?>({
     required TResult Function(ChecklistItem item) ungroupedItem,
     required TResult Function(ChecklistGroup group) header,
-    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
+    required TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
+        groupedItem,
   }) {
     return ungroupedItem(item);
   }
@@ -808,7 +816,9 @@ class _$ItemImpl implements _Item {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ChecklistItem item)? ungroupedItem,
     TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult? Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
   }) {
     return ungroupedItem?.call(item);
   }
@@ -818,7 +828,9 @@ class _$ItemImpl implements _Item {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ChecklistItem item)? ungroupedItem,
     TResult Function(ChecklistGroup group)? header,
-    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
     required TResult orElse(),
   }) {
     if (ungroupedItem != null) {
@@ -956,7 +968,9 @@ class _$HeaderImpl implements _Header {
   TResult when<TResult extends Object?>({
     required TResult Function(ChecklistItem item) ungroupedItem,
     required TResult Function(ChecklistGroup group) header,
-    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
+    required TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
+        groupedItem,
   }) {
     return header(group);
   }
@@ -966,7 +980,9 @@ class _$HeaderImpl implements _Header {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ChecklistItem item)? ungroupedItem,
     TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult? Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
   }) {
     return header?.call(group);
   }
@@ -976,7 +992,9 @@ class _$HeaderImpl implements _Header {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ChecklistItem item)? ungroupedItem,
     TResult Function(ChecklistGroup group)? header,
-    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
     required TResult orElse(),
   }) {
     if (header != null) {
@@ -1038,9 +1056,10 @@ abstract class _$$GroupedItemImplCopyWith<$Res> {
           _$GroupedItemImpl value, $Res Function(_$GroupedItemImpl) then) =
       __$$GroupedItemImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ChecklistItem item, bool lastInGroup});
+  $Res call({ChecklistItem item, ChecklistGroup group, bool lastInGroup});
 
   $ChecklistItemCopyWith<$Res> get item;
+  $ChecklistGroupCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -1057,6 +1076,7 @@ class __$$GroupedItemImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? item = null,
+    Object? group = null,
     Object? lastInGroup = null,
   }) {
     return _then(_$GroupedItemImpl(
@@ -1064,6 +1084,10 @@ class __$$GroupedItemImplCopyWithImpl<$Res>
           ? _value.item
           : item // ignore: cast_nullable_to_non_nullable
               as ChecklistItem,
+      group: null == group
+          ? _value.group
+          : group // ignore: cast_nullable_to_non_nullable
+              as ChecklistGroup,
       lastInGroup: null == lastInGroup
           ? _value.lastInGroup
           : lastInGroup // ignore: cast_nullable_to_non_nullable
@@ -1080,21 +1104,34 @@ class __$$GroupedItemImplCopyWithImpl<$Res>
       return _then(_value.copyWith(item: value));
     });
   }
+
+  /// Create a copy of ChecklistPageEntry
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ChecklistGroupCopyWith<$Res> get group {
+    return $ChecklistGroupCopyWith<$Res>(_value.group, (value) {
+      return _then(_value.copyWith(group: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$GroupedItemImpl implements _GroupedItem {
-  const _$GroupedItemImpl({required this.item, required this.lastInGroup});
+  const _$GroupedItemImpl(
+      {required this.item, required this.group, required this.lastInGroup});
 
   @override
   final ChecklistItem item;
+  @override
+  final ChecklistGroup group;
   @override
   final bool lastInGroup;
 
   @override
   String toString() {
-    return 'ChecklistPageEntry.groupedItem(item: $item, lastInGroup: $lastInGroup)';
+    return 'ChecklistPageEntry.groupedItem(item: $item, group: $group, lastInGroup: $lastInGroup)';
   }
 
   @override
@@ -1103,12 +1140,13 @@ class _$GroupedItemImpl implements _GroupedItem {
         (other.runtimeType == runtimeType &&
             other is _$GroupedItemImpl &&
             (identical(other.item, item) || other.item == item) &&
+            (identical(other.group, group) || other.group == group) &&
             (identical(other.lastInGroup, lastInGroup) ||
                 other.lastInGroup == lastInGroup));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, item, lastInGroup);
+  int get hashCode => Object.hash(runtimeType, item, group, lastInGroup);
 
   /// Create a copy of ChecklistPageEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -1123,9 +1161,11 @@ class _$GroupedItemImpl implements _GroupedItem {
   TResult when<TResult extends Object?>({
     required TResult Function(ChecklistItem item) ungroupedItem,
     required TResult Function(ChecklistGroup group) header,
-    required TResult Function(ChecklistItem item, bool lastInGroup) groupedItem,
+    required TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
+        groupedItem,
   }) {
-    return groupedItem(item, lastInGroup);
+    return groupedItem(item, group, lastInGroup);
   }
 
   @override
@@ -1133,9 +1173,11 @@ class _$GroupedItemImpl implements _GroupedItem {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ChecklistItem item)? ungroupedItem,
     TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult? Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
   }) {
-    return groupedItem?.call(item, lastInGroup);
+    return groupedItem?.call(item, group, lastInGroup);
   }
 
   @override
@@ -1143,11 +1185,13 @@ class _$GroupedItemImpl implements _GroupedItem {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ChecklistItem item)? ungroupedItem,
     TResult Function(ChecklistGroup group)? header,
-    TResult Function(ChecklistItem item, bool lastInGroup)? groupedItem,
+    TResult Function(
+            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
+        groupedItem,
     required TResult orElse(),
   }) {
     if (groupedItem != null) {
-      return groupedItem(item, lastInGroup);
+      return groupedItem(item, group, lastInGroup);
     }
     return orElse();
   }
@@ -1190,9 +1234,11 @@ class _$GroupedItemImpl implements _GroupedItem {
 abstract class _GroupedItem implements ChecklistPageEntry {
   const factory _GroupedItem(
       {required final ChecklistItem item,
+      required final ChecklistGroup group,
       required final bool lastInGroup}) = _$GroupedItemImpl;
 
   ChecklistItem get item;
+  ChecklistGroup get group;
   bool get lastInGroup;
 
   /// Create a copy of ChecklistPageEntry

@@ -6,7 +6,9 @@ import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
+import 'checklist_text_edit_dialog.dart';
 import 'checklist_tiles.dart';
+import 'checklist_tiles_editing.dart';
 import 'checklist_view_model.dart';
 
 class ChecklistPage extends ConsumerStatefulWidget {
@@ -100,7 +102,7 @@ class ChecklistContentsView extends StatelessWidget {
           if (index == items.length + 1) {
             return ChecklistAddActions(listId: list.id, addPosition: ChecklistAddPosition.end);
           }
-          return ChecklistPageEntryTile(entry: items[index - 1], listId: list.id);
+          return ChecklistPageEntryTileEditing(entry: items[index - 1], listId: list.id);
         },
       );
     }
@@ -215,67 +217,5 @@ class ChecklistAddActions extends ConsumerWidget {
         ],
       ),
     );
-  }
-}
-
-class ChecklistTextEditDialog extends StatefulWidget {
-  const ChecklistTextEditDialog({
-    required this.dialogTitle,
-    required this.onComplete,
-    this.fieldName,
-    this.initialValue,
-    super.key,
-  });
-  final String dialogTitle;
-  final String? fieldName;
-  final String? initialValue;
-  final Function(String) onComplete;
-
-  @override
-  State<ChecklistTextEditDialog> createState() => _ChecklistTextEditDialogState();
-}
-
-class _ChecklistTextEditDialogState extends State<ChecklistTextEditDialog> {
-  late final TextEditingController controller;
-  String? error;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController(text: widget.initialValue);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.dialogTitle),
-      content: TextField(
-        autofocus: true,
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: widget.fieldName,
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => onSave(),
-          child: const Text('Save'),
-        ),
-      ],
-    );
-  }
-
-  void onSave() {
-    final text = controller.text.trim();
-    if (text.isEmpty) {
-      setState(() => error = 'Please enter a value');
-      return;
-    }
-    widget.onComplete(text);
-    Navigator.pop(context);
   }
 }
