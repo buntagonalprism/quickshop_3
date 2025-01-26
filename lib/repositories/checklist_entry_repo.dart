@@ -104,6 +104,53 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     });
   }
 
+  Future<void> moveItem(ChecklistEntry entry, int newIndex) {
+    if (!state.hasValue) {
+      throw StateError('Cannot move item in a list that has not been loaded');
+    }
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+
+    final entries = state.requireValue;
+
+    // Make the change immediately in memory
+    final currentIndex = entries.indexOf(entry);
+    state = AsyncValue.data(entries
+      ..removeAt(currentIndex)
+      ..insert(newIndex, entry));
+
+    // Compute the new sort key for the item
+    UserSortKey newSortKey;
+    if (newIndex == 0) {
+      newSortKey = UserSortKey(
+        primary: entries[1].sortKey.primary - 1,
+        secondary: '',
+      );
+    } else if (entries.length - 1 == newIndex) {
+      newSortKey = UserSortKey(
+        primary: entries[entries.length - 2].sortKey.primary + 1,
+        secondary: '',
+      );
+    } else {
+      newSortKey = UserSortKey.between(
+        entries[newIndex - 1].sortKey,
+        entries[newIndex + 1].sortKey,
+      );
+    }
+
+    final entryId = entry.when(item: (item) => item.id, heading: (heading) => heading.id);
+    final itemDoc = fs.doc('lists/$listId/items/$entryId');
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.update(itemDoc, {
+      _Fields.sortKey: newSortKey.toJson(),
+    });
+    batch.update(listDoc, {
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    return batch.commit();
+  }
+
   Future<void> editItem(ChecklistItem item, String newName) {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);

@@ -6,8 +6,8 @@ import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
 import 'checklist_text_edit_dialog.dart';
 
-class ChecklistEditingVieww extends StatefulWidget {
-  const ChecklistEditingVieww({
+class ChecklistEditingView extends ConsumerStatefulWidget {
+  const ChecklistEditingView({
     super.key,
     required this.items,
     required this.list,
@@ -17,48 +17,61 @@ class ChecklistEditingVieww extends StatefulWidget {
   final ListSummary list;
 
   @override
-  State<ChecklistEditingVieww> createState() => _ChecklistEditingViewwState();
+  ConsumerState<ChecklistEditingView> createState() => _ChecklistEditingViewState();
 }
 
-enum AutoScrollDirection {
-  none,
-  up,
-  down,
-}
-
-class _ChecklistEditingViewwState extends State<ChecklistEditingVieww> {
+class _ChecklistEditingViewState extends ConsumerState<ChecklistEditingView> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Stack(
-        children: [
-          ListView.builder(
-            itemCount: widget.items.length + 2,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return ChecklistAddActions(
-                    listId: widget.list.id, addPosition: ChecklistAddPosition.start);
-              }
-              if (index == widget.items.length + 1) {
-                return ChecklistAddActions(
-                    listId: widget.list.id, addPosition: ChecklistAddPosition.end);
-              }
-              final entry = widget.items[index - 1];
-              return entry.when(
-                item: (item) => ChecklistItemTileEditing(
-                  item: item,
-                  listId: widget.list.id,
-                ),
-                heading: (header) => ChecklistHeadingTileEditing(
-                  heading: header,
-                  listId: widget.list.id,
-                ),
-              );
-            },
+    return ReorderableListView.builder(
+      buildDefaultDragHandles: false,
+      onReorder: (oldIndex, newIndex) {
+        // A known issue with ReorderableListView is that the newIndex is one too large when an item
+        // is moved down. See https://github.com/flutter/flutter/issues/24786
+        // Unfortunately the fix will not be merged even though its very simple because it would
+        // introduce a breaking change to everyone that had already implemented a workaround
+        // See https://github.com/flutter/flutter/pull/93146
+        if (newIndex > oldIndex) {
+          newIndex -= 1;
+        }
+        print('QSLog Reordering from $oldIndex to $newIndex');
+        ref
+            .read(checklistEntryRepoProvider(widget.list.id).notifier)
+            .moveItem(widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
+      },
+      itemCount: widget.items.length + 2,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return ChecklistAddActions(
+            key: ValueKey(index),
+            listId: widget.list.id,
+            addPosition: ChecklistAddPosition.start,
+          );
+        }
+        if (index == widget.items.length + 1) {
+          return ChecklistAddActions(
+            key: ValueKey(index),
+            listId: widget.list.id,
+            addPosition: ChecklistAddPosition.end,
+          );
+        }
+        final entry = widget.items[index - 1];
+        return entry.when(
+          item: (item) => ChecklistItemTileEditing(
+            key: ValueKey(item.id),
+            index: index,
+            item: item,
+            listId: widget.list.id,
           ),
-        ],
-      );
-    });
+          heading: (header) => ChecklistHeadingTileEditing(
+            key: ValueKey(header.id),
+            heading: header,
+            listId: widget.list.id,
+            index: index,
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -66,9 +79,11 @@ class ChecklistItemTileEditing extends ConsumerWidget {
   const ChecklistItemTileEditing({
     required this.listId,
     required this.item,
+    required this.index,
     super.key,
   });
   final String listId;
+  final int index;
   final ChecklistItem item;
 
   @override
@@ -76,10 +91,13 @@ class ChecklistItemTileEditing extends ConsumerWidget {
     return ListTile(
       visualDensity: VisualDensity.compact,
       title: Text(
-        item.name,
+        '${item.name}: ${item.sortKey.primary}, ${item.sortKey.secondary}',
         style: item.completed ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
       ),
-      trailing: const Icon(Icons.drag_handle),
+      trailing: ReorderableDragStartListener(
+        index: index,
+        child: const Icon(Icons.drag_handle),
+      ),
       onTap: () => showDialog(
         context: context,
         builder: (ctx) => ChecklistTextEditDialog(
@@ -100,16 +118,25 @@ class ChecklistHeadingTileEditing extends ConsumerWidget {
   const ChecklistHeadingTileEditing({
     required this.listId,
     required this.heading,
+    required this.index,
     super.key,
   });
   final String listId;
+  final int index;
   final ChecklistHeading heading;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       visualDensity: VisualDensity.compact,
-      title: Text(heading.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(
+        '${heading.name}: ${heading.sortKey.primary}, ${heading.sortKey.secondary}',
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      trailing: ReorderableDragStartListener(
+        index: index,
+        child: const Icon(Icons.drag_handle),
+      ),
       onTap: () => showDialog(
         context: context,
         builder: (ctx) => ChecklistTextEditDialog(

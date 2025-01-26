@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_sortable.freezed.dart';
@@ -9,6 +11,10 @@ abstract class UserSortable {
   UserSortKey get sortKey;
   String get sortFallback;
 }
+
+const _segmentMax = 9999;
+const _segmentMiddle = _segmentMax ~/ 2;
+const _seperator = '-';
 
 @freezed
 class UserSortKey with _$UserSortKey {
@@ -32,6 +38,43 @@ class UserSortKey with _$UserSortKey {
       secondary: json['secondary'] as String,
     );
   }
+
+  factory UserSortKey.between(UserSortKey first, UserSortKey second) {
+    if (first.primary + 1 < second.primary) {
+      return UserSortKey(
+        primary: first.primary + 1,
+        secondary: '',
+      );
+    }
+
+    final firstUnseperated = first.secondary.replaceAll(_seperator, '');
+    final secondUnseperated = second.secondary.replaceAll(_seperator, '');
+    final maxLength = math.max(firstUnseperated.length, secondUnseperated.length);
+    if (maxLength == 0) {
+      return UserSortKey(
+        primary: first.primary,
+        secondary: _addSeparator(_segmentMiddle.toString()),
+      );
+    }
+    final firstPadded = firstUnseperated.padRight(maxLength, '0');
+    final secondPadded = secondUnseperated.padRight(maxLength, '9');
+    final firstInt = BigInt.parse(firstPadded);
+    final secondInt = BigInt.parse(secondPadded);
+    final diff = secondInt - firstInt;
+    // If there is no gap, add a new segment
+    if (diff <= BigInt.from(1)) {
+      return UserSortKey(
+        primary: first.primary,
+        secondary: _addSeparator(firstPadded + _segmentMiddle.toString()),
+      );
+    }
+    final middle = (firstInt + secondInt) ~/ BigInt.from(2);
+
+    return UserSortKey(
+      primary: first.primary,
+      secondary: _addSeparator(middle.toString().padLeft(maxLength, '0')),
+    );
+  }
 }
 
 extension UserSortableExtension on List<UserSortable> {
@@ -45,4 +88,13 @@ extension UserSortableExtension on List<UserSortable> {
       return a.sortKey.secondary.compareTo(b.sortKey.secondary);
     });
   }
+}
+
+/// Adds a separator between every four digits in the secondary sort key.
+String _addSeparator(String secondary) {
+  final segments = <String>[];
+  for (var i = 0; i < secondary.length; i += 4) {
+    segments.add(secondary.substring(i, i + 4));
+  }
+  return segments.join(_seperator);
 }

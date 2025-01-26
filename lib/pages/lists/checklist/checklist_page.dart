@@ -102,7 +102,7 @@ class ChecklistContentsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isEditing) {
-      return ChecklistEditingVieww(items: items, list: list);
+      return ChecklistEditingView(items: items, list: list);
     }
     if (items.isEmpty) {
       return const ChecklistEmptyView();
