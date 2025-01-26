@@ -136,7 +136,7 @@ class ChecklistEmptyView extends StatelessWidget {
           const SizedBox(height: 16),
           Text.rich(
             const TextSpan(
-              text: 'To add items to this list and group them under headings, use the edit button ',
+              text: 'To add items and headings to this list, use the edit button ',
               children: [
                 WidgetSpan(child: Icon(Icons.edit)),
                 TextSpan(text: ' below'),

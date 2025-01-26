@@ -15,7 +15,7 @@ class ChecklistEntry with _$ChecklistEntry implements UserSortable {
   UserSortKey get sortKey {
     return when(
       item: (item) => item.sortKey,
-      heading: (group) => group.sortKey,
+      heading: (heading) => heading.sortKey,
     );
   }
 
@@ -23,7 +23,7 @@ class ChecklistEntry with _$ChecklistEntry implements UserSortable {
   String get sortFallback {
     return when(
       item: (item) => item.sortFallback,
-      heading: (group) => group.sortFallback,
+      heading: (heading) => heading.sortFallback,
     );
   }
 }
@@ -37,7 +37,6 @@ class ChecklistItem with _$ChecklistItem implements UserSortable {
     required String name,
     required bool completed,
     required UserSortKey sortKey,
-    String? groupId,
   }) = _ChecklistItem;
 
   @override

@@ -117,7 +117,7 @@ class ChecklistHeadingTileEditing extends ConsumerWidget {
           initialValue: heading.name,
           onComplete: (value) {
             if (value != heading.name) {
-              ref.read(checklistEntryRepoProvider(listId).notifier).editGroup(heading, value);
+              ref.read(checklistEntryRepoProvider(listId).notifier).editHeading(heading, value);
             }
           },
         ),
@@ -146,14 +146,14 @@ class ChecklistAddActions extends ConsumerWidget {
               onPressed: () => showDialog(
                 context: context,
                 builder: (ctx) => ChecklistTextEditDialog(
-                  dialogTitle: 'Add group',
-                  fieldName: 'Group name',
+                  dialogTitle: 'Add heading',
+                  fieldName: 'Heading name',
                   onComplete: (value) => ref
                       .read(checklistEntryRepoProvider(listId).notifier)
-                      .addGroup(value, addPosition),
+                      .addHeading(value, addPosition),
                 ),
               ),
-              label: const Text('Add group'),
+              label: const Text('Add heading'),
               icon: const Icon(Icons.category),
             ),
           ),

@@ -45,7 +45,6 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       id: '',
       name: itemName,
       completed: false,
-      groupId: null,
       sortKey: UserSortKey(
         primary: _getPrimarySortIdx(entries, position),
         secondary: '',
@@ -62,26 +61,26 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     await batch.commit();
   }
 
-  Future<void> addGroup(String groupName, ChecklistAddPosition position) async {
+  Future<void> addHeading(String headingName, ChecklistAddPosition position) async {
     if (!state.hasValue) {
-      throw StateError('Cannot add group to a list that has not been loaded');
+      throw StateError('Cannot add heading to a list that has not been loaded');
     }
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
 
     final entries = state.requireValue;
-    final newGroup = ChecklistHeading(
+    final newHeading = ChecklistHeading(
       id: '',
-      name: groupName,
+      name: headingName,
       sortKey: UserSortKey(
         primary: _getPrimarySortIdx(entries, position),
         secondary: '',
       ),
     );
-    final groupDoc = fs.collection('lists/$listId/items').doc();
+    final headingDoc = fs.collection('lists/$listId/items').doc();
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
-    batch.set(groupDoc, _headingToFirestore(newGroup));
+    batch.set(headingDoc, _headingToFirestore(newHeading));
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
@@ -120,13 +119,13 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     return batch.commit();
   }
 
-  Future<void> editGroup(ChecklistHeading group, String newName) {
+  Future<void> editHeading(ChecklistHeading heading, String newName) {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
-    final groupDoc = fs.doc('lists/$listId/items/${group.id}');
+    final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
-    batch.update(groupDoc, {
+    batch.update(headingDoc, {
       _Fields.name: newName,
     });
     batch.update(listDoc, {
@@ -137,7 +136,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
 
   Future<void> uncheckAll() {
     if (!state.hasValue) {
-      throw StateError('Cannot add group to a list that has not been loaded');
+      throw StateError('Cannot uncheck items from a list that has not been loaded');
     }
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
@@ -167,7 +166,7 @@ ChecklistEntry _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
   final type = json[_Fields.type] as String;
   return switch (type) {
     _itemTypeName => _itemFromFirestore(id, json),
-    _groupTypeName => _headingFromFirestore(id, json),
+    _headingTypeName => _headingFromFirestore(id, json),
     _ => throw ArgumentError.value(type, _Fields.type, 'Invalid value for checklist entry type')
   };
 }
@@ -200,7 +199,7 @@ Map<String, dynamic> _itemToFirestore(ChecklistItem item) {
 
 Map<String, dynamic> _headingToFirestore(ChecklistHeading heading) {
   return {
-    _Fields.type: _groupTypeName,
+    _Fields.type: _headingTypeName,
     _Fields.name: heading.name,
     _Fields.sortKey: heading.sortKey.toJson(),
   };
@@ -214,4 +213,4 @@ class _Fields {
 }
 
 const String _itemTypeName = 'item';
-const String _groupTypeName = 'group';
+const String _headingTypeName = 'heading';
