@@ -226,9 +226,9 @@ class ChecklistHeadingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      visualDensity: VisualDensity.compact,
-      title: Text(heading.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: Text(heading.name, style: Theme.of(context).textTheme.headlineSmall),
     );
   }
 }
