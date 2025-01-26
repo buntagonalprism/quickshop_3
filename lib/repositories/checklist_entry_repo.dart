@@ -161,6 +161,39 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     });
     return batch.commit();
   }
+
+  Future<void> uncheckAll() {
+    if (!state.hasValue) {
+      throw StateError('Cannot add group to a list that has not been loaded');
+    }
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final batch = fs.batch();
+    for (var entry in state.requireValue) {
+      entry.when(
+        item: (item) {
+          if (item.completed) {
+            batch.update(fs.doc('lists/$listId/items/${item.id}'), {
+              _Fields.completed: false,
+            });
+          }
+        },
+        group: (group) {
+          for (var item in group.items) {
+            if (item.completed) {
+              batch.update(fs.doc('lists/$listId/items/${item.id}'), {
+                _Fields.completed: false,
+              });
+            }
+          }
+        },
+      );
+    }
+    batch.update(fs.doc('lists/$listId'), {
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    return batch.commit();
+  }
 }
 
 List<ChecklistEntry> _mergeAndSort(Iterable<ChecklistEntry> entries) {

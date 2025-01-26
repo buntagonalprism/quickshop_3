@@ -49,7 +49,12 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
             name: 'Delete completed items',
             icon: const Icon(Icons.delete),
             onTap: () => onRemoveCheckedItems(),
-          )
+          ),
+          ListAction(
+            name: 'Uncheck all items',
+            icon: const Icon(Icons.check_box_outline_blank),
+            onTap: () => onUncheckAllItems(),
+          ),
         ],
       ),
       body: state.when(
@@ -70,6 +75,11 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
         },
       ),
     );
+  }
+
+  void onUncheckAllItems() async {
+    ref.read(checklistEntryRepoProvider(widget.listId).notifier).uncheckAll();
+    Navigator.pop(context);
   }
 
   void onRemoveCheckedItems() async {
