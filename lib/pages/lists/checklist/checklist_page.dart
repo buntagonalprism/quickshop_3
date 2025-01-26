@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
-import 'checklist_text_edit_dialog.dart';
-import 'checklist_tiles.dart';
-import 'checklist_tiles_editing.dart';
+import 'checklist_editing_view.dart';
 import 'checklist_view_model.dart';
 
 class ChecklistPage extends ConsumerStatefulWidget {
@@ -97,24 +96,13 @@ class ChecklistContentsView extends StatelessWidget {
     super.key,
   });
   final ListSummary list;
-  final List<ChecklistPageEntry> items;
+  final List<ChecklistEntry> items;
   final bool isEditing;
 
   @override
   Widget build(BuildContext context) {
     if (isEditing) {
-      return ListView.builder(
-        itemCount: items.length + 2,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return ChecklistAddActions(listId: list.id, addPosition: ChecklistAddPosition.start);
-          }
-          if (index == items.length + 1) {
-            return ChecklistAddActions(listId: list.id, addPosition: ChecklistAddPosition.end);
-          }
-          return ChecklistPageEntryTileEditing(entry: items[index - 1], listId: list.id);
-        },
-      );
+      return ChecklistEditingVieww(items: items, list: list);
     }
     if (items.isEmpty) {
       return const ChecklistEmptyView();
@@ -176,56 +164,71 @@ class ChecklistEmptyView extends StatelessWidget {
   }
 }
 
-class ChecklistAddActions extends ConsumerWidget {
-  const ChecklistAddActions({
-    required this.addPosition,
+class ChecklistPageEntryTile extends StatelessWidget {
+  const ChecklistPageEntryTile({
     required this.listId,
+    required this.entry,
     super.key,
   });
-  final ChecklistAddPosition addPosition;
   final String listId;
+  final ChecklistEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    return entry.when(
+      item: (item) => ChecklistItemTile(
+        item: item,
+        listId: listId,
+      ),
+      heading: (heading) => ChecklistHeadingTile(
+        heading: heading,
+      ),
+    );
+  }
+}
+
+class ChecklistItemTile extends ConsumerWidget {
+  const ChecklistItemTile({
+    required this.listId,
+    required this.item,
+    super.key,
+  });
+  final String listId;
+  final ChecklistItem item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-      child: Row(
-        children: [
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: () => showDialog(
-                context: context,
-                builder: (ctx) => ChecklistTextEditDialog(
-                  dialogTitle: 'Add group',
-                  fieldName: 'Group name',
-                  onComplete: (value) => ref
-                      .read(checklistEntryRepoProvider(listId).notifier)
-                      .addGroup(value, addPosition),
-                ),
-              ),
-              label: const Text('Add group'),
-              icon: const Icon(Icons.category),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: () => showDialog(
-                context: context,
-                builder: (ctx) => ChecklistTextEditDialog(
-                  dialogTitle: 'Add item',
-                  fieldName: 'Item name',
-                  onComplete: (value) => ref
-                      .read(checklistEntryRepoProvider(listId).notifier)
-                      .addItem(value, addPosition),
-                ),
-              ),
-              label: const Text('Add item'),
-              icon: const Icon(Icons.add),
-            ),
-          ),
-        ],
+    return ListTile(
+      visualDensity: VisualDensity.compact,
+      onTap: () => toggleItemCompleted(ref),
+      title: Text(
+        item.name,
+        style: item.completed ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
       ),
+      trailing: Checkbox(
+        value: item.completed,
+        onChanged: (value) => toggleItemCompleted(ref),
+      ),
+    );
+  }
+
+  void toggleItemCompleted(WidgetRef ref) {
+    ref.read(checklistEntryRepoProvider(listId).notifier).toggleItem(item);
+  }
+}
+
+class ChecklistHeadingTile extends StatelessWidget {
+  const ChecklistHeadingTile({
+    required this.heading,
+    super.key,
+  });
+  final ChecklistHeading heading;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      visualDensity: VisualDensity.compact,
+      title: Text(heading.name, style: const TextStyle(fontWeight: FontWeight.bold)),
     );
   }
 }

@@ -20,23 +20,8 @@ class ChecklistViewModel with _$ChecklistViewModel {
   const factory ChecklistViewModel.notFound() = _NotFound;
   const factory ChecklistViewModel.success({
     required ListSummary list,
-    required List<ChecklistPageEntry> entries,
+    required List<ChecklistEntry> entries,
   }) = _Checklist;
-}
-
-@freezed
-class ChecklistPageEntry with _$ChecklistPageEntry {
-  const factory ChecklistPageEntry.ungroupedItem({
-    required ChecklistItem item,
-  }) = _Item;
-  const factory ChecklistPageEntry.header({
-    required ChecklistGroup group,
-  }) = _Header;
-  const factory ChecklistPageEntry.groupedItem({
-    required ChecklistItem item,
-    required ChecklistGroup group,
-    required bool lastInGroup,
-  }) = _GroupedItem;
 }
 
 @riverpod
@@ -73,30 +58,5 @@ ChecklistViewModel checklistViewModel(Ref ref, String listId) {
     return const ChecklistViewModel.error();
   }
   final entries = entriesAsyncValue.requireValue;
-  final pageEntries = <ChecklistPageEntry>[];
-  for (final entry in entries) {
-    entry.when(
-      item: (item) {
-        pageEntries.add(ChecklistPageEntry.ungroupedItem(
-          item: item,
-        ));
-      },
-      group: (group) {
-        pageEntries.add(ChecklistPageEntry.header(
-          group: group,
-        ));
-        for (final item in group.items) {
-          pageEntries.add(ChecklistPageEntry.groupedItem(
-            item: item,
-            group: group,
-            lastInGroup: item == group.items.last,
-          ));
-        }
-      },
-    );
-  }
-  return ChecklistViewModel.success(
-    list: list,
-    entries: pageEntries,
-  );
+  return ChecklistViewModel.success(list: list, entries: entries);
 }

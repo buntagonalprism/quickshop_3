@@ -21,8 +21,7 @@ mixin _$ChecklistViewModel {
     required TResult Function() error,
     required TResult Function() loading,
     required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ChecklistPageEntry> entries)
+    required TResult Function(ListSummary list, List<ChecklistEntry> entries)
         success,
   }) =>
       throw _privateConstructorUsedError;
@@ -31,8 +30,7 @@ mixin _$ChecklistViewModel {
     TResult? Function()? error,
     TResult? Function()? loading,
     TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult? Function(ListSummary list, List<ChecklistEntry> entries)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,8 +38,7 @@ mixin _$ChecklistViewModel {
     TResult Function()? error,
     TResult Function()? loading,
     TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult Function(ListSummary list, List<ChecklistEntry> entries)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -137,8 +134,7 @@ class _$ErrorImpl extends _Error {
     required TResult Function() error,
     required TResult Function() loading,
     required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ChecklistPageEntry> entries)
+    required TResult Function(ListSummary list, List<ChecklistEntry> entries)
         success,
   }) {
     return error();
@@ -150,8 +146,7 @@ class _$ErrorImpl extends _Error {
     TResult? Function()? error,
     TResult? Function()? loading,
     TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult? Function(ListSummary list, List<ChecklistEntry> entries)? success,
   }) {
     return error?.call();
   }
@@ -162,8 +157,7 @@ class _$ErrorImpl extends _Error {
     TResult Function()? error,
     TResult Function()? loading,
     TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult Function(ListSummary list, List<ChecklistEntry> entries)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -259,8 +253,7 @@ class _$LoadingImpl extends _Loading {
     required TResult Function() error,
     required TResult Function() loading,
     required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ChecklistPageEntry> entries)
+    required TResult Function(ListSummary list, List<ChecklistEntry> entries)
         success,
   }) {
     return loading();
@@ -272,8 +265,7 @@ class _$LoadingImpl extends _Loading {
     TResult? Function()? error,
     TResult? Function()? loading,
     TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult? Function(ListSummary list, List<ChecklistEntry> entries)? success,
   }) {
     return loading?.call();
   }
@@ -284,8 +276,7 @@ class _$LoadingImpl extends _Loading {
     TResult Function()? error,
     TResult Function()? loading,
     TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult Function(ListSummary list, List<ChecklistEntry> entries)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -381,8 +372,7 @@ class _$NotFoundImpl extends _NotFound {
     required TResult Function() error,
     required TResult Function() loading,
     required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ChecklistPageEntry> entries)
+    required TResult Function(ListSummary list, List<ChecklistEntry> entries)
         success,
   }) {
     return notFound();
@@ -394,8 +384,7 @@ class _$NotFoundImpl extends _NotFound {
     TResult? Function()? error,
     TResult? Function()? loading,
     TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult? Function(ListSummary list, List<ChecklistEntry> entries)? success,
   }) {
     return notFound?.call();
   }
@@ -406,8 +395,7 @@ class _$NotFoundImpl extends _NotFound {
     TResult Function()? error,
     TResult Function()? loading,
     TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult Function(ListSummary list, List<ChecklistEntry> entries)? success,
     required TResult orElse(),
   }) {
     if (notFound != null) {
@@ -465,7 +453,7 @@ abstract class _$$ChecklistImplCopyWith<$Res> {
           _$ChecklistImpl value, $Res Function(_$ChecklistImpl) then) =
       __$$ChecklistImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ListSummary list, List<ChecklistPageEntry> entries});
+  $Res call({ListSummary list, List<ChecklistEntry> entries});
 
   $ListSummaryCopyWith<$Res> get list;
 }
@@ -494,7 +482,7 @@ class __$$ChecklistImplCopyWithImpl<$Res>
       entries: null == entries
           ? _value._entries
           : entries // ignore: cast_nullable_to_non_nullable
-              as List<ChecklistPageEntry>,
+              as List<ChecklistEntry>,
     ));
   }
 
@@ -513,15 +501,15 @@ class __$$ChecklistImplCopyWithImpl<$Res>
 
 class _$ChecklistImpl extends _Checklist {
   const _$ChecklistImpl(
-      {required this.list, required final List<ChecklistPageEntry> entries})
+      {required this.list, required final List<ChecklistEntry> entries})
       : _entries = entries,
         super._();
 
   @override
   final ListSummary list;
-  final List<ChecklistPageEntry> _entries;
+  final List<ChecklistEntry> _entries;
   @override
-  List<ChecklistPageEntry> get entries {
+  List<ChecklistEntry> get entries {
     if (_entries is EqualUnmodifiableListView) return _entries;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_entries);
@@ -559,8 +547,7 @@ class _$ChecklistImpl extends _Checklist {
     required TResult Function() error,
     required TResult Function() loading,
     required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ChecklistPageEntry> entries)
+    required TResult Function(ListSummary list, List<ChecklistEntry> entries)
         success,
   }) {
     return success(list, entries);
@@ -572,8 +559,7 @@ class _$ChecklistImpl extends _Checklist {
     TResult? Function()? error,
     TResult? Function()? loading,
     TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult? Function(ListSummary list, List<ChecklistEntry> entries)? success,
   }) {
     return success?.call(list, entries);
   }
@@ -584,8 +570,7 @@ class _$ChecklistImpl extends _Checklist {
     TResult Function()? error,
     TResult Function()? loading,
     TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ChecklistPageEntry> entries)?
-        success,
+    TResult Function(ListSummary list, List<ChecklistEntry> entries)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -635,615 +620,15 @@ class _$ChecklistImpl extends _Checklist {
 abstract class _Checklist extends ChecklistViewModel {
   const factory _Checklist(
       {required final ListSummary list,
-      required final List<ChecklistPageEntry> entries}) = _$ChecklistImpl;
+      required final List<ChecklistEntry> entries}) = _$ChecklistImpl;
   const _Checklist._() : super._();
 
   ListSummary get list;
-  List<ChecklistPageEntry> get entries;
+  List<ChecklistEntry> get entries;
 
   /// Create a copy of ChecklistViewModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChecklistImplCopyWith<_$ChecklistImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$ChecklistPageEntry {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ChecklistItem item) ungroupedItem,
-    required TResult Function(ChecklistGroup group) header,
-    required TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
-        groupedItem,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ChecklistItem item)? ungroupedItem,
-    TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ChecklistItem item)? ungroupedItem,
-    TResult Function(ChecklistGroup group)? header,
-    TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Item value) ungroupedItem,
-    required TResult Function(_Header value) header,
-    required TResult Function(_GroupedItem value) groupedItem,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Item value)? ungroupedItem,
-    TResult? Function(_Header value)? header,
-    TResult? Function(_GroupedItem value)? groupedItem,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Item value)? ungroupedItem,
-    TResult Function(_Header value)? header,
-    TResult Function(_GroupedItem value)? groupedItem,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ChecklistPageEntryCopyWith<$Res> {
-  factory $ChecklistPageEntryCopyWith(
-          ChecklistPageEntry value, $Res Function(ChecklistPageEntry) then) =
-      _$ChecklistPageEntryCopyWithImpl<$Res, ChecklistPageEntry>;
-}
-
-/// @nodoc
-class _$ChecklistPageEntryCopyWithImpl<$Res, $Val extends ChecklistPageEntry>
-    implements $ChecklistPageEntryCopyWith<$Res> {
-  _$ChecklistPageEntryCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$ItemImplCopyWith<$Res> {
-  factory _$$ItemImplCopyWith(
-          _$ItemImpl value, $Res Function(_$ItemImpl) then) =
-      __$$ItemImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ChecklistItem item});
-
-  $ChecklistItemCopyWith<$Res> get item;
-}
-
-/// @nodoc
-class __$$ItemImplCopyWithImpl<$Res>
-    extends _$ChecklistPageEntryCopyWithImpl<$Res, _$ItemImpl>
-    implements _$$ItemImplCopyWith<$Res> {
-  __$$ItemImplCopyWithImpl(_$ItemImpl _value, $Res Function(_$ItemImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? item = null,
-  }) {
-    return _then(_$ItemImpl(
-      item: null == item
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as ChecklistItem,
-    ));
-  }
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ChecklistItemCopyWith<$Res> get item {
-    return $ChecklistItemCopyWith<$Res>(_value.item, (value) {
-      return _then(_value.copyWith(item: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$ItemImpl implements _Item {
-  const _$ItemImpl({required this.item});
-
-  @override
-  final ChecklistItem item;
-
-  @override
-  String toString() {
-    return 'ChecklistPageEntry.ungroupedItem(item: $item)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ItemImpl &&
-            (identical(other.item, item) || other.item == item));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, item);
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
-      __$$ItemImplCopyWithImpl<_$ItemImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ChecklistItem item) ungroupedItem,
-    required TResult Function(ChecklistGroup group) header,
-    required TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
-        groupedItem,
-  }) {
-    return ungroupedItem(item);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ChecklistItem item)? ungroupedItem,
-    TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-  }) {
-    return ungroupedItem?.call(item);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ChecklistItem item)? ungroupedItem,
-    TResult Function(ChecklistGroup group)? header,
-    TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-    required TResult orElse(),
-  }) {
-    if (ungroupedItem != null) {
-      return ungroupedItem(item);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Item value) ungroupedItem,
-    required TResult Function(_Header value) header,
-    required TResult Function(_GroupedItem value) groupedItem,
-  }) {
-    return ungroupedItem(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Item value)? ungroupedItem,
-    TResult? Function(_Header value)? header,
-    TResult? Function(_GroupedItem value)? groupedItem,
-  }) {
-    return ungroupedItem?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Item value)? ungroupedItem,
-    TResult Function(_Header value)? header,
-    TResult Function(_GroupedItem value)? groupedItem,
-    required TResult orElse(),
-  }) {
-    if (ungroupedItem != null) {
-      return ungroupedItem(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Item implements ChecklistPageEntry {
-  const factory _Item({required final ChecklistItem item}) = _$ItemImpl;
-
-  ChecklistItem get item;
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$HeaderImplCopyWith<$Res> {
-  factory _$$HeaderImplCopyWith(
-          _$HeaderImpl value, $Res Function(_$HeaderImpl) then) =
-      __$$HeaderImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ChecklistGroup group});
-
-  $ChecklistGroupCopyWith<$Res> get group;
-}
-
-/// @nodoc
-class __$$HeaderImplCopyWithImpl<$Res>
-    extends _$ChecklistPageEntryCopyWithImpl<$Res, _$HeaderImpl>
-    implements _$$HeaderImplCopyWith<$Res> {
-  __$$HeaderImplCopyWithImpl(
-      _$HeaderImpl _value, $Res Function(_$HeaderImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? group = null,
-  }) {
-    return _then(_$HeaderImpl(
-      group: null == group
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
-              as ChecklistGroup,
-    ));
-  }
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ChecklistGroupCopyWith<$Res> get group {
-    return $ChecklistGroupCopyWith<$Res>(_value.group, (value) {
-      return _then(_value.copyWith(group: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$HeaderImpl implements _Header {
-  const _$HeaderImpl({required this.group});
-
-  @override
-  final ChecklistGroup group;
-
-  @override
-  String toString() {
-    return 'ChecklistPageEntry.header(group: $group)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$HeaderImpl &&
-            (identical(other.group, group) || other.group == group));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, group);
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$HeaderImplCopyWith<_$HeaderImpl> get copyWith =>
-      __$$HeaderImplCopyWithImpl<_$HeaderImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ChecklistItem item) ungroupedItem,
-    required TResult Function(ChecklistGroup group) header,
-    required TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
-        groupedItem,
-  }) {
-    return header(group);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ChecklistItem item)? ungroupedItem,
-    TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-  }) {
-    return header?.call(group);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ChecklistItem item)? ungroupedItem,
-    TResult Function(ChecklistGroup group)? header,
-    TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-    required TResult orElse(),
-  }) {
-    if (header != null) {
-      return header(group);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Item value) ungroupedItem,
-    required TResult Function(_Header value) header,
-    required TResult Function(_GroupedItem value) groupedItem,
-  }) {
-    return header(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Item value)? ungroupedItem,
-    TResult? Function(_Header value)? header,
-    TResult? Function(_GroupedItem value)? groupedItem,
-  }) {
-    return header?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Item value)? ungroupedItem,
-    TResult Function(_Header value)? header,
-    TResult Function(_GroupedItem value)? groupedItem,
-    required TResult orElse(),
-  }) {
-    if (header != null) {
-      return header(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Header implements ChecklistPageEntry {
-  const factory _Header({required final ChecklistGroup group}) = _$HeaderImpl;
-
-  ChecklistGroup get group;
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HeaderImplCopyWith<_$HeaderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$GroupedItemImplCopyWith<$Res> {
-  factory _$$GroupedItemImplCopyWith(
-          _$GroupedItemImpl value, $Res Function(_$GroupedItemImpl) then) =
-      __$$GroupedItemImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ChecklistItem item, ChecklistGroup group, bool lastInGroup});
-
-  $ChecklistItemCopyWith<$Res> get item;
-  $ChecklistGroupCopyWith<$Res> get group;
-}
-
-/// @nodoc
-class __$$GroupedItemImplCopyWithImpl<$Res>
-    extends _$ChecklistPageEntryCopyWithImpl<$Res, _$GroupedItemImpl>
-    implements _$$GroupedItemImplCopyWith<$Res> {
-  __$$GroupedItemImplCopyWithImpl(
-      _$GroupedItemImpl _value, $Res Function(_$GroupedItemImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? item = null,
-    Object? group = null,
-    Object? lastInGroup = null,
-  }) {
-    return _then(_$GroupedItemImpl(
-      item: null == item
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as ChecklistItem,
-      group: null == group
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
-              as ChecklistGroup,
-      lastInGroup: null == lastInGroup
-          ? _value.lastInGroup
-          : lastInGroup // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ChecklistItemCopyWith<$Res> get item {
-    return $ChecklistItemCopyWith<$Res>(_value.item, (value) {
-      return _then(_value.copyWith(item: value));
-    });
-  }
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ChecklistGroupCopyWith<$Res> get group {
-    return $ChecklistGroupCopyWith<$Res>(_value.group, (value) {
-      return _then(_value.copyWith(group: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$GroupedItemImpl implements _GroupedItem {
-  const _$GroupedItemImpl(
-      {required this.item, required this.group, required this.lastInGroup});
-
-  @override
-  final ChecklistItem item;
-  @override
-  final ChecklistGroup group;
-  @override
-  final bool lastInGroup;
-
-  @override
-  String toString() {
-    return 'ChecklistPageEntry.groupedItem(item: $item, group: $group, lastInGroup: $lastInGroup)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GroupedItemImpl &&
-            (identical(other.item, item) || other.item == item) &&
-            (identical(other.group, group) || other.group == group) &&
-            (identical(other.lastInGroup, lastInGroup) ||
-                other.lastInGroup == lastInGroup));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, item, group, lastInGroup);
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GroupedItemImplCopyWith<_$GroupedItemImpl> get copyWith =>
-      __$$GroupedItemImplCopyWithImpl<_$GroupedItemImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ChecklistItem item) ungroupedItem,
-    required TResult Function(ChecklistGroup group) header,
-    required TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)
-        groupedItem,
-  }) {
-    return groupedItem(item, group, lastInGroup);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ChecklistItem item)? ungroupedItem,
-    TResult? Function(ChecklistGroup group)? header,
-    TResult? Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-  }) {
-    return groupedItem?.call(item, group, lastInGroup);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ChecklistItem item)? ungroupedItem,
-    TResult Function(ChecklistGroup group)? header,
-    TResult Function(
-            ChecklistItem item, ChecklistGroup group, bool lastInGroup)?
-        groupedItem,
-    required TResult orElse(),
-  }) {
-    if (groupedItem != null) {
-      return groupedItem(item, group, lastInGroup);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Item value) ungroupedItem,
-    required TResult Function(_Header value) header,
-    required TResult Function(_GroupedItem value) groupedItem,
-  }) {
-    return groupedItem(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Item value)? ungroupedItem,
-    TResult? Function(_Header value)? header,
-    TResult? Function(_GroupedItem value)? groupedItem,
-  }) {
-    return groupedItem?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Item value)? ungroupedItem,
-    TResult Function(_Header value)? header,
-    TResult Function(_GroupedItem value)? groupedItem,
-    required TResult orElse(),
-  }) {
-    if (groupedItem != null) {
-      return groupedItem(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _GroupedItem implements ChecklistPageEntry {
-  const factory _GroupedItem(
-      {required final ChecklistItem item,
-      required final ChecklistGroup group,
-      required final bool lastInGroup}) = _$GroupedItemImpl;
-
-  ChecklistItem get item;
-  ChecklistGroup get group;
-  bool get lastInGroup;
-
-  /// Create a copy of ChecklistPageEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GroupedItemImplCopyWith<_$GroupedItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

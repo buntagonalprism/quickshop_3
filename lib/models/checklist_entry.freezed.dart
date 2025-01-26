@@ -19,38 +19,38 @@ mixin _$ChecklistEntry {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(ChecklistItem item) item,
-    required TResult Function(ChecklistGroup group) group,
+    required TResult Function(ChecklistHeading heading) heading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ChecklistItem item)? item,
-    TResult? Function(ChecklistGroup group)? group,
+    TResult? Function(ChecklistHeading heading)? heading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ChecklistItem item)? item,
-    TResult Function(ChecklistGroup group)? group,
+    TResult Function(ChecklistHeading heading)? heading,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_ChecklistEntryItem value) item,
-    required TResult Function(_ChecklistEntryHeader value) group,
+    required TResult Function(_ChecklistEntryHeading value) heading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_ChecklistEntryItem value)? item,
-    TResult? Function(_ChecklistEntryHeader value)? group,
+    TResult? Function(_ChecklistEntryHeading value)? heading,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ChecklistEntryItem value)? item,
-    TResult Function(_ChecklistEntryHeader value)? group,
+    TResult Function(_ChecklistEntryHeading value)? heading,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -159,7 +159,7 @@ class _$ChecklistEntryItemImpl extends _ChecklistEntryItem {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(ChecklistItem item) item,
-    required TResult Function(ChecklistGroup group) group,
+    required TResult Function(ChecklistHeading heading) heading,
   }) {
     return item(this.item);
   }
@@ -168,7 +168,7 @@ class _$ChecklistEntryItemImpl extends _ChecklistEntryItem {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ChecklistItem item)? item,
-    TResult? Function(ChecklistGroup group)? group,
+    TResult? Function(ChecklistHeading heading)? heading,
   }) {
     return item?.call(this.item);
   }
@@ -177,7 +177,7 @@ class _$ChecklistEntryItemImpl extends _ChecklistEntryItem {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ChecklistItem item)? item,
-    TResult Function(ChecklistGroup group)? group,
+    TResult Function(ChecklistHeading heading)? heading,
     required TResult orElse(),
   }) {
     if (item != null) {
@@ -190,7 +190,7 @@ class _$ChecklistEntryItemImpl extends _ChecklistEntryItem {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_ChecklistEntryItem value) item,
-    required TResult Function(_ChecklistEntryHeader value) group,
+    required TResult Function(_ChecklistEntryHeading value) heading,
   }) {
     return item(this);
   }
@@ -199,7 +199,7 @@ class _$ChecklistEntryItemImpl extends _ChecklistEntryItem {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_ChecklistEntryItem value)? item,
-    TResult? Function(_ChecklistEntryHeader value)? group,
+    TResult? Function(_ChecklistEntryHeading value)? heading,
   }) {
     return item?.call(this);
   }
@@ -208,7 +208,7 @@ class _$ChecklistEntryItemImpl extends _ChecklistEntryItem {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ChecklistEntryItem value)? item,
-    TResult Function(_ChecklistEntryHeader value)? group,
+    TResult Function(_ChecklistEntryHeading value)? heading,
     required TResult orElse(),
   }) {
     if (item != null) {
@@ -233,22 +233,23 @@ abstract class _ChecklistEntryItem extends ChecklistEntry {
 }
 
 /// @nodoc
-abstract class _$$ChecklistEntryHeaderImplCopyWith<$Res> {
-  factory _$$ChecklistEntryHeaderImplCopyWith(_$ChecklistEntryHeaderImpl value,
-          $Res Function(_$ChecklistEntryHeaderImpl) then) =
-      __$$ChecklistEntryHeaderImplCopyWithImpl<$Res>;
+abstract class _$$ChecklistEntryHeadingImplCopyWith<$Res> {
+  factory _$$ChecklistEntryHeadingImplCopyWith(
+          _$ChecklistEntryHeadingImpl value,
+          $Res Function(_$ChecklistEntryHeadingImpl) then) =
+      __$$ChecklistEntryHeadingImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ChecklistGroup group});
+  $Res call({ChecklistHeading heading});
 
-  $ChecklistGroupCopyWith<$Res> get group;
+  $ChecklistHeadingCopyWith<$Res> get heading;
 }
 
 /// @nodoc
-class __$$ChecklistEntryHeaderImplCopyWithImpl<$Res>
-    extends _$ChecklistEntryCopyWithImpl<$Res, _$ChecklistEntryHeaderImpl>
-    implements _$$ChecklistEntryHeaderImplCopyWith<$Res> {
-  __$$ChecklistEntryHeaderImplCopyWithImpl(_$ChecklistEntryHeaderImpl _value,
-      $Res Function(_$ChecklistEntryHeaderImpl) _then)
+class __$$ChecklistEntryHeadingImplCopyWithImpl<$Res>
+    extends _$ChecklistEntryCopyWithImpl<$Res, _$ChecklistEntryHeadingImpl>
+    implements _$$ChecklistEntryHeadingImplCopyWith<$Res> {
+  __$$ChecklistEntryHeadingImplCopyWithImpl(_$ChecklistEntryHeadingImpl _value,
+      $Res Function(_$ChecklistEntryHeadingImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ChecklistEntry
@@ -256,13 +257,13 @@ class __$$ChecklistEntryHeaderImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? group = null,
+    Object? heading = null,
   }) {
-    return _then(_$ChecklistEntryHeaderImpl(
-      null == group
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
-              as ChecklistGroup,
+    return _then(_$ChecklistEntryHeadingImpl(
+      null == heading
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
+              as ChecklistHeading,
     ));
   }
 
@@ -270,74 +271,73 @@ class __$$ChecklistEntryHeaderImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $ChecklistGroupCopyWith<$Res> get group {
-    return $ChecklistGroupCopyWith<$Res>(_value.group, (value) {
-      return _then(_value.copyWith(group: value));
+  $ChecklistHeadingCopyWith<$Res> get heading {
+    return $ChecklistHeadingCopyWith<$Res>(_value.heading, (value) {
+      return _then(_value.copyWith(heading: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$ChecklistEntryHeaderImpl extends _ChecklistEntryHeader {
-  const _$ChecklistEntryHeaderImpl(this.group) : super._();
+class _$ChecklistEntryHeadingImpl extends _ChecklistEntryHeading {
+  const _$ChecklistEntryHeadingImpl(this.heading) : super._();
 
   @override
-  final ChecklistGroup group;
+  final ChecklistHeading heading;
 
   @override
   String toString() {
-    return 'ChecklistEntry.group(group: $group)';
+    return 'ChecklistEntry.heading(heading: $heading)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChecklistEntryHeaderImpl &&
-            (identical(other.group, group) || other.group == group));
+            other is _$ChecklistEntryHeadingImpl &&
+            (identical(other.heading, heading) || other.heading == heading));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, group);
+  int get hashCode => Object.hash(runtimeType, heading);
 
   /// Create a copy of ChecklistEntry
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChecklistEntryHeaderImplCopyWith<_$ChecklistEntryHeaderImpl>
-      get copyWith =>
-          __$$ChecklistEntryHeaderImplCopyWithImpl<_$ChecklistEntryHeaderImpl>(
-              this, _$identity);
+  _$$ChecklistEntryHeadingImplCopyWith<_$ChecklistEntryHeadingImpl>
+      get copyWith => __$$ChecklistEntryHeadingImplCopyWithImpl<
+          _$ChecklistEntryHeadingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(ChecklistItem item) item,
-    required TResult Function(ChecklistGroup group) group,
+    required TResult Function(ChecklistHeading heading) heading,
   }) {
-    return group(this.group);
+    return heading(this.heading);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ChecklistItem item)? item,
-    TResult? Function(ChecklistGroup group)? group,
+    TResult? Function(ChecklistHeading heading)? heading,
   }) {
-    return group?.call(this.group);
+    return heading?.call(this.heading);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ChecklistItem item)? item,
-    TResult Function(ChecklistGroup group)? group,
+    TResult Function(ChecklistHeading heading)? heading,
     required TResult orElse(),
   }) {
-    if (group != null) {
-      return group(this.group);
+    if (heading != null) {
+      return heading(this.heading);
     }
     return orElse();
   }
@@ -346,45 +346,45 @@ class _$ChecklistEntryHeaderImpl extends _ChecklistEntryHeader {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_ChecklistEntryItem value) item,
-    required TResult Function(_ChecklistEntryHeader value) group,
+    required TResult Function(_ChecklistEntryHeading value) heading,
   }) {
-    return group(this);
+    return heading(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_ChecklistEntryItem value)? item,
-    TResult? Function(_ChecklistEntryHeader value)? group,
+    TResult? Function(_ChecklistEntryHeading value)? heading,
   }) {
-    return group?.call(this);
+    return heading?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ChecklistEntryItem value)? item,
-    TResult Function(_ChecklistEntryHeader value)? group,
+    TResult Function(_ChecklistEntryHeading value)? heading,
     required TResult orElse(),
   }) {
-    if (group != null) {
-      return group(this);
+    if (heading != null) {
+      return heading(this);
     }
     return orElse();
   }
 }
 
-abstract class _ChecklistEntryHeader extends ChecklistEntry {
-  const factory _ChecklistEntryHeader(final ChecklistGroup group) =
-      _$ChecklistEntryHeaderImpl;
-  const _ChecklistEntryHeader._() : super._();
+abstract class _ChecklistEntryHeading extends ChecklistEntry {
+  const factory _ChecklistEntryHeading(final ChecklistHeading heading) =
+      _$ChecklistEntryHeadingImpl;
+  const _ChecklistEntryHeading._() : super._();
 
-  ChecklistGroup get group;
+  ChecklistHeading get heading;
 
   /// Create a copy of ChecklistEntry
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChecklistEntryHeaderImplCopyWith<_$ChecklistEntryHeaderImpl>
+  _$$ChecklistEntryHeadingImplCopyWith<_$ChecklistEntryHeadingImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -620,42 +620,40 @@ abstract class _ChecklistItem extends ChecklistItem {
 }
 
 /// @nodoc
-mixin _$ChecklistGroup {
+mixin _$ChecklistHeading {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   UserSortKey get sortKey => throw _privateConstructorUsedError;
-  List<ChecklistItem> get items => throw _privateConstructorUsedError;
 
-  /// Create a copy of ChecklistGroup
+  /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ChecklistGroupCopyWith<ChecklistGroup> get copyWith =>
+  $ChecklistHeadingCopyWith<ChecklistHeading> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ChecklistGroupCopyWith<$Res> {
-  factory $ChecklistGroupCopyWith(
-          ChecklistGroup value, $Res Function(ChecklistGroup) then) =
-      _$ChecklistGroupCopyWithImpl<$Res, ChecklistGroup>;
+abstract class $ChecklistHeadingCopyWith<$Res> {
+  factory $ChecklistHeadingCopyWith(
+          ChecklistHeading value, $Res Function(ChecklistHeading) then) =
+      _$ChecklistHeadingCopyWithImpl<$Res, ChecklistHeading>;
   @useResult
-  $Res call(
-      {String id, String name, UserSortKey sortKey, List<ChecklistItem> items});
+  $Res call({String id, String name, UserSortKey sortKey});
 
   $UserSortKeyCopyWith<$Res> get sortKey;
 }
 
 /// @nodoc
-class _$ChecklistGroupCopyWithImpl<$Res, $Val extends ChecklistGroup>
-    implements $ChecklistGroupCopyWith<$Res> {
-  _$ChecklistGroupCopyWithImpl(this._value, this._then);
+class _$ChecklistHeadingCopyWithImpl<$Res, $Val extends ChecklistHeading>
+    implements $ChecklistHeadingCopyWith<$Res> {
+  _$ChecklistHeadingCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ChecklistGroup
+  /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -663,7 +661,6 @@ class _$ChecklistGroupCopyWithImpl<$Res, $Val extends ChecklistGroup>
     Object? id = null,
     Object? name = null,
     Object? sortKey = null,
-    Object? items = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -678,14 +675,10 @@ class _$ChecklistGroupCopyWithImpl<$Res, $Val extends ChecklistGroup>
           ? _value.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
               as UserSortKey,
-      items: null == items
-          ? _value.items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<ChecklistItem>,
     ) as $Val);
   }
 
-  /// Create a copy of ChecklistGroup
+  /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -697,29 +690,28 @@ class _$ChecklistGroupCopyWithImpl<$Res, $Val extends ChecklistGroup>
 }
 
 /// @nodoc
-abstract class _$$ChecklistGroupImplCopyWith<$Res>
-    implements $ChecklistGroupCopyWith<$Res> {
-  factory _$$ChecklistGroupImplCopyWith(_$ChecklistGroupImpl value,
-          $Res Function(_$ChecklistGroupImpl) then) =
-      __$$ChecklistGroupImplCopyWithImpl<$Res>;
+abstract class _$$ChecklistHeadingImplCopyWith<$Res>
+    implements $ChecklistHeadingCopyWith<$Res> {
+  factory _$$ChecklistHeadingImplCopyWith(_$ChecklistHeadingImpl value,
+          $Res Function(_$ChecklistHeadingImpl) then) =
+      __$$ChecklistHeadingImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id, String name, UserSortKey sortKey, List<ChecklistItem> items});
+  $Res call({String id, String name, UserSortKey sortKey});
 
   @override
   $UserSortKeyCopyWith<$Res> get sortKey;
 }
 
 /// @nodoc
-class __$$ChecklistGroupImplCopyWithImpl<$Res>
-    extends _$ChecklistGroupCopyWithImpl<$Res, _$ChecklistGroupImpl>
-    implements _$$ChecklistGroupImplCopyWith<$Res> {
-  __$$ChecklistGroupImplCopyWithImpl(
-      _$ChecklistGroupImpl _value, $Res Function(_$ChecklistGroupImpl) _then)
+class __$$ChecklistHeadingImplCopyWithImpl<$Res>
+    extends _$ChecklistHeadingCopyWithImpl<$Res, _$ChecklistHeadingImpl>
+    implements _$$ChecklistHeadingImplCopyWith<$Res> {
+  __$$ChecklistHeadingImplCopyWithImpl(_$ChecklistHeadingImpl _value,
+      $Res Function(_$ChecklistHeadingImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ChecklistGroup
+  /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -727,9 +719,8 @@ class __$$ChecklistGroupImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? sortKey = null,
-    Object? items = null,
   }) {
-    return _then(_$ChecklistGroupImpl(
+    return _then(_$ChecklistHeadingImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -742,24 +733,16 @@ class __$$ChecklistGroupImplCopyWithImpl<$Res>
           ? _value.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
               as UserSortKey,
-      items: null == items
-          ? _value._items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<ChecklistItem>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$ChecklistGroupImpl extends _ChecklistGroup {
-  const _$ChecklistGroupImpl(
-      {required this.id,
-      required this.name,
-      required this.sortKey,
-      required final List<ChecklistItem> items})
-      : _items = items,
-        super._();
+class _$ChecklistHeadingImpl extends _ChecklistHeading {
+  const _$ChecklistHeadingImpl(
+      {required this.id, required this.name, required this.sortKey})
+      : super._();
 
   @override
   final String id;
@@ -767,51 +750,41 @@ class _$ChecklistGroupImpl extends _ChecklistGroup {
   final String name;
   @override
   final UserSortKey sortKey;
-  final List<ChecklistItem> _items;
-  @override
-  List<ChecklistItem> get items {
-    if (_items is EqualUnmodifiableListView) return _items;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_items);
-  }
 
   @override
   String toString() {
-    return 'ChecklistGroup(id: $id, name: $name, sortKey: $sortKey, items: $items)';
+    return 'ChecklistHeading(id: $id, name: $name, sortKey: $sortKey)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChecklistGroupImpl &&
+            other is _$ChecklistHeadingImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.sortKey, sortKey) || other.sortKey == sortKey) &&
-            const DeepCollectionEquality().equals(other._items, _items));
+            (identical(other.sortKey, sortKey) || other.sortKey == sortKey));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, sortKey,
-      const DeepCollectionEquality().hash(_items));
+  int get hashCode => Object.hash(runtimeType, id, name, sortKey);
 
-  /// Create a copy of ChecklistGroup
+  /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChecklistGroupImplCopyWith<_$ChecklistGroupImpl> get copyWith =>
-      __$$ChecklistGroupImplCopyWithImpl<_$ChecklistGroupImpl>(
+  _$$ChecklistHeadingImplCopyWith<_$ChecklistHeadingImpl> get copyWith =>
+      __$$ChecklistHeadingImplCopyWithImpl<_$ChecklistHeadingImpl>(
           this, _$identity);
 }
 
-abstract class _ChecklistGroup extends ChecklistGroup {
-  const factory _ChecklistGroup(
+abstract class _ChecklistHeading extends ChecklistHeading {
+  const factory _ChecklistHeading(
       {required final String id,
       required final String name,
-      required final UserSortKey sortKey,
-      required final List<ChecklistItem> items}) = _$ChecklistGroupImpl;
-  const _ChecklistGroup._() : super._();
+      required final UserSortKey sortKey}) = _$ChecklistHeadingImpl;
+  const _ChecklistHeading._() : super._();
 
   @override
   String get id;
@@ -819,13 +792,11 @@ abstract class _ChecklistGroup extends ChecklistGroup {
   String get name;
   @override
   UserSortKey get sortKey;
-  @override
-  List<ChecklistItem> get items;
 
-  /// Create a copy of ChecklistGroup
+  /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChecklistGroupImplCopyWith<_$ChecklistGroupImpl> get copyWith =>
+  _$$ChecklistHeadingImplCopyWith<_$ChecklistHeadingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

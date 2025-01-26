@@ -9,13 +9,13 @@ class ChecklistEntry with _$ChecklistEntry implements UserSortable {
   const ChecklistEntry._();
 
   const factory ChecklistEntry.item(ChecklistItem item) = _ChecklistEntryItem;
-  const factory ChecklistEntry.group(ChecklistGroup group) = _ChecklistEntryHeader;
+  const factory ChecklistEntry.heading(ChecklistHeading heading) = _ChecklistEntryHeading;
 
   @override
   UserSortKey get sortKey {
     return when(
       item: (item) => item.sortKey,
-      group: (group) => group.sortKey,
+      heading: (group) => group.sortKey,
     );
   }
 
@@ -23,7 +23,7 @@ class ChecklistEntry with _$ChecklistEntry implements UserSortable {
   String get sortFallback {
     return when(
       item: (item) => item.sortFallback,
-      group: (group) => group.sortFallback,
+      heading: (group) => group.sortFallback,
     );
   }
 }
@@ -45,15 +45,14 @@ class ChecklistItem with _$ChecklistItem implements UserSortable {
 }
 
 @freezed
-class ChecklistGroup with _$ChecklistGroup implements UserSortable {
-  const ChecklistGroup._();
+class ChecklistHeading with _$ChecklistHeading implements UserSortable {
+  const ChecklistHeading._();
 
-  const factory ChecklistGroup({
+  const factory ChecklistHeading({
     required String id,
     required String name,
     required UserSortKey sortKey,
-    required List<ChecklistItem> items,
-  }) = _ChecklistGroup;
+  }) = _ChecklistHeading;
 
   @override
   String get sortFallback => name;
