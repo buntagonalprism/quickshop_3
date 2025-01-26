@@ -6,12 +6,14 @@ class ChecklistTextEditDialog extends StatefulWidget {
     required this.onComplete,
     this.fieldName,
     this.initialValue,
+    this.canAddMore = false,
     super.key,
   });
   final String dialogTitle;
   final String? fieldName;
   final String? initialValue;
   final Function(String) onComplete;
+  final bool canAddMore;
 
   @override
   State<ChecklistTextEditDialog> createState() => _ChecklistTextEditDialogState();
@@ -30,7 +32,15 @@ class _ChecklistTextEditDialogState extends State<ChecklistTextEditDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.dialogTitle),
+      title: Row(
+        children: [
+          Expanded(child: Text(widget.dialogTitle)),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
       content: TextField(
         autofocus: true,
         controller: controller,
@@ -39,10 +49,11 @@ class _ChecklistTextEditDialogState extends State<ChecklistTextEditDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
+        if (widget.canAddMore)
+          TextButton(
+            onPressed: () => onAddMore(),
+            child: const Text('Add more'),
+          ),
         TextButton(
           onPressed: () => onSave(),
           child: const Text('Save'),
@@ -51,13 +62,28 @@ class _ChecklistTextEditDialogState extends State<ChecklistTextEditDialog> {
     );
   }
 
+  void onAddMore() {
+    if (validate()) {
+      final text = controller.text.trim();
+      widget.onComplete(text);
+      controller.clear();
+    }
+  }
+
   void onSave() {
+    if (validate()) {
+      final text = controller.text.trim();
+      widget.onComplete(text);
+      Navigator.pop(context);
+    }
+  }
+
+  bool validate() {
     final text = controller.text.trim();
     if (text.isEmpty) {
       setState(() => error = 'Please enter a value');
-      return;
+      return false;
     }
-    widget.onComplete(text);
-    Navigator.pop(context);
+    return true;
   }
 }

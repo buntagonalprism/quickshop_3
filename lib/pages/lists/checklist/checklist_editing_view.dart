@@ -34,7 +34,6 @@ class _ChecklistEditingViewState extends ConsumerState<ChecklistEditingView> {
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        print('QSLog Reordering from $oldIndex to $newIndex');
         ref
             .read(checklistEntryRepoProvider(widget.list.id).notifier)
             .moveItem(widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
@@ -164,6 +163,7 @@ class ChecklistAddActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final repo = ref.watch(checklistEntryRepoProvider(listId).notifier);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
       child: Row(
@@ -175,9 +175,8 @@ class ChecklistAddActions extends ConsumerWidget {
                 builder: (ctx) => ChecklistTextEditDialog(
                   dialogTitle: 'Add heading',
                   fieldName: 'Heading name',
-                  onComplete: (value) => ref
-                      .read(checklistEntryRepoProvider(listId).notifier)
-                      .addHeading(value, addPosition),
+                  onComplete: (value) => repo.addHeading(value, addPosition),
+                  canAddMore: true,
                 ),
               ),
               label: const Text('Add heading'),
@@ -192,9 +191,8 @@ class ChecklistAddActions extends ConsumerWidget {
                 builder: (ctx) => ChecklistTextEditDialog(
                   dialogTitle: 'Add item',
                   fieldName: 'Item name',
-                  onComplete: (value) => ref
-                      .read(checklistEntryRepoProvider(listId).notifier)
-                      .addItem(value, addPosition),
+                  onComplete: (value) => repo.addItem(value, addPosition),
+                  canAddMore: true,
                 ),
               ),
               label: const Text('Add item'),
