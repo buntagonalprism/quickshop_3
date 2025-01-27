@@ -12,8 +12,8 @@ abstract class UserSortable {
   String get sortFallback;
 }
 
-const _segmentMax = 9999;
-const _segmentMiddle = _segmentMax ~/ 2;
+final _segmentMax = int.parse('zzzz', radix: 36);
+final _segmentMiddle = _segmentMax ~/ 2;
 const _seperator = '-';
 
 @freezed
@@ -53,26 +53,26 @@ class UserSortKey with _$UserSortKey {
     if (maxLength == 0) {
       return UserSortKey(
         primary: first.primary,
-        secondary: _addSeparator(_segmentMiddle.toString()),
+        secondary: _addSeparator(_segmentMiddle.toRadixString(36)),
       );
     }
     final firstPadded = firstUnseperated.padRight(maxLength, '0');
-    final secondPadded = secondUnseperated.padRight(maxLength, '9');
-    final firstInt = BigInt.parse(firstPadded);
-    final secondInt = BigInt.parse(secondPadded);
+    final secondPadded = secondUnseperated.padRight(maxLength, 'z');
+    final firstInt = BigInt.parse(firstPadded, radix: 36);
+    final secondInt = BigInt.parse(secondPadded, radix: 36);
     final diff = secondInt - firstInt;
     // If there is no gap, add a new segment
     if (diff <= BigInt.from(1)) {
       return UserSortKey(
         primary: first.primary,
-        secondary: _addSeparator(firstPadded + _segmentMiddle.toString()),
+        secondary: _addSeparator(firstPadded + _segmentMiddle.toRadixString(36)),
       );
     }
     final middle = (firstInt + secondInt) ~/ BigInt.from(2);
 
     return UserSortKey(
       primary: first.primary,
-      secondary: _addSeparator(middle.toString().padLeft(maxLength, '0')),
+      secondary: _addSeparator(middle.toRadixString(36).padLeft(maxLength, '0')),
     );
   }
 }
