@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
+import '../../../repositories/debug_settings_repo.dart';
 import 'checklist_text_edit_dialog.dart';
 
 class ChecklistEditingView extends ConsumerStatefulWidget {
@@ -87,6 +88,7 @@ class ChecklistItemTileEditing extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final showSortKeys = ref.watch(debugSettingsRepoProvider(DebugSetting.showSortKeys));
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -112,8 +114,9 @@ class ChecklistItemTileEditing extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                item.name,
-                // '${item.name}: ${item.sortKey.primary}, ${item.sortKey.secondary}',
+                showSortKeys
+                    ? '${item.name}: ${item.sortKey.primary}, ${item.sortKey.secondary}'
+                    : item.name,
                 style: item.completed
                     ? const TextStyle(decoration: TextDecoration.lineThrough)
                     : Theme.of(context).textTheme.bodyLarge,
@@ -234,6 +237,8 @@ class ChecklistHeadingTileEditing extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final showSortKeys = ref.watch(debugSettingsRepoProvider(DebugSetting.showSortKeys));
+
     final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
     return Row(
       children: [
@@ -259,8 +264,9 @@ class ChecklistHeadingTileEditing extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                heading.name,
-                // '${heading.name}: ${heading.sortKey.primary}, ${heading.sortKey.secondary}',
+                showSortKeys
+                    ? '${heading.name}: ${heading.sortKey.primary}, ${heading.sortKey.secondary}'
+                    : heading.name,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),

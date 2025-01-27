@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
+import '../../../repositories/debug_settings_repo.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
 import 'checklist_editing_view.dart';
@@ -54,6 +56,14 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
             icon: const Icon(Icons.check_box_outline_blank),
             onTap: () => onUncheckAllItems(),
           ),
+          // Only show if debugging
+          if (kDebugMode)
+            ListAction(
+              name: 'Debug: Show sort keys',
+              icon: const Icon(Icons.sort),
+              onTap: () =>
+                  ref.read(debugSettingsRepoProvider(DebugSetting.showSortKeys).notifier).toggle(),
+            ),
         ],
       ),
       body: state.when(
