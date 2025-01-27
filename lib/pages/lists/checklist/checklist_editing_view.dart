@@ -87,27 +87,135 @@ class ChecklistItemTileEditing extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      visualDensity: VisualDensity.compact,
-      title: Text(
-        '${item.name}: ${item.sortKey.primary}, ${item.sortKey.secondary}',
-        style: item.completed ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          visualDensity: VisualDensity.compact,
+          icon: const Icon(Icons.close, size: 20, color: Colors.redAccent),
+          onPressed: () => ref.read(checklistEntryRepoProvider(listId).notifier).removeItem(item),
+        ),
+        Expanded(
+          child: InkWell(
+            onTap: () => showDialog(
+              context: context,
+              builder: (ctx) => ChecklistTextEditDialog(
+                dialogTitle: 'Edit',
+                initialValue: item.name,
+                onComplete: (value) {
+                  if (value.trim() != item.name) {
+                    ref.read(checklistEntryRepoProvider(listId).notifier).editItem(item, value);
+                  }
+                },
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                item.name,
+                // '${item.name}: ${item.sortKey.primary}, ${item.sortKey.secondary}',
+                style: item.completed
+                    ? const TextStyle(decoration: TextDecoration.lineThrough)
+                    : Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ),
+        ),
+        ChecklistAddAfterButton(listId: listId, entry: item.asEntry),
+        ChecklistDragHandle(index: index),
+      ],
+    );
+  }
+}
+
+class ChecklistDragHandle extends StatelessWidget {
+  const ChecklistDragHandle({
+    super.key,
+    required this.index,
+  });
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReorderableDragStartListener(
+      index: index,
+      child: const SizedBox(
+        height: 48,
+        width: 48,
+        child: Center(
+          child: Icon(Icons.drag_handle),
+        ),
       ),
-      trailing: ReorderableDragStartListener(
-        index: index,
-        child: const Icon(Icons.drag_handle),
-      ),
-      onTap: () => showDialog(
-        context: context,
-        builder: (ctx) => ChecklistTextEditDialog(
-          dialogTitle: 'Edit',
-          initialValue: item.name,
-          onComplete: (value) {
-            if (value != item.name) {
-              ref.read(checklistEntryRepoProvider(listId).notifier).editItem(item, value);
+    );
+  }
+}
+
+class ChecklistAddAfterButton extends ConsumerWidget {
+  const ChecklistAddAfterButton({
+    super.key,
+    required this.listId,
+    required this.entry,
+  });
+
+  final String listId;
+  final ChecklistEntry entry;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MenuAnchor(
+      builder: (BuildContext context, MenuController controller, Widget? child) {
+        return IconButton(
+          onPressed: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
             }
           },
+          icon: const Icon(Icons.add, color: Colors.green, size: 20),
+          tooltip: 'Show menu',
+        );
+      },
+      menuChildren: [
+        MenuItemButton(
+          onPressed: () => _addItemAfter(context, ref),
+          child: const Text('Add item below'),
         ),
+        MenuItemButton(
+          child: const Text('Add heading below'),
+          onPressed: () => _addHeadingAfter(context, ref),
+        ),
+      ],
+    );
+  }
+
+  void _addItemAfter(BuildContext context, WidgetRef ref) {
+    final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
+    showDialog(
+      context: context,
+      builder: (ctx) => ChecklistTextEditDialog(
+        dialogTitle: 'Add item',
+        fieldName: 'Item name',
+        canAddMore: true,
+        onComplete: (value) {
+          repo.addItemAfter(value, entry);
+        },
+      ),
+    );
+  }
+
+  void _addHeadingAfter(BuildContext context, WidgetRef ref) {
+    final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
+    showDialog(
+      context: context,
+      builder: (ctx) => ChecklistTextEditDialog(
+        dialogTitle: 'Add heading',
+        fieldName: 'Heading name',
+        canAddMore: true,
+        onComplete: (value) {
+          repo.addHeadingAfter(value, entry);
+        },
       ),
     );
   }
@@ -126,28 +234,41 @@ class ChecklistHeadingTileEditing extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      visualDensity: VisualDensity.compact,
-      title: Text(
-        '${heading.name}: ${heading.sortKey.primary}, ${heading.sortKey.secondary}',
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-      trailing: ReorderableDragStartListener(
-        index: index,
-        child: const Icon(Icons.drag_handle),
-      ),
-      onTap: () => showDialog(
-        context: context,
-        builder: (ctx) => ChecklistTextEditDialog(
-          dialogTitle: 'Edit',
-          initialValue: heading.name,
-          onComplete: (value) {
-            if (value != heading.name) {
-              ref.read(checklistEntryRepoProvider(listId).notifier).editHeading(heading, value);
-            }
-          },
+    final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
+    return Row(
+      children: [
+        IconButton(
+          visualDensity: VisualDensity.compact,
+          icon: const Icon(Icons.close, size: 20, color: Colors.redAccent),
+          onPressed: () => repo.removeHeading(heading),
         ),
-      ),
+        Expanded(
+          child: InkWell(
+            onTap: () => showDialog(
+              context: context,
+              builder: (ctx) => ChecklistTextEditDialog(
+                dialogTitle: 'Edit',
+                initialValue: heading.name,
+                onComplete: (value) {
+                  if (value.trim() != heading.name) {
+                    repo.editHeading(heading, value);
+                  }
+                },
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                heading.name,
+                // '${heading.name}: ${heading.sortKey.primary}, ${heading.sortKey.secondary}',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+          ),
+        ),
+        ChecklistAddAfterButton(listId: listId, entry: heading.asEntry),
+        ChecklistDragHandle(index: index),
+      ],
     );
   }
 }

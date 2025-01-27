@@ -34,9 +34,19 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
   }
 
   Future<void> addItem(String itemName, ChecklistAddPosition position) async {
-    if (!state.hasValue) {
-      throw StateError('Cannot add item to a list that has not been loaded');
-    }
+    return switch (position) {
+      ChecklistAddPosition.start => _addItemAtIndex(itemName, 0),
+      ChecklistAddPosition.end => _addItemAtIndex(itemName, state.requireValue.length),
+    };
+  }
+
+  Future<void> addItemAfter(String itemName, ChecklistEntry afterEntry) async {
+    final entries = state.requireValue;
+    final index = entries.indexOf(afterEntry);
+    return _addItemAtIndex(itemName, index + 1);
+  }
+
+  Future<void> _addItemAtIndex(String itemName, int index) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
 
@@ -45,11 +55,9 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       id: '',
       name: itemName,
       completed: false,
-      sortKey: UserSortKey(
-        primary: _getPrimarySortIdx(entries, position),
-        secondary: '',
-      ),
+      sortKey: _getSortKeyForInsertIndex(entries, index),
     );
+
     final itemDoc = fs.collection('lists/$listId/items').doc();
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
@@ -62,9 +70,19 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
   }
 
   Future<void> addHeading(String headingName, ChecklistAddPosition position) async {
-    if (!state.hasValue) {
-      throw StateError('Cannot add heading to a list that has not been loaded');
-    }
+    return switch (position) {
+      ChecklistAddPosition.start => _addHeadingAtIndex(headingName, 0),
+      ChecklistAddPosition.end => _addHeadingAtIndex(headingName, state.requireValue.length),
+    };
+  }
+
+  Future<void> addHeadingAfter(String itemName, ChecklistEntry afterEntry) async {
+    final entries = state.requireValue;
+    final index = entries.indexOf(afterEntry);
+    return _addHeadingAtIndex(itemName, index + 1);
+  }
+
+  Future<void> _addHeadingAtIndex(String headingName, int index) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
 
@@ -72,10 +90,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     final newHeading = ChecklistHeading(
       id: '',
       name: headingName,
-      sortKey: UserSortKey(
-        primary: _getPrimarySortIdx(entries, position),
-        secondary: '',
-      ),
+      sortKey: _getSortKeyForInsertIndex(entries, index),
     );
     final headingDoc = fs.collection('lists/$listId/items').doc();
     final listDoc = fs.doc('lists/$listId');
@@ -87,16 +102,6 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     await batch.commit();
   }
 
-  int _getPrimarySortIdx(List<UserSortable> items, ChecklistAddPosition position) {
-    if (items.isEmpty) {
-      return 0;
-    }
-    return switch (position) {
-      ChecklistAddPosition.start => items.first.sortKey.primary - 1,
-      ChecklistAddPosition.end => items.last.sortKey.primary + 1
-    };
-  }
-
   Future<void> toggleItem(ChecklistItem item) {
     final fs = ref.read(firestoreProvider);
     return fs.doc('lists/$listId/items/${item.id}').update({
@@ -104,39 +109,46 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     });
   }
 
+  Future<void> removeItem(ChecklistItem item) {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final itemDoc = fs.doc('lists/$listId/items/${item.id}');
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.delete(itemDoc);
+    batch.update(listDoc, {
+      ListSummary.fields.itemCount: FieldValue.increment(-1),
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    return batch.commit();
+  }
+
+  Future<void> removeHeading(ChecklistHeading heading) {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
+    final listDoc = fs.doc('lists/$listId');
+    final batch = fs.batch();
+    batch.delete(headingDoc);
+    batch.update(listDoc, {
+      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    });
+    return batch.commit();
+  }
+
   Future<void> moveItem(ChecklistEntry entry, int newIndex) {
-    if (!state.hasValue) {
-      throw StateError('Cannot move item in a list that has not been loaded');
-    }
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
 
-    final entries = state.requireValue;
+    // Remove the item from its current position and get the sort key to insert it at the new index
+    final entries = state.requireValue.toList();
+    final currentIndex = entries.indexOf(entry);
+    entries.removeAt(currentIndex);
+    final newSortKey = _getSortKeyForInsertIndex(entries, newIndex);
 
     // Make the change immediately in memory
-    final currentIndex = entries.indexOf(entry);
-    state = AsyncValue.data(entries
-      ..removeAt(currentIndex)
-      ..insert(newIndex, entry));
-
-    // Compute the new sort key for the item
-    UserSortKey newSortKey;
-    if (newIndex == 0) {
-      newSortKey = UserSortKey(
-        primary: entries[1].sortKey.primary - 1,
-        secondary: '',
-      );
-    } else if (entries.length - 1 == newIndex) {
-      newSortKey = UserSortKey(
-        primary: entries[entries.length - 2].sortKey.primary + 1,
-        secondary: '',
-      );
-    } else {
-      newSortKey = UserSortKey.between(
-        entries[newIndex - 1].sortKey,
-        entries[newIndex + 1].sortKey,
-      );
-    }
+    entries.insert(newIndex, entry);
+    state = AsyncValue.data(entries);
 
     final entryId = entry.when(item: (item) => item.id, heading: (heading) => heading.id);
     final itemDoc = fs.doc('lists/$listId/items/$entryId');
@@ -151,6 +163,31 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     return batch.commit();
   }
 
+  UserSortKey _getSortKeyForInsertIndex(List<ChecklistEntry> entries, int newIndex) {
+    if (entries.isEmpty) {
+      return const UserSortKey(
+        primary: 0,
+        secondary: '',
+      );
+    }
+    if (newIndex <= 0) {
+      return UserSortKey(
+        primary: entries[0].sortKey.primary - 1,
+        secondary: '',
+      );
+    }
+    if (newIndex >= entries.length) {
+      return UserSortKey(
+        primary: entries[entries.length - 1].sortKey.primary + 1,
+        secondary: '',
+      );
+    }
+    return UserSortKey.between(
+      entries[newIndex - 1].sortKey,
+      entries[newIndex].sortKey,
+    );
+  }
+
   Future<void> editItem(ChecklistItem item, String newName) {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
@@ -158,7 +195,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
     batch.update(itemDoc, {
-      _Fields.name: newName,
+      _Fields.name: newName.trim(),
     });
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
@@ -173,7 +210,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
     batch.update(headingDoc, {
-      _Fields.name: newName,
+      _Fields.name: newName.trim(),
     });
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,

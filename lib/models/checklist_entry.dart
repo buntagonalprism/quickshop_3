@@ -41,6 +41,8 @@ class ChecklistItem with _$ChecklistItem implements UserSortable {
 
   @override
   String get sortFallback => name;
+
+  ChecklistEntry get asEntry => ChecklistEntry.item(this);
 }
 
 @freezed
@@ -55,4 +57,6 @@ class ChecklistHeading with _$ChecklistHeading implements UserSortable {
 
   @override
   String get sortFallback => name;
+
+  ChecklistEntry get asEntry => ChecklistEntry.heading(this);
 }

@@ -44,6 +44,7 @@ class _ChecklistTextEditDialogState extends State<ChecklistTextEditDialog> {
       content: TextField(
         autofocus: true,
         controller: controller,
+        textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           labelText: widget.fieldName,
         ),
