@@ -4,9 +4,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_sortable.freezed.dart';
 
-/// A class of objects that can be manually sorted by a user. Intended for use in distributed
-/// scenarios where multiple clients may be sorting the same list of items at the same time, and
-/// with the goal that moving a single item should not require updating the entire list.
+/// A class of objects that can be manually sorted by a user.
+///
+/// Intended for use in distributed scenarios where multiple clients may be sorting the same list of
+/// items at the same time, and with the goal that moving a single item should not require updating
+/// the entire list.
+///
+/// The [UserSortKey] is the intented way to sort the objects. The [sortFallback] is a string that
+/// can be used to sort the objects is case of a duplicate [sortKey], ensuring a stable sort order.
+/// Duplicate [sortKey] values should only occur in the case of concurrent updates from multiple
+/// clients; no update by a single client should result in duplicate sort key values.
 abstract class UserSortable {
   UserSortKey get sortKey;
   String get sortFallback;
@@ -16,6 +23,38 @@ final _segmentMax = int.parse('zzzz', radix: 36);
 final _segmentMiddle = _segmentMax ~/ 2;
 const _seperator = '-';
 
+/// The [UserSortKey] handles the implementation of sorting objects that implement [UserSortable].
+///
+/// Use [UserSortKey.between] to find a sort key that is between two other sort keys.
+/// Use the [UserSortableExtension.userSort] extension method to sort a list of [UserSortable]
+/// objects by their [UserSortKey] values.
+///
+/// Implementation approach:
+/// - The primary sort key is an integer. When objects are appended to the end of a list of
+///   [UserSortable] objects, or inserted at the beginning, they should be given a primary sort key
+///   either one greater than the last object, or one less than the first object, respectively.
+/// - The secondary sort key is a string that is used to maintain sort order when objects are
+///   inserted between two other objects with the same primary sort key, or if there is only a unit
+///   difference in the primary sort keys. The string is the base 36 representation of a number,
+///   broken up into 4-digit segments. Each segment ranges in value from 0000 to zzzz.
+///
+/// The following sort keys are in order:
+/// ```dart
+/// [
+///   UserSortKey(primary: -4, secondary: ''),
+///   UserSortKey(primary: 0, secondary: ''),
+///   UserSortKey(primary: 1, secondary: ''),
+///   UserSortKey(primary: 1, secondary: '0000'),
+///   UserSortKey(primary: 1, secondary: '0001'),
+///   UserSortKey(primary: 1, secondary: '0001-1234'),
+///   UserSortKey(primary: 1, secondary: '0001-1235'),
+///   UserSortKey(primary: 1, secondary: '0002'),
+///   UserSortKey(primary: 1, secondary: 'hzzz'),
+///   UserSortKey(primary: 1, secondary: 'zzzz'),
+///   UserSortKey(primary: 1, secondary: 'zzzz-zzzz'),
+///   UserSortKey(primary: 2, secondary: ''),
+///   UserSortKey(primary: 23, secondary: '1234'),
+/// ];
 @freezed
 class UserSortKey with _$UserSortKey {
   const UserSortKey._();
@@ -39,7 +78,46 @@ class UserSortKey with _$UserSortKey {
     );
   }
 
+  /// Returns a sort key that will be sorted between the two provided sort keys.
+  ///
+  /// - If there is a gap between the primary sort keys, the new sort key will have the primary sort
+  ///   key one larger than [first]
+  /// - If there is no gap between the primary sort keys, the new sort key will have the same primary
+  ///   sort key as [first], and the secondary sort key will be the median between the two provided
+  ///   secondary sort keys.
+  /// - If there is no gap between the secondary sort keys, a new segment will be added with the
+  ///   median segment value of hzzz - i.e. the median between 0000 and zzzz in base 36.
+  ///
+  /// For example:
+  /// ```dart
+  /// // returns UserSortKey(primary: 3, secondary: '')
+  /// UserSortKey.between(
+  ///   UserSortKey(primary: 2, secondary: '1234'),
+  ///   UserSortKey(primary: 5, secondary: '1235'),
+  /// );
+  ///
+  /// // returns UserSortKey(primary: 1, secondary: 'hzzz')
+  /// UserSortKey.between(
+  ///   UserSortKey(primary: 1, secondary: ''),
+  ///   UserSortKey(primary: 2, secondary: ''),
+  /// );
+  ///
+  /// // returns UserSortKey(primary: 1, secondary: '1005')
+  /// UserSortKey.between(
+  ///   UserSortKey(primary: 1, secondary: '1003'),
+  ///   UserSortKey(primary: 2, secondary: '1007'),
+  /// );
+  ///
+  /// // returns UserSortKey(primary: 1, secondary: '1234-hzzz')
+  /// UserSortKey.between(
+  ///   UserSortKey(primary: 1, secondary: '1234'),
+  ///   UserSortKey(primary: 1, secondary: '1235'),
+  /// );
+  /// ```
   factory UserSortKey.between(UserSortKey first, UserSortKey second) {
+    if (first == second) {
+      throw ArgumentError('Cannot find a value between two identical sort keys');
+    }
     if (first.primary + 1 < second.primary) {
       return UserSortKey(
         primary: first.primary + 1,
@@ -48,7 +126,16 @@ class UserSortKey with _$UserSortKey {
     }
 
     final firstUnseperated = first.secondary.replaceAll(_seperator, '');
-    final secondUnseperated = second.secondary.replaceAll(_seperator, '');
+
+    // If the primary gap is exactly one, treat the second as though it has the same primary and the
+    // maximum value of the secondary for the purpose of finding a median
+    String secondUnseperated;
+    if (first.primary + 1 == second.primary) {
+      secondUnseperated = List.filled(firstUnseperated.length, 'z').join();
+    } else {
+      secondUnseperated = second.secondary.replaceAll(_seperator, '');
+    }
+
     final maxLength = math.max(firstUnseperated.length, secondUnseperated.length);
     if (maxLength == 0) {
       return UserSortKey(
@@ -78,14 +165,19 @@ class UserSortKey with _$UserSortKey {
 }
 
 extension UserSortableExtension on List<UserSortable> {
-  /// Sorts the list of [UserSortable] objects by their [UserSortKey]
+  /// Sorts the list of [UserSortable] objects by their [UserSortKey], or otherwise by their
+  /// [sortFallback] value.
   void userSort() {
     return sort((a, b) {
       final primary = a.sortKey.primary.compareTo(b.sortKey.primary);
       if (primary != 0) {
         return primary;
       }
-      return a.sortKey.secondary.compareTo(b.sortKey.secondary);
+      final secondary = a.sortKey.secondary.compareTo(b.sortKey.secondary);
+      if (secondary != 0) {
+        return secondary;
+      }
+      return a.sortFallback.compareTo(b.sortFallback);
     });
   }
 }
