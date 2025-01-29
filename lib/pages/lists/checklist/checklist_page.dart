@@ -31,59 +31,65 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
       orElse: () => '',
     );
     return Scaffold(
-      appBar: AppBar(
-        title: Text(listTitle),
-        actions: [
-          Builder(builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.more_vert),
-              tooltip: 'Show menu',
-              onPressed: () => Scaffold.of(context).openEndDrawer(),
-            );
-          }),
-        ],
-      ),
-      endDrawer: ListDetailDrawer(
-        listId: widget.listId,
-        actions: [
-          ListAction(
-            name: 'Delete completed items',
-            icon: const Icon(Icons.delete),
-            onTap: () => onRemoveCheckedItems(),
-          ),
-          ListAction(
-            name: 'Uncheck all items',
-            icon: const Icon(Icons.check_box_outline_blank),
-            onTap: () => onUncheckAllItems(),
-          ),
-          // Only show if debugging
-          if (kDebugMode)
-            ListAction(
-              name: 'Debug: Show sort keys',
-              icon: const Icon(Icons.sort),
-              onTap: () =>
-                  ref.read(debugSettingsRepoProvider(DebugSetting.showSortKeys).notifier).toggle(),
-            ),
-        ],
-      ),
-      body: state.when(
-        notFound: () => const Center(child: Text('List not found')),
-        error: () => const Center(child: Text('Failed to load list')),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        success: (list, items) => ChecklistContentsView(
-          list: list,
-          items: items,
-          isEditing: isEditing,
+        appBar: AppBar(
+          title: Text(listTitle),
+          actions: isEditing
+              ? [
+                  TextButton.icon(
+                    icon: const Icon(Icons.done),
+                    label: const Text('DONE'),
+                    onPressed: () => setState(() => isEditing = false),
+                  )
+                ]
+              : [
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    tooltip: 'Edit list',
+                    onPressed: () => setState(() => isEditing = true),
+                  ),
+                  Builder(builder: (context) {
+                    return IconButton(
+                      icon: const Icon(Icons.more_vert),
+                      tooltip: 'Show menu',
+                      onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    );
+                  }),
+                ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: isEditing ? const Text('Done') : const Text('Edit'),
-        icon: isEditing ? const Icon(Icons.done) : const Icon(Icons.edit),
-        onPressed: () {
-          setState(() => isEditing = !isEditing);
-        },
-      ),
-    );
+        endDrawer: ListDetailDrawer(
+          listId: widget.listId,
+          actions: [
+            ListAction(
+              name: 'Delete completed items',
+              icon: const Icon(Icons.delete),
+              onTap: () => onRemoveCheckedItems(),
+            ),
+            ListAction(
+              name: 'Uncheck all items',
+              icon: const Icon(Icons.check_box_outline_blank),
+              onTap: () => onUncheckAllItems(),
+            ),
+            // Only show if debugging
+            if (kDebugMode)
+              ListAction(
+                name: 'Debug: Show sort keys',
+                icon: const Icon(Icons.sort),
+                onTap: () => ref
+                    .read(debugSettingsRepoProvider(DebugSetting.showSortKeys).notifier)
+                    .toggle(),
+              ),
+          ],
+        ),
+        body: state.when(
+          notFound: () => const Center(child: Text('List not found')),
+          error: () => const Center(child: Text('Failed to load list')),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          success: (list, items) => ChecklistContentsView(
+            list: list,
+            items: items,
+            isEditing: isEditing,
+          ),
+        ));
   }
 
   void onUncheckAllItems() async {
@@ -149,7 +155,7 @@ class ChecklistEmptyView extends StatelessWidget {
               text: 'To add items and headings to this list, use the edit button ',
               children: [
                 WidgetSpan(child: Icon(Icons.edit)),
-                TextSpan(text: ' below'),
+                TextSpan(text: ' above'),
               ],
             ),
             style: Theme.of(context).textTheme.bodyLarge,
