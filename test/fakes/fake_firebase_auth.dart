@@ -20,6 +20,7 @@ User buildUser({String? id, String? displayName, String? email}) {
 /// the default [FirebaseAuthProvider] with an instance of this class
 class FakeFirebaseAuth extends Mock implements auth.FirebaseAuth {
   FakeFirebaseAuth({required User? user}) {
+    _user = user;
     when(() => currentUser).thenAnswer((_) => _getMockAuthUser());
     when(() => authStateChanges()).thenAnswer((_) => _controller.stream);
   }
