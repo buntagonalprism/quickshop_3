@@ -60,56 +60,58 @@ GoRouter router(Ref ref) {
                 builder: (context, state) => const ListsPage(),
                 routes: [
                   GoRoute(
+                    path: _RouteSegments.newItem,
                     parentNavigatorKey: _rootNavigatorKey,
-                    path: 'new',
                     builder: (context, state) => const NewListPage(),
                   ),
                   GoRoute(
+                    path: ':${_RouteParams.listId}/${_RouteSegments.edit}',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => EditListPage(
+                      listId: state.pathParameters[_RouteParams.listId]!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: ':${_RouteParams.listId}/${_RouteSegments.share}',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => ListSharingPage(
+                      listId: state.pathParameters[_RouteParams.listId]!,
+                    ),
+                  ),
+                  GoRoute(
                     path: '${_RouteSegments.invites}/:${_RouteParams.inviteId}',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ListInviteDetailsPage(
                       inviteId: state.pathParameters[_RouteParams.inviteId]!,
                     ),
                   ),
                   GoRoute(
                     path: '${_RouteSegments.checklist}/:${_RouteParams.listId}',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ChecklistPage(
                       listId: state.pathParameters[_RouteParams.listId]!,
                     ),
                   ),
                   GoRoute(
-                    path: ':${_RouteParams.listId}',
+                    path: '${_RouteSegments.shopping}/:${_RouteParams.listId}',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ShoppingListPage(
                       listId: state.pathParameters[_RouteParams.listId]!,
                     ),
                     routes: [
                       GoRoute(
-                        path: _RouteSegments.share,
-                        parentNavigatorKey: _rootNavigatorKey,
-                        builder: (context, state) => ListSharingPage(
-                          listId: state.pathParameters[_RouteParams.listId]!,
-                        ),
-                      ),
-                      GoRoute(
-                        path: '${_RouteSegments.items}/${_RouteSegments.shopping}/new',
+                        path: '${_RouteSegments.items}/new',
                         parentNavigatorKey: _rootNavigatorKey,
                         builder: (context, state) => ShoppingItemCreatePage(
                           listId: state.pathParameters[_RouteParams.listId]!,
                         ),
                       ),
                       GoRoute(
-                        path:
-                            '${_RouteSegments.items}/${_RouteSegments.shopping}/:${_RouteParams.itemId}',
+                        path: '${_RouteSegments.items}/:${_RouteParams.itemId}',
                         parentNavigatorKey: _rootNavigatorKey,
                         builder: (context, state) => ShoppingItemEditPage(
                           listId: state.pathParameters[_RouteParams.listId]!,
                           itemId: state.pathParameters[_RouteParams.itemId]!,
-                        ),
-                      ),
-                      GoRoute(
-                        path: _RouteSegments.edit,
-                        parentNavigatorKey: _rootNavigatorKey,
-                        builder: (context, state) => EditListPage(
-                          listId: state.pathParameters[_RouteParams.listId]!,
                         ),
                       ),
                     ],
