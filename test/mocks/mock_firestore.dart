@@ -27,3 +27,5 @@ class MockDocumentSnapshot extends Mock implements QueryDocumentSnapshot<Map<Str
 }
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
+
+class MockBatch extends Mock implements WriteBatch {}
