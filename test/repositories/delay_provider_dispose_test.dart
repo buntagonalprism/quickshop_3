@@ -2,23 +2,14 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:quickshop/models/user.dart';
 import 'package:quickshop/repositories/delay_provider_dispose.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../overrides/firebase_auth_override.dart';
+import '../fakes/fake_firebase_auth.dart';
 import '../utilities/create_provider_container.dart';
 
 part 'delay_provider_dispose_test.g.dart';
-
-User buildUser({String? id, String? displayName, String? email}) {
-  return User(
-    id: id ?? 'uid',
-    name: displayName ?? 'name',
-    email: email ?? 'email',
-  );
-}
 
 /// A very short duration used as an approximation for processing a single event loop using
 /// [FakeAsync.elapse]. This workaround is necessary because [FakeAsync] does not provide a more
@@ -80,7 +71,7 @@ void main() {
       'WHEN the last listener is detached '
       'THEN it is only disposed after the delay has elapsed', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
 
       // Create the subscription on the provider, triggering its build
@@ -112,7 +103,7 @@ void main() {
       'WHEN the user logs out while the provider has an active listener '
       'THEN the provider is rebuilt immediately', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
@@ -141,7 +132,7 @@ void main() {
       'WHEN the user logs out while the provider is in a delayed dispose state '
       'THEN the provider is disposed immediately and not rebuilt', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
@@ -168,7 +159,7 @@ void main() {
       'WHEN upstream data changes while the provider has an active listener '
       'THEN the provider is rebuilt immediately', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
@@ -193,7 +184,7 @@ void main() {
       'WHEN upstream data changes while the provider is in a delayed dispose state '
       'THEN the provider is disposed immediately and not rebuilt', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
@@ -219,7 +210,7 @@ void main() {
       'WHEN there are multiple upstream data changes while the provider is in a delayed dispose state '
       'THEN the provider is disposed only once and not rebuilt', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
@@ -249,7 +240,7 @@ void main() {
       'WHEN a new listener attaches while the provider is in a delayed dispose state '
       'THEN it should immediately receive the cached value without rebuilding the provider', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
       int emittedValue = 0;
       final subscription = container.listen(delayDisposeProvider, (_, newState) {
@@ -297,7 +288,7 @@ void main() {
       'AND a new listener is subsequently attached '
       'THEN it should immediately rebuild the provider with the upstream data', () {
     fakeAsync((fakeAsync) {
-      final auth = FbAuthOverride(user: buildUser());
+      final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
       int emittedValue = 0;
       final subscription = container.listen(delayDisposeProvider, (_, newState) {

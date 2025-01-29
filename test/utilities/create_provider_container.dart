@@ -20,3 +20,11 @@ ProviderContainer createContainer({
 
   return container;
 }
+
+extension TestListenExtension on ProviderContainer {
+  /// A slightly nicer syntax for listening to a provider in unit tests, where we don't want to
+  /// supply a listener function but simply want to keep the provider alive during the test.
+  ProviderSubscription<T> testListen<T>(ProviderListenable<T> provider) {
+    return listen(provider, (_, __) {});
+  }
+}

@@ -8,7 +8,7 @@ part 'user_sortable.freezed.dart';
 ///
 /// Intended for use in distributed scenarios where multiple clients may be sorting the same list of
 /// items at the same time, and with the goal that moving a single item should not require updating
-/// the entire list.
+/// sort indexes across the entire list of objects.
 ///
 /// The [UserSortKey] is the intented way to sort the objects. The [sortFallback] is a string that
 /// can be used to sort the objects is case of a duplicate [sortKey], ensuring a stable sort order.
