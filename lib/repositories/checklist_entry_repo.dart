@@ -136,7 +136,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     return batch.commit();
   }
 
-  Future<void> moveItem(ChecklistEntry entry, int newIndex) {
+  Future<void> moveEntry(ChecklistEntry entry, int newIndex) {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
 
@@ -151,10 +151,10 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     state = AsyncValue.data(entries);
 
     final entryId = entry.when(item: (item) => item.id, heading: (heading) => heading.id);
-    final itemDoc = fs.doc('lists/$listId/items/$entryId');
+    final entryDoc = fs.doc('lists/$listId/items/$entryId');
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
-    batch.update(itemDoc, {
+    batch.update(entryDoc, {
       _Fields.sortKey: newSortKey.toJson(),
     });
     batch.update(listDoc, {

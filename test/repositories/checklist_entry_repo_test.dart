@@ -35,6 +35,15 @@ MockDocumentSnapshot itemSnapshot({
   });
 }
 
+MockQuerySnapshot itemsSnapshot(List<UserSortKey> sortKeys) {
+  return MockQuerySnapshot(sortKeys
+      .asMap()
+      .entries
+      .map((e) => itemSnapshot(
+          id: e.key.toString(), primary: e.value.primary, secondary: e.value.secondary))
+      .toList());
+}
+
 UserSortKey sortKey(int primary, String secondary) =>
     UserSortKey(primary: primary, secondary: secondary);
 
@@ -198,15 +207,6 @@ void main() {
           'sortKey': {'primary': primary, 'secondary': secondary}
         };
 
-    MockQuerySnapshot itemsSnapshot(List<UserSortKey> sortKeys) {
-      return MockQuerySnapshot(sortKeys
-          .asMap()
-          .entries
-          .map((e) => itemSnapshot(
-              id: e.key.toString(), primary: e.value.primary, secondary: e.value.secondary))
-          .toList());
-    }
-
     late MockBatch batch;
     late MockDocumentReference newEntryDoc;
 
@@ -343,6 +343,91 @@ void main() {
 
       verify(() => batch.set(newEntryDoc, newHeaderData(2, '2222'))).called(1);
       verify(() => batch.commit()).called(1);
+    });
+  });
+
+  group('Moving entries ', () {
+    late MockBatch batch;
+    late MockDocumentReference entryDoc;
+
+    setUp(() {
+      batch = MockBatch();
+      when(() => mockFirestore.batch()).thenReturn(batch);
+      entryDoc = MockDocumentReference();
+    });
+
+    test(
+        'WHEN moving an entry to the start of the list '
+        'THEN it is given a primary sort key one less than the first item', () async {
+      final items = itemsSnapshot([sortKey(-3, ''), sortKey(-2, ''), sortKey(0, '')]);
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      final entryPath = 'lists/$listId/items/${items.docs[2].id}';
+      when(() => mockFirestore.doc(entryPath)).thenReturn(entryDoc);
+
+      container.read(provider.notifier).moveEntry(entries[2], 0);
+
+      final expectedSortKey = const UserSortKey(primary: -4, secondary: '').toJson();
+      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
+    });
+
+    test(
+        'WHEN moving an entry to the end of the list '
+        'THEN it is given a primary sort key one greater than the last item', () async {
+      final items = itemsSnapshot([sortKey(-3, ''), sortKey(-2, ''), sortKey(0, '')]);
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      final entryPath = 'lists/$listId/items/${items.docs[0].id}';
+      when(() => mockFirestore.doc(entryPath)).thenReturn(entryDoc);
+
+      container.read(provider.notifier).moveEntry(entries[0], 2);
+
+      final expectedSortKey = const UserSortKey(primary: 1, secondary: '').toJson();
+      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
+    });
+
+    test(
+        'WHEN moving an entry between other entries '
+        'AND there is a primary gap '
+        'THEN it is given primary sort key between the other entries', () async {
+      final items = itemsSnapshot([
+        sortKey(1, '1111'),
+        sortKey(3, '3333'),
+        sortKey(5, ''),
+      ]);
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      final entryPath = 'lists/$listId/items/${items.docs[2].id}';
+      when(() => mockFirestore.doc(entryPath)).thenReturn(entryDoc);
+
+      container.read(provider.notifier).moveEntry(entries[2], 1);
+
+      final expectedSortKey = const UserSortKey(primary: 2, secondary: '').toJson();
+      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
+    });
+
+    test(
+        'WHEN moving an entry between other entries '
+        'AND there is no primary gap '
+        'THEN it is given secondary sort key between the other entries', () async {
+      final items = itemsSnapshot([
+        sortKey(4, '1111'),
+        sortKey(4, '3333'),
+        sortKey(5, ''),
+      ]);
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      final entryPath = 'lists/$listId/items/${items.docs[2].id}';
+      when(() => mockFirestore.doc(entryPath)).thenReturn(entryDoc);
+
+      container.read(provider.notifier).moveEntry(entries[2], 1);
+
+      final expectedSortKey = const UserSortKey(primary: 4, secondary: '2222').toJson();
+      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
     });
   });
 }

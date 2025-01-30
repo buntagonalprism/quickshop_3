@@ -28,4 +28,8 @@ class MockDocumentSnapshot extends Mock implements QueryDocumentSnapshot<Map<Str
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
-class MockBatch extends Mock implements WriteBatch {}
+class MockBatch extends Mock implements WriteBatch {
+  MockBatch({Future<void> Function()? onCommit}) {
+    when(() => commit()).thenAnswer((_) => onCommit?.call() ?? Future.value());
+  }
+}
