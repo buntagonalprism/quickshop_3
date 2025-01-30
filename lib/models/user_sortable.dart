@@ -87,6 +87,9 @@ class UserSortKey with _$UserSortKey {
   ///   secondary sort keys.
   /// - If there is no gap between the secondary sort keys, a new segment will be added with the
   ///   median segment value of hzzz - i.e. the median between 0000 and zzzz in base 36.
+  /// - If the two sort keys are identical, an [ArgumentError] will be thrown, since there is no way
+  ///   to create a sort key between them. In this case, the [UserSortKey.subdivide] method should
+  ///   be used instead to generate new sort keys for all the objects with the same sort key.
   ///
   /// For example:
   /// ```dart
@@ -161,6 +164,44 @@ class UserSortKey with _$UserSortKey {
       primary: first.primary,
       secondary: _addSeparator(middle.toRadixString(36).padLeft(maxLength, '0')),
     );
+  }
+
+  /// Subdivides an existing sort key into a list of [UserSortKey] objects with an additional
+  /// secondary sort key segment appended. The added segment is equally subdivided [intervals] times
+  /// across the range of possible values for the segment.
+  ///
+  /// This method is useful when a new object is to be inserted between two or more objects with the
+  /// same sort key; a situation that can occur if multiple clients concurrently edit a list. The
+  /// count of [intervals] should be equal to the number of existing objects with the same sort key,
+  /// plus one for the new object being inserted.
+  ///
+  /// For example:
+  /// ```dart
+  /// UserSortKey(primary: 3, secondary: 'ab12').subdivide(5) == [
+  ///   UserSortKey(primary: 1, secondary: 'ab12-5zzz'),
+  ///   UserSortKey(primary: 1, secondary: 'ab12-bzzy'),
+  ///   UserSortKey(primary: 1, secondary: 'ab12-hzzx'),
+  ///   UserSortKey(primary: 1, secondary: 'ab12-nzzw'),
+  ///   UserSortKey(primary: 1, secondary: 'ab12-tzzv'),
+  /// ];
+  List<UserSortKey> subdivide(int intervals) {
+    if (intervals < 1) {
+      throw ArgumentError('intervals must be greater than 0');
+    }
+    if (intervals == 1) {
+      return [this];
+    }
+    final existingSegments = secondary.split(_seperator)..removeWhere((element) => element.isEmpty);
+    final segmentIncrement = _segmentMax ~/ (intervals + 1);
+    final keys = <UserSortKey>[];
+    for (var i = 0; i < intervals; i++) {
+      final newSegment = (segmentIncrement * (i + 1)).toRadixString(36);
+      keys.add(UserSortKey(
+        primary: primary,
+        secondary: [...existingSegments, newSegment].join(_seperator),
+      ));
+    }
+    return keys;
   }
 }
 
