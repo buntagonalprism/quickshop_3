@@ -63,7 +63,7 @@ class __EditListViewState extends ConsumerState<_EditListView> {
       errorText = null;
     });
     try {
-      await ref.read(listRepoProvider.notifier).updateListName(widget.list.id, name);
+      await ref.read(listRepoProvider.notifier).updateListName(widget.list, name);
       if (mounted) {
         ref.read(routerProvider).pop();
       }

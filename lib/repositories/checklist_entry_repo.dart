@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../analytics/analytics.dart';
 import '../models/checklist_entry.dart';
 import '../models/list_summary.dart';
 import '../models/user_sortable.dart';
@@ -72,6 +73,8 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemCreated());
+    _logIfDuplicateKeysFound(insertUpdates);
   }
 
   Future<void> addHeading(String headingName, ChecklistAddPosition position) async {
@@ -108,6 +111,8 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingCreated());
+    _logIfDuplicateKeysFound(insertUpdates);
   }
 
   Future<void> toggleItem(ChecklistItem item) {
@@ -117,7 +122,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     });
   }
 
-  Future<void> removeItem(ChecklistItem item) {
+  Future<void> removeItem(ChecklistItem item) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     final itemDoc = fs.doc('lists/$listId/items/${item.id}');
@@ -128,10 +133,11 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
       ListSummary.fields.itemCount: FieldValue.increment(-1),
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    return batch.commit();
+    await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemDeleted());
   }
 
-  Future<void> removeHeading(ChecklistHeading heading) {
+  Future<void> removeHeading(ChecklistHeading heading) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
@@ -141,10 +147,11 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    return batch.commit();
+    await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingDeleted());
   }
 
-  Future<void> moveEntry(ChecklistEntry entry, int newIndex) {
+  Future<void> moveEntry(ChecklistEntry entry, int newIndex) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
 
@@ -169,7 +176,9 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    return batch.commit();
+    await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistEntryMoved());
+    _logIfDuplicateKeysFound(insertUpdates);
   }
 
   void _makeDuplicateUpdates(FirebaseFirestore fs, WriteBatch batch, _KeyInsertUpdates updates) {
@@ -181,7 +190,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     }
   }
 
-  Future<void> editItem(ChecklistItem item, String newName) {
+  Future<void> editItem(ChecklistItem item, String newName) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     final itemDoc = fs.doc('lists/$listId/items/${item.id}');
@@ -193,10 +202,11 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    return batch.commit();
+    await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemUpdated());
   }
 
-  Future<void> editHeading(ChecklistHeading heading, String newName) {
+  Future<void> editHeading(ChecklistHeading heading, String newName) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
@@ -208,10 +218,11 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    return batch.commit();
+    await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingUpdated());
   }
 
-  Future<void> uncheckAll() {
+  Future<void> uncheckAll() async {
     if (!state.hasValue) {
       throw StateError('Cannot uncheck items from a list that has not been loaded');
     }
@@ -233,7 +244,16 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     batch.update(fs.doc('lists/$listId'), {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    return batch.commit();
+    await batch.commit();
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemsBatchUnchecked());
+  }
+
+  void _logIfDuplicateKeysFound(_KeyInsertUpdates updates) {
+    final duplicates = updates.duplicateKeyUpdates;
+    if (duplicates.isNotEmpty) {
+      final event = AnalyticsEvent.checklistDuplicateSortKeysDetected(duplicates.length);
+      ref.read(analyticsProvider).logEvent(event);
+    }
   }
 }
 

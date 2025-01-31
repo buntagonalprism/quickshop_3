@@ -2,6 +2,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
+import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
@@ -52,41 +53,41 @@ class ListRepo extends _$ListRepo {
     return listDoc.id;
   }
 
-  Future<void> updateListName(String listId, String name) async {
+  Future<void> updateListName(ListSummary list, String name) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
-    await fs.collection('lists').doc(listId).update({
+    await fs.collection('lists').doc(list.id).update({
       ListSummary.fields.name: name,
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listRenamed());
+    ref.read(analyticsProvider).logEvent(AnalyticsEvent.listRenamed(list.listType));
   }
 
-  Future<HttpResult> acceptListInvite(String inviteId) async {
+  Future<HttpResult> acceptListInvite(ListInvite invite) async {
     final client = ref.read(functionsHttpClientProvider);
-    final result = await client.post('/acceptListInvite', {'inviteId': inviteId});
+    final result = await client.post('/acceptListInvite', {'inviteId': invite.id});
     if (result is HttpResultSuccess) {
-      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listInviteAccepted());
+      ref.read(analyticsProvider).logEvent(AnalyticsEvent.listInviteAccepted(invite.listType));
     }
     return result;
   }
 
-  Future<HttpResult> leaveList(String listId) async {
+  Future<HttpResult> leaveList(ListSummary list) async {
     final client = ref.read(functionsHttpClientProvider);
-    ref.read(listLeaveInProgressRepoProvider.notifier).add(listId);
-    final result = await client.post('/leaveList', {'listId': listId});
+    ref.read(listLeaveInProgressRepoProvider.notifier).add(list.id);
+    final result = await client.post('/leaveList', {'listId': list.id});
     if (result is HttpResultSuccess) {
-      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listLeft());
+      ref.read(analyticsProvider).logEvent(AnalyticsEvent.listLeft(list.listType));
     } else {
-      ref.read(listLeaveInProgressRepoProvider.notifier).remove(listId);
+      ref.read(listLeaveInProgressRepoProvider.notifier).remove(list.id);
     }
     return result;
   }
 
-  Future<void> deleteList(String listId) async {
+  Future<void> deleteList(ListSummary list) async {
     final fs = ref.read(firestoreProvider);
-    await fs.collection('lists').doc(listId).delete();
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.listDeleted());
+    await fs.collection('lists').doc(list.id).delete();
+    ref.read(analyticsProvider).logEvent(AnalyticsEvent.listDeleted(list.listType));
   }
 }
 

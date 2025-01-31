@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../models/list_summary.dart';
 import '../../repositories/list_repo.dart';
 import '../../repositories/user_repo.dart';
 import '../../router.dart';
@@ -32,6 +33,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
     final list = ref.watch(listProvider(widget.listId)).valueOrNull;
     final user = ref.watch(userRepoProvider);
     final isOwner = list?.ownerId == user!.id;
+    final isEditor = list?.editorIds.contains(user.id) ?? false;
     final listName = list?.name ?? 'List name';
     final itemCount = list?.itemCount ?? 0;
     return Drawer(
@@ -96,21 +98,21 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             ListTile(
               leading: const Icon(Icons.delete),
               title: const Text('Delete list'),
-              onTap: onDeleteList,
+              onTap: () => onDeleteList(list!),
             )
           ],
-          if (!isOwner)
+          if (isEditor)
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Leave list'),
-              onTap: onLeaveList,
+              onTap: () => onLeaveList(list!),
             )
         ],
       ),
     );
   }
 
-  void onDeleteList() {
+  void onDeleteList(ListSummary list) {
     showDialog(
       context: context,
       builder: (dialogContext) {
@@ -127,7 +129,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             ),
             TextButton(
               onPressed: () {
-                ref.read(listRepoProvider.notifier).deleteList(widget.listId);
+                ref.read(listRepoProvider.notifier).deleteList(list);
                 Navigator.of(dialogContext).pop();
                 Scaffold.of(context).closeEndDrawer();
                 ref.read(routerProvider).pop();
@@ -146,7 +148,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
     );
   }
 
-  void onLeaveList() {
+  void onLeaveList(ListSummary list) {
     showDialog(
       context: context,
       builder: (dialogContext) {
@@ -156,7 +158,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               'Are you sure you want to leave this list? You will no longer be able to view or edit this list.',
           confirmationAction: 'Leave',
           requestInProgressMessage: 'Leaving list...',
-          onConfirm: () => ref.read(listRepoProvider.notifier).leaveList(widget.listId),
+          onConfirm: () => ref.read(listRepoProvider.notifier).leaveList(list),
           onSuccess: (_) {
             Navigator.of(dialogContext).pop();
             Scaffold.of(context).closeEndDrawer();

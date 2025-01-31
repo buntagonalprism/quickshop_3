@@ -51,13 +51,20 @@ class AnalyticsEvent {
 
   AnalyticsEvent.listCreated(ListType type) : this._('list_created', {'type': type.name});
 
-  const AnalyticsEvent.listRenamed() : this._('list_renamed', const {});
+  AnalyticsEvent.listRenamed(ListType type) : this._('list_renamed', {'type': type.name});
 
-  const AnalyticsEvent.listDeleted() : this._('list_deleted', const {});
+  AnalyticsEvent.listDeleted(ListType type) : this._('list_deleted', {'type': type.name});
 
-  const AnalyticsEvent.listInviteAccepted() : this._('shopping_list_invite_accepted', const {});
+  AnalyticsEvent.listInviteCreated(ListType type)
+      : this._('list_invite_created', {'type': type.name});
 
-  const AnalyticsEvent.listLeft() : this._('shopping_list_left', const {});
+  AnalyticsEvent.listInviteAccepted(ListType type)
+      : this._('list_invite_accepted', {'type': type.name});
+
+  AnalyticsEvent.listInviteDeleted(ListType type)
+      : this._('list_invite_deleted', {'type': type.name});
+
+  AnalyticsEvent.listLeft(ListType type) : this._('list_left', {'type': type.name});
 
   const AnalyticsEvent.shoppingItemCreated() : this._('shopping_item_created', const {});
 
@@ -68,11 +75,22 @@ class AnalyticsEvent {
   const AnalyticsEvent.shoppingItemsBatchDeleted()
       : this._('shopping_items_batch_deleted', const {});
 
-  const AnalyticsEvent.shoppingListInviteCreated()
-      : this._('shopping_list_invite_created', const {});
+  const AnalyticsEvent.checklistItemCreated() : this._('checklist_item_created', const {});
+  const AnalyticsEvent.checklistItemUpdated() : this._('checklist_item_updated', const {});
+  const AnalyticsEvent.checklistItemDeleted() : this._('checklist_item_deleted', const {});
 
-  const AnalyticsEvent.shoppingListInviteDeleted()
-      : this._('shopping_list_invite_deleted', const {});
+  const AnalyticsEvent.checklistHeadingCreated() : this._('checklist_heading_created', const {});
+  const AnalyticsEvent.checklistHeadingUpdated() : this._('checklist_heading_updated', const {});
+  const AnalyticsEvent.checklistHeadingDeleted() : this._('checklist_heading_deleted', const {});
+
+  const AnalyticsEvent.checklistEntryMoved() : this._('checklist_entry_moved', const {});
+
+  const AnalyticsEvent.checklistItemsBatchDeleted()
+      : this._('checklist_items_batch_deleted', const {});
+  const AnalyticsEvent.checklistItemsBatchUnchecked()
+      : this._('checklist_items_batch_unchecked', const {});
+  AnalyticsEvent.checklistDuplicateSortKeysDetected(int count)
+      : this._('checklist_duplicate_sort_keys_detected', {'count': count});
 
   AnalyticsEvent.httpRetry({required String uri, required String reason})
       : this._('http_retry', {

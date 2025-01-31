@@ -51,12 +51,12 @@ class ListSharingRepo extends _$ListSharingRepo {
       inviterName: user.name.isNotEmpty ? user.name : user.email,
     );
     await fs.collection('invites').doc(invite.id).set(invite.toFirestore());
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListInviteCreated());
+    ref.read(analyticsProvider).logEvent(AnalyticsEvent.listInviteCreated(list.listType));
   }
 
   Future<void> deleteSharingLink(ListInvite invite) async {
     final fs = ref.read(firestoreProvider);
     await fs.collection('invites').doc(invite.id).delete();
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingListInviteDeleted());
+    ref.read(analyticsProvider).logEvent(AnalyticsEvent.listInviteDeleted(invite.listType));
   }
 }
