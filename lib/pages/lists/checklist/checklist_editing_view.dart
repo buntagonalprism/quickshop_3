@@ -306,7 +306,10 @@ class ChecklistAddActions extends ConsumerWidget {
                 ),
               ),
               label: const Text('Add heading'),
-              icon: const Icon(Icons.title),
+              icon: const Padding(
+                padding: EdgeInsets.only(bottom: 1),
+                child: Text('H', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
             ),
           ),
           const SizedBox(width: 8),
