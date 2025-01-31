@@ -47,6 +47,9 @@ MockQuerySnapshot itemsSnapshot(List<UserSortKey> sortKeys) {
 UserSortKey sortKey(int primary, String secondary) =>
     UserSortKey(primary: primary, secondary: secondary);
 
+Map<String, dynamic> sortKeyJson(int primary, String secondary) =>
+    sortKey(primary, secondary).toJson();
+
 void main() {
   const listId = '1234';
   final provider = checklistEntryRepoProvider('1234');
@@ -57,6 +60,10 @@ void main() {
   late MockCollectionReference itemsCollection;
   late StreamController<MockQuerySnapshot> itemsController;
   late MockDocumentReference listDoc;
+
+  setUpAll(() {
+    registerFallbackValue(MockDocumentReference());
+  });
 
   setUp(() {
     fakeAuth = FakeFirebaseAuth(user: buildUser());
@@ -193,7 +200,7 @@ void main() {
     const headingName = 'New heading';
 
     // Helper function to create the expected data for a new item
-    Map<String, dynamic> newItemData(int primary, String secondary) => {
+    Map<String, dynamic> newItemJson(int primary, String secondary) => {
           'type': 'item',
           'name': itemName,
           'completed': false,
@@ -201,7 +208,7 @@ void main() {
         };
 
     // Helper function to create the expected data for a new heading
-    Map<String, dynamic> newHeaderData(int primary, String secondary) => {
+    Map<String, dynamic> newHeaderJson(int primary, String secondary) => {
           'type': 'heading',
           'name': headingName,
           'sortKey': {'primary': primary, 'secondary': secondary}
@@ -224,7 +231,7 @@ void main() {
       await itemsController.addAndPump(MockQuerySnapshot([]));
       container.read(provider.notifier).addItem(itemName, ChecklistAddPosition.start);
 
-      verify(() => batch.set(newEntryDoc, newItemData(0, ''))).called(1);
+      verify(() => batch.set(newEntryDoc, newItemJson(0, ''))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -235,7 +242,7 @@ void main() {
       await itemsController.addAndPump(MockQuerySnapshot([]));
       container.read(provider.notifier).addHeading(headingName, ChecklistAddPosition.start);
 
-      verify(() => batch.set(newEntryDoc, newHeaderData(0, ''))).called(1);
+      verify(() => batch.set(newEntryDoc, newHeaderJson(0, ''))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -247,7 +254,7 @@ void main() {
       await itemsController.addAndPump(items);
       container.read(provider.notifier).addItem(itemName, ChecklistAddPosition.start);
 
-      verify(() => batch.set(newEntryDoc, newItemData(-5, ''))).called(1);
+      verify(() => batch.set(newEntryDoc, newItemJson(-5, ''))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -259,7 +266,7 @@ void main() {
       await itemsController.addAndPump(items);
       container.read(provider.notifier).addHeading(headingName, ChecklistAddPosition.start);
 
-      verify(() => batch.set(newEntryDoc, newHeaderData(-5, ''))).called(1);
+      verify(() => batch.set(newEntryDoc, newHeaderJson(-5, ''))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -271,7 +278,7 @@ void main() {
       await itemsController.addAndPump(items);
       container.read(provider.notifier).addItem(itemName, ChecklistAddPosition.end);
 
-      verify(() => batch.set(newEntryDoc, newItemData(6, ''))).called(1);
+      verify(() => batch.set(newEntryDoc, newItemJson(6, ''))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -283,7 +290,7 @@ void main() {
       await itemsController.addAndPump(items);
       container.read(provider.notifier).addHeading(headingName, ChecklistAddPosition.end);
 
-      verify(() => batch.set(newEntryDoc, newHeaderData(6, ''))).called(1);
+      verify(() => batch.set(newEntryDoc, newHeaderJson(6, ''))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -297,7 +304,7 @@ void main() {
       final entries = container.read(provider).requireValue;
       container.read(provider.notifier).addItemAfter(itemName, entries[0]);
 
-      verify(() => batch.set(newEntryDoc, newItemData(3, ''))).called(1);
+      verify(() => batch.set(newEntryDoc, newItemJson(3, ''))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -312,7 +319,7 @@ void main() {
         final entries = container.read(provider).requireValue;
         container.read(provider.notifier).addHeadingAfter(headingName, entries[0]);
 
-        verify(() => batch.set(newEntryDoc, newHeaderData(3, ''))).called(1);
+        verify(() => batch.set(newEntryDoc, newHeaderJson(3, ''))).called(1);
         verify(() => batch.commit()).called(1);
       },
     );
@@ -327,7 +334,7 @@ void main() {
       final entries = container.read(provider).requireValue;
       container.read(provider.notifier).addItemAfter(itemName, entries[0]);
 
-      verify(() => batch.set(newEntryDoc, newItemData(2, '2222'))).called(1);
+      verify(() => batch.set(newEntryDoc, newItemJson(2, '2222'))).called(1);
       verify(() => batch.commit()).called(1);
     });
 
@@ -341,7 +348,7 @@ void main() {
       final entries = container.read(provider).requireValue;
       container.read(provider.notifier).addHeadingAfter(headingName, entries[0]);
 
-      verify(() => batch.set(newEntryDoc, newHeaderData(2, '2222'))).called(1);
+      verify(() => batch.set(newEntryDoc, newHeaderJson(2, '2222'))).called(1);
       verify(() => batch.commit()).called(1);
     });
   });
@@ -368,8 +375,7 @@ void main() {
 
       container.read(provider.notifier).moveEntry(entries[2], 0);
 
-      final expectedSortKey = const UserSortKey(primary: -4, secondary: '').toJson();
-      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
+      verify(() => batch.update(entryDoc, {'sortKey': sortKeyJson(-4, '')})).called(1);
     });
 
     test(
@@ -384,8 +390,7 @@ void main() {
 
       container.read(provider.notifier).moveEntry(entries[0], 2);
 
-      final expectedSortKey = const UserSortKey(primary: 1, secondary: '').toJson();
-      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
+      verify(() => batch.update(entryDoc, {'sortKey': sortKeyJson(1, '')})).called(1);
     });
 
     test(
@@ -405,8 +410,7 @@ void main() {
 
       container.read(provider.notifier).moveEntry(entries[2], 1);
 
-      final expectedSortKey = const UserSortKey(primary: 2, secondary: '').toJson();
-      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
+      verify(() => batch.update(entryDoc, {'sortKey': sortKeyJson(2, '')})).called(1);
     });
 
     test(
@@ -426,8 +430,109 @@ void main() {
 
       container.read(provider.notifier).moveEntry(entries[2], 1);
 
-      final expectedSortKey = const UserSortKey(primary: 4, secondary: '2222').toJson();
-      verify(() => batch.update(entryDoc, {'sortKey': expectedSortKey})).called(1);
+      verify(() => batch.update(entryDoc, {'sortKey': sortKeyJson(4, '2222')})).called(1);
+    });
+  });
+
+  group('Handling duplicate sort keys ', () {
+    late MockBatch batch;
+
+    setUp(() {
+      batch = MockBatch();
+      when(() => mockFirestore.batch()).thenReturn(batch);
+    });
+
+    List<String> buildDocIds(int count) => List.generate(count, (index) => 'doc$index');
+
+    List<MockDocumentReference> buildAndStubDocRefs(List<String> ids) => ids.map((id) {
+          final ref = MockDocumentReference();
+          when(() => itemsCollection.doc(id)).thenReturn(ref);
+          when(() => mockFirestore.doc('lists/$listId/items/$id')).thenReturn(ref);
+          return ref;
+        }).toList();
+
+    List<MockDocumentSnapshot> buildDuplicateSortKeyItems(
+            List<String> ids, int primary, String secondary) =>
+        ids.map((id) => itemSnapshot(id: id, primary: primary, secondary: secondary)).toList();
+
+    // A mocktail argument matcher that matches an object which has a 'sortKey' property, which has
+    // a value of an object with the given primary and secondary values.
+    Map<String, dynamic> sortKeyJsonMatcher(int primary, String secondary) =>
+        any<Map<String, dynamic>>(
+          that: containsPair('sortKey', {'primary': primary, 'secondary': secondary}),
+        );
+
+    test(
+        'WHEN inserting an item between two entries with duplicate sort keys '
+        'THEN all entries should be given unique sort keys that preserve the existing sort order',
+        () async {
+      final docIds = buildDocIds(4);
+      final docRefs = buildAndStubDocRefs(docIds);
+      final items = MockQuerySnapshot(buildDuplicateSortKeyItems(docIds, 1, 'abcd'));
+      final newDocRef = MockDocumentReference();
+      when(() => itemsCollection.doc()).thenReturn(newDocRef);
+
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      container.read(provider.notifier).addItemAfter('New item', entries[0]);
+
+      // Expected sort keys taken from the UserSortable tests
+      verify(() => batch.update(docRefs[0], {'sortKey': sortKeyJson(1, 'abcd-5zzz')}));
+      verify(() => batch.set(newDocRef, sortKeyJsonMatcher(1, 'abcd-bzzy')));
+      verify(() => batch.update(docRefs[1], {'sortKey': sortKeyJson(1, 'abcd-hzzx')}));
+      verify(() => batch.update(docRefs[2], {'sortKey': sortKeyJson(1, 'abcd-nzzw')}));
+      verify(() => batch.update(docRefs[3], {'sortKey': sortKeyJson(1, 'abcd-tzzv')}));
+    });
+
+    test(
+        'WHEN inserting a heading between two entries with duplicate sort keys '
+        'THEN all entries should be given unique sort keys that preserve the existing sort order',
+        () async {
+      final docIds = buildDocIds(4);
+      final docRefs = buildAndStubDocRefs(docIds);
+      final items = MockQuerySnapshot(buildDuplicateSortKeyItems(docIds, -1, ''));
+      final newDocRef = MockDocumentReference();
+      when(() => itemsCollection.doc()).thenReturn(newDocRef);
+
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      container.read(provider.notifier).addHeadingAfter('New heading', entries[2]);
+
+      // Expected sort keys taken from the UserSortable tests
+      verify(() => batch.update(docRefs[0], {'sortKey': sortKeyJson(-1, '5zzz')}));
+      verify(() => batch.update(docRefs[1], {'sortKey': sortKeyJson(-1, 'bzzy')}));
+      verify(() => batch.update(docRefs[2], {'sortKey': sortKeyJson(-1, 'hzzx')}));
+      verify(() => batch.set(newDocRef, sortKeyJsonMatcher(-1, 'nzzw')));
+      verify(() => batch.update(docRefs[3], {'sortKey': sortKeyJson(-1, 'tzzv')}));
+    });
+
+    test(
+        'WHEN moving an item between entries with duplicate sort keys '
+        'THEN all entries should be given unique sort keys that preserve the existing sort order',
+        () async {
+      final docIds = buildDocIds(4);
+      final docRefs = buildAndStubDocRefs(docIds);
+      const moveDocId = 'moveDoc';
+      final items = MockQuerySnapshot([
+        ...buildDuplicateSortKeyItems(docIds, 3, '1234'),
+        itemSnapshot(id: moveDocId, primary: 12, secondary: ''),
+      ]);
+      final moveDocRef = MockDocumentReference();
+      when(() => mockFirestore.doc('lists/$listId/items/$moveDocId')).thenReturn(moveDocRef);
+
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      container.read(provider.notifier).moveEntry(entries[4], 2);
+
+      // Expected sort keys taken from the UserSortable tests
+      verify(() => batch.update(docRefs[0], {'sortKey': sortKeyJson(3, '1234-5zzz')}));
+      verify(() => batch.update(docRefs[1], {'sortKey': sortKeyJson(3, '1234-bzzy')}));
+      verify(() => batch.update(moveDocRef, {'sortKey': sortKeyJson(3, '1234-hzzx')}));
+      verify(() => batch.update(docRefs[2], {'sortKey': sortKeyJson(3, '1234-nzzw')}));
+      verify(() => batch.update(docRefs[3], {'sortKey': sortKeyJson(3, '1234-tzzv')}));
     });
   });
 }

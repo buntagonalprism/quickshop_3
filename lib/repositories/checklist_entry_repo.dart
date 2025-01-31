@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/checklist_entry.dart';
@@ -51,17 +52,21 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     final user = ref.read(userRepoProvider);
 
     final entries = state.requireValue;
+    final insertUpdates = _KeyInsertUpdates(entries, index);
+
     final newItem = ChecklistItem(
       id: '',
       name: itemName,
       completed: false,
-      sortKey: _getSortKeyForInsertIndex(entries, index),
+      sortKey: insertUpdates.insertKey,
     );
 
     final itemDoc = fs.collection('lists/$listId/items').doc();
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
     batch.set(itemDoc, _itemToFirestore(newItem));
+    _makeDuplicateUpdates(fs, batch, insertUpdates);
+
     batch.update(listDoc, {
       ListSummary.fields.itemCount: FieldValue.increment(1),
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
@@ -87,15 +92,18 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     final user = ref.read(userRepoProvider);
 
     final entries = state.requireValue;
+    final insertUpdates = _KeyInsertUpdates(entries, index);
+
     final newHeading = ChecklistHeading(
       id: '',
       name: headingName,
-      sortKey: _getSortKeyForInsertIndex(entries, index),
+      sortKey: insertUpdates.insertKey,
     );
     final headingDoc = fs.collection('lists/$listId/items').doc();
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
     batch.set(headingDoc, _headingToFirestore(newHeading));
+    _makeDuplicateUpdates(fs, batch, insertUpdates);
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
@@ -144,48 +152,33 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     final entries = state.requireValue.toList();
     final currentIndex = entries.indexOf(entry);
     entries.removeAt(currentIndex);
-    final newSortKey = _getSortKeyForInsertIndex(entries, newIndex);
+
+    final insertUpdates = _KeyInsertUpdates(entries, newIndex);
 
     // Make the change immediately in memory
     entries.insert(newIndex, entry);
     state = AsyncValue.data(entries);
 
-    final entryId = entry.when(item: (item) => item.id, heading: (heading) => heading.id);
-    final entryDoc = fs.doc('lists/$listId/items/$entryId');
+    final entryDoc = fs.doc('lists/$listId/items/${entry.id}');
     final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
     batch.update(entryDoc, {
-      _Fields.sortKey: newSortKey.toJson(),
+      _Fields.sortKey: insertUpdates.insertKey.toJson(),
     });
+    _makeDuplicateUpdates(fs, batch, insertUpdates);
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     return batch.commit();
   }
 
-  UserSortKey _getSortKeyForInsertIndex(List<ChecklistEntry> entries, int newIndex) {
-    if (entries.isEmpty) {
-      return const UserSortKey(
-        primary: 0,
-        secondary: '',
-      );
+  void _makeDuplicateUpdates(FirebaseFirestore fs, WriteBatch batch, _KeyInsertUpdates updates) {
+    for (var update in updates.duplicateKeyUpdates) {
+      final updateDoc = fs.doc('lists/$listId/items/${update.entry.id}');
+      batch.update(updateDoc, {
+        _Fields.sortKey: update.newSortKey.toJson(),
+      });
     }
-    if (newIndex <= 0) {
-      return UserSortKey(
-        primary: entries[0].sortKey.primary - 1,
-        secondary: '',
-      );
-    }
-    if (newIndex >= entries.length) {
-      return UserSortKey(
-        primary: entries[entries.length - 1].sortKey.primary + 1,
-        secondary: '',
-      );
-    }
-    return UserSortKey.between(
-      entries[newIndex - 1].sortKey,
-      entries[newIndex].sortKey,
-    );
   }
 
   Future<void> editItem(ChecklistItem item, String newName) {
@@ -242,6 +235,82 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     });
     return batch.commit();
   }
+}
+
+/// Represents the set of updates that need to be made when inserting an entry into a list.
+class _KeyInsertUpdates {
+  _KeyInsertUpdates(List<ChecklistEntry> entries, int insertIndex)
+      : _entries = entries,
+        _insertIndex = insertIndex {
+    if (_willInsertBetweenDuplicateKeys()) {
+      _handleInsertBetweenDuplicateKeys();
+    } else {
+      duplicateKeyUpdates = [];
+      insertKey = _getSortKeyForNonDuplicateInsert();
+    }
+  }
+  late final List<_DuplicateKeyUpdate> duplicateKeyUpdates;
+  late final UserSortKey insertKey;
+
+  final List<ChecklistEntry> _entries;
+  final int _insertIndex;
+
+  bool _willInsertBetweenDuplicateKeys() {
+    if (_insertIndex <= 0 || _insertIndex >= _entries.length) {
+      return false;
+    }
+    if (_entries.length <= 1) {
+      return false;
+    }
+    final previous = _entries[_insertIndex - 1];
+    final next = _entries[_insertIndex];
+    return previous.sortKey == next.sortKey;
+  }
+
+  void _handleInsertBetweenDuplicateKeys() {
+    final key = _entries[_insertIndex].sortKey;
+    final entriesWithDuplicateKeys = _entries.where((entry) => entry.sortKey == key).toList();
+    final subdividedKeys = key.subdivide(entriesWithDuplicateKeys.length + 1);
+    final firstDuplicateIndex = _entries.indexOf(entriesWithDuplicateKeys.first);
+    insertKey = subdividedKeys[_insertIndex - firstDuplicateIndex];
+    subdividedKeys.removeAt(_insertIndex - firstDuplicateIndex);
+    duplicateKeyUpdates = entriesWithDuplicateKeys.mapIndexed((index, entry) {
+      return _DuplicateKeyUpdate(entry, subdividedKeys[index]);
+    }).toList();
+  }
+
+  UserSortKey _getSortKeyForNonDuplicateInsert() {
+    if (_entries.isEmpty) {
+      return const UserSortKey(
+        primary: 0,
+        secondary: '',
+      );
+    }
+    if (_insertIndex <= 0) {
+      return UserSortKey(
+        primary: _entries[0].sortKey.primary - 1,
+        secondary: '',
+      );
+    }
+    if (_insertIndex >= _entries.length) {
+      return UserSortKey(
+        primary: _entries[_entries.length - 1].sortKey.primary + 1,
+        secondary: '',
+      );
+    }
+    return UserSortKey.between(
+      _entries[_insertIndex - 1].sortKey,
+      _entries[_insertIndex].sortKey,
+    );
+  }
+}
+
+/// Represents an update that needs to be made to an existing entry due to a duplicate key
+class _DuplicateKeyUpdate {
+  _DuplicateKeyUpdate(this.entry, this.newSortKey);
+
+  final ChecklistEntry entry;
+  final UserSortKey newSortKey;
 }
 
 ChecklistEntry _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {

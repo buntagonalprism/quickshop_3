@@ -26,6 +26,13 @@ class ChecklistEntry with _$ChecklistEntry implements UserSortable {
       heading: (heading) => heading.sortFallback,
     );
   }
+
+  String get id {
+    return when(
+      item: (item) => item.id,
+      heading: (heading) => heading.id,
+    );
+  }
 }
 
 @freezed

@@ -35,9 +35,8 @@ class _ChecklistEditingViewState extends ConsumerState<ChecklistEditingView> {
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        ref
-            .read(checklistEntryRepoProvider(widget.list.id).notifier)
-            .moveItem(widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
+        ref.read(checklistEntryRepoProvider(widget.list.id).notifier).moveEntry(
+            widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
       },
       itemCount: widget.items.length + 2,
       itemBuilder: (context, index) {
@@ -307,7 +306,7 @@ class ChecklistAddActions extends ConsumerWidget {
                 ),
               ),
               label: const Text('Add heading'),
-              icon: const Icon(Icons.category),
+              icon: const Icon(Icons.title),
             ),
           ),
           const SizedBox(width: 8),
