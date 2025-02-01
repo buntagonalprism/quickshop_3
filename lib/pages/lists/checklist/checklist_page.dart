@@ -98,8 +98,8 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
   }
 
   void onRemoveCheckedItems() async {
+    ref.read(checklistEntryRepoProvider(widget.listId).notifier).removeCheckedItems();
     Navigator.pop(context);
-    throw UnimplementedError('onRemoveCheckedItems is not implemented');
   }
 }
 

@@ -35,6 +35,18 @@ MockDocumentSnapshot itemSnapshot({
   });
 }
 
+MockDocumentSnapshot headingSnapshot({
+  required String id,
+  int primary = 0,
+  String secondary = '',
+}) {
+  return MockDocumentSnapshot(id, {
+    'type': 'heading',
+    'name': 'Heading $id',
+    'sortKey': {'primary': primary, 'secondary': secondary}
+  });
+}
+
 MockQuerySnapshot itemsSnapshot(List<UserSortKey> sortKeys) {
   return MockQuerySnapshot(sortKeys
       .asMap()
@@ -533,6 +545,83 @@ void main() {
       verify(() => batch.update(moveDocRef, {'sortKey': sortKeyJson(3, '1234-hzzx')}));
       verify(() => batch.update(docRefs[2], {'sortKey': sortKeyJson(3, '1234-nzzw')}));
       verify(() => batch.update(docRefs[3], {'sortKey': sortKeyJson(3, '1234-tzzv')}));
+    });
+  });
+
+  group('Batch operations ', () {
+    late MockBatch batch;
+
+    setUp(() {
+      batch = MockBatch();
+      when(() => mockFirestore.batch()).thenReturn(batch);
+    });
+
+    List<MockDocumentReference> buildAndStubDocRefs(List<MockDocumentSnapshot> docs) =>
+        docs.map((doc) {
+          final ref = MockDocumentReference();
+          final docId = doc.id;
+          when(() => itemsCollection.doc(docId)).thenReturn(ref);
+          when(() => mockFirestore.doc('lists/$listId/items/$docId')).thenReturn(ref);
+          return ref;
+        }).toList();
+
+    test(
+        'WHEN unchecking all items '
+        'THEN all checked items should be unchecked', () async {
+      final entries = [
+        itemSnapshot(id: '1', primary: 1, completed: true),
+        itemSnapshot(id: '2', primary: 2, completed: false),
+        itemSnapshot(id: '3', primary: 3, completed: true),
+        itemSnapshot(id: '4', primary: 4, completed: false),
+        headingSnapshot(id: '5', primary: 5),
+        itemSnapshot(id: '6', primary: 6, completed: true),
+      ];
+      final docRefs = buildAndStubDocRefs(entries);
+
+      container.testListen(provider);
+      await itemsController.addAndPump(MockQuerySnapshot(entries));
+      container.read(provider.notifier).uncheckAll();
+
+      // The batch should update only the checked items to be unchecked
+      verify(() => batch.update(docRefs[0], {'completed': false})).called(1);
+      verify(() => batch.update(docRefs[2], {'completed': false})).called(1);
+      verify(() => batch.update(docRefs[5], {'completed': false})).called(1);
+      verifyNever(() => batch.update(docRefs[1], any()));
+      verifyNever(() => batch.update(docRefs[3], any()));
+      verifyNever(() => batch.update(docRefs[4], any()));
+    });
+
+    test(
+        'WHEN removing all checked items '
+        'THEN checked items should be removed '
+        'AND headings with no unchecked items should be removed', () async {
+      final entries = [
+        itemSnapshot(id: '1', primary: 1, completed: true),
+        headingSnapshot(id: '2', primary: 2), // Only this heading should stay
+        itemSnapshot(id: '3', primary: 3, completed: false), // This item should stay
+        itemSnapshot(id: '4', primary: 4, completed: true),
+        headingSnapshot(id: '5', primary: 5),
+        itemSnapshot(id: '6', primary: 6, completed: true),
+        itemSnapshot(id: '7', primary: 7, completed: true),
+        headingSnapshot(id: '8', primary: 8),
+        headingSnapshot(id: '9', primary: 9),
+      ];
+      final docRefs = buildAndStubDocRefs(entries);
+
+      container.testListen(provider);
+      await itemsController.addAndPump(MockQuerySnapshot(entries));
+      container.read(provider.notifier).removeCheckedItems();
+
+      // The batch should delete the checked items and headings with no unchecked items
+      verify(() => batch.delete(docRefs[0])).called(1);
+      verify(() => batch.delete(docRefs[3])).called(1);
+      verify(() => batch.delete(docRefs[4])).called(1);
+      verify(() => batch.delete(docRefs[5])).called(1);
+      verify(() => batch.delete(docRefs[6])).called(1);
+      verify(() => batch.delete(docRefs[7])).called(1);
+      verify(() => batch.delete(docRefs[8])).called(1);
+      verifyNever(() => batch.delete(docRefs[1]));
+      verifyNever(() => batch.delete(docRefs[2]));
     });
   });
 }

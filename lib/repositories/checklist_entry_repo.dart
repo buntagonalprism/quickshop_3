@@ -229,7 +229,8 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     final batch = fs.batch();
-    for (var entry in state.requireValue) {
+    final entries = state.requireValue;
+    for (var entry in entries) {
       entry.maybeWhen(
         item: (item) {
           if (item.completed) {
@@ -246,6 +247,60 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
     });
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemsBatchUnchecked());
+  }
+
+  Future<void> removeCheckedItems() async {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    final entries = state.requireValue;
+    final batch = fs.batch();
+    int itemsRemoved = 0;
+    entries.forEachIndexed((index, entry) {
+      entry.when(
+        item: (item) {
+          if (item.completed) {
+            final itemDoc = fs.doc('lists/$listId/items/${item.id}');
+            batch.delete(itemDoc);
+            itemsRemoved++;
+          }
+        },
+        heading: (heading) {
+          final hasUncompletedItem = _headingHasUncompletedItem(entries, heading);
+          if (!hasUncompletedItem) {
+            final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
+            batch.delete(headingDoc);
+          }
+        },
+      );
+    });
+    if (itemsRemoved > 0) {
+      final listDoc = fs.doc('lists/$listId');
+      batch.update(listDoc, {
+        ListSummary.fields.itemCount: FieldValue.increment(-itemsRemoved),
+        '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+      });
+      await batch.commit();
+      ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemsBatchDeleted());
+    }
+  }
+
+  /// Checks to see if there is an uncomplete item below the given heading, before the next heading
+  /// or the end of the list.
+  bool _headingHasUncompletedItem(List<ChecklistEntry> entries, ChecklistHeading heading) {
+    final headingIndex = entries.indexOf(heading.asEntry);
+    for (var i = headingIndex + 1; i < entries.length; i++) {
+      final entry = entries[i];
+      final isUncompletedItem =
+          entry.maybeWhen(item: (item) => !item.completed, orElse: () => false);
+      if (isUncompletedItem) {
+        return true;
+      }
+      final isHeading = entry.maybeWhen(heading: (_) => true, orElse: () => false);
+      if (isHeading) {
+        return false;
+      }
+    }
+    return false;
   }
 
   void _logIfDuplicateKeysFound(_KeyInsertUpdates updates) {
