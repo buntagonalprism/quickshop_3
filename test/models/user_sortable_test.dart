@@ -222,4 +222,93 @@ void main() {
       ]);
     });
   });
+
+  group('List<UserSortable>.userSort ', () {
+    test(
+        'GIVEN an empty list '
+        'THEN the list is returned unchanged', () {
+      final list = <UserSortable>[];
+      list.userSort();
+      expect(list, isEmpty);
+    });
+
+    test(
+        'GIVEN a list of UserSortable objects '
+        'AND no UserSortKey values are equal '
+        'THEN the list is sorted by the UserSortKey', () {
+      final list = List<UserSortable>.from(const [
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'a'),
+        _Sortable(UserSortKey(primary: 2, secondary: 'abcd'), 'b'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1235'), 'c'),
+        _Sortable(UserSortKey(primary: 2, secondary: '1234'), 'd'),
+        _Sortable(UserSortKey(primary: -4, secondary: ''), 'e'),
+      ]);
+      list.userSort();
+      expect(list, const [
+        _Sortable(UserSortKey(primary: -4, secondary: ''), 'e'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'a'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1235'), 'c'),
+        _Sortable(UserSortKey(primary: 2, secondary: '1234'), 'd'),
+        _Sortable(UserSortKey(primary: 2, secondary: 'abcd'), 'b'),
+      ]);
+    });
+
+    test(
+        'GIVEN a list of UserSortable objects '
+        'AND there are secondary sort keys of different length '
+        'THEN longer secondary sort keys are sorted after equal segments of shorter length', () {
+      final list = List<UserSortable>.from(const [
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'a'),
+        _Sortable(UserSortKey(primary: 1, secondary: ''), 'b'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1235'), 'c'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234-5678-9abc'), 'd'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234-5679'), 'e'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234-5678'), 'f'),
+      ]);
+
+      list.userSort();
+      expect(list, const [
+        _Sortable(UserSortKey(primary: 1, secondary: ''), 'b'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'a'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234-5678'), 'f'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234-5678-9abc'), 'd'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234-5679'), 'e'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1235'), 'c'),
+      ]);
+    });
+
+    test(
+        'GIVEN a list of UserSortable objects '
+        'AND some UserSortKey values are equal '
+        'THEN those items are sorted by the sortFallback', () {
+      final list = List<UserSortable>.from(const [
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'e'),
+        _Sortable(UserSortKey(primary: 2, secondary: '1234'), 'd'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'c'),
+        _Sortable(UserSortKey(primary: 3, secondary: '1234'), 'b'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'a'),
+      ]);
+      list.userSort();
+      expect(list, const [
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'a'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'c'),
+        _Sortable(UserSortKey(primary: 1, secondary: '1234'), 'e'),
+        _Sortable(UserSortKey(primary: 2, secondary: '1234'), 'd'),
+        _Sortable(UserSortKey(primary: 3, secondary: '1234'), 'b'),
+      ]);
+    });
+  });
+}
+
+class _Sortable implements UserSortable {
+  const _Sortable(this.sortKey, this.name);
+  @override
+  final UserSortKey sortKey;
+  final String name;
+
+  @override
+  String get sortFallback => name;
+
+  @override
+  String toString() => '$_Sortable($sortKey, $name)';
 }
