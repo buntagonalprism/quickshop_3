@@ -120,6 +120,13 @@ Release pipeline behaviour:
 
 This approach ensures there will be only a single production release build with a given semantic version number. 
 
+To release a hotfix:
+1. Checkout the release branch `release/<MAJOR>.<MINOR>`
+2. Increment the patch number of the the `version` property in `pubspec.yaml` and add an entry describing the fix in this release in `CHANGELOG.md`
+3. Manually run the `Prod - Build and Deploy` pipeline in github actions.
+4. Cherry pick the hotfix back to master, if the fix is not already in master
+
+
 ## Localization
 This project generates localized messages based on arb files found in
 the `lib/localization` directory.
