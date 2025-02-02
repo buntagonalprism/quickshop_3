@@ -1,3 +1,6 @@
+# 0.3.1 - 2025-02-03
+Fix to open the correct list details page after creating a new checklist.
+
 # 0.3.0 - 2025-02-03
 - Checklists can be created and shared. 
 - Checklist items can be reordered and grouped under headings. 

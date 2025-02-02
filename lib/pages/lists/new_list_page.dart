@@ -105,7 +105,14 @@ class _NewListPageState extends ConsumerState<NewListPage> {
     setState(() => createInProgress = true);
     try {
       final listId = await ref.read(listRepoProvider.notifier).createList(name, listType);
-      ref.read(routerProvider).pushReplacement(Routes.shoppingListDetail(listId).path);
+      switch (listType) {
+        case ListType.shoppingList:
+          ref.read(routerProvider).pushReplacement(Routes.shoppingListDetail(listId).path);
+          break;
+        case ListType.checklist:
+          ref.read(routerProvider).pushReplacement(Routes.checklistDetail(listId).path);
+          break;
+      }
     } catch (e, t) {
       ref.read(crashReporterProvider).report(e, t);
       if (mounted) {
