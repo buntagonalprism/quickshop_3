@@ -1,3 +1,8 @@
+# 0.3.0 - 2025-02-03
+- Checklists can be created and shared. 
+- Checklist items can be reordered and grouped under headings. 
+- Checklist items can be reset to allow reusing the list. 
+
 # 0.2.0 - 2024-12-18
 Shopping lists can be created and shared. Shopping list items are grouped by category. 
 
