@@ -1,3 +1,6 @@
+# 0.3.2 - 2025-02-04
+Fix to not show the leave list option to list owners. 
+
 # 0.3.1 - 2025-02-03
 Fix to open the correct list details page after creating a new checklist.
 
