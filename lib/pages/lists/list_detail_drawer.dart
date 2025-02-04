@@ -101,7 +101,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               onTap: () => onDeleteList(list!),
             )
           ],
-          if (isEditor)
+          if (isEditor && !isOwner)
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Leave list'),
