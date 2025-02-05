@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
-import '../models/list_summary.dart';
 import '../models/shopping_item.dart';
 import '../services/firestore.dart';
 import 'delay_provider_dispose.dart';
 import 'list_leave_in_progress_repo.dart';
+import 'list_repo.dart';
 import 'user_repo.dart';
 
 part 'shopping_list_item_repo.g.dart';
@@ -44,12 +44,8 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     );
     final batch = fs.batch();
     final itemDoc = fs.collection('lists/$listId/items').doc();
-    final listDoc = fs.doc('lists/$listId');
     batch.set(itemDoc, _toFirestore(item));
-    batch.update(listDoc, {
-      ListSummary.fields.itemCount: FieldValue.increment(1),
-      '${ListSummary.fields.lastModified}.${user.id}': DateTime.now().millisecondsSinceEpoch,
-    });
+    incrementListItemCount(ref, batch, listId, 1);
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemCreated());
   }
@@ -63,14 +59,9 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
 
   Future<void> deleteItem(ShoppingItem item) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userRepoProvider);
-    final listDoc = fs.doc('lists/$listId');
     final batch = fs.batch();
     batch.delete(fs.doc(item.path));
-    batch.update(listDoc, {
-      ListSummary.fields.itemCount: FieldValue.increment(-1),
-      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
-    });
+    incrementListItemCount(ref, batch, listId, -1);
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemDeleted());
   }
@@ -82,18 +73,14 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     required List<String> newCategories,
   }) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userRepoProvider);
     final batch = fs.batch();
     final itemDoc = fs.doc(item.path);
-    final listDoc = fs.doc('lists/$listId');
     batch.update(itemDoc, {
       _Fields.name: newName,
       _Fields.quantity: newQuantity,
       _Fields.categories: newCategories,
     });
-    batch.update(listDoc, {
-      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
-    });
+    updateListModified(ref, batch, listId);
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemUpdated());
   }
@@ -103,7 +90,6 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final user = ref.read(userRepoProvider);
     final itemDocs = await fs.collection('lists/$listId/items').get();
     final items = itemDocs.docs.map(_fromFirestore);
-    final listDoc = fs.doc('lists/$listId');
 
     final batch = fs.batch();
 
@@ -114,10 +100,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
         batch.delete(fs.doc(item.path));
       }
     }
-    batch.update(listDoc, {
-      ListSummary.fields.itemCount: FieldValue.increment(-deletedCount),
-      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
-    });
+    incrementListItemCount(ref, batch, listId, -deletedCount);
 
     // Because we want to prioritize offline support, deletes are not performed in a transaction.
     // This means that concurrent deletes could cause the itemCount to be incorrect. Creating this
@@ -125,7 +108,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final deleteDoc = fs.collection('lists/$listId/_itemDeletes').doc();
     batch.set(deleteDoc, {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
-      'userId': user.id,
+      'userId': user!.id,
       'deletedCount': deletedCount
     });
     await batch.commit();

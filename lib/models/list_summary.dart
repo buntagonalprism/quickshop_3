@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'user.dart';
@@ -29,51 +28,6 @@ class ListSummary with _$ListSummary {
     required Map<String, int> lastModified,
     required ListType listType,
   }) = _ListSummary;
-
-  factory ListSummary.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
-    return ListSummary.fromJson(doc.data()!, doc.id);
-  }
-
-  factory ListSummary.fromJson(Map<String, dynamic> json, String listId) {
-    return ListSummary(
-      id: listId,
-      name: json[fields.name],
-      ownerId: json['ownerId'],
-      editorIds: List<String>.from(json[fields.editorIds]),
-      editors: List<User>.from(List<Map<String, dynamic>>.from(json['editors']).map(User.fromJson)),
-      itemCount: json[fields.itemCount],
-      lastModified: Map<String, int>.from(json[fields.lastModified]),
-      listType: parseListType(json['listType']),
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      fields.name: name,
-      'ownerId': ownerId,
-      fields.editorIds: editorIds,
-      'editors': editors
-          .map((e) => {
-                'id': e.id,
-                'name': e.name,
-                'email': e.email,
-              })
-          .toList(),
-      fields.itemCount: itemCount,
-      fields.lastModified: lastModified,
-      'listType': listType.name,
-    };
-  }
-
-  static const ListSummaryFields fields = ListSummaryFields();
-}
-
-class ListSummaryFields {
-  const ListSummaryFields();
-  final String name = 'name';
-  final String editorIds = 'editorIds';
-  final String itemCount = 'itemCount';
-  final String lastModified = 'lastModified';
 }
 
 enum ListType {

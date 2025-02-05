@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
+import '../models/user.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
 import '../services/http_result.dart';
@@ -23,10 +25,10 @@ class ListRepo extends _$ListRepo {
     }
     return fs
         .collection('lists')
-        .where(ListSummary.fields.editorIds, arrayContains: user.id)
+        .where(_Fields.editorIds, arrayContains: user.id)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map(ListSummary.fromFirestore).toList()
+      return snapshot.docs.map(_fromFirestore).toList()
         ..sort((a, b) => (b.lastModified[user.id] ?? 0).compareTo(a.lastModified[user.id] ?? 0));
     });
   }
@@ -48,7 +50,7 @@ class ListRepo extends _$ListRepo {
       lastModified: {user.id: DateTime.now().millisecondsSinceEpoch},
       listType: listType,
     );
-    final listDoc = await fs.collection('lists').add(list.toFirestore());
+    final listDoc = await fs.collection('lists').add(_toFirestore(list));
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listCreated(listType));
     return listDoc.id;
   }
@@ -57,8 +59,8 @@ class ListRepo extends _$ListRepo {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     await fs.collection('lists').doc(list.id).update({
-      ListSummary.fields.name: name,
-      '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+      _Fields.name: name,
+      '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
     });
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listRenamed(list.listType));
   }
@@ -107,4 +109,65 @@ enum AcceptInviteResult {
   success,
   retryableError,
   unknownError,
+}
+
+void updateListModified(Ref ref, WriteBatch batch, String listId) {
+  final user = ref.watch(userRepoProvider);
+  final fs = ref.read(firestoreProvider);
+  final listDoc = fs.doc('lists/$listId');
+  batch.update(listDoc, {
+    '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+  });
+}
+
+void incrementListItemCount(Ref ref, WriteBatch batch, String listId, int delta) {
+  final user = ref.watch(userRepoProvider);
+  final fs = ref.read(firestoreProvider);
+  final listDoc = fs.doc('lists/$listId');
+  batch.update(listDoc, {
+    '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+    _Fields.itemCount: FieldValue.increment(delta),
+  });
+}
+
+ListSummary _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+  return _fromJson(doc.data()!, doc.id);
+}
+
+ListSummary _fromJson(Map<String, dynamic> json, String listId) {
+  return ListSummary(
+    id: listId,
+    name: json[_Fields.name],
+    ownerId: json['ownerId'],
+    editorIds: List<String>.from(json[_Fields.editorIds]),
+    editors: List<User>.from(List<Map<String, dynamic>>.from(json['editors']).map(User.fromJson)),
+    itemCount: json[_Fields.itemCount],
+    lastModified: Map<String, int>.from(json[_Fields.lastModified]),
+    listType: parseListType(json['listType']),
+  );
+}
+
+Map<String, dynamic> _toFirestore(ListSummary list) {
+  return {
+    _Fields.name: list.name,
+    'ownerId': list.ownerId,
+    _Fields.editorIds: list.editorIds,
+    'editors': list.editors
+        .map((e) => {
+              'id': e.id,
+              'name': e.name,
+              'email': e.email,
+            })
+        .toList(),
+    _Fields.itemCount: list.itemCount,
+    _Fields.lastModified: list.lastModified,
+    'listType': list.listType.name,
+  };
+}
+
+class _Fields {
+  static const String name = 'name';
+  static const String editorIds = 'editorIds';
+  static const String itemCount = 'itemCount';
+  static const String lastModified = 'lastModified';
 }
