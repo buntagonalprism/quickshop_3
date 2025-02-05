@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
@@ -21,7 +22,7 @@ Stream<ListInvite?> listInviteById(Ref ref, String inviteId) {
     if (!snapshot.exists) {
       return null;
     }
-    return ListInvite.fromFirestore(snapshot);
+    return _fromFirestore(snapshot);
   });
 }
 
@@ -46,7 +47,7 @@ Stream<ListInvite?> userListInviteByListId(Ref ref, String listId) {
       return null;
     }
     final doc = snapshot.docs.first;
-    return ListInvite.fromFirestore(doc);
+    return _fromFirestore(doc);
   });
 }
 
@@ -75,7 +76,7 @@ class ListInviteRepo {
       inviterId: user.id,
       inviterName: user.name.isNotEmpty ? user.name : user.email,
     );
-    await fs.collection('invites').doc(invite.id).set(invite.toFirestore());
+    await fs.collection('invites').doc(invite.id).set(_toFirestore(invite));
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listInviteCreated(list.listType));
   }
 
@@ -84,4 +85,25 @@ class ListInviteRepo {
     await fs.collection('invites').doc(invite.id).delete();
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listInviteDeleted(invite.listType));
   }
+}
+
+ListInvite _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+  return ListInvite(
+    id: doc.id,
+    listId: doc['listId'],
+    listType: parseListType(doc['listType']),
+    listName: doc['listName'],
+    inviterId: doc['inviterId'],
+    inviterName: doc['inviterName'],
+  );
+}
+
+Map<String, dynamic> _toFirestore(ListInvite invite) {
+  return {
+    'listId': invite.listId,
+    'listType': invite.listType.name,
+    'listName': invite.listName,
+    'inviterId': invite.inviterId,
+    'inviterName': invite.inviterName,
+  };
 }

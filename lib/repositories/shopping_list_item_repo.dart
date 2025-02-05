@@ -22,7 +22,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     ref.delayDispose(const Duration(minutes: 15));
     final fs = ref.watch(firestoreProvider);
     return fs.collection('lists/$listId/items').snapshots().map((snapshot) {
-      return snapshot.docs.map(ShoppingItem.fromFirestore).toList();
+      return snapshot.docs.map(_fromFirestore).toList();
     });
   }
 
@@ -45,7 +45,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final batch = fs.batch();
     final itemDoc = fs.collection('lists/$listId/items').doc();
     final listDoc = fs.doc('lists/$listId');
-    batch.set(itemDoc, item.toFirestore());
+    batch.set(itemDoc, _toFirestore(item));
     batch.update(listDoc, {
       ListSummary.fields.itemCount: FieldValue.increment(1),
       '${ListSummary.fields.lastModified}.${user.id}': DateTime.now().millisecondsSinceEpoch,
@@ -57,7 +57,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   Future<void> toggleItem(ShoppingItem item) async {
     final fs = ref.read(firestoreProvider);
     await fs.doc(item.path).update({
-      ShoppingItem.fields.completed: !item.completed,
+      _Fields.completed: !item.completed,
     });
   }
 
@@ -87,9 +87,9 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final itemDoc = fs.doc(item.path);
     final listDoc = fs.doc('lists/$listId');
     batch.update(itemDoc, {
-      ShoppingItem.fields.name: newName,
-      ShoppingItem.fields.quantity: newQuantity,
-      ShoppingItem.fields.categories: newCategories,
+      _Fields.name: newName,
+      _Fields.quantity: newQuantity,
+      _Fields.categories: newCategories,
     });
     batch.update(listDoc, {
       '${ListSummary.fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
@@ -102,7 +102,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
     final itemDocs = await fs.collection('lists/$listId/items').get();
-    final items = itemDocs.docs.map(ShoppingItem.fromFirestore);
+    final items = itemDocs.docs.map(_fromFirestore);
     final listDoc = fs.doc('lists/$listId');
 
     final batch = fs.batch();
@@ -132,4 +132,33 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemsBatchDeleted());
     return deletedCount;
   }
+}
+
+ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+  return ShoppingItem(
+    path: doc.reference.path,
+    id: doc.id,
+    name: doc[_Fields.name],
+    quantity: doc[_Fields.quantity],
+    categories: (doc[_Fields.categories] as List).cast<String>(),
+    addedByUserId: doc['addedByUserId'],
+    completed: doc[_Fields.completed],
+  );
+}
+
+Map<String, dynamic> _toFirestore(ShoppingItem item) {
+  return {
+    _Fields.name: item.name,
+    _Fields.quantity: item.quantity,
+    _Fields.categories: item.categories,
+    'addedByUserId': item.addedByUserId,
+    _Fields.completed: item.completed,
+  };
+}
+
+class _Fields {
+  static const String completed = 'completed';
+  static const String name = 'name';
+  static const String quantity = 'quantity';
+  static const String categories = 'categories';
 }

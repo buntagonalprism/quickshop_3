@@ -6,7 +6,7 @@ part of 'list_invite_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listInviteByIdHash() => r'cae1b10c96e8d9b39ce064e21e62bf872d461523';
+String _$listInviteByIdHash() => r'8919dead5d4c8e753e0817c34cfee8933abc7070';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -183,7 +183,7 @@ class _ListInviteByIdProviderElement
 }
 
 String _$userListInviteByListIdHash() =>
-    r'5a13a9867f37a64d07e0092f5f43dbb3a0025355';
+    r'029c031d36762f21c6a8b055ed3a500c08a013a2';
 
 /// Load the currently authenticated user's personal list invite for sharing a given list.
 ///
