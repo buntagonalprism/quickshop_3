@@ -37,8 +37,13 @@ class ListsPage extends ConsumerWidget {
           return const ListsEmptyView();
         }
         return ListView.builder(
-          itemCount: lists.length,
+          itemCount: lists.length + 1,
           itemBuilder: (context, index) {
+            // Add a spacer at the bottom so that we can overscroll the list, preventing the FAB
+            // from covering the last list item
+            if (index == lists.length) {
+              return const SizedBox(height: 80);
+            }
             final listSummary = lists[index];
             return ListSummaryTile(listSummary: listSummary);
           },

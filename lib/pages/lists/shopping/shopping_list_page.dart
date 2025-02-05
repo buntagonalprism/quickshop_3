@@ -93,11 +93,18 @@ class ShoppingListContentsView extends StatelessWidget {
       return const ShoppingListEmptyView();
     }
     return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) => items[index].when(
-        item: (item) => ShoppingItemTile(list: list, item: item),
-        category: (category) => ShoppingCategoryHeader(categoryName: category),
-      ),
+      itemCount: items.length + 1,
+      itemBuilder: (context, index) {
+        // Add a spacer at the bottom so that we can overscroll the list, preventing the FAB
+        // from covering the last list item
+        if (index == items.length) {
+          return const SizedBox(height: 80);
+        }
+        return items[index].when(
+          item: (item) => ShoppingItemTile(list: list, item: item),
+          category: (category) => ShoppingCategoryHeader(categoryName: category),
+        );
+      },
     );
   }
 }
