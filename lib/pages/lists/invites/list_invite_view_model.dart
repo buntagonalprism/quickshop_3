@@ -25,7 +25,7 @@ class ListInviteViewModel with _$ListInviteViewModel {
 
 @riverpod
 ListInviteViewModel listInviteState(Ref ref, String inviteId) {
-  final inviteAsyncValue = ref.watch(listInviteRepoProvider(inviteId));
+  final inviteAsyncValue = ref.watch(listInviteByIdProvider(inviteId));
   final listsAsyncValue = ref.watch(listRepoProvider);
   final user = ref.watch(userRepoProvider);
 

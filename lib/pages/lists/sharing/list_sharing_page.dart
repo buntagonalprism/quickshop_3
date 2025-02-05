@@ -7,8 +7,8 @@ import '../../../analytics/crash_reporter.dart';
 import '../../../models/list_invite.dart';
 import '../../../models/list_summary.dart';
 import '../../../models/user.dart';
+import '../../../repositories/list_invite_repo.dart';
 import '../../../repositories/list_repo.dart';
-import '../../../repositories/list_sharing_repo.dart';
 
 class ListSharingPage extends ConsumerStatefulWidget {
   const ListSharingPage({super.key, required this.listId});
@@ -95,7 +95,7 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
 
   @override
   Widget build(BuildContext context) {
-    final invite = ref.watch(listSharingRepoProvider(widget.list.id));
+    final invite = ref.watch(userListInviteByListIdProvider(widget.list.id));
     return Skeletonizer.zone(
       enabled: !invite.hasValue,
       child: Container(
@@ -208,9 +208,7 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
   void _createSharingLink() async {
     setState(() => linkCreationInProgress = true);
     try {
-      await ref
-          .read(listSharingRepoProvider(widget.list.id).notifier)
-          .createSharingLinkForList(widget.list);
+      await ref.read(listInviteRepoProvider).createSharingLinkForList(widget.list);
     } catch (error, trace) {
       ref.read(crashReporterProvider).report(error, trace);
     } finally {
@@ -225,7 +223,7 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
     }
     setState(() => linkDeletionInProgress = true);
     try {
-      ref.read(listSharingRepoProvider(widget.list.id).notifier).deleteSharingLink(inviteValue);
+      ref.read(listInviteRepoProvider).deleteSharingLink(inviteValue);
     } catch (error, trace) {
       ref.read(crashReporterProvider).report(error, trace);
     } finally {

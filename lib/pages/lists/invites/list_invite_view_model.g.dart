@@ -6,7 +6,7 @@ part of 'list_invite_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listInviteStateHash() => r'28594ca34f5296a67687227695f3b0324a52763a';
+String _$listInviteStateHash() => r'fe0557cf40aa4570cf1a3b3d35ba486b75cd43a0';
 
 /// Copied from Dart SDK
 class _SystemHash {
