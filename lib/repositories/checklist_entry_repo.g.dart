@@ -7,7 +7,7 @@ part of 'checklist_entry_repo.dart';
 // **************************************************************************
 
 String _$checklistEntryRepoHash() =>
-    r'f3cda7bcfc986f0ba300b4f08ac1f4cc28fd949f';
+    r'840f17c985d9d4e4fb0a797891319afa4a230ec9';
 
 /// Copied from Dart SDK
 class _SystemHash {

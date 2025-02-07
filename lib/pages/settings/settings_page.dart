@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../repositories/settings_repo.dart';
+import '../../services/package_info.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
@@ -19,16 +20,11 @@ class SettingsPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            // Glue the SettingsController to the theme selection DropdownButton.
-            //
-            // When a user selects a theme from the dropdown list, the
-            // SettingsController is updated, which rebuilds the MaterialApp.
-            child: DropdownButton<ThemeMode>(
-              // Read the selected themeMode from the controller
+          ListTile(
+            leading: const Icon(Icons.light_mode),
+            title: const Text('Display theme'),
+            trailing: DropdownButton<ThemeMode>(
               value: settings.themeMode,
-              // Call the updateThemeMode method any time the user selects a theme.
               onChanged: (value) {
                 if (value != null) {
                   ref.read(settingsRepoProvider.notifier).updateThemeMode(value);
@@ -37,18 +33,27 @@ class SettingsPage extends ConsumerWidget {
               items: const [
                 DropdownMenuItem(
                   value: ThemeMode.system,
-                  child: Text('System Theme'),
+                  child: Text('System'),
                 ),
                 DropdownMenuItem(
                   value: ThemeMode.light,
-                  child: Text('Light Theme'),
+                  child: Text('Light'),
                 ),
                 DropdownMenuItem(
                   value: ThemeMode.dark,
-                  child: Text('Dark Theme'),
+                  child: Text('Dark'),
                 )
               ],
             ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.info_outline),
+            title: Consumer(builder: (context, ref, _) {
+              final versionAsync = ref.watch(packageInfoProvider);
+              if (versionAsync.isLoading) return const CircularProgressIndicator();
+              final version = versionAsync.requireValue;
+              return Text('Version: ${version.version}+${version.buildNumber}');
+            }),
           ),
           ElevatedButton(
             onPressed: () {
