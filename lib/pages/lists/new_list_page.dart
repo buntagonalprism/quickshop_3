@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,7 +6,6 @@ import '../../analytics/crash_reporter.dart';
 import '../../models/list_summary.dart';
 import '../../repositories/list_repo.dart';
 import '../../router.dart';
-import '../../widgets/button_progress_indicator.dart';
 
 class NewListPage extends ConsumerStatefulWidget {
   const NewListPage({super.key});
@@ -14,83 +14,151 @@ class NewListPage extends ConsumerStatefulWidget {
   ConsumerState<NewListPage> createState() => _NewListPageState();
 }
 
-class _NewListPageState extends ConsumerState<NewListPage> {
+class _NewListPageState extends ConsumerState<NewListPage> with SingleTickerProviderStateMixin {
+  late final TabController tabController = TabController(length: 2, vsync: this);
+  ListType? listType;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: listType == null,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) {
+          return;
+        }
+        setState(() => listType = null);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('New list'),
+        ),
+        body: PageTransitionSwitcher(
+          reverse: listType == null,
+          transitionBuilder: (
+            Widget child,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,
+            );
+          },
+          child: listType != null
+              ? InputListNameTab(type: listType!)
+              : SelectListTypeTab(
+                  onSelect: (type) => setState(() => listType = type),
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+class SelectListTypeTab extends StatelessWidget {
+  final Function(ListType) onSelect;
+
+  const SelectListTypeTab({super.key, required this.onSelect});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              'What type of list would you like to create?',
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: 16),
+            ListTypeTile(
+              title: 'Shopping List',
+              description:
+                  'Shopping list items have categories - like bakery, dairy, spices, or toiletries, which allow sorting the list by aisle while shopping in a supermarket',
+              icon: Padding(
+                padding: const EdgeInsets.all(1),
+                child: Image.asset(
+                  'assets/logo/logo_grey_small.png',
+                  height: 30,
+                  width: 30,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              onTap: () => onSelect(ListType.shoppingList),
+            ),
+            const SizedBox(height: 16),
+            ListTypeTile(
+              title: 'Checklist',
+              description:
+                  'A checklist is a simple list of items to complete. They can be grouped under headings and sorted arbitrarily',
+              icon: Padding(
+                padding: const EdgeInsets.all(2),
+                child: Icon(
+                  Icons.check_box_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 28,
+                ),
+              ),
+              onTap: () => onSelect(ListType.checklist),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InputListNameTab extends ConsumerStatefulWidget {
+  const InputListNameTab({required this.type, super.key});
+  final ListType type;
+
+  @override
+  ConsumerState<InputListNameTab> createState() => _InputListNameTabState();
+}
+
+class _InputListNameTabState extends ConsumerState<InputListNameTab> {
   final TextEditingController _nameController = TextEditingController();
   String? errorText;
-  ListType listType = ListType.shoppingList;
   bool createInProgress = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('New list'),
-      ),
-      body: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        labelText: 'List name',
-                        errorText: errorText,
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text('Shopping List'),
-                      leading: Radio<ListType>(
-                        value: ListType.shoppingList,
-                        groupValue: listType,
-                        onChanged: (ListType? value) => setState(() => listType = value!),
-                      ),
-                      trailing: Image.asset(
-                        'assets/logo/logo.png',
-                        height: 24,
-                        width: 24,
-                      ),
-                    ),
-                    const Text(
-                        'A shopping list is a list of items with categories - like bakery, dairy, spices, or toiletries. These categories allow sorting the list by aisle while shopping in a store or supermarket.'),
-                    ListTile(
-                      title: const Text('Checklist'),
-                      leading: Radio<ListType>(
-                        value: ListType.checklist,
-                        groupValue: listType,
-                        onChanged: (ListType? value) => setState(() => listType = value!),
-                      ),
-                    ),
-                    const Text('A checklist is a simple list of items without categories'),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
+          const SizedBox(height: 16),
+          Text.rich(
+            TextSpan(
+              text: 'Enter a name for your ',
               children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () => ref.read(routerProvider).pop(),
-                    child: const Text('Cancel'),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: createInProgress ? null : _onSubmit,
-                    child:
-                        createInProgress ? const ButtonProgressIndicator() : const Text('Create'),
-                  ),
+                TextSpan(
+                  text: widget.type.displayName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-          )
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            decoration: const InputDecoration(labelText: 'List name'),
+            autofocus: true,
+            controller: _nameController,
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: _onSubmit,
+            child: const Text('Create list'),
+          ),
         ],
       ),
     );
@@ -104,8 +172,8 @@ class _NewListPageState extends ConsumerState<NewListPage> {
     }
     setState(() => createInProgress = true);
     try {
-      final listId = await ref.read(listRepoProvider.notifier).createList(name, listType);
-      switch (listType) {
+      final listId = await ref.read(listRepoProvider.notifier).createList(name, widget.type);
+      switch (widget.type) {
         case ListType.shoppingList:
           ref.read(routerProvider).pushReplacement(Routes.shoppingListDetail(listId).path);
           break;
@@ -123,5 +191,47 @@ class _NewListPageState extends ConsumerState<NewListPage> {
     } finally {
       setState(() => createInProgress = false);
     }
+  }
+}
+
+class ListTypeTile extends StatelessWidget {
+  const ListTypeTile({
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.onTap,
+    super.key,
+  });
+
+  final String title;
+  final String description;
+  final Widget icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).colorScheme.primary),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                icon,
+                const SizedBox(width: 8),
+                Text(title, style: Theme.of(context).textTheme.headlineSmall),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(description, style: Theme.of(context).textTheme.bodyLarge),
+          ],
+        ),
+      ),
+    );
   }
 }
