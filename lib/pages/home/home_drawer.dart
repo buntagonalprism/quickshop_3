@@ -21,10 +21,11 @@ class HomeDrawer extends ConsumerWidget {
             decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(
                   Icons.account_circle,
-                  size: 100,
+                  size: 64,
                   color: Colors.white,
                 ),
                 Text(
@@ -34,6 +35,14 @@ class HomeDrawer extends ConsumerWidget {
                     fontSize: 24,
                   ),
                 ),
+                if (user?.name != null && user?.email != null)
+                  Text(
+                    user!.email,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
               ],
             ),
           ),
