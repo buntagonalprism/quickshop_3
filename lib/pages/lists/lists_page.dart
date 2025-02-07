@@ -176,8 +176,16 @@ class ListSummaryIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (listSummary.listType) {
-      ListType.shoppingList => const Icon(Icons.shopping_cart),
-      ListType.checklist => const Icon(Icons.check_box_outlined),
+      ListType.shoppingList => Image.asset(
+          'assets/logo/logo_grey_small.png',
+          height: 26,
+          width: 26,
+          color: Theme.of(context).iconTheme.color,
+        ),
+      ListType.checklist => const Padding(
+          padding: EdgeInsets.all(1),
+          child: Icon(Icons.check_box_outlined, size: 24),
+        ),
     };
   }
 }
