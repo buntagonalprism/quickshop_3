@@ -29,7 +29,8 @@ class LoginEmailPage extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       return Scaffold(
         appBar: AppBar(),
-        body: SignInScreen(
+        body: RegisterScreen(
+          showPasswordVisibilityToggle: true,
           providers: [
             EmailAuthProvider(),
           ],
