@@ -2,9 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../analytics/logger.dart';
-import '../../../data/category_suggestions.dart' as data;
-import '../../../services/sqlite_db.dart';
+import '../../../../analytics/logger.dart';
+import '../../../../data/category_suggestions.dart' as data;
+import '../../../../services/sqlite_db.dart';
 
 part 'category_selector_view_model.freezed.dart';
 part 'category_selector_view_model.g.dart';

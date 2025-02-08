@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/shopping_item.dart';
-import '../../../repositories/shopping_list_item_repo.dart';
-import '../../../repositories/tooltips_repo.dart';
-import '../../../router.dart';
-import '../../../widgets/toggle_tooltip.dart';
+import '../../../../models/shopping_item.dart';
+import '../../../../repositories/shopping_list_item_repo.dart';
+import '../../../../repositories/tooltips_repo.dart';
+import '../../../../router.dart';
+import '../../../../widgets/toggle_tooltip.dart';
 import 'category_selector.dart';
 
 class ShoppingItemView extends ConsumerStatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../repositories/tooltips_repo.dart';
-import '../../../widgets/toggle_tooltip.dart';
+import '../../../../repositories/tooltips_repo.dart';
+import '../../../../widgets/toggle_tooltip.dart';
 import 'category_selector_view_model.dart';
 
 class CategorySelector extends StatefulWidget {
