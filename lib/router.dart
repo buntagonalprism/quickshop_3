@@ -14,8 +14,8 @@ import 'pages/lists/invites/list_invite_details_page.dart';
 import 'pages/lists/lists_page.dart';
 import 'pages/lists/new_list_page.dart';
 import 'pages/lists/sharing/list_sharing_page.dart';
-import 'pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'pages/lists/shopping/items/shopping_item_edit_page.dart';
+import 'pages/lists/shopping/items/shopping_item_search_page.dart';
 import 'pages/lists/shopping/shopping_list_page.dart';
 import 'pages/login/login_email_page.dart';
 import 'pages/login/login_landing_page.dart';
@@ -102,7 +102,7 @@ GoRouter router(Ref ref) {
                       GoRoute(
                         path: '${_RouteSegments.items}/new',
                         parentNavigatorKey: _rootNavigatorKey,
-                        builder: (context, state) => ShoppingItemCreatePage(
+                        builder: (context, state) => ShoppingItemSearchPage(
                           listId: state.pathParameters[_RouteParams.listId]!,
                         ),
                       ),
