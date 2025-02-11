@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,30 +26,26 @@ class _NewListPageState extends ConsumerState<NewListPage> with SingleTickerProv
           return;
         }
         setState(() => listType = null);
+        tabController.animateTo(0);
       },
       child: Scaffold(
         appBar: AppBar(
           title: const Text('New list'),
         ),
-        body: PageTransitionSwitcher(
-          reverse: listType == null,
-          transitionBuilder: (
-            Widget child,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return SharedAxisTransition(
-              animation: animation,
-              secondaryAnimation: secondaryAnimation,
-              transitionType: SharedAxisTransitionType.horizontal,
-              child: child,
-            );
-          },
-          child: listType != null
-              ? InputListNameTab(type: listType!)
-              : SelectListTypeTab(
-                  onSelect: (type) => setState(() => listType = type),
-                ),
+        body: TabBarView(
+          controller: tabController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            SelectListTypeTab(
+              onSelect: (type) {
+                setState(() => listType = type);
+                // This lets the [InputListNameTab] build method run before the animation starts
+                // so it can display the correct list type name during the animation
+                WidgetsBinding.instance.addPostFrameCallback((_) => tabController.animateTo(1));
+              },
+            ),
+            InputListNameTab(type: listType ?? ListType.shoppingList),
+          ],
         ),
       ),
     );
@@ -69,6 +64,7 @@ class SelectListTypeTab extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
             Text(
