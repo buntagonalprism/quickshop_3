@@ -9,7 +9,7 @@ import 'list_leave_in_progress_repo.dart';
 import 'list_repo.dart';
 import 'user_repo.dart';
 
-part 'shopping_list_item_repo.g.dart';
+part 'shopping_item_repo.g.dart';
 
 @riverpod
 class ShoppingListItemRepo extends _$ShoppingListItemRepo {

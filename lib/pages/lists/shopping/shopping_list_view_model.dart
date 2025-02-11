@@ -6,7 +6,7 @@ import '../../../analytics/crash_reporter.dart';
 import '../../../models/list_summary.dart';
 import '../../../models/shopping_item.dart';
 import '../../../repositories/list_repo.dart';
-import '../../../repositories/shopping_list_item_repo.dart';
+import '../../../repositories/shopping_item_repo.dart';
 
 part 'shopping_list_view_model.freezed.dart';
 part 'shopping_list_view_model.g.dart';
