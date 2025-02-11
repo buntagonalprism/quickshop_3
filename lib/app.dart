@@ -47,12 +47,19 @@ class MyApp extends StatelessWidget {
           // SettingsController to display the correct theme.
           theme: ThemeData().copyWith(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+            inputDecorationTheme: const InputDecorationTheme(
+              border: OutlineInputBorder(),
+            ),
           ),
           darkTheme: ThemeData.dark().copyWith(
-              colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.orange,
-            brightness: Brightness.dark,
-          )),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.orange,
+              brightness: Brightness.dark,
+            ),
+            inputDecorationTheme: const InputDecorationTheme(
+              border: OutlineInputBorder(),
+            ),
+          ),
           themeMode: ref.watch(settingsRepoProvider).themeMode,
 
           routerConfig: ref.watch(routerProvider),
