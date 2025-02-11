@@ -27,7 +27,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   }
 
   Future<void> addItem({
-    required String itemName,
+    required String productName,
     required String quantity,
     required List<String> categories,
   }) async {
@@ -36,7 +36,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final item = ShoppingItem(
       id: '',
       path: '',
-      name: itemName,
+      product: productName,
       quantity: quantity,
       categories: categories,
       addedByUserId: user!.id,
@@ -118,20 +118,21 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
 }
 
 ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+  final data = doc.data()!;
   return ShoppingItem(
     path: doc.reference.path,
     id: doc.id,
-    name: doc[_Fields.name],
-    quantity: doc[_Fields.quantity],
-    categories: (doc[_Fields.categories] as List).cast<String>(),
-    addedByUserId: doc['addedByUserId'],
-    completed: doc[_Fields.completed],
+    product: data.containsKey(_Fields.name) ? data[_Fields.name] : data[_Fields.product],
+    quantity: data[_Fields.quantity],
+    categories: (data[_Fields.categories] as List).cast<String>(),
+    addedByUserId: data['addedByUserId'],
+    completed: data[_Fields.completed],
   );
 }
 
 Map<String, dynamic> _toFirestore(ShoppingItem item) {
   return {
-    _Fields.name: item.name,
+    _Fields.product: item.product,
     _Fields.quantity: item.quantity,
     _Fields.categories: item.categories,
     'addedByUserId': item.addedByUserId,
@@ -141,7 +142,10 @@ Map<String, dynamic> _toFirestore(ShoppingItem item) {
 
 class _Fields {
   static const String completed = 'completed';
+  // Todo: Remove this deprecated 'name' field once migration to 'product' is complete
+  @Deprecated('Use product instead')
   static const String name = 'name';
+  static const String product = 'product';
   static const String quantity = 'quantity';
   static const String categories = 'categories';
 }

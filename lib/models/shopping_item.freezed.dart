@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ShoppingItem {
   String get id => throw _privateConstructorUsedError;
   String get path => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String get product => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
   String get addedByUserId => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $ShoppingItemCopyWith<$Res> {
   $Res call(
       {String id,
       String path,
-      String name,
+      String product,
       String quantity,
       List<String> categories,
       String addedByUserId,
@@ -64,7 +64,7 @@ class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
   $Res call({
     Object? id = null,
     Object? path = null,
-    Object? name = null,
+    Object? product = null,
     Object? quantity = null,
     Object? categories = null,
     Object? addedByUserId = null,
@@ -79,9 +79,9 @@ class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      product: null == product
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: null == quantity
           ? _value.quantity
@@ -114,7 +114,7 @@ abstract class _$$ShoppingItemImplCopyWith<$Res>
   $Res call(
       {String id,
       String path,
-      String name,
+      String product,
       String quantity,
       List<String> categories,
       String addedByUserId,
@@ -136,7 +136,7 @@ class __$$ShoppingItemImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? path = null,
-    Object? name = null,
+    Object? product = null,
     Object? quantity = null,
     Object? categories = null,
     Object? addedByUserId = null,
@@ -151,9 +151,9 @@ class __$$ShoppingItemImplCopyWithImpl<$Res>
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      product: null == product
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: null == quantity
           ? _value.quantity
@@ -181,7 +181,7 @@ class _$ShoppingItemImpl extends _ShoppingItem {
   const _$ShoppingItemImpl(
       {required this.id,
       required this.path,
-      required this.name,
+      required this.product,
       required this.quantity,
       required final List<String> categories,
       required this.addedByUserId,
@@ -194,7 +194,7 @@ class _$ShoppingItemImpl extends _ShoppingItem {
   @override
   final String path;
   @override
-  final String name;
+  final String product;
   @override
   final String quantity;
   final List<String> _categories;
@@ -212,7 +212,7 @@ class _$ShoppingItemImpl extends _ShoppingItem {
 
   @override
   String toString() {
-    return 'ShoppingItem(id: $id, path: $path, name: $name, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, completed: $completed)';
+    return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, completed: $completed)';
   }
 
   @override
@@ -222,7 +222,7 @@ class _$ShoppingItemImpl extends _ShoppingItem {
             other is _$ShoppingItemImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.path, path) || other.path == path) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.product, product) || other.product == product) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             const DeepCollectionEquality()
@@ -238,7 +238,7 @@ class _$ShoppingItemImpl extends _ShoppingItem {
       runtimeType,
       id,
       path,
-      name,
+      product,
       quantity,
       const DeepCollectionEquality().hash(_categories),
       addedByUserId,
@@ -257,7 +257,7 @@ abstract class _ShoppingItem extends ShoppingItem {
   const factory _ShoppingItem(
       {required final String id,
       required final String path,
-      required final String name,
+      required final String product,
       required final String quantity,
       required final List<String> categories,
       required final String addedByUserId,
@@ -269,7 +269,7 @@ abstract class _ShoppingItem extends ShoppingItem {
   @override
   String get path;
   @override
-  String get name;
+  String get product;
   @override
   String get quantity;
   @override

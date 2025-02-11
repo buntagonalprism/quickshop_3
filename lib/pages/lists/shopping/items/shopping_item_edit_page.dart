@@ -74,7 +74,7 @@ class ShoppingItemEditPage extends ConsumerWidget {
     ref.read(shoppingListItemRepoProvider(listId).notifier).deleteItem(item);
     ref.read(routerProvider).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Deleted item ${item.name}'),
+      content: Text('Deleted item ${item.displayName}'),
       duration: const Duration(milliseconds: 2400),
     ));
   }

@@ -81,7 +81,7 @@ ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
   }
 
   categoryItems.forEach((key, value) {
-    value.sort((a, b) => a.name.compareTo(b.name));
+    value.sort((a, b) => a.product.compareTo(b.product));
   });
   final categoryKeys = categoryItems.keys.toList()..sort();
   final pageItems = <ShoppingListPageItem>[];

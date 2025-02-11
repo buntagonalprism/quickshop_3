@@ -19,13 +19,13 @@ class ShoppingItemView extends ConsumerStatefulWidget {
 
 class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   List<String> selectedCategories = [];
-  late final TextEditingController nameController;
+  late final TextEditingController productController;
   late final TextEditingController quantityController;
   late final TextEditingController categoriesController = TextEditingController();
-  final nameFocusNode = FocusNode();
+  final productFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
   final categoriesFocusNode = FocusNode();
-  String? nameError;
+  String? productError;
   String? categoriesError;
 
   late final _Mode mode;
@@ -33,23 +33,23 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.item?.name);
+    productController = TextEditingController(text: widget.item?.product);
     quantityController = TextEditingController(text: widget.item?.quantity);
     selectedCategories = widget.item?.categories ?? [];
     mode = widget.item == null ? _Mode.create : _Mode.edit;
-    nameController.addListener(onNameChanges);
+    productController.addListener(onProductChanges);
   }
 
-  void onNameChanges() {
-    if (nameError != null && nameController.text.isNotEmpty) {
-      setState(() => nameError = null);
+  void onProductChanges() {
+    if (productError != null && productController.text.isNotEmpty) {
+      setState(() => productError = null);
     }
   }
 
   @override
   void dispose() {
-    nameFocusNode.dispose();
-    nameController.dispose();
+    productFocusNode.dispose();
+    productController.dispose();
     categoriesController.dispose();
     super.dispose();
   }
@@ -68,20 +68,20 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                 children: [
                   TextField(
                     autofocus: true,
-                    focusNode: nameFocusNode,
+                    focusNode: productFocusNode,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
-                      labelText: 'Item name',
-                      hintText: 'Enter item name',
+                      labelText: 'Product name',
+                      hintText: 'Enter product name',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.normal,
                       ),
                       border: const OutlineInputBorder(),
-                      errorText: nameError,
+                      errorText: productError,
                     ),
-                    controller: nameController,
+                    controller: productController,
                     onSubmitted: (value) => quantityFocusNode.requestFocus(),
                   ),
                   const ToggleTooltip(
@@ -171,10 +171,10 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   }
 
   bool _validate() {
-    nameError = nameController.text.trim().isEmpty ? 'Please enter an item name' : null;
+    productError = productController.text.trim().isEmpty ? 'Please enter a product name' : null;
     categoriesError = selectedCategories.isEmpty ? 'Please select at least one category' : null;
     setState(() {});
-    return ![nameError, categoriesError].any((err) => err != null);
+    return ![productError, categoriesError].any((err) => err != null);
   }
 
   void _saveItem() {
@@ -186,10 +186,10 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   }
 
   void _saveNewItem() {
-    final name = nameController.text.trim();
+    final name = productController.text.trim();
     final quantity = quantityController.text.trim();
     ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addItem(
-          itemName: name,
+          productName: name,
           quantity: quantity,
           categories: selectedCategories,
         );
@@ -201,7 +201,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   }
 
   void _saveUpdatedItem() {
-    final name = nameController.text.trim();
+    final name = productController.text.trim();
     final quantity = quantityController.text.trim();
     ref.read(shoppingListItemRepoProvider(widget.listId).notifier).updateItem(
           item: widget.item!,
@@ -218,11 +218,11 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   }
 
   void _resetPage() {
-    nameController.clear();
+    productController.clear();
     quantityController.clear();
     categoriesController.clear();
     selectedCategories.clear();
-    nameFocusNode.requestFocus();
+    productFocusNode.requestFocus();
   }
 }
 

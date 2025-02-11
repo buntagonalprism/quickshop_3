@@ -9,12 +9,12 @@ class ShoppingItem with _$ShoppingItem {
   const factory ShoppingItem({
     required String id,
     required String path,
-    required String name,
+    required String product,
     required String quantity,
     required List<String> categories,
     required String addedByUserId,
     required bool completed,
   }) = _ShoppingItem;
 
-  String get displayName => quantity.isEmpty ? name : '$quantity $name';
+  String get displayName => quantity.isEmpty ? product : '$quantity $product';
 }
