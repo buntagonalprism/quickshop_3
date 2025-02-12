@@ -30,18 +30,38 @@ class ShoppingItemNameParser {
   /// parse('500g mince beef') == ParsedShoppingItem(product: 'mince beef', quantity: '500g');
   /// ```
   ParsedShoppingItem parse(String item) {
+    String product = item;
+    String quantity = '';
     final numericStart = RegExp('^(\\d+\\s+)').firstMatch(item);
     if (numericStart != null) {
-      final quantity = numericStart.group(1)!;
-      item = item.replaceFirst(quantity, '');
-      return ParsedShoppingItem(
-        product: item.trim(),
-        quantity: quantity.trim(),
-      );
+      quantity = numericStart.group(1)!;
+      product = product.replaceFirst(quantity, '');
+    }
+    for (final container in containers) {
+      if (product.toLowerCase().startsWith('$container ')) {
+        quantity += product.substring(0, container.length);
+        product = product.substring(container.length).trim();
+        break;
+      }
     }
     return ParsedShoppingItem(
-      product: item,
-      quantity: '',
+      product: product,
+      quantity: quantity,
     );
   }
 }
+
+final containers = [
+  'can',
+  'cans',
+  'bottle',
+  'bottles',
+  'packet',
+  'packets',
+  'jar',
+  'jars',
+  'box',
+  'boxes',
+  'bag',
+  'bags',
+];
