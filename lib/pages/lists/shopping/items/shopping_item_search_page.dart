@@ -145,15 +145,42 @@ class ItemSuggestionsList extends ConsumerWidget {
       itemCount: suggestions.length,
       itemBuilder: (context, index) {
         final suggestion = suggestions[index];
-        return ListTile(
-          title: Text(suggestion.displayName),
-          subtitle: Text(suggestion.categories.join(', ')),
-          leading: suggestion.source == ShoppingItemSuggestionSource.history
-              ? const Icon(Icons.history)
-              : null,
-        );
+        return switch (suggestion.source) {
+          ShoppingItemSuggestionSource.history => ListTile(
+              visualDensity: VisualDensity.compact,
+              title: Text(suggestion.displayName),
+              subtitle: Text(suggestion.categories.join(', ')),
+              trailing: const Icon(Icons.history),
+            ),
+          ShoppingItemSuggestionSource.suggested => ListTile(
+              visualDensity: VisualDensity.compact,
+              title: Text(suggestion.displayName),
+              subtitle: Text(suggestion.categories.join(', ')),
+            ),
+          ShoppingItemSuggestionSource.list => ListTile(
+              visualDensity: VisualDensity.compact,
+              contentPadding: const EdgeInsets.only(left: 16, right: 4),
+              title: Text(
+                suggestion.displayName,
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              ),
+              subtitle: const Text(
+                'Already on list',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              trailing: TextButton.icon(
+                onPressed: () => _onEditItem(suggestion),
+                label: const Text('Edit'),
+                icon: const Icon(Icons.edit),
+              ),
+            ),
+        };
       },
     );
+  }
+
+  void _onEditItem(ShoppingItemSuggestion suggestion) {
+    print('Edit item: ${suggestion.displayName}');
   }
 }
 

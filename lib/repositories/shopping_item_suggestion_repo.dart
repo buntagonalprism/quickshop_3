@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/item_suggestions.dart';
 import '../models/shopping_item_suggestion.dart';
 import '../services/shopping_item_name_parser.dart';
+import 'shopping_item_repo.dart';
 
 part 'shopping_item_suggestion_repo.g.dart';
 
@@ -39,6 +40,27 @@ class ShoppingItemSuggestionRepo {
         startMatches.add(suggestion);
       } else if (entry.key.toLowerCase().contains(product)) {
         middleMatches.add(suggestion);
+      }
+    }
+    final listItemsAsync = _ref.watch(shoppingListItemRepoProvider(listId));
+    if (listItemsAsync.hasValue) {
+      final listItems = listItemsAsync.requireValue;
+      for (var item in listItems) {
+        if (item.product.toLowerCase().startsWith(product)) {
+          startMatches.add(ShoppingItemSuggestion(
+            product: item.product,
+            categories: item.categories,
+            quantity: item.quantity,
+            source: ShoppingItemSuggestionSource.list,
+          ));
+        } else if (item.product.toLowerCase().contains(product)) {
+          middleMatches.add(ShoppingItemSuggestion(
+            product: item.product,
+            categories: item.categories,
+            quantity: item.quantity,
+            source: ShoppingItemSuggestionSource.list,
+          ));
+        }
       }
     }
     return [...startMatches, ...middleMatches];

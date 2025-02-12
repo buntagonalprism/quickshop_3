@@ -34,19 +34,19 @@ class ShoppingItemNameParser {
     String quantity = '';
     final numericStart = RegExp('^(\\d+\\s+)').firstMatch(item);
     if (numericStart != null) {
-      quantity = numericStart.group(1)!;
-      product = product.replaceFirst(quantity, '');
+      quantity = numericStart.group(1)!.trim();
+      product = product.replaceFirst(quantity, '').trim();
     }
     for (final container in containers) {
       if (product.toLowerCase().startsWith('$container ')) {
-        quantity += product.substring(0, container.length);
+        quantity += product.substring(0, container.length).trim();
         product = product.substring(container.length).trim();
         break;
       }
     }
     return ParsedShoppingItem(
-      product: product,
-      quantity: quantity,
+      product: product.trim(),
+      quantity: quantity.trim(),
     );
   }
 }
