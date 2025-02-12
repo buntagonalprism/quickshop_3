@@ -2,9 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../analytics/logger.dart';
 import '../../../../data/category_suggestions.dart' as data;
-import '../../../../services/sqlite_db.dart';
+import '../../../../repositories/shopping_category_suggestion_repo.dart';
 
 part 'category_selector_view_model.freezed.dart';
 part 'category_selector_view_model.g.dart';
@@ -41,28 +40,15 @@ class CategorySelectorViewModel {
   CategorySelectorViewModel._(this._ref);
 
   Future<List<CategorySelectorItem>> getItems(String filter) async {
-    final db = _ref.read(sqfliteDbProvider);
-    final log = _ref.read(loggerProvider);
-    final start = DateTime.now();
-    final categorySuggestionRows = await db.rawQuery(
-      'SELECT name FROM CategorySuggestions WHERE token LIKE ?',
-      ['${filter.toLowerCase()}%'],
-    );
-    final categorySuggestions = categorySuggestionRows.map((row) => row['name'] as String).toList();
-    log.captureSpan(start, 'Category suggestions query');
-    if (filter.isEmpty) {
-      return categorySuggestions
-          .map((suggestion) => CategorySelectorItem.suggestion(suggestion))
-          .toList();
-    }
-    final suggestions = categorySuggestions
-        .where((suggestion) => suggestion.toLowerCase().contains(filter.toLowerCase()))
-        .map((suggestion) => CategorySelectorItem.suggestion(suggestion))
+    final categoryRepo = _ref.read(shoppingCategorySuggestionRepoProvider);
+    final categorySuggestions = await categoryRepo.getSuggestions(filter);
+    final suggestionResults = categorySuggestions
+        .map((suggestion) => CategorySelectorItem.suggestion(suggestion.name))
         .toList();
-    if (suggestions.isEmpty || filter.length > 3) {
-      suggestions.insert(0, const CategorySelectorItem.newCategory());
+    if (suggestionResults.isEmpty || filter.length > 3) {
+      suggestionResults.insert(0, const CategorySelectorItem.newCategory());
     }
-    return suggestions;
+    return suggestionResults;
   }
 }
 

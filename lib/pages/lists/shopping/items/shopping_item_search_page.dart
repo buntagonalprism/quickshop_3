@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../models/shopping_item_suggestion.dart';
 import 'item_search_view_model.dart';
 import 'shopping_item_view.dart';
 
@@ -41,12 +42,15 @@ class _ShoppingItemSearchPageState extends ConsumerState<ShoppingItemSearchPage>
           controller: tabController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            ShoppingItemSearchView(onCategoryRequired: () {
-              tabController.animateTo(1);
-              setState(() {
-                // This triggers a rebuild so the PopScope can update its canPop value
-              });
-            }),
+            ShoppingItemSearchView(
+              onCategoryRequired: () {
+                tabController.animateTo(1);
+                setState(() {
+                  // This triggers a rebuild so the PopScope can update its canPop value
+                });
+              },
+              listId: widget.listId,
+            ),
             const ShoppingItemCategorySelectView(),
           ],
         ),
@@ -56,8 +60,9 @@ class _ShoppingItemSearchPageState extends ConsumerState<ShoppingItemSearchPage>
 }
 
 class ShoppingItemSearchView extends ConsumerStatefulWidget {
-  const ShoppingItemSearchView({required this.onCategoryRequired, super.key});
+  const ShoppingItemSearchView({required this.onCategoryRequired, required this.listId, super.key});
   final VoidCallback onCategoryRequired;
+  final String listId;
 
   @override
   ConsumerState<ShoppingItemSearchView> createState() => _ShoppingItemSearchViewState();
@@ -84,8 +89,9 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
         ),
       ),
       Expanded(
-        child:
-            filterValue.isEmpty ? const ItemSuggestionsPlaceholder() : const ItemSuggestionsList(),
+        child: filterValue.isEmpty
+            ? const ItemSuggestionsPlaceholder()
+            : ItemSuggestionsList(listId: widget.listId),
       ),
       Material(
         elevation: 4,
@@ -119,11 +125,12 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
 }
 
 class ItemSuggestionsList extends ConsumerWidget {
-  const ItemSuggestionsList({super.key});
+  const ItemSuggestionsList({required this.listId, super.key});
+  final String listId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final suggestionsAsync = ref.watch(itemSuggestionsProvider);
+    final suggestionsAsync = ref.watch(itemSuggestionsProvider(listId));
     if (suggestionsAsync.isLoading && !suggestionsAsync.hasValue) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -139,9 +146,11 @@ class ItemSuggestionsList extends ConsumerWidget {
       itemBuilder: (context, index) {
         final suggestion = suggestions[index];
         return ListTile(
-          title: Text(suggestion.item),
-          subtitle: Text(suggestion.category),
-          leading: suggestion.isFromHistory ? const Icon(Icons.history) : null,
+          title: Text(suggestion.displayName),
+          subtitle: Text(suggestion.categories.join(', ')),
+          leading: suggestion.source == ShoppingItemSuggestionSource.history
+              ? const Icon(Icons.history)
+              : null,
         );
       },
     );

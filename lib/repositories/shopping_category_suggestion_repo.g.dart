@@ -1,30 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'shopping_item_product_extractor.dart';
+part of 'shopping_category_suggestion_repo.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingItemProductExtractorHash() =>
-    r'fa69064add52ee392055f3a1de156166e380993a';
+String _$shoppingCategorySuggestionRepoHash() =>
+    r'f5985033a2a4638e13b9203e6bd44d89e93fa19c';
 
-/// See also [shoppingItemProductExtractor].
-@ProviderFor(shoppingItemProductExtractor)
-final shoppingItemProductExtractorProvider =
-    AutoDisposeProvider<ShoppingItemProductExtractor>.internal(
-  shoppingItemProductExtractor,
-  name: r'shoppingItemProductExtractorProvider',
+/// See also [shoppingCategorySuggestionRepo].
+@ProviderFor(shoppingCategorySuggestionRepo)
+final shoppingCategorySuggestionRepoProvider =
+    AutoDisposeProvider<ShoppingCategorySuggestionRepo>.internal(
+  shoppingCategorySuggestionRepo,
+  name: r'shoppingCategorySuggestionRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$shoppingItemProductExtractorHash,
+      : _$shoppingCategorySuggestionRepoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ShoppingItemProductExtractorRef
-    = AutoDisposeProviderRef<ShoppingItemProductExtractor>;
+typedef ShoppingCategorySuggestionRepoRef
+    = AutoDisposeProviderRef<ShoppingCategorySuggestionRepo>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

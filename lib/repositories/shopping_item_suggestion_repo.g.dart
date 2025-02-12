@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'item_search_view_model.dart';
+part of 'shopping_item_suggestion_repo.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$itemSuggestionsHash() => r'a58c901aac2381cd14efc05b081df9fcf1290d0a';
+String _$shoppingItemSuggestionRepoHash() =>
+    r'9a448fd36ada0ee8b675dd1ed6aad993e1c060e8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,28 +30,28 @@ class _SystemHash {
   }
 }
 
-/// See also [itemSuggestions].
-@ProviderFor(itemSuggestions)
-const itemSuggestionsProvider = ItemSuggestionsFamily();
+/// See also [shoppingItemSuggestionRepo].
+@ProviderFor(shoppingItemSuggestionRepo)
+const shoppingItemSuggestionRepoProvider = ShoppingItemSuggestionRepoFamily();
 
-/// See also [itemSuggestions].
-class ItemSuggestionsFamily
-    extends Family<AsyncValue<List<ShoppingItemSuggestion>>> {
-  /// See also [itemSuggestions].
-  const ItemSuggestionsFamily();
+/// See also [shoppingItemSuggestionRepo].
+class ShoppingItemSuggestionRepoFamily
+    extends Family<ShoppingItemSuggestionRepo> {
+  /// See also [shoppingItemSuggestionRepo].
+  const ShoppingItemSuggestionRepoFamily();
 
-  /// See also [itemSuggestions].
-  ItemSuggestionsProvider call(
+  /// See also [shoppingItemSuggestionRepo].
+  ShoppingItemSuggestionRepoProvider call(
     String listId,
   ) {
-    return ItemSuggestionsProvider(
+    return ShoppingItemSuggestionRepoProvider(
       listId,
     );
   }
 
   @override
-  ItemSuggestionsProvider getProviderOverride(
-    covariant ItemSuggestionsProvider provider,
+  ShoppingItemSuggestionRepoProvider getProviderOverride(
+    covariant ShoppingItemSuggestionRepoProvider provider,
   ) {
     return call(
       provider.listId,
@@ -69,33 +70,33 @@ class ItemSuggestionsFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'itemSuggestionsProvider';
+  String? get name => r'shoppingItemSuggestionRepoProvider';
 }
 
-/// See also [itemSuggestions].
-class ItemSuggestionsProvider
-    extends AutoDisposeFutureProvider<List<ShoppingItemSuggestion>> {
-  /// See also [itemSuggestions].
-  ItemSuggestionsProvider(
+/// See also [shoppingItemSuggestionRepo].
+class ShoppingItemSuggestionRepoProvider
+    extends AutoDisposeProvider<ShoppingItemSuggestionRepo> {
+  /// See also [shoppingItemSuggestionRepo].
+  ShoppingItemSuggestionRepoProvider(
     String listId,
   ) : this._internal(
-          (ref) => itemSuggestions(
-            ref as ItemSuggestionsRef,
+          (ref) => shoppingItemSuggestionRepo(
+            ref as ShoppingItemSuggestionRepoRef,
             listId,
           ),
-          from: itemSuggestionsProvider,
-          name: r'itemSuggestionsProvider',
+          from: shoppingItemSuggestionRepoProvider,
+          name: r'shoppingItemSuggestionRepoProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$itemSuggestionsHash,
-          dependencies: ItemSuggestionsFamily._dependencies,
+                  : _$shoppingItemSuggestionRepoHash,
+          dependencies: ShoppingItemSuggestionRepoFamily._dependencies,
           allTransitiveDependencies:
-              ItemSuggestionsFamily._allTransitiveDependencies,
+              ShoppingItemSuggestionRepoFamily._allTransitiveDependencies,
           listId: listId,
         );
 
-  ItemSuggestionsProvider._internal(
+  ShoppingItemSuggestionRepoProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,13 +110,13 @@ class ItemSuggestionsProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<ShoppingItemSuggestion>> Function(ItemSuggestionsRef provider)
+    ShoppingItemSuggestionRepo Function(ShoppingItemSuggestionRepoRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: ItemSuggestionsProvider._internal(
-        (ref) => create(ref as ItemSuggestionsRef),
+      override: ShoppingItemSuggestionRepoProvider._internal(
+        (ref) => create(ref as ShoppingItemSuggestionRepoRef),
         from: from,
         name: null,
         dependencies: null,
@@ -127,14 +128,14 @@ class ItemSuggestionsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<ShoppingItemSuggestion>>
-      createElement() {
-    return _ItemSuggestionsProviderElement(this);
+  AutoDisposeProviderElement<ShoppingItemSuggestionRepo> createElement() {
+    return _ShoppingItemSuggestionRepoProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ItemSuggestionsProvider && other.listId == listId;
+    return other is ShoppingItemSuggestionRepoProvider &&
+        other.listId == listId;
   }
 
   @override
@@ -148,35 +149,19 @@ class ItemSuggestionsProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ItemSuggestionsRef
-    on AutoDisposeFutureProviderRef<List<ShoppingItemSuggestion>> {
+mixin ShoppingItemSuggestionRepoRef
+    on AutoDisposeProviderRef<ShoppingItemSuggestionRepo> {
   /// The parameter `listId` of this provider.
   String get listId;
 }
 
-class _ItemSuggestionsProviderElement
-    extends AutoDisposeFutureProviderElement<List<ShoppingItemSuggestion>>
-    with ItemSuggestionsRef {
-  _ItemSuggestionsProviderElement(super.provider);
+class _ShoppingItemSuggestionRepoProviderElement
+    extends AutoDisposeProviderElement<ShoppingItemSuggestionRepo>
+    with ShoppingItemSuggestionRepoRef {
+  _ShoppingItemSuggestionRepoProviderElement(super.provider);
 
   @override
-  String get listId => (origin as ItemSuggestionsProvider).listId;
+  String get listId => (origin as ShoppingItemSuggestionRepoProvider).listId;
 }
-
-String _$itemFilterHash() => r'c074d5d919e5da3a73c794d0798466d00ffecec9';
-
-/// See also [ItemFilter].
-@ProviderFor(ItemFilter)
-final itemFilterProvider =
-    AutoDisposeNotifierProvider<ItemFilter, String>.internal(
-  ItemFilter.new,
-  name: r'itemFilterProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$itemFilterHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$ItemFilter = AutoDisposeNotifier<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
