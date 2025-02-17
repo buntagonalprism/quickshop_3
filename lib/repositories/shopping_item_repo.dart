@@ -1,15 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
 import '../models/shopping_item.dart';
+import '../models/shopping_item_suggestion.dart';
 import '../services/firestore.dart';
 import 'delay_provider_dispose.dart';
 import 'list_leave_in_progress_repo.dart';
 import 'list_repo.dart';
+import 'shopping_item_suggestion_repo.dart';
 import 'user_repo.dart';
 
+part 'shopping_item_repo.freezed.dart';
 part 'shopping_item_repo.g.dart';
+
+@freezed
+class AddItemResult with _$AddItemResult {
+  const AddItemResult._();
+
+  const factory AddItemResult.success(ShoppingItem item) = _AddItemResultSuccess;
+  const factory AddItemResult.categoryRequired() = _AddItemResultCategoryRequired;
+}
 
 @riverpod
 class ShoppingListItemRepo extends _$ShoppingListItemRepo {
@@ -26,7 +38,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     });
   }
 
-  Future<void> addItem({
+  Future<ShoppingItem> addItem({
     required String productName,
     required String quantity,
     required List<String> categories,
@@ -48,6 +60,10 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     incrementListItemCount(ref, batch, listId, 1);
     await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemCreated());
+    return item.copyWith(
+      id: itemDoc.id,
+      path: itemDoc.path,
+    );
   }
 
   Future<void> toggleItem(ShoppingItem item) async {
@@ -55,6 +71,24 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     await fs.doc(item.path).update({
       _Fields.completed: !item.completed,
     });
+  }
+
+  Future<ShoppingItem> addSuggestion(ShoppingItemSuggestion suggestion) {
+    return addItem(
+      productName: suggestion.product,
+      quantity: suggestion.quantity,
+      categories: suggestion.categories,
+    );
+  }
+
+  Future<AddItemResult> addItemByName(String itemName) async {
+    final suggestionRepo = ref.read(shoppingItemSuggestionRepoProvider(listId));
+    final suggestion = await suggestionRepo.getSuggestionForItem(itemName);
+    if (suggestion == null) {
+      return const AddItemResult.categoryRequired();
+    }
+    final item = await addSuggestion(suggestion);
+    return AddItemResult.success(item);
   }
 
   Future<void> deleteItem(ShoppingItem item) async {
@@ -76,7 +110,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final batch = fs.batch();
     final itemDoc = fs.doc(item.path);
     batch.update(itemDoc, {
-      _Fields.name: newName,
+      _Fields.product: newName,
       _Fields.quantity: newQuantity,
       _Fields.categories: newCategories,
     });

@@ -11,6 +11,7 @@ class ShoppingItemSuggestion with _$ShoppingItemSuggestion {
     required String quantity,
     required List<String> categories,
     required ShoppingItemSuggestionSource source,
+    String? listItemId,
   }) = _ShoppingItemSuggestion;
 
   String get displayName => quantity.isEmpty ? product : '$quantity $product';

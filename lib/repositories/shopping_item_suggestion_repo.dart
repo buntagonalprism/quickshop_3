@@ -2,6 +2,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/item_suggestions.dart';
+import '../models/shopping_item.dart';
 import '../models/shopping_item_suggestion.dart';
 import '../services/shopping_item_name_parser.dart';
 import 'shopping_item_repo.dart';
@@ -20,13 +21,28 @@ class ShoppingItemSuggestionRepo {
   ShoppingItemSuggestionRepo._(this._ref, this.listId);
 
   Future<List<ShoppingItemSuggestion>> getSuggestions(String filter) async {
-    // Simulate a database query
-    await Future.delayed(const Duration(milliseconds: 200));
     final parser = _ref.read(shoppingItemNameParserProvider);
     final parsedItem = parser.parse(filter);
-    final product = parsedItem.product.toLowerCase();
+    final product = parsedItem.product.trim().toLowerCase();
     final startMatches = <ShoppingItemSuggestion>[];
     final middleMatches = <ShoppingItemSuggestion>[];
+
+    // Add items from the shopping list
+    final listItemsAsync = _ref.watch(shoppingListItemRepoProvider(listId));
+    if (listItemsAsync.hasValue) {
+      final listItems = listItemsAsync.requireValue;
+      for (var item in listItems) {
+        if (item.product.toLowerCase().startsWith(product)) {
+          startMatches.add(_listItemToSuggestion(item));
+        } else if (item.product.toLowerCase().contains(product)) {
+          middleMatches.add(_listItemToSuggestion(item));
+        }
+      }
+    }
+
+    // Simulate a database query for suggestion matches
+    await Future.delayed(const Duration(milliseconds: 200));
+
     for (var entry in itemSuggestionsData.entries) {
       final suggestion = ShoppingItemSuggestion(
         product: entry.key,
@@ -42,27 +58,40 @@ class ShoppingItemSuggestionRepo {
         middleMatches.add(suggestion);
       }
     }
-    final listItemsAsync = _ref.watch(shoppingListItemRepoProvider(listId));
-    if (listItemsAsync.hasValue) {
-      final listItems = listItemsAsync.requireValue;
-      for (var item in listItems) {
-        if (item.product.toLowerCase().startsWith(product)) {
-          startMatches.add(ShoppingItemSuggestion(
-            product: item.product,
-            categories: item.categories,
-            quantity: item.quantity,
-            source: ShoppingItemSuggestionSource.list,
-          ));
-        } else if (item.product.toLowerCase().contains(product)) {
-          middleMatches.add(ShoppingItemSuggestion(
-            product: item.product,
-            categories: item.categories,
-            quantity: item.quantity,
-            source: ShoppingItemSuggestionSource.list,
-          ));
-        }
-      }
-    }
+
     return [...startMatches, ...middleMatches];
+  }
+
+  Future<ShoppingItemSuggestion?> getSuggestionForItem(String item) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    final parser = _ref.read(shoppingItemNameParserProvider);
+    final parsedItem = parser.parse(item);
+    final product = parsedItem.product.trim().toLowerCase();
+    final suggestion = itemSuggestionsData[product];
+    if (suggestion == null) {
+      return null;
+    }
+    return Future.value(ShoppingItemSuggestion(
+      product: parsedItem.product,
+      categories: [suggestion],
+      quantity: parsedItem.quantity,
+      source: ShoppingItemSuggestionSource.suggested,
+    ));
+  }
+
+  void removeSuggestion(ShoppingItemSuggestion suggestion) async {
+    // Simulate a database delete
+    await Future.delayed(const Duration(milliseconds: 200));
+    itemSuggestionsData.remove(suggestion.product);
+  }
+
+  ShoppingItemSuggestion _listItemToSuggestion(ShoppingItem item) {
+    return ShoppingItemSuggestion(
+      product: item.product,
+      categories: item.categories,
+      quantity: item.quantity,
+      source: ShoppingItemSuggestionSource.list,
+      listItemId: item.id,
+    );
   }
 }

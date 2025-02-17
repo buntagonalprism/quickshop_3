@@ -20,6 +20,7 @@ mixin _$ShoppingItemSuggestion {
   String get quantity => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
   ShoppingItemSuggestionSource get source => throw _privateConstructorUsedError;
+  String? get listItemId => throw _privateConstructorUsedError;
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.
@@ -38,7 +39,8 @@ abstract class $ShoppingItemSuggestionCopyWith<$Res> {
       {String product,
       String quantity,
       List<String> categories,
-      ShoppingItemSuggestionSource source});
+      ShoppingItemSuggestionSource source,
+      String? listItemId});
 }
 
 /// @nodoc
@@ -61,6 +63,7 @@ class _$ShoppingItemSuggestionCopyWithImpl<$Res,
     Object? quantity = null,
     Object? categories = null,
     Object? source = null,
+    Object? listItemId = freezed,
   }) {
     return _then(_value.copyWith(
       product: null == product
@@ -79,6 +82,10 @@ class _$ShoppingItemSuggestionCopyWithImpl<$Res,
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
               as ShoppingItemSuggestionSource,
+      listItemId: freezed == listItemId
+          ? _value.listItemId
+          : listItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -96,7 +103,8 @@ abstract class _$$ShoppingItemSuggestionImplCopyWith<$Res>
       {String product,
       String quantity,
       List<String> categories,
-      ShoppingItemSuggestionSource source});
+      ShoppingItemSuggestionSource source,
+      String? listItemId});
 }
 
 /// @nodoc
@@ -118,6 +126,7 @@ class __$$ShoppingItemSuggestionImplCopyWithImpl<$Res>
     Object? quantity = null,
     Object? categories = null,
     Object? source = null,
+    Object? listItemId = freezed,
   }) {
     return _then(_$ShoppingItemSuggestionImpl(
       product: null == product
@@ -136,6 +145,10 @@ class __$$ShoppingItemSuggestionImplCopyWithImpl<$Res>
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
               as ShoppingItemSuggestionSource,
+      listItemId: freezed == listItemId
+          ? _value.listItemId
+          : listItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -147,7 +160,8 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
       {required this.product,
       required this.quantity,
       required final List<String> categories,
-      required this.source})
+      required this.source,
+      this.listItemId})
       : _categories = categories,
         super._();
 
@@ -165,10 +179,12 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
 
   @override
   final ShoppingItemSuggestionSource source;
+  @override
+  final String? listItemId;
 
   @override
   String toString() {
-    return 'ShoppingItemSuggestion(product: $product, quantity: $quantity, categories: $categories, source: $source)';
+    return 'ShoppingItemSuggestion(product: $product, quantity: $quantity, categories: $categories, source: $source, listItemId: $listItemId)';
   }
 
   @override
@@ -181,12 +197,14 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
                 other.quantity == quantity) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
-            (identical(other.source, source) || other.source == source));
+            (identical(other.source, source) || other.source == source) &&
+            (identical(other.listItemId, listItemId) ||
+                other.listItemId == listItemId));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, product, quantity,
-      const DeepCollectionEquality().hash(_categories), source);
+      const DeepCollectionEquality().hash(_categories), source, listItemId);
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.
@@ -200,11 +218,11 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
 
 abstract class _ShoppingItemSuggestion extends ShoppingItemSuggestion {
   const factory _ShoppingItemSuggestion(
-          {required final String product,
-          required final String quantity,
-          required final List<String> categories,
-          required final ShoppingItemSuggestionSource source}) =
-      _$ShoppingItemSuggestionImpl;
+      {required final String product,
+      required final String quantity,
+      required final List<String> categories,
+      required final ShoppingItemSuggestionSource source,
+      final String? listItemId}) = _$ShoppingItemSuggestionImpl;
   const _ShoppingItemSuggestion._() : super._();
 
   @override
@@ -215,6 +233,8 @@ abstract class _ShoppingItemSuggestion extends ShoppingItemSuggestion {
   List<String> get categories;
   @override
   ShoppingItemSuggestionSource get source;
+  @override
+  String? get listItemId;
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.

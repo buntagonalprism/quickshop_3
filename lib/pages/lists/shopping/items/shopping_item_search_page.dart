@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/shopping_item_suggestion.dart';
+import '../../../../repositories/shopping_item_repo.dart';
+import '../../../../repositories/shopping_item_suggestion_repo.dart';
+import '../../../../router.dart';
 import 'item_search_view_model.dart';
 import 'shopping_item_view.dart';
 
@@ -70,6 +73,7 @@ class ShoppingItemSearchView extends ConsumerStatefulWidget {
 
 class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView> {
   final _nameController = TextEditingController();
+  String? nameError;
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +82,9 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         child: TextField(
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Enter item name',
+            errorText: nameError,
           ),
           autofocus: true,
           controller: _nameController,
@@ -91,7 +96,11 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
       Expanded(
         child: filterValue.isEmpty
             ? const ItemSuggestionsPlaceholder()
-            : ItemSuggestionsList(listId: widget.listId),
+            : ItemSuggestionsList(
+                listId: widget.listId,
+                onAdd: _onAddSuggestion,
+                onAddMore: _onAddMoreFromSuggestion,
+              ),
       ),
       Material(
         elevation: 4,
@@ -99,12 +108,12 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton.icon(
-              onPressed: _onAddMore,
+              onPressed: () => _onDone(addMore: true),
               icon: const Icon(Icons.add),
               label: const Text('Add more'),
             ),
             TextButton.icon(
-              onPressed: _onDone,
+              onPressed: () => _onDone(addMore: false),
               icon: const Icon(Icons.check),
               label: const Text('Done'),
             ),
@@ -114,19 +123,65 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
     ]);
   }
 
-  void _onDone() {
-    print('On done');
-    widget.onCategoryRequired();
+  void _onDone({bool addMore = false}) async {
+    final itemName = _nameController.text.trim();
+    setState(() => nameError = itemName.isEmpty ? 'Please enter an item name' : null);
+    if (nameError == null) {
+      return;
+    }
+
+    final itemRepo = ref.read(shoppingListItemRepoProvider(widget.listId).notifier);
+    final result = await itemRepo.addItemByName(itemName);
+    result.when(
+      categoryRequired: widget.onCategoryRequired,
+      success: (addedItem) {
+        _showConfirmationSnackbar(addedItem.displayName);
+        if (addMore) {
+          _resetFilter();
+        } else {
+          ref.read(routerProvider).pop();
+        }
+      },
+    );
   }
 
-  void _onAddMore() {
-    print('On add more');
+  void _onAddSuggestion(ShoppingItemSuggestion suggestion) async {
+    await ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addSuggestion(suggestion);
+    ref.read(routerProvider).pop();
+    _showConfirmationSnackbar(suggestion.displayName);
+  }
+
+  void _onAddMoreFromSuggestion(ShoppingItemSuggestion suggestion) async {
+    await ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addSuggestion(suggestion);
+    _showConfirmationSnackbar(suggestion.displayName);
+    _resetFilter();
+  }
+
+  void _resetFilter() {
+    _nameController.text = '';
+    ref.read(itemFilterProvider.notifier).setFilter('');
+  }
+
+  void _showConfirmationSnackbar(String displayName) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Added $displayName to list'),
+        duration: const Duration(milliseconds: 2400),
+      ));
+    }
   }
 }
 
 class ItemSuggestionsList extends ConsumerWidget {
-  const ItemSuggestionsList({required this.listId, super.key});
+  const ItemSuggestionsList({
+    required this.listId,
+    required this.onAdd,
+    required this.onAddMore,
+    super.key,
+  });
   final String listId;
+  final Function(ShoppingItemSuggestion) onAdd;
+  final Function(ShoppingItemSuggestion) onAddMore;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -146,16 +201,32 @@ class ItemSuggestionsList extends ConsumerWidget {
       itemBuilder: (context, index) {
         final suggestion = suggestions[index];
         return switch (suggestion.source) {
-          ShoppingItemSuggestionSource.history => ListTile(
-              visualDensity: VisualDensity.compact,
-              title: Text(suggestion.displayName),
-              subtitle: Text(suggestion.categories.join(', ')),
-              trailing: const Icon(Icons.history),
-            ),
-          ShoppingItemSuggestionSource.suggested => ListTile(
-              visualDensity: VisualDensity.compact,
-              title: Text(suggestion.displayName),
-              subtitle: Text(suggestion.categories.join(', ')),
+          ShoppingItemSuggestionSource.history ||
+          ShoppingItemSuggestionSource.suggested =>
+            MenuAnchor(
+              builder: (context, controller, child) => ListTile(
+                visualDensity: VisualDensity.compact,
+                title: Text(suggestion.displayName),
+                subtitle: Text(suggestion.categories.join(', ')),
+                onLongPress: () => controller.open(),
+                onTap: () => onAdd(suggestion),
+                trailing: IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => onAddMore(suggestion),
+                ),
+              ),
+              menuChildren: [
+                MenuItemButton(
+                  child: const Text('Remove'),
+                  onPressed: () => ref
+                      .read(shoppingItemSuggestionRepoProvider(listId))
+                      .removeSuggestion(suggestion),
+                ),
+                MenuItemButton(
+                  child: const Text('Edit'),
+                  onPressed: () => _onEditSuggestion(ref, suggestion),
+                ),
+              ],
             ),
           ShoppingItemSuggestionSource.list => ListTile(
               visualDensity: VisualDensity.compact,
@@ -169,7 +240,7 @@ class ItemSuggestionsList extends ConsumerWidget {
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
               trailing: TextButton.icon(
-                onPressed: () => _onEditItem(suggestion),
+                onPressed: () => _onEditListItem(ref, suggestion),
                 label: const Text('Edit'),
                 icon: const Icon(Icons.edit),
               ),
@@ -179,8 +250,14 @@ class ItemSuggestionsList extends ConsumerWidget {
     );
   }
 
-  void _onEditItem(ShoppingItemSuggestion suggestion) {
-    print('Edit item: ${suggestion.displayName}');
+  void _onEditListItem(WidgetRef ref, ShoppingItemSuggestion suggestion) {
+    ref.read(routerProvider).push(Routes.shoppingListEditItem(listId, suggestion.listItemId!).path);
+  }
+
+  void _onEditSuggestion(WidgetRef ref, ShoppingItemSuggestion suggestion) {
+    // TODO: Show a suggestion edit page
+    // TODO: This means that suggestions need a unique ID to identify them for editing
+    print('On edit: $suggestion');
   }
 }
 
@@ -197,8 +274,8 @@ class ItemSuggestionsPlaceholder extends StatelessWidget {
           title: Text('Start typing to search suggested items and your item history'),
         ),
         ListTile(
-          leading: Icon(Icons.history),
-          title: Text('You can delete suggestions from your item history by long pressing them'),
+          leading: Icon(Icons.edit),
+          title: Text('Long press suggestions to edit or delete them'),
         ),
         ListTile(
           leading: Icon(Icons.info_outline),

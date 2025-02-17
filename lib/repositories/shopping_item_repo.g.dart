@@ -7,7 +7,7 @@ part of 'shopping_item_repo.dart';
 // **************************************************************************
 
 String _$shoppingListItemRepoHash() =>
-    r'e42f07db1043983b2f655e438a4bc2baf538b9d1';
+    r'3d0d787ee68fcc3a63999b233e09da852eae7617';
 
 /// Copied from Dart SDK
 class _SystemHash {
