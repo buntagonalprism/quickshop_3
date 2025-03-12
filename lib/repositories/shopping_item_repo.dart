@@ -156,7 +156,7 @@ ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
   return ShoppingItem(
     path: doc.reference.path,
     id: doc.id,
-    product: data.containsKey(_Fields.name) ? data[_Fields.name] : data[_Fields.product],
+    product: data.containsKey(_Fields.product) ? data[_Fields.product] : data[_Fields.name],
     quantity: data[_Fields.quantity],
     categories: (data[_Fields.categories] as List).cast<String>(),
     addedByUserId: data['addedByUserId'],
