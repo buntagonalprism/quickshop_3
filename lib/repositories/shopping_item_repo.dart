@@ -83,7 +83,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
 
   Future<AddItemResult> addItemByName(String itemName) async {
     final suggestionRepo = ref.read(shoppingItemSuggestionRepoProvider(listId));
-    final suggestion = await suggestionRepo.getSuggestionForItem(itemName);
+    final suggestion = await suggestionRepo.getExactMatchSuggestionForItem(itemName);
     if (suggestion == null) {
       return const AddItemResult.categoryRequired();
     }

@@ -5,12 +5,14 @@ import '../data/item_suggestions.dart';
 import '../models/shopping_item.dart';
 import '../models/shopping_item_suggestion.dart';
 import '../services/shopping_item_name_parser.dart';
+import 'delay_provider_dispose.dart';
 import 'shopping_item_repo.dart';
 
 part 'shopping_item_suggestion_repo.g.dart';
 
 @riverpod
 ShoppingItemSuggestionRepo shoppingItemSuggestionRepo(Ref ref, String listId) {
+  ref.delayDispose(const Duration(minutes: 15));
   return ShoppingItemSuggestionRepo._(ref, listId);
 }
 
@@ -20,6 +22,7 @@ class ShoppingItemSuggestionRepo {
 
   ShoppingItemSuggestionRepo._(this._ref, this.listId);
 
+  /// Returns a list of suggestions that match the given filter
   Future<List<ShoppingItemSuggestion>> getSuggestions(String filter) async {
     final parser = _ref.read(shoppingItemNameParserProvider);
     final parsedItem = parser.parse(filter);
@@ -28,7 +31,7 @@ class ShoppingItemSuggestionRepo {
     final middleMatches = <ShoppingItemSuggestion>[];
 
     // Add items from the shopping list
-    final listItemsAsync = _ref.watch(shoppingListItemRepoProvider(listId));
+    final listItemsAsync = _ref.read(shoppingListItemRepoProvider(listId));
     if (listItemsAsync.hasValue) {
       final listItems = listItemsAsync.requireValue;
       for (var item in listItems) {
@@ -62,12 +65,13 @@ class ShoppingItemSuggestionRepo {
     return [...startMatches, ...middleMatches];
   }
 
-  Future<ShoppingItemSuggestion?> getSuggestionForItem(String item) async {
+  /// Returns a suggestion if one exists with an exact product name match for the given item
+  Future<ShoppingItemSuggestion?> getExactMatchSuggestionForItem(String item) async {
     await Future.delayed(const Duration(milliseconds: 100));
     final parser = _ref.read(shoppingItemNameParserProvider);
     final parsedItem = parser.parse(item);
     final product = parsedItem.product.trim().toLowerCase();
-    final suggestion = itemSuggestionsData[product];
+    final suggestion = _itemSuggestionsDataLower[product];
     if (suggestion == null) {
       return null;
     }
@@ -78,6 +82,10 @@ class ShoppingItemSuggestionRepo {
       source: ShoppingItemSuggestionSource.suggested,
     ));
   }
+
+  final _itemSuggestionsDataLower = itemSuggestionsData.map(
+    (key, value) => MapEntry(key.toLowerCase(), value),
+  );
 
   void removeSuggestion(ShoppingItemSuggestion suggestion) async {
     // Simulate a database delete

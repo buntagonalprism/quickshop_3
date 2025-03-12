@@ -126,7 +126,7 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
   void _onDone({bool addMore = false}) async {
     final itemName = _nameController.text.trim();
     setState(() => nameError = itemName.isEmpty ? 'Please enter an item name' : null);
-    if (nameError == null) {
+    if (nameError != null) {
       return;
     }
 
