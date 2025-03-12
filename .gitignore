@@ -48,3 +48,6 @@ settings/app_secrets*.json
 !settings/app_secrets_example.json
 lib/firebase/*.dart
 !lib/firebase/options.dart
+
+# FVM Version Cache
+.fvm/

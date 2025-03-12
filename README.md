@@ -20,6 +20,15 @@ My third complete rewrite of the Quickshop app. Using the following stack:
 
 ## Setup
 
+### Flutter Version Manager (FVM)
+This project uses Flutter Version Manager (FVM) to allow using different flutter versions in different projects on a single machine. 
+
+1. [Install Flutter](https://docs.flutter.dev/get-started/install)
+1. [Install FVM](https://fvm.app/documentation/getting-started/installation)
+2. Install the project specific flutter version by running `fvm install` on the command line
+
+FVM will download and install the Flutter SDK version specified in the `.fvmrc` file, caching that Flutter version globally on your machine. It then creates a folder `.fvm` with symbolic links to the global install location. The settings in `.vscode/settings.json` specify that the Flutter extension for VSCode should use the Flutter SDK installed by FVM. 
+
 ### Android Studio
 Android Studio 2024.2.1 started using Open JDK version 21 as its bundled java development kit. With Flutter 3.24.3 this produced [compile errors similar to this issue](https://github.com/flutter/flutter/issues/156304) upon adding the google sign in plugin.  
 
