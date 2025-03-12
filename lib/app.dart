@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'analytics/crash_reporter.dart';
+import 'localization/app_localizations.dart';
 import 'repositories/settings_repo.dart';
 import 'router.dart';
 
-/// The Widget that configures your application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -31,9 +30,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('en', ''), // English, no country code
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
 
           // Use AppLocalizations to configure the correct application title
           // depending on the user's locale.
