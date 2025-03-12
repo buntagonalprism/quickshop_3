@@ -172,7 +172,7 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
   }
 }
 
-class ItemSuggestionsList extends ConsumerWidget {
+class ItemSuggestionsList extends ConsumerStatefulWidget {
   const ItemSuggestionsList({
     required this.listId,
     required this.onAdd,
@@ -184,8 +184,16 @@ class ItemSuggestionsList extends ConsumerWidget {
   final Function(ShoppingItemSuggestion) onAddMore;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final suggestionsAsync = ref.watch(itemSuggestionsProvider(listId));
+  ConsumerState<ItemSuggestionsList> createState() => _ItemSuggestionsListState();
+}
+
+class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
+  int? highlightedIndex;
+  bool preventTaps = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final suggestionsAsync = ref.watch(itemSuggestionsProvider(widget.listId));
     if (suggestionsAsync.isLoading && !suggestionsAsync.hasValue) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -204,22 +212,46 @@ class ItemSuggestionsList extends ConsumerWidget {
           ShoppingItemSuggestionSource.history ||
           ShoppingItemSuggestionSource.suggested =>
             MenuAnchor(
+              onClose: () {
+                setState(() {
+                  highlightedIndex = null;
+                  preventTaps = true;
+                });
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  setState(() => preventTaps = false);
+                });
+              },
               builder: (context, controller, child) => ListTile(
                 visualDensity: VisualDensity.compact,
+                tileColor: highlightedIndex == index ? Colors.grey.shade200 : null,
                 title: Text(suggestion.displayName),
                 subtitle: Text(suggestion.categories.join(', ')),
-                onLongPress: () => controller.open(),
-                onTap: () => onAdd(suggestion),
+                onLongPress: () {
+                  controller.open();
+                  setState(() => highlightedIndex = index);
+                },
+                onTap: () {
+                  if (highlightedIndex != null) {
+                    controller.close();
+                    setState(() => highlightedIndex = null);
+                  } else if (!preventTaps) {
+                    widget.onAdd(suggestion);
+                  }
+                },
                 trailing: IconButton(
                   icon: const Icon(Icons.add),
-                  onPressed: () => onAddMore(suggestion),
+                  onPressed: () => widget.onAddMore(suggestion),
                 ),
               ),
+              style: const MenuStyle(
+                alignment: Alignment.center,
+              ),
+              alignmentOffset: const Offset(-36, 0),
               menuChildren: [
                 MenuItemButton(
                   child: const Text('Remove'),
                   onPressed: () => ref
-                      .read(shoppingItemSuggestionRepoProvider(listId))
+                      .read(shoppingItemSuggestionRepoProvider(widget.listId))
                       .removeSuggestion(suggestion),
                 ),
                 MenuItemButton(
@@ -251,7 +283,9 @@ class ItemSuggestionsList extends ConsumerWidget {
   }
 
   void _onEditListItem(WidgetRef ref, ShoppingItemSuggestion suggestion) {
-    ref.read(routerProvider).go(Routes.shoppingListEditItem(listId, suggestion.listItemId!).path);
+    ref
+        .read(routerProvider)
+        .go(Routes.shoppingListEditItem(widget.listId, suggestion.listItemId!).path);
   }
 
   void _onEditSuggestion(WidgetRef ref, ShoppingItemSuggestion suggestion) {
