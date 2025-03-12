@@ -251,7 +251,7 @@ class ItemSuggestionsList extends ConsumerWidget {
   }
 
   void _onEditListItem(WidgetRef ref, ShoppingItemSuggestion suggestion) {
-    ref.read(routerProvider).push(Routes.shoppingListEditItem(listId, suggestion.listItemId!).path);
+    ref.read(routerProvider).go(Routes.shoppingListEditItem(listId, suggestion.listItemId!).path);
   }
 
   void _onEditSuggestion(WidgetRef ref, ShoppingItemSuggestion suggestion) {
