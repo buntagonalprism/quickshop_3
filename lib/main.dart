@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
 
 import 'app.dart';
 import 'firebase/options.dart';
 import 'services/shared_preferences.dart';
-import 'services/sqlite_db.dart';
 
 Future<void> main() async {
   // Only initalise sentry in release mode
@@ -36,13 +34,9 @@ Future<void> main() async {
 }
 
 Future<void> _main() async {
-  final prefsFuture = SharedPreferencesWithCache.create(
+  final prefs = await SharedPreferencesWithCache.create(
     cacheOptions: const SharedPreferencesWithCacheOptions(),
   );
-  final dbFuture = openDatabase();
-  final initResults = await Future.wait([prefsFuture, dbFuture]);
-  final prefs = initResults[0] as SharedPreferencesWithCache;
-  final db = initResults[1] as sqflite.Database;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -55,7 +49,6 @@ Future<void> _main() async {
   runApp(ProviderScope(
     overrides: [
       sharedPrefsProvider.overrideWithValue(prefs),
-      sqfliteDbProvider.overrideWithValue(db),
     ],
     child: const MyApp(),
   ));

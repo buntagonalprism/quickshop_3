@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sqlite_db.dart';
+part of 'app_database_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sqfliteDbHash() => r'd5187fb9a2821f4c531f33ce5d23228fa8fd4f87';
+String _$appDatabaseHash() => r'53f0e23f2e90cb612a6aa6c43d3df9b582de46cb';
 
-/// See also [sqfliteDb].
-@ProviderFor(sqfliteDb)
-final sqfliteDbProvider = Provider<sqflite.Database>.internal(
-  sqfliteDb,
-  name: r'sqfliteDbProvider',
+/// See also [appDatabase].
+@ProviderFor(appDatabase)
+final appDatabaseProvider = AutoDisposeProvider<AppDatabase>.internal(
+  appDatabase,
+  name: r'appDatabaseProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$sqfliteDbHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$appDatabaseHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SqfliteDbRef = ProviderRef<sqflite.Database>;
+typedef AppDatabaseRef = AutoDisposeProviderRef<AppDatabase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

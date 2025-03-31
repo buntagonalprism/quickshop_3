@@ -7,7 +7,7 @@ part of 'shopping_category_suggestion_repo.dart';
 // **************************************************************************
 
 String _$shoppingCategorySuggestionRepoHash() =>
-    r'f5985033a2a4638e13b9203e6bd44d89e93fa19c';
+    r'91bc2fa69acc6e9947d2a527b695e40b54d5f38f';
 
 /// See also [shoppingCategorySuggestionRepo].
 @ProviderFor(shoppingCategorySuggestionRepo)
