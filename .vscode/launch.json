@@ -5,6 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Local (debug)",
+            "request": "launch",    
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "dev",
+                "--dart-define-from-file",
+                "settings/app_secrets_dev.json",
+                "--dart-define-from-file",
+                "settings/app_settings_dev.json",
+                "--dart-define-from-file",
+                "settings/app_settings_local.json"
+            ]
+        },
+        {
             "name": "DEV (debug)",
             "request": "launch",
             "type": "dart",

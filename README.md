@@ -49,6 +49,21 @@ Google documentation states that Firebase API keys are safe to be included in co
 
 As such, it might seem pointless to designate any values as secret/sensitive in a public application. However, because this repo itself is public, these API keys and Firebase configuration values have been hidden to encourage anyone cloning the repo to run it against their own Firebase project. 
 
+### Targeting Local Firebase Emulator
+The Quickshop backend comprises the a Firestore database and a collection of Firebase Functions. These can be emulated locally for debugging purposes - see the Quickshop Firebase project for details regarding the Firebase emulator. 
+
+To connect the Quickshop app to a local Firebase emulator:
+1. Copy the `settings/app_settings_local_example.json` file to `settings/app_settings_local.json`
+1. Setup local connection configuration:
+    - **Android Physical Devices**:
+        - Setup a reverse proxy using the android debug command `adb reverse tcp:8080 tcp:8080`. This proxies any requests to `localhost:8080` on the Anroid device being debugged to port 8080 of the host computer. Port 8080 is the default port for the Firebase Firestore emulator. 
+        - Set the entry in the local settings JSON file: `"FIRESTORE_EMULATOR_HOST": "localhost:8080"` 
+    - **Android Emulator**:
+        - Set the entry in the local settings JSON file: `"FIRESTORE_EMULATOR_HOST": "10.0.2.2:8080"` to `app_secrets_dev.json`
+        - This IP address automatically redirects requests on the Android emulator to the corresponding port on the host computer. 
+    
+2. Run the "Local (debug)" launch configuration, which 
+
 ### Targeting other Firebase Projects
 To run Quickshop against another Firebase project, copy and rename the `settings/app_secrets_example.json` file to `app_secrets_<ENV>.json` file
 
