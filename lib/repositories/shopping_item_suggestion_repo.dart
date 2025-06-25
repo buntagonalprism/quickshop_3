@@ -2,8 +2,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/item_suggestions.dart';
-import '../models/shopping_item.dart';
-import '../models/shopping_item_suggestion.dart';
+import '../models/shopping/shopping_item.dart';
+import '../models/shopping/suggestions/shopping_item_suggestion.dart';
 import '../services/shopping_item_name_parser.dart';
 import 'delay_provider_dispose.dart';
 import 'shopping_item_repo.dart';

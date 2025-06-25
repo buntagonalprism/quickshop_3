@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
 import '../../../models/list_summary.dart';
-import '../../../models/shopping_item.dart';
+import '../../../models/shopping/shopping_item.dart';
 import '../../../repositories/list_repo.dart';
 import '../../../repositories/shopping_item_repo.dart';
 

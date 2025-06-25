@@ -22,6 +22,8 @@ mixin _$ShoppingItem {
   String get quantity => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
   String get addedByUserId => throw _privateConstructorUsedError;
+  String get lastModifiedByUserId => throw _privateConstructorUsedError;
+  DateTime get lastModifiedAt => throw _privateConstructorUsedError;
   bool get completed => throw _privateConstructorUsedError;
 
   /// Create a copy of ShoppingItem
@@ -44,6 +46,8 @@ abstract class $ShoppingItemCopyWith<$Res> {
       String quantity,
       List<String> categories,
       String addedByUserId,
+      String lastModifiedByUserId,
+      DateTime lastModifiedAt,
       bool completed});
 }
 
@@ -68,6 +72,8 @@ class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
     Object? quantity = null,
     Object? categories = null,
     Object? addedByUserId = null,
+    Object? lastModifiedByUserId = null,
+    Object? lastModifiedAt = null,
     Object? completed = null,
   }) {
     return _then(_value.copyWith(
@@ -95,6 +101,14 @@ class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
           ? _value.addedByUserId
           : addedByUserId // ignore: cast_nullable_to_non_nullable
               as String,
+      lastModifiedByUserId: null == lastModifiedByUserId
+          ? _value.lastModifiedByUserId
+          : lastModifiedByUserId // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastModifiedAt: null == lastModifiedAt
+          ? _value.lastModifiedAt
+          : lastModifiedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       completed: null == completed
           ? _value.completed
           : completed // ignore: cast_nullable_to_non_nullable
@@ -118,6 +132,8 @@ abstract class _$$ShoppingItemImplCopyWith<$Res>
       String quantity,
       List<String> categories,
       String addedByUserId,
+      String lastModifiedByUserId,
+      DateTime lastModifiedAt,
       bool completed});
 }
 
@@ -140,6 +156,8 @@ class __$$ShoppingItemImplCopyWithImpl<$Res>
     Object? quantity = null,
     Object? categories = null,
     Object? addedByUserId = null,
+    Object? lastModifiedByUserId = null,
+    Object? lastModifiedAt = null,
     Object? completed = null,
   }) {
     return _then(_$ShoppingItemImpl(
@@ -167,6 +185,14 @@ class __$$ShoppingItemImplCopyWithImpl<$Res>
           ? _value.addedByUserId
           : addedByUserId // ignore: cast_nullable_to_non_nullable
               as String,
+      lastModifiedByUserId: null == lastModifiedByUserId
+          ? _value.lastModifiedByUserId
+          : lastModifiedByUserId // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastModifiedAt: null == lastModifiedAt
+          ? _value.lastModifiedAt
+          : lastModifiedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       completed: null == completed
           ? _value.completed
           : completed // ignore: cast_nullable_to_non_nullable
@@ -185,6 +211,8 @@ class _$ShoppingItemImpl extends _ShoppingItem {
       required this.quantity,
       required final List<String> categories,
       required this.addedByUserId,
+      required this.lastModifiedByUserId,
+      required this.lastModifiedAt,
       required this.completed})
       : _categories = categories,
         super._();
@@ -208,11 +236,15 @@ class _$ShoppingItemImpl extends _ShoppingItem {
   @override
   final String addedByUserId;
   @override
+  final String lastModifiedByUserId;
+  @override
+  final DateTime lastModifiedAt;
+  @override
   final bool completed;
 
   @override
   String toString() {
-    return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, completed: $completed)';
+    return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
   }
 
   @override
@@ -229,6 +261,10 @@ class _$ShoppingItemImpl extends _ShoppingItem {
                 .equals(other._categories, _categories) &&
             (identical(other.addedByUserId, addedByUserId) ||
                 other.addedByUserId == addedByUserId) &&
+            (identical(other.lastModifiedByUserId, lastModifiedByUserId) ||
+                other.lastModifiedByUserId == lastModifiedByUserId) &&
+            (identical(other.lastModifiedAt, lastModifiedAt) ||
+                other.lastModifiedAt == lastModifiedAt) &&
             (identical(other.completed, completed) ||
                 other.completed == completed));
   }
@@ -242,6 +278,8 @@ class _$ShoppingItemImpl extends _ShoppingItem {
       quantity,
       const DeepCollectionEquality().hash(_categories),
       addedByUserId,
+      lastModifiedByUserId,
+      lastModifiedAt,
       completed);
 
   /// Create a copy of ShoppingItem
@@ -261,6 +299,8 @@ abstract class _ShoppingItem extends ShoppingItem {
       required final String quantity,
       required final List<String> categories,
       required final String addedByUserId,
+      required final String lastModifiedByUserId,
+      required final DateTime lastModifiedAt,
       required final bool completed}) = _$ShoppingItemImpl;
   const _ShoppingItem._() : super._();
 
@@ -276,6 +316,10 @@ abstract class _ShoppingItem extends ShoppingItem {
   List<String> get categories;
   @override
   String get addedByUserId;
+  @override
+  String get lastModifiedByUserId;
+  @override
+  DateTime get lastModifiedAt;
   @override
   bool get completed;
 

@@ -13,6 +13,8 @@ class ShoppingItem with _$ShoppingItem {
     required String quantity,
     required List<String> categories,
     required String addedByUserId,
+    required String lastModifiedByUserId,
+    required DateTime lastModifiedAt,
     required bool completed,
   }) = _ShoppingItem;
 

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/logger.dart';
-import '../models/shopping_category_suggestion.dart';
+import '../models/shopping/suggestions/shopping_category_suggestion.dart';
 import '../services/app_database.dart';
 import '../services/app_database_provider.dart';
 

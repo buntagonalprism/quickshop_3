@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../analytics/analytics.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
-import '../models/user.dart';
+import '../models/user/user.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
 import '../services/http_result.dart';

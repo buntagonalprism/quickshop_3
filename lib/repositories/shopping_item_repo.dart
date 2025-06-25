@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
-import '../models/shopping_item.dart';
-import '../models/shopping_item_suggestion.dart';
+import '../models/shopping/shopping_item.dart';
+import '../models/shopping/suggestions/shopping_item_suggestion.dart';
 import '../services/firestore.dart';
 import 'delay_provider_dispose.dart';
 import 'list_leave_in_progress_repo.dart';
@@ -52,6 +52,8 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       quantity: quantity,
       categories: categories,
       addedByUserId: user!.id,
+      lastModifiedByUserId: user.id,
+      lastModifiedAt: DateTime.now(),
       completed: false,
     );
     final batch = fs.batch();
@@ -92,11 +94,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   }
 
   Future<void> deleteItem(ShoppingItem item) async {
-    final fs = ref.read(firestoreProvider);
-    final batch = fs.batch();
-    batch.delete(fs.doc(item.path));
-    incrementListItemCount(ref, batch, listId, -1);
-    await batch.commit();
+    await _deleteItems([item]);
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemDeleted());
   }
 
@@ -113,6 +111,8 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       _Fields.product: newName,
       _Fields.quantity: newQuantity,
       _Fields.categories: newCategories,
+      _Fields.lastModifiedByUserId: ref.read(userRepoProvider)!.id,
+      _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
     });
     updateListModified(ref, batch, listId);
     await batch.commit();
@@ -120,21 +120,25 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   }
 
   Future<int> deleteCompletedItems() async {
+    final items = state.requireValue;
+    final deletedItems = items.where((item) => item.completed).toList();
+    if (items.isEmpty) {
+      return 0; // No items to delete
+    }
+    await _deleteItems(deletedItems);
+    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemsBatchDeleted());
+    return deletedItems.length;
+  }
+
+  Future<int> _deleteItems(List<ShoppingItem> items) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userRepoProvider);
-    final itemDocs = await fs.collection('lists/$listId/items').get();
-    final items = itemDocs.docs.map(_fromFirestore);
-
     final batch = fs.batch();
 
-    int deletedCount = 0;
     for (final item in items) {
-      if (item.completed) {
-        deletedCount++;
-        batch.delete(fs.doc(item.path));
-      }
+      batch.delete(fs.doc(item.path));
     }
-    incrementListItemCount(ref, batch, listId, -deletedCount);
+    incrementListItemCount(ref, batch, listId, -items.length);
 
     // Because we want to prioritize offline support, deletes are not performed in a transaction.
     // This means that concurrent deletes could cause the itemCount to be incorrect. Creating this
@@ -143,11 +147,12 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     batch.set(deleteDoc, {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'userId': user!.id,
-      'deletedCount': deletedCount
+      'deletedCount': items.length,
+      'items': items.map((item) => _toFirestore(item)).toList(),
     });
     await batch.commit();
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemsBatchDeleted());
-    return deletedCount;
+
+    return items.length;
   }
 }
 
@@ -159,7 +164,9 @@ ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     product: data.containsKey(_Fields.product) ? data[_Fields.product] : data[_Fields.name],
     quantity: data[_Fields.quantity],
     categories: (data[_Fields.categories] as List).cast<String>(),
-    addedByUserId: data['addedByUserId'],
+    addedByUserId: data[_Fields.addedByUserId],
+    lastModifiedByUserId: data[_Fields.lastModifiedByUserId],
+    lastModifiedAt: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastModifiedAt] as int),
     completed: data[_Fields.completed],
   );
 }
@@ -169,17 +176,22 @@ Map<String, dynamic> _toFirestore(ShoppingItem item) {
     _Fields.product: item.product,
     _Fields.quantity: item.quantity,
     _Fields.categories: item.categories,
-    'addedByUserId': item.addedByUserId,
+    _Fields.addedByUserId: item.addedByUserId,
+    _Fields.lastModifiedByUserId: item.lastModifiedByUserId,
+    _Fields.lastModifiedAt: item.lastModifiedAt.millisecondsSinceEpoch,
     _Fields.completed: item.completed,
   };
 }
 
 class _Fields {
   static const String completed = 'completed';
-  // Todo: Remove this deprecated 'name' field once migration to 'product' is complete
+  // TODO: Remove this deprecated 'name' field once migration to 'product' is complete
   @Deprecated('Use product instead')
   static const String name = 'name';
   static const String product = 'product';
   static const String quantity = 'quantity';
   static const String categories = 'categories';
+  static const String addedByUserId = 'addedByUserId';
+  static const String lastModifiedByUserId = 'lastModifiedByUserId';
+  static const String lastModifiedAt = 'lastModifiedAt';
 }

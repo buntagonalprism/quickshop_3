@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../models/list_summary.dart';
-import '../../../models/shopping_item.dart';
+import '../../../models/shopping/shopping_item.dart';
 import '../../../repositories/shopping_item_repo.dart';
 import '../../../router.dart';
 import '../../../widgets/center_scrollable_column.dart';

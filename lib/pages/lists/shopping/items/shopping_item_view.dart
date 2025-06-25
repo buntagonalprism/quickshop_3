@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/shopping_item.dart';
+import '../../../../models/shopping/shopping_item.dart';
 import '../../../../repositories/shopping_item_repo.dart';
 import '../../../../repositories/tooltips_repo.dart';
 import '../../../../router.dart';

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../models/shopping_item_suggestion.dart';
+import '../../../../models/shopping/suggestions/shopping_item_suggestion.dart';
 import '../../../../repositories/shopping_item_suggestion_repo.dart';
 
 part 'item_search_view_model.freezed.dart';

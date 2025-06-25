@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,11 +38,11 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
     final listName = list?.name ?? 'List name';
     final itemCount = list?.itemCount ?? 0;
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          SafeArea(
-            child: Padding(
+      child: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,57 +58,62 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
                 ],
               ),
             ),
-          ),
-          const Divider(
-            thickness: 1,
-            indent: 0,
-            endIndent: 0,
-          ),
-          ListTile(
-            leading: const Icon(Icons.people),
-            title: const Text('Share list'),
-            onTap: () {
-              ref.read(routerProvider).push(Routes.shareList(widget.listId).path);
-            },
-          ),
-          const Divider(
-            thickness: 1,
-            indent: 16,
-            endIndent: 16,
-          ),
-          ...widget.actions.map((action) {
-            return ListTile(
-              leading: action.icon,
-              title: Text(action.name),
-              onTap: action.onTap,
-            );
-          }),
-          const Divider(
-            thickness: 1,
-            indent: 16,
-            endIndent: 16,
-          ),
-          if (isOwner) ...[
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Rename list'),
-              onTap: () {
-                ref.read(routerProvider).push(Routes.editList(widget.listId).path);
-              },
+            const Divider(
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
             ),
             ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text('Delete list'),
-              onTap: () => onDeleteList(list!),
-            )
+              leading: const Icon(Icons.people),
+              title: const Text('Share list'),
+              onTap: () {
+                ref.read(routerProvider).push(Routes.shareList(widget.listId).path);
+              },
+            ),
+            const Divider(
+              thickness: 1,
+              indent: 16,
+              endIndent: 16,
+            ),
+            ...widget.actions.map((action) {
+              return ListTile(
+                leading: action.icon,
+                title: Text(action.name),
+                onTap: action.onTap,
+              );
+            }),
+            const Divider(
+              thickness: 1,
+              indent: 16,
+              endIndent: 16,
+            ),
+            if (isOwner) ...[
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text('Rename list'),
+                onTap: () {
+                  ref.read(routerProvider).push(Routes.editList(widget.listId).path);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text('Delete list'),
+                onTap: () => onDeleteList(list!),
+              )
+            ],
+            if (isEditor && !isOwner)
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Leave list'),
+                onTap: () => onLeaveList(list!),
+              ),
+            if (kDebugMode)
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text('List ID: ${list?.id}'),
+              ),
           ],
-          if (isEditor && !isOwner)
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Leave list'),
-              onTap: () => onLeaveList(list!),
-            )
-        ],
+        ),
       ),
     );
   }
