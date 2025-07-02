@@ -145,7 +145,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     // document triggers a cloud function that checks the item count and updates it if needed.
     final deleteDoc = fs.collection('lists/$listId/_itemDeletes').doc();
     batch.set(deleteDoc, {
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
+      'timestamp': Timestamp.now(),
       'userId': user!.id,
       'deletedCount': items.length,
       'items': items.map((item) => _toFirestore(item)).toList(),
@@ -166,7 +166,7 @@ ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     categories: (data[_Fields.categories] as List).cast<String>(),
     addedByUserId: data[_Fields.addedByUserId],
     lastModifiedByUserId: data[_Fields.lastModifiedByUserId],
-    lastModifiedAt: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastModifiedAt] as int),
+    lastModifiedAt: (data[_Fields.lastModifiedAt] as Timestamp).toDate(),
     completed: data[_Fields.completed],
   );
 }
@@ -178,7 +178,7 @@ Map<String, dynamic> _toFirestore(ShoppingItem item) {
     _Fields.categories: item.categories,
     _Fields.addedByUserId: item.addedByUserId,
     _Fields.lastModifiedByUserId: item.lastModifiedByUserId,
-    _Fields.lastModifiedAt: item.lastModifiedAt.millisecondsSinceEpoch,
+    _Fields.lastModifiedAt: Timestamp.fromDate(item.lastModifiedAt),
     _Fields.completed: item.completed,
   };
 }
