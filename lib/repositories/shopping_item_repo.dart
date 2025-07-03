@@ -112,7 +112,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       _Fields.quantity: newQuantity,
       _Fields.categories: newCategories,
       _Fields.lastModifiedByUserId: ref.read(userRepoProvider)!.id,
-      _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
+      _Fields.lastModifiedAt: Timestamp.now(),
     });
     updateListModified(ref, batch, listId);
     await batch.commit();
@@ -161,7 +161,7 @@ ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
   return ShoppingItem(
     path: doc.reference.path,
     id: doc.id,
-    product: data.containsKey(_Fields.product) ? data[_Fields.product] : data[_Fields.name],
+    product: data[_Fields.product],
     quantity: data[_Fields.quantity],
     categories: (data[_Fields.categories] as List).cast<String>(),
     addedByUserId: data[_Fields.addedByUserId],
@@ -185,9 +185,6 @@ Map<String, dynamic> _toFirestore(ShoppingItem item) {
 
 class _Fields {
   static const String completed = 'completed';
-  // TODO: Remove this deprecated 'name' field once migration to 'product' is complete
-  @Deprecated('Use product instead')
-  static const String name = 'name';
   static const String product = 'product';
   static const String quantity = 'quantity';
   static const String categories = 'categories';
