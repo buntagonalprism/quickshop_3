@@ -8,7 +8,8 @@ class ShoppingItemHistory with _$ShoppingItemHistory {
 
   const factory ShoppingItemHistory({
     required String id,
-    required String product,
+    required String name,
+    required String nameLower,
     required List<String> categories,
     required DateTime lastUsed,
     required int usageCount,

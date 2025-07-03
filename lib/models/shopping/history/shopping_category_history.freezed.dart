@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ShoppingCategoryHistory {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get nameLower => throw _privateConstructorUsedError;
   int get usageCount => throw _privateConstructorUsedError;
   DateTime get lastUsed => throw _privateConstructorUsedError;
 
@@ -34,7 +35,12 @@ abstract class $ShoppingCategoryHistoryCopyWith<$Res> {
           $Res Function(ShoppingCategoryHistory) then) =
       _$ShoppingCategoryHistoryCopyWithImpl<$Res, ShoppingCategoryHistory>;
   @useResult
-  $Res call({String id, String name, int usageCount, DateTime lastUsed});
+  $Res call(
+      {String id,
+      String name,
+      String nameLower,
+      int usageCount,
+      DateTime lastUsed});
 }
 
 /// @nodoc
@@ -55,6 +61,7 @@ class _$ShoppingCategoryHistoryCopyWithImpl<$Res,
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? nameLower = null,
     Object? usageCount = null,
     Object? lastUsed = null,
   }) {
@@ -66,6 +73,10 @@ class _$ShoppingCategoryHistoryCopyWithImpl<$Res,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      nameLower: null == nameLower
+          ? _value.nameLower
+          : nameLower // ignore: cast_nullable_to_non_nullable
               as String,
       usageCount: null == usageCount
           ? _value.usageCount
@@ -88,7 +99,12 @@ abstract class _$$ShoppingCategoryHistoryImplCopyWith<$Res>
       __$$ShoppingCategoryHistoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, int usageCount, DateTime lastUsed});
+  $Res call(
+      {String id,
+      String name,
+      String nameLower,
+      int usageCount,
+      DateTime lastUsed});
 }
 
 /// @nodoc
@@ -108,6 +124,7 @@ class __$$ShoppingCategoryHistoryImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? nameLower = null,
     Object? usageCount = null,
     Object? lastUsed = null,
   }) {
@@ -119,6 +136,10 @@ class __$$ShoppingCategoryHistoryImplCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      nameLower: null == nameLower
+          ? _value.nameLower
+          : nameLower // ignore: cast_nullable_to_non_nullable
               as String,
       usageCount: null == usageCount
           ? _value.usageCount
@@ -138,6 +159,7 @@ class _$ShoppingCategoryHistoryImpl extends _ShoppingCategoryHistory {
   const _$ShoppingCategoryHistoryImpl(
       {required this.id,
       required this.name,
+      required this.nameLower,
       required this.usageCount,
       required this.lastUsed})
       : super._();
@@ -147,13 +169,15 @@ class _$ShoppingCategoryHistoryImpl extends _ShoppingCategoryHistory {
   @override
   final String name;
   @override
+  final String nameLower;
+  @override
   final int usageCount;
   @override
   final DateTime lastUsed;
 
   @override
   String toString() {
-    return 'ShoppingCategoryHistory(id: $id, name: $name, usageCount: $usageCount, lastUsed: $lastUsed)';
+    return 'ShoppingCategoryHistory(id: $id, name: $name, nameLower: $nameLower, usageCount: $usageCount, lastUsed: $lastUsed)';
   }
 
   @override
@@ -163,6 +187,8 @@ class _$ShoppingCategoryHistoryImpl extends _ShoppingCategoryHistory {
             other is _$ShoppingCategoryHistoryImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.nameLower, nameLower) ||
+                other.nameLower == nameLower) &&
             (identical(other.usageCount, usageCount) ||
                 other.usageCount == usageCount) &&
             (identical(other.lastUsed, lastUsed) ||
@@ -170,7 +196,8 @@ class _$ShoppingCategoryHistoryImpl extends _ShoppingCategoryHistory {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, usageCount, lastUsed);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, nameLower, usageCount, lastUsed);
 
   /// Create a copy of ShoppingCategoryHistory
   /// with the given fields replaced by the non-null parameter values.
@@ -186,6 +213,7 @@ abstract class _ShoppingCategoryHistory extends ShoppingCategoryHistory {
   const factory _ShoppingCategoryHistory(
       {required final String id,
       required final String name,
+      required final String nameLower,
       required final int usageCount,
       required final DateTime lastUsed}) = _$ShoppingCategoryHistoryImpl;
   const _ShoppingCategoryHistory._() : super._();
@@ -194,6 +222,8 @@ abstract class _ShoppingCategoryHistory extends ShoppingCategoryHistory {
   String get id;
   @override
   String get name;
+  @override
+  String get nameLower;
   @override
   int get usageCount;
   @override

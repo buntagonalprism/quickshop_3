@@ -9,6 +9,7 @@ class ShoppingCategoryHistory with _$ShoppingCategoryHistory {
   const factory ShoppingCategoryHistory({
     required String id,
     required String name,
+    required String nameLower,
     required int usageCount,
     required DateTime lastUsed,
   }) = _ShoppingCategoryHistory;

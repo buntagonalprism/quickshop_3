@@ -17,7 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ShoppingItemHistory {
   String get id => throw _privateConstructorUsedError;
-  String get product => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get nameLower => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
   DateTime get lastUsed => throw _privateConstructorUsedError;
   int get usageCount => throw _privateConstructorUsedError;
@@ -37,7 +38,8 @@ abstract class $ShoppingItemHistoryCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String product,
+      String name,
+      String nameLower,
       List<String> categories,
       DateTime lastUsed,
       int usageCount});
@@ -59,7 +61,8 @@ class _$ShoppingItemHistoryCopyWithImpl<$Res, $Val extends ShoppingItemHistory>
   @override
   $Res call({
     Object? id = null,
-    Object? product = null,
+    Object? name = null,
+    Object? nameLower = null,
     Object? categories = null,
     Object? lastUsed = null,
     Object? usageCount = null,
@@ -69,9 +72,13 @@ class _$ShoppingItemHistoryCopyWithImpl<$Res, $Val extends ShoppingItemHistory>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      product: null == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      nameLower: null == nameLower
+          ? _value.nameLower
+          : nameLower // ignore: cast_nullable_to_non_nullable
               as String,
       categories: null == categories
           ? _value.categories
@@ -99,7 +106,8 @@ abstract class _$$ShoppingItemHistoryImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String product,
+      String name,
+      String nameLower,
       List<String> categories,
       DateTime lastUsed,
       int usageCount});
@@ -119,7 +127,8 @@ class __$$ShoppingItemHistoryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? product = null,
+    Object? name = null,
+    Object? nameLower = null,
     Object? categories = null,
     Object? lastUsed = null,
     Object? usageCount = null,
@@ -129,9 +138,13 @@ class __$$ShoppingItemHistoryImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      product: null == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      nameLower: null == nameLower
+          ? _value.nameLower
+          : nameLower // ignore: cast_nullable_to_non_nullable
               as String,
       categories: null == categories
           ? _value._categories
@@ -154,7 +167,8 @@ class __$$ShoppingItemHistoryImplCopyWithImpl<$Res>
 class _$ShoppingItemHistoryImpl extends _ShoppingItemHistory {
   const _$ShoppingItemHistoryImpl(
       {required this.id,
-      required this.product,
+      required this.name,
+      required this.nameLower,
       required final List<String> categories,
       required this.lastUsed,
       required this.usageCount})
@@ -164,7 +178,9 @@ class _$ShoppingItemHistoryImpl extends _ShoppingItemHistory {
   @override
   final String id;
   @override
-  final String product;
+  final String name;
+  @override
+  final String nameLower;
   final List<String> _categories;
   @override
   List<String> get categories {
@@ -180,7 +196,7 @@ class _$ShoppingItemHistoryImpl extends _ShoppingItemHistory {
 
   @override
   String toString() {
-    return 'ShoppingItemHistory(id: $id, product: $product, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount)';
+    return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount)';
   }
 
   @override
@@ -189,7 +205,9 @@ class _$ShoppingItemHistoryImpl extends _ShoppingItemHistory {
         (other.runtimeType == runtimeType &&
             other is _$ShoppingItemHistoryImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.product, product) || other.product == product) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.nameLower, nameLower) ||
+                other.nameLower == nameLower) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
             (identical(other.lastUsed, lastUsed) ||
@@ -199,7 +217,7 @@ class _$ShoppingItemHistoryImpl extends _ShoppingItemHistory {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, product,
+  int get hashCode => Object.hash(runtimeType, id, name, nameLower,
       const DeepCollectionEquality().hash(_categories), lastUsed, usageCount);
 
   /// Create a copy of ShoppingItemHistory
@@ -215,7 +233,8 @@ class _$ShoppingItemHistoryImpl extends _ShoppingItemHistory {
 abstract class _ShoppingItemHistory extends ShoppingItemHistory {
   const factory _ShoppingItemHistory(
       {required final String id,
-      required final String product,
+      required final String name,
+      required final String nameLower,
       required final List<String> categories,
       required final DateTime lastUsed,
       required final int usageCount}) = _$ShoppingItemHistoryImpl;
@@ -224,7 +243,9 @@ abstract class _ShoppingItemHistory extends ShoppingItemHistory {
   @override
   String get id;
   @override
-  String get product;
+  String get name;
+  @override
+  String get nameLower;
   @override
   List<String> get categories;
   @override
