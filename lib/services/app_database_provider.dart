@@ -6,7 +6,7 @@ import 'app_database.dart';
 
 part 'app_database_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AppDatabase appDatabase(Ref ref) {
   final user = ref.watch(userRepoProvider);
   if (user == null) {
