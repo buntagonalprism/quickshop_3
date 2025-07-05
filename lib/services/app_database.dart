@@ -3,12 +3,23 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../data/category_suggestions.dart';
+import 'tables/category_history_table.dart';
 import 'tables/category_suggestion_table.dart';
+import 'tables/item_history_table.dart';
 import 'tables/item_suggestion_table.dart';
+import 'tables/load_progress_table.dart';
+import 'tables/token_table.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [ItemSuggestionsTable, CategorySuggestionsTable])
+@DriftDatabase(tables: [
+  ItemSuggestionsTable,
+  CategorySuggestionsTable,
+  ItemHistoryTable,
+  CategoryHistoryTable,
+  TokenTable,
+  LoadProgressTable,
+])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(String dbFileName) : super(_openConnection(dbFileName));
 
@@ -58,5 +69,69 @@ class AppDatabase extends _$AppDatabase {
     return await (select(categorySuggestionsTable)
           ..where((c) => c.token.like('${token.toLowerCase()}%')))
         .get();
+  }
+
+  Future<void> insertCategoryHistory(List<CategoryHistoryRow> rows) async {
+    await batch((batch) {
+      batch.deleteWhere(
+        tokenTable,
+        (c) =>
+            c.stringId.isIn(rows.map((r) => r.id)) & c.type.equals(TokenType.categoryHistory.value),
+      );
+      batch.insertAll(categoryHistoryTable, rows, mode: InsertMode.insertOrReplace);
+      batch.insertAll(
+        tokenTable,
+        [
+          for (final row in rows)
+            for (final token in row.nameLower.split(' '))
+              if (token.isNotEmpty && token.length > 1)
+                TokenRow(
+                  type: TokenType.categoryHistory.value,
+                  stringId: row.id,
+                  token: token,
+                ),
+        ],
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
+  Future<void> insertItemHistory(List<ItemHistoryRow> rows) async {
+    await batch((batch) {
+      batch.deleteWhere(
+        tokenTable,
+        (c) => c.stringId.isIn(rows.map((r) => r.id)) & c.type.equals(TokenType.itemHistory.value),
+      );
+      batch.insertAll(itemHistoryTable, rows, mode: InsertMode.insertOrReplace);
+      batch.insertAll(
+        tokenTable,
+        [
+          for (final row in rows)
+            for (final token in row.nameLower.split(' '))
+              if (token.isNotEmpty && token.length > 1)
+                TokenRow(
+                  type: TokenType.itemHistory.value,
+                  stringId: row.id,
+                  token: token,
+                ),
+        ],
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
+  Future<void> saveLoadProgress(LoadProgressType type, DateTime retrievedUntil) async {
+    await into(loadProgressTable).insert(
+      LoadProgressRow(type: type.value, retrievedUntil: retrievedUntil.millisecondsSinceEpoch),
+      mode: InsertMode.insertOrReplace,
+    );
+  }
+
+  Future<DateTime?> getLoadProgress(LoadProgressType type) async {
+    final row = await (select(loadProgressTable)..where((t) => t.type.equals(type.value)))
+        .getSingleOrNull();
+    return row?.retrievedUntil != null
+        ? DateTime.fromMillisecondsSinceEpoch(row!.retrievedUntil)
+        : null;
   }
 }

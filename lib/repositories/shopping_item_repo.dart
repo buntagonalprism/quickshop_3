@@ -112,7 +112,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
       _Fields.quantity: newQuantity,
       _Fields.categories: newCategories,
       _Fields.lastModifiedByUserId: ref.read(userRepoProvider)!.id,
-      _Fields.lastModifiedAt: Timestamp.now(),
+      _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
     });
     updateListModified(ref, batch, listId);
     await batch.commit();
@@ -145,7 +145,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     // document triggers a cloud function that checks the item count and updates it if needed.
     final deleteDoc = fs.collection('lists/$listId/_itemDeletes').doc();
     batch.set(deleteDoc, {
-      'timestamp': Timestamp.now(),
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
       'userId': user!.id,
       'deletedCount': items.length,
       'items': items.map((item) => _toFirestore(item)).toList(),
@@ -166,7 +166,7 @@ ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     categories: (data[_Fields.categories] as List).cast<String>(),
     addedByUserId: data[_Fields.addedByUserId],
     lastModifiedByUserId: data[_Fields.lastModifiedByUserId],
-    lastModifiedAt: (data[_Fields.lastModifiedAt] as Timestamp).toDate(),
+    lastModifiedAt: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastModifiedAt]),
     completed: data[_Fields.completed],
   );
 }
@@ -178,7 +178,7 @@ Map<String, dynamic> _toFirestore(ShoppingItem item) {
     _Fields.categories: item.categories,
     _Fields.addedByUserId: item.addedByUserId,
     _Fields.lastModifiedByUserId: item.lastModifiedByUserId,
-    _Fields.lastModifiedAt: Timestamp.fromDate(item.lastModifiedAt),
+    _Fields.lastModifiedAt: item.lastModifiedAt.millisecondsSinceEpoch,
     _Fields.completed: item.completed,
   };
 }

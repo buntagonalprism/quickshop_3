@@ -5,7 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'analytics/crash_reporter.dart';
 import 'localization/app_localizations.dart';
 import 'repositories/settings_repo.dart';
+import 'repositories/shopping_category_suggestion_repo.dart';
+import 'repositories/user_repo.dart';
 import 'router.dart';
+import 'services/app_database_provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -75,6 +78,10 @@ class _EagerInitProviders extends ConsumerWidget {
     // Eagerly initialize providers by watching them.
     // By using "watch", the provider will stay alive and not be disposed.
     ref.watch(crashReporterProvider);
+    ref.watch(appDatabaseProvider);
+    ref.watch(userRepoProvider);
+    ref.watch(shoppingCategorySuggestionRepoProvider);
+    //ref.watch(shoppingItemSuggestionRepoProvider);
     return child;
   }
 }

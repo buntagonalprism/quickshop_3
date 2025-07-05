@@ -1,12 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../analytics/logger.dart';
 import '../data/item_suggestions.dart';
 import '../models/shopping/shopping_item.dart';
 import '../models/shopping/suggestions/shopping_item_suggestion.dart';
+import '../services/app_database.dart';
+import '../services/app_database_provider.dart';
+import '../services/firestore.dart';
 import '../services/shopping_item_name_parser.dart';
+import '../services/tables/load_progress_table.dart';
 import 'delay_provider_dispose.dart';
 import 'shopping_item_repo.dart';
+import 'user_history_repo.dart';
 
 part 'shopping_item_suggestion_repo.g.dart';
 
@@ -19,8 +26,38 @@ ShoppingItemSuggestionRepo shoppingItemSuggestionRepo(Ref ref, String listId) {
 class ShoppingItemSuggestionRepo {
   final String listId;
   final Ref _ref;
+  AppDatabase get _db => _ref.read(appDatabaseProvider);
+  Logger get _log => _ref.read(loggerProvider);
+  FirebaseFirestore get _fs => _ref.read(firestoreProvider);
 
-  ShoppingItemSuggestionRepo._(this._ref, this.listId);
+  DateTime _retrievedHistoryUntil = DateTime.fromMillisecondsSinceEpoch(0);
+  DateTime _retrievedSuggestionsUntil = DateTime.fromMillisecondsSinceEpoch(0);
+
+  ShoppingItemSuggestionRepo._(this._ref, this.listId) {
+    _init();
+  }
+
+  void _init() async {
+    final (historyProgress, suggestionProgress) = await (
+      _db.getLoadProgress(LoadProgressType.itemHistory),
+      _db.getLoadProgress(LoadProgressType.itemSuggestion),
+    ).wait;
+    if (historyProgress != null) {
+      _retrievedHistoryUntil = historyProgress;
+    }
+    if (suggestionProgress != null) {
+      _retrievedSuggestionsUntil = suggestionProgress;
+    }
+
+    _ref.listen(userHistoryProvider, (_, historySnap) {
+      final userHistory = historySnap.value;
+      if (userHistory != null) {
+        if (_retrievedHistoryUntil.isBefore(userHistory.lastHistoryUpdate)) {
+          _fetchHistory(userHistory.userId, _retrievedHistoryUntil);
+        }
+      }
+    }, fireImmediately: true);
+  }
 
   /// Returns a list of suggestions that match the given filter
   Future<List<ShoppingItemSuggestion>> getSuggestions(String filter) async {
@@ -100,6 +137,55 @@ class ShoppingItemSuggestionRepo {
       quantity: item.quantity,
       source: ShoppingItemSuggestionSource.list,
       listItemId: item.id,
+    );
+  }
+
+  Future<void> _fetchHistory(String userId, DateTime since) async {
+    const pageSize = 100;
+    final baseQuery = _fs
+        .collection('userHistory')
+        .doc(userId)
+        .collection('items')
+        .where('lastUsed', isGreaterThan: since.millisecondsSinceEpoch)
+        .orderBy('lastUsed')
+        .orderBy(FieldPath.documentId)
+        .limit(pageSize);
+
+    Query<Map<String, dynamic>> pageQuery = baseQuery;
+    List<DocumentSnapshot<Map<String, dynamic>>> allDocs = [];
+    QuerySnapshot<Map<String, dynamic>> pageResults;
+    do {
+      pageResults = await pageQuery.get();
+      allDocs.addAll(pageResults.docs);
+      if (pageResults.docs.isNotEmpty) {
+        pageQuery = baseQuery.startAfterDocument(pageResults.docs.last);
+      }
+    } while (pageResults.size == pageSize);
+
+    if (allDocs.isEmpty) {
+      return;
+    }
+
+    await _db.insertItemHistory(
+      allDocs.map((doc) {
+        final data = doc.data()!;
+        return ItemHistoryRow(
+          id: doc.id,
+          name: data['name'],
+          nameLower: data['nameLower'],
+          usageCount: data['usageCount'],
+          lastUsed: data['lastUsed'],
+          categories: (data['categories'] as List).cast<String>().join('|'),
+        );
+      }).toList(),
+    );
+
+    _retrievedHistoryUntil = DateTime.fromMillisecondsSinceEpoch(
+      allDocs.last.data()!['lastUsed'],
+    );
+    await _db.saveLoadProgress(
+      LoadProgressType.itemHistory,
+      _retrievedHistoryUntil,
     );
   }
 }

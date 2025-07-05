@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'user_profile.dart';
+part of 'user_history.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,47 +15,56 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$UserProfile {
+mixin _$UserHistory {
+  String get userId => throw _privateConstructorUsedError;
   DateTime get lastHistoryUpdate => throw _privateConstructorUsedError;
   HiddenSuggestions get hiddenSuggestions => throw _privateConstructorUsedError;
 
-  /// Create a copy of UserProfile
+  /// Create a copy of UserHistory
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UserProfileCopyWith<UserProfile> get copyWith =>
+  $UserHistoryCopyWith<UserHistory> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserProfileCopyWith<$Res> {
-  factory $UserProfileCopyWith(
-          UserProfile value, $Res Function(UserProfile) then) =
-      _$UserProfileCopyWithImpl<$Res, UserProfile>;
+abstract class $UserHistoryCopyWith<$Res> {
+  factory $UserHistoryCopyWith(
+          UserHistory value, $Res Function(UserHistory) then) =
+      _$UserHistoryCopyWithImpl<$Res, UserHistory>;
   @useResult
-  $Res call({DateTime lastHistoryUpdate, HiddenSuggestions hiddenSuggestions});
+  $Res call(
+      {String userId,
+      DateTime lastHistoryUpdate,
+      HiddenSuggestions hiddenSuggestions});
 
   $HiddenSuggestionsCopyWith<$Res> get hiddenSuggestions;
 }
 
 /// @nodoc
-class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
-    implements $UserProfileCopyWith<$Res> {
-  _$UserProfileCopyWithImpl(this._value, this._then);
+class _$UserHistoryCopyWithImpl<$Res, $Val extends UserHistory>
+    implements $UserHistoryCopyWith<$Res> {
+  _$UserHistoryCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UserProfile
+  /// Create a copy of UserHistory
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = null,
     Object? lastHistoryUpdate = null,
     Object? hiddenSuggestions = null,
   }) {
     return _then(_value.copyWith(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       lastHistoryUpdate: null == lastHistoryUpdate
           ? _value.lastHistoryUpdate
           : lastHistoryUpdate // ignore: cast_nullable_to_non_nullable
@@ -67,7 +76,7 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
     ) as $Val);
   }
 
-  /// Create a copy of UserProfile
+  /// Create a copy of UserHistory
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -79,36 +88,44 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
 }
 
 /// @nodoc
-abstract class _$$UserProfileImplCopyWith<$Res>
-    implements $UserProfileCopyWith<$Res> {
-  factory _$$UserProfileImplCopyWith(
-          _$UserProfileImpl value, $Res Function(_$UserProfileImpl) then) =
-      __$$UserProfileImplCopyWithImpl<$Res>;
+abstract class _$$UserHistoryImplCopyWith<$Res>
+    implements $UserHistoryCopyWith<$Res> {
+  factory _$$UserHistoryImplCopyWith(
+          _$UserHistoryImpl value, $Res Function(_$UserHistoryImpl) then) =
+      __$$UserHistoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime lastHistoryUpdate, HiddenSuggestions hiddenSuggestions});
+  $Res call(
+      {String userId,
+      DateTime lastHistoryUpdate,
+      HiddenSuggestions hiddenSuggestions});
 
   @override
   $HiddenSuggestionsCopyWith<$Res> get hiddenSuggestions;
 }
 
 /// @nodoc
-class __$$UserProfileImplCopyWithImpl<$Res>
-    extends _$UserProfileCopyWithImpl<$Res, _$UserProfileImpl>
-    implements _$$UserProfileImplCopyWith<$Res> {
-  __$$UserProfileImplCopyWithImpl(
-      _$UserProfileImpl _value, $Res Function(_$UserProfileImpl) _then)
+class __$$UserHistoryImplCopyWithImpl<$Res>
+    extends _$UserHistoryCopyWithImpl<$Res, _$UserHistoryImpl>
+    implements _$$UserHistoryImplCopyWith<$Res> {
+  __$$UserHistoryImplCopyWithImpl(
+      _$UserHistoryImpl _value, $Res Function(_$UserHistoryImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UserProfile
+  /// Create a copy of UserHistory
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = null,
     Object? lastHistoryUpdate = null,
     Object? hiddenSuggestions = null,
   }) {
-    return _then(_$UserProfileImpl(
+    return _then(_$UserHistoryImpl(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       lastHistoryUpdate: null == lastHistoryUpdate
           ? _value.lastHistoryUpdate
           : lastHistoryUpdate // ignore: cast_nullable_to_non_nullable
@@ -123,11 +140,15 @@ class __$$UserProfileImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UserProfileImpl extends _UserProfile {
-  const _$UserProfileImpl(
-      {required this.lastHistoryUpdate, required this.hiddenSuggestions})
+class _$UserHistoryImpl extends _UserHistory {
+  const _$UserHistoryImpl(
+      {required this.userId,
+      required this.lastHistoryUpdate,
+      required this.hiddenSuggestions})
       : super._();
 
+  @override
+  final String userId;
   @override
   final DateTime lastHistoryUpdate;
   @override
@@ -135,14 +156,15 @@ class _$UserProfileImpl extends _UserProfile {
 
   @override
   String toString() {
-    return 'UserProfile(lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestions: $hiddenSuggestions)';
+    return 'UserHistory(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestions: $hiddenSuggestions)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserProfileImpl &&
+            other is _$UserHistoryImpl &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.lastHistoryUpdate, lastHistoryUpdate) ||
                 other.lastHistoryUpdate == lastHistoryUpdate) &&
             (identical(other.hiddenSuggestions, hiddenSuggestions) ||
@@ -151,33 +173,36 @@ class _$UserProfileImpl extends _UserProfile {
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, lastHistoryUpdate, hiddenSuggestions);
+      Object.hash(runtimeType, userId, lastHistoryUpdate, hiddenSuggestions);
 
-  /// Create a copy of UserProfile
+  /// Create a copy of UserHistory
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserProfileImplCopyWith<_$UserProfileImpl> get copyWith =>
-      __$$UserProfileImplCopyWithImpl<_$UserProfileImpl>(this, _$identity);
+  _$$UserHistoryImplCopyWith<_$UserHistoryImpl> get copyWith =>
+      __$$UserHistoryImplCopyWithImpl<_$UserHistoryImpl>(this, _$identity);
 }
 
-abstract class _UserProfile extends UserProfile {
-  const factory _UserProfile(
-      {required final DateTime lastHistoryUpdate,
-      required final HiddenSuggestions hiddenSuggestions}) = _$UserProfileImpl;
-  const _UserProfile._() : super._();
+abstract class _UserHistory extends UserHistory {
+  const factory _UserHistory(
+      {required final String userId,
+      required final DateTime lastHistoryUpdate,
+      required final HiddenSuggestions hiddenSuggestions}) = _$UserHistoryImpl;
+  const _UserHistory._() : super._();
 
+  @override
+  String get userId;
   @override
   DateTime get lastHistoryUpdate;
   @override
   HiddenSuggestions get hiddenSuggestions;
 
-  /// Create a copy of UserProfile
+  /// Create a copy of UserHistory
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserProfileImplCopyWith<_$UserProfileImpl> get copyWith =>
+  _$$UserHistoryImplCopyWith<_$UserHistoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

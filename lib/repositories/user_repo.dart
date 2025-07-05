@@ -13,7 +13,7 @@ Stream<auth.User?> _authUserStream(Ref ref) {
   return ref.read(firebaseAuthProvider).authStateChanges();
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UserRepo extends _$UserRepo {
   @override
   User? build() {
@@ -66,7 +66,13 @@ class UserRepo extends _$UserRepo {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 bool loggedIn(Ref ref) {
   return ref.watch(userRepoProvider) != null;
+}
+
+@Riverpod(keepAlive: true)
+String? userId(Ref ref) {
+  final user = ref.watch(userRepoProvider);
+  return user?.id;
 }

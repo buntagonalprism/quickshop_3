@@ -8,9 +8,9 @@ part 'app_database_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 AppDatabase appDatabase(Ref ref) {
-  final user = ref.watch(userRepoProvider);
-  if (user == null) {
+  final userId = ref.watch(userIdProvider);
+  if (userId == null) {
     return AppDatabase('unauthenticated');
   }
-  return AppDatabase(user.id);
+  return AppDatabase(userId);
 }

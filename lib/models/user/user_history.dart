@@ -1,15 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user_profile.freezed.dart';
+part 'user_history.freezed.dart';
 
 @freezed
-class UserProfile with _$UserProfile {
-  const UserProfile._();
+class UserHistory with _$UserHistory {
+  const UserHistory._();
 
-  const factory UserProfile({
+  const factory UserHistory({
+    required String userId,
     required DateTime lastHistoryUpdate,
     required HiddenSuggestions hiddenSuggestions,
-  }) = _UserProfile;
+  }) = _UserHistory;
 }
 
 @freezed
