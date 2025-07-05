@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/category_suggestions.dart' as data;
-import '../../../../repositories/shopping_category_suggestion_repo.dart';
+import '../../../../repositories/shopping/autocomplete/shopping_category_autocomplete_repo.dart';
 
 part 'category_selector_view_model.freezed.dart';
 part 'category_selector_view_model.g.dart';
@@ -40,15 +40,15 @@ class CategorySelectorViewModel {
   CategorySelectorViewModel._(this._ref);
 
   Future<List<CategorySelectorItem>> getItems(String filter) async {
-    final categoryRepo = _ref.read(shoppingCategorySuggestionRepoProvider);
-    final categorySuggestions = await categoryRepo.getSuggestions(filter);
-    final suggestionResults = categorySuggestions
-        .map((suggestion) => CategorySelectorItem.suggestion(suggestion.name))
+    final autocompleteRepo = _ref.read(shoppingCategoryAutocompleteRepoProvider);
+    final autocompletes = await autocompleteRepo.getAutocomplete(filter);
+    final items = autocompletes
+        .map((autocomplete) => CategorySelectorItem.suggestion(autocomplete.name))
         .toList();
-    if (suggestionResults.isEmpty || filter.length > 3) {
-      suggestionResults.insert(0, const CategorySelectorItem.newCategory());
+    if (items.isEmpty || filter.length > 3) {
+      items.insert(0, const CategorySelectorItem.newCategory());
     }
-    return suggestionResults;
+    return items;
   }
 }
 

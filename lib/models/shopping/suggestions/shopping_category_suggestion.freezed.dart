@@ -16,9 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ShoppingCategorySuggestion {
+  String get id => throw _privateConstructorUsedError;
+  String get locale => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  ShoppingCategorySuggestionSource get source =>
-      throw _privateConstructorUsedError;
+  int? get popularity => throw _privateConstructorUsedError;
 
   /// Create a copy of ShoppingCategorySuggestion
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +35,7 @@ abstract class $ShoppingCategorySuggestionCopyWith<$Res> {
       _$ShoppingCategorySuggestionCopyWithImpl<$Res,
           ShoppingCategorySuggestion>;
   @useResult
-  $Res call({String name, ShoppingCategorySuggestionSource source});
+  $Res call({String id, String locale, String name, int? popularity});
 }
 
 /// @nodoc
@@ -53,42 +54,52 @@ class _$ShoppingCategorySuggestionCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? locale = null,
     Object? name = null,
-    Object? source = null,
+    Object? popularity = freezed,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as ShoppingCategorySuggestionSource,
+      popularity: freezed == popularity
+          ? _value.popularity
+          : popularity // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$ShoppingItemCategorySuggestionImplCopyWith<$Res>
+abstract class _$$ShoppingCategorySuggestionImplCopyWith<$Res>
     implements $ShoppingCategorySuggestionCopyWith<$Res> {
-  factory _$$ShoppingItemCategorySuggestionImplCopyWith(
-          _$ShoppingItemCategorySuggestionImpl value,
-          $Res Function(_$ShoppingItemCategorySuggestionImpl) then) =
-      __$$ShoppingItemCategorySuggestionImplCopyWithImpl<$Res>;
+  factory _$$ShoppingCategorySuggestionImplCopyWith(
+          _$ShoppingCategorySuggestionImpl value,
+          $Res Function(_$ShoppingCategorySuggestionImpl) then) =
+      __$$ShoppingCategorySuggestionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, ShoppingCategorySuggestionSource source});
+  $Res call({String id, String locale, String name, int? popularity});
 }
 
 /// @nodoc
-class __$$ShoppingItemCategorySuggestionImplCopyWithImpl<$Res>
+class __$$ShoppingCategorySuggestionImplCopyWithImpl<$Res>
     extends _$ShoppingCategorySuggestionCopyWithImpl<$Res,
-        _$ShoppingItemCategorySuggestionImpl>
-    implements _$$ShoppingItemCategorySuggestionImplCopyWith<$Res> {
-  __$$ShoppingItemCategorySuggestionImplCopyWithImpl(
-      _$ShoppingItemCategorySuggestionImpl _value,
-      $Res Function(_$ShoppingItemCategorySuggestionImpl) _then)
+        _$ShoppingCategorySuggestionImpl>
+    implements _$$ShoppingCategorySuggestionImplCopyWith<$Res> {
+  __$$ShoppingCategorySuggestionImplCopyWithImpl(
+      _$ShoppingCategorySuggestionImpl _value,
+      $Res Function(_$ShoppingCategorySuggestionImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ShoppingCategorySuggestion
@@ -96,81 +107,102 @@ class __$$ShoppingItemCategorySuggestionImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? locale = null,
     Object? name = null,
-    Object? source = null,
+    Object? popularity = freezed,
   }) {
-    return _then(_$ShoppingItemCategorySuggestionImpl(
+    return _then(_$ShoppingCategorySuggestionImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as ShoppingCategorySuggestionSource,
+      popularity: freezed == popularity
+          ? _value.popularity
+          : popularity // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$ShoppingItemCategorySuggestionImpl
-    extends _ShoppingItemCategorySuggestion {
-  const _$ShoppingItemCategorySuggestionImpl(
-      {required this.name, required this.source})
+class _$ShoppingCategorySuggestionImpl extends _ShoppingCategorySuggestion {
+  const _$ShoppingCategorySuggestionImpl(
+      {required this.id,
+      required this.locale,
+      required this.name,
+      this.popularity})
       : super._();
 
   @override
+  final String id;
+  @override
+  final String locale;
+  @override
   final String name;
   @override
-  final ShoppingCategorySuggestionSource source;
+  final int? popularity;
 
   @override
   String toString() {
-    return 'ShoppingCategorySuggestion(name: $name, source: $source)';
+    return 'ShoppingCategorySuggestion(id: $id, locale: $locale, name: $name, popularity: $popularity)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShoppingItemCategorySuggestionImpl &&
+            other is _$ShoppingCategorySuggestionImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.source, source) || other.source == source));
+            (identical(other.popularity, popularity) ||
+                other.popularity == popularity));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, source);
+  int get hashCode => Object.hash(runtimeType, id, locale, name, popularity);
 
   /// Create a copy of ShoppingCategorySuggestion
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ShoppingItemCategorySuggestionImplCopyWith<
-          _$ShoppingItemCategorySuggestionImpl>
-      get copyWith => __$$ShoppingItemCategorySuggestionImplCopyWithImpl<
-          _$ShoppingItemCategorySuggestionImpl>(this, _$identity);
+  _$$ShoppingCategorySuggestionImplCopyWith<_$ShoppingCategorySuggestionImpl>
+      get copyWith => __$$ShoppingCategorySuggestionImplCopyWithImpl<
+          _$ShoppingCategorySuggestionImpl>(this, _$identity);
 }
 
-abstract class _ShoppingItemCategorySuggestion
-    extends ShoppingCategorySuggestion {
-  const factory _ShoppingItemCategorySuggestion(
-          {required final String name,
-          required final ShoppingCategorySuggestionSource source}) =
-      _$ShoppingItemCategorySuggestionImpl;
-  const _ShoppingItemCategorySuggestion._() : super._();
+abstract class _ShoppingCategorySuggestion extends ShoppingCategorySuggestion {
+  const factory _ShoppingCategorySuggestion(
+      {required final String id,
+      required final String locale,
+      required final String name,
+      final int? popularity}) = _$ShoppingCategorySuggestionImpl;
+  const _ShoppingCategorySuggestion._() : super._();
 
+  @override
+  String get id;
+  @override
+  String get locale;
   @override
   String get name;
   @override
-  ShoppingCategorySuggestionSource get source;
+  int? get popularity;
 
   /// Create a copy of ShoppingCategorySuggestion
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShoppingItemCategorySuggestionImplCopyWith<
-          _$ShoppingItemCategorySuggestionImpl>
+  _$$ShoppingCategorySuggestionImplCopyWith<_$ShoppingCategorySuggestionImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

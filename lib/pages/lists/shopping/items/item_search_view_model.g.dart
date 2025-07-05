@@ -6,7 +6,7 @@ part of 'item_search_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$itemSuggestionsHash() => r'a58c901aac2381cd14efc05b081df9fcf1290d0a';
+String _$itemAutocompleteHash() => r'921252a85bbd25409c1f633bdabf99697f240449';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,28 +29,28 @@ class _SystemHash {
   }
 }
 
-/// See also [itemSuggestions].
-@ProviderFor(itemSuggestions)
-const itemSuggestionsProvider = ItemSuggestionsFamily();
+/// See also [itemAutocomplete].
+@ProviderFor(itemAutocomplete)
+const itemAutocompleteProvider = ItemAutocompleteFamily();
 
-/// See also [itemSuggestions].
-class ItemSuggestionsFamily
-    extends Family<AsyncValue<List<ShoppingItemSuggestion>>> {
-  /// See also [itemSuggestions].
-  const ItemSuggestionsFamily();
+/// See also [itemAutocomplete].
+class ItemAutocompleteFamily
+    extends Family<AsyncValue<List<ShoppingItemAutocomplete>>> {
+  /// See also [itemAutocomplete].
+  const ItemAutocompleteFamily();
 
-  /// See also [itemSuggestions].
-  ItemSuggestionsProvider call(
+  /// See also [itemAutocomplete].
+  ItemAutocompleteProvider call(
     String listId,
   ) {
-    return ItemSuggestionsProvider(
+    return ItemAutocompleteProvider(
       listId,
     );
   }
 
   @override
-  ItemSuggestionsProvider getProviderOverride(
-    covariant ItemSuggestionsProvider provider,
+  ItemAutocompleteProvider getProviderOverride(
+    covariant ItemAutocompleteProvider provider,
   ) {
     return call(
       provider.listId,
@@ -69,33 +69,33 @@ class ItemSuggestionsFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'itemSuggestionsProvider';
+  String? get name => r'itemAutocompleteProvider';
 }
 
-/// See also [itemSuggestions].
-class ItemSuggestionsProvider
-    extends AutoDisposeFutureProvider<List<ShoppingItemSuggestion>> {
-  /// See also [itemSuggestions].
-  ItemSuggestionsProvider(
+/// See also [itemAutocomplete].
+class ItemAutocompleteProvider
+    extends AutoDisposeFutureProvider<List<ShoppingItemAutocomplete>> {
+  /// See also [itemAutocomplete].
+  ItemAutocompleteProvider(
     String listId,
   ) : this._internal(
-          (ref) => itemSuggestions(
-            ref as ItemSuggestionsRef,
+          (ref) => itemAutocomplete(
+            ref as ItemAutocompleteRef,
             listId,
           ),
-          from: itemSuggestionsProvider,
-          name: r'itemSuggestionsProvider',
+          from: itemAutocompleteProvider,
+          name: r'itemAutocompleteProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$itemSuggestionsHash,
-          dependencies: ItemSuggestionsFamily._dependencies,
+                  : _$itemAutocompleteHash,
+          dependencies: ItemAutocompleteFamily._dependencies,
           allTransitiveDependencies:
-              ItemSuggestionsFamily._allTransitiveDependencies,
+              ItemAutocompleteFamily._allTransitiveDependencies,
           listId: listId,
         );
 
-  ItemSuggestionsProvider._internal(
+  ItemAutocompleteProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,13 +109,14 @@ class ItemSuggestionsProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<ShoppingItemSuggestion>> Function(ItemSuggestionsRef provider)
+    FutureOr<List<ShoppingItemAutocomplete>> Function(
+            ItemAutocompleteRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: ItemSuggestionsProvider._internal(
-        (ref) => create(ref as ItemSuggestionsRef),
+      override: ItemAutocompleteProvider._internal(
+        (ref) => create(ref as ItemAutocompleteRef),
         from: from,
         name: null,
         dependencies: null,
@@ -127,14 +128,14 @@ class ItemSuggestionsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<ShoppingItemSuggestion>>
+  AutoDisposeFutureProviderElement<List<ShoppingItemAutocomplete>>
       createElement() {
-    return _ItemSuggestionsProviderElement(this);
+    return _ItemAutocompleteProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ItemSuggestionsProvider && other.listId == listId;
+    return other is ItemAutocompleteProvider && other.listId == listId;
   }
 
   @override
@@ -148,19 +149,19 @@ class ItemSuggestionsProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ItemSuggestionsRef
-    on AutoDisposeFutureProviderRef<List<ShoppingItemSuggestion>> {
+mixin ItemAutocompleteRef
+    on AutoDisposeFutureProviderRef<List<ShoppingItemAutocomplete>> {
   /// The parameter `listId` of this provider.
   String get listId;
 }
 
-class _ItemSuggestionsProviderElement
-    extends AutoDisposeFutureProviderElement<List<ShoppingItemSuggestion>>
-    with ItemSuggestionsRef {
-  _ItemSuggestionsProviderElement(super.provider);
+class _ItemAutocompleteProviderElement
+    extends AutoDisposeFutureProviderElement<List<ShoppingItemAutocomplete>>
+    with ItemAutocompleteRef {
+  _ItemAutocompleteProviderElement(super.provider);
 
   @override
-  String get listId => (origin as ItemSuggestionsProvider).listId;
+  String get listId => (origin as ItemAutocompleteProvider).listId;
 }
 
 String _$itemFilterHash() => r'c074d5d919e5da3a73c794d0798466d00ffecec9';

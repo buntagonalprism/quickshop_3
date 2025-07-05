@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/shopping/shopping_item.dart';
-import '../../../../repositories/shopping_item_repo.dart';
+import '../../../../repositories/shopping/shopping_item_repo.dart';
 import '../../../../router.dart';
 import 'shopping_item_edit_view_model.dart';
 import 'shopping_item_view.dart';

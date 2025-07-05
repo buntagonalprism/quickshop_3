@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../analytics/logger.dart';
-import '../models/shopping/history/shopping_category_history.dart';
-import '../services/app_database.dart';
-import '../services/app_database_provider.dart';
-import '../services/firestore.dart';
-import '../services/tables/load_progress_table.dart';
-import 'user_history_repo.dart';
+import '../../../analytics/logger.dart';
+import '../../../models/shopping/history/shopping_item_history.dart';
+import '../../../services/app_database.dart';
+import '../../../services/app_database_provider.dart';
+import '../../../services/firestore.dart';
+import '../../../services/tables/load_progress_table.dart';
+import '../../user_history_repo.dart';
 
-part 'shopping_category_history_repo.g.dart';
+part 'shopping_item_history_repo.g.dart';
 
 @riverpod
-ShoppingCategoryHistoryRepo shoppingCategoryHistoryRepo(Ref ref) {
-  return ShoppingCategoryHistoryRepo(ref);
+ShoppingItemHistoryRepo shoppingItemHistoryRepo(Ref ref) {
+  return ShoppingItemHistoryRepo._(ref);
 }
 
-class ShoppingCategoryHistoryRepo {
+class ShoppingItemHistoryRepo {
   final Ref _ref;
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider);
@@ -25,12 +25,12 @@ class ShoppingCategoryHistoryRepo {
 
   DateTime _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(0);
 
-  ShoppingCategoryHistoryRepo(this._ref) {
+  ShoppingItemHistoryRepo._(this._ref) {
     _init();
   }
 
   void _init() async {
-    final progress = await _db.getLoadProgress(LoadProgressType.categoryHistory);
+    final progress = await _db.getLoadProgress(LoadProgressType.itemHistory);
     if (progress != null) {
       _retrievedUntil = progress;
     }
@@ -45,11 +45,11 @@ class ShoppingCategoryHistoryRepo {
     }, fireImmediately: true);
   }
 
-  Future<List<ShoppingCategoryHistory>> searchHistory(String query) async {
+  Future<List<ShoppingItemHistory>> searchHistory(String query) async {
     final start = DateTime.now();
     // TODO: Verify that the query is properly case-insensitive and handles multi-word filters
 
-    _log.captureSpan(start, '$ShoppingCategoryHistoryRepo.$searchHistory');
+    _log.captureSpan(start, '$ShoppingItemHistoryRepo.$searchHistory');
     throw UnimplementedError(
       'ShoppingCategoryHistoryRepo.getHistory is not implemented yet.',
     );
@@ -60,7 +60,7 @@ class ShoppingCategoryHistoryRepo {
     final baseQuery = _fs
         .collection('userHistory')
         .doc(userId)
-        .collection('categories')
+        .collection('items')
         .where('lastUsed', isGreaterThan: since.millisecondsSinceEpoch)
         .orderBy('lastUsed')
         .orderBy(FieldPath.documentId)
@@ -81,15 +81,16 @@ class ShoppingCategoryHistoryRepo {
       return;
     }
 
-    await _db.insertCategoryHistory(
+    await _db.insertItemHistory(
       allDocs.map((doc) {
         final data = doc.data()!;
-        return CategoryHistoryRow(
+        return ItemHistoryRow(
           id: doc.id,
           name: data['name'],
           nameLower: data['nameLower'],
           usageCount: data['usageCount'],
           lastUsed: data['lastUsed'],
+          categories: (data['categories'] as List).cast<String>().join('|'),
         );
       }).toList(),
     );
@@ -98,7 +99,7 @@ class ShoppingCategoryHistoryRepo {
       allDocs.last.data()!['lastUsed'],
     );
     await _db.saveLoadProgress(
-      LoadProgressType.categoryHistory,
+      LoadProgressType.itemHistory,
       _retrievedUntil,
     );
   }

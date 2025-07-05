@@ -2,15 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../analytics/analytics.dart';
-import '../models/shopping/shopping_item.dart';
-import '../models/shopping/suggestions/shopping_item_suggestion.dart';
-import '../services/firestore.dart';
-import 'delay_provider_dispose.dart';
-import 'list_leave_in_progress_repo.dart';
-import 'list_repo.dart';
-import 'shopping_item_suggestion_repo.dart';
-import 'user_repo.dart';
+import '../../analytics/analytics.dart';
+import '../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
+import '../../models/shopping/shopping_item.dart';
+import '../../services/firestore.dart';
+import '../delay_provider_dispose.dart';
+import '../list_leave_in_progress_repo.dart';
+import '../list_repo.dart';
+import '../user_repo.dart';
+import 'autocomplete/shopping_item_autocomplete_repo.dart';
 
 part 'shopping_item_repo.freezed.dart';
 part 'shopping_item_repo.g.dart';
@@ -75,21 +75,21 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     });
   }
 
-  Future<ShoppingItem> addSuggestion(ShoppingItemSuggestion suggestion) {
+  Future<ShoppingItem> addAutocomplete(ShoppingItemAutocomplete autocomplete) {
     return addItem(
-      productName: suggestion.product,
-      quantity: suggestion.quantity,
-      categories: suggestion.categories,
+      productName: autocomplete.product,
+      quantity: autocomplete.quantity,
+      categories: autocomplete.categories,
     );
   }
 
   Future<AddItemResult> addItemByName(String itemName) async {
-    final suggestionRepo = ref.read(shoppingItemSuggestionRepoProvider(listId));
-    final suggestion = await suggestionRepo.getExactMatchSuggestionForItem(itemName);
-    if (suggestion == null) {
+    final autocompleteRepo = ref.read(shoppingItemAutocompleteRepoProvider(listId));
+    final autocomplete = await autocompleteRepo.getExactMatchSuggestionForItem(itemName);
+    if (autocomplete == null) {
       return const AddItemResult.categoryRequired();
     }
-    final item = await addSuggestion(suggestion);
+    final item = await addAutocomplete(autocomplete);
     return AddItemResult.success(item);
   }
 

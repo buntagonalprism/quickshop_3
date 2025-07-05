@@ -7,18 +7,10 @@ class ShoppingItemSuggestion with _$ShoppingItemSuggestion {
   const ShoppingItemSuggestion._();
 
   const factory ShoppingItemSuggestion({
-    required String product,
-    required String quantity,
+    required String id,
+    required String locale,
+    required String name,
     required List<String> categories,
-    required ShoppingItemSuggestionSource source,
-    String? listItemId,
+    int? popularity,
   }) = _ShoppingItemSuggestion;
-
-  String get displayName => quantity.isEmpty ? product : '$quantity $product';
-}
-
-enum ShoppingItemSuggestionSource {
-  history,
-  list,
-  suggested,
 }

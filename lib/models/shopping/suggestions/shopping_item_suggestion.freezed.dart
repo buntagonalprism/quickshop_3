@@ -16,11 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ShoppingItemSuggestion {
-  String get product => throw _privateConstructorUsedError;
-  String get quantity => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  String get locale => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
-  ShoppingItemSuggestionSource get source => throw _privateConstructorUsedError;
-  String? get listItemId => throw _privateConstructorUsedError;
+  int? get popularity => throw _privateConstructorUsedError;
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.
@@ -36,11 +36,11 @@ abstract class $ShoppingItemSuggestionCopyWith<$Res> {
       _$ShoppingItemSuggestionCopyWithImpl<$Res, ShoppingItemSuggestion>;
   @useResult
   $Res call(
-      {String product,
-      String quantity,
+      {String id,
+      String locale,
+      String name,
       List<String> categories,
-      ShoppingItemSuggestionSource source,
-      String? listItemId});
+      int? popularity});
 }
 
 /// @nodoc
@@ -59,33 +59,33 @@ class _$ShoppingItemSuggestionCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? product = null,
-    Object? quantity = null,
+    Object? id = null,
+    Object? locale = null,
+    Object? name = null,
     Object? categories = null,
-    Object? source = null,
-    Object? listItemId = freezed,
+    Object? popularity = freezed,
   }) {
     return _then(_value.copyWith(
-      product: null == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       categories: null == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as ShoppingItemSuggestionSource,
-      listItemId: freezed == listItemId
-          ? _value.listItemId
-          : listItemId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      popularity: freezed == popularity
+          ? _value.popularity
+          : popularity // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -100,11 +100,11 @@ abstract class _$$ShoppingItemSuggestionImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String product,
-      String quantity,
+      {String id,
+      String locale,
+      String name,
       List<String> categories,
-      ShoppingItemSuggestionSource source,
-      String? listItemId});
+      int? popularity});
 }
 
 /// @nodoc
@@ -122,33 +122,33 @@ class __$$ShoppingItemSuggestionImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? product = null,
-    Object? quantity = null,
+    Object? id = null,
+    Object? locale = null,
+    Object? name = null,
     Object? categories = null,
-    Object? source = null,
-    Object? listItemId = freezed,
+    Object? popularity = freezed,
   }) {
     return _then(_$ShoppingItemSuggestionImpl(
-      product: null == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       categories: null == categories
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as ShoppingItemSuggestionSource,
-      listItemId: freezed == listItemId
-          ? _value.listItemId
-          : listItemId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      popularity: freezed == popularity
+          ? _value.popularity
+          : popularity // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -157,18 +157,20 @@ class __$$ShoppingItemSuggestionImplCopyWithImpl<$Res>
 
 class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
   const _$ShoppingItemSuggestionImpl(
-      {required this.product,
-      required this.quantity,
+      {required this.id,
+      required this.locale,
+      required this.name,
       required final List<String> categories,
-      required this.source,
-      this.listItemId})
+      this.popularity})
       : _categories = categories,
         super._();
 
   @override
-  final String product;
+  final String id;
   @override
-  final String quantity;
+  final String locale;
+  @override
+  final String name;
   final List<String> _categories;
   @override
   List<String> get categories {
@@ -178,13 +180,11 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
   }
 
   @override
-  final ShoppingItemSuggestionSource source;
-  @override
-  final String? listItemId;
+  final int? popularity;
 
   @override
   String toString() {
-    return 'ShoppingItemSuggestion(product: $product, quantity: $quantity, categories: $categories, source: $source, listItemId: $listItemId)';
+    return 'ShoppingItemSuggestion(id: $id, locale: $locale, name: $name, categories: $categories, popularity: $popularity)';
   }
 
   @override
@@ -192,19 +192,18 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ShoppingItemSuggestionImpl &&
-            (identical(other.product, product) || other.product == product) &&
-            (identical(other.quantity, quantity) ||
-                other.quantity == quantity) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
-            (identical(other.source, source) || other.source == source) &&
-            (identical(other.listItemId, listItemId) ||
-                other.listItemId == listItemId));
+            (identical(other.popularity, popularity) ||
+                other.popularity == popularity));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, product, quantity,
-      const DeepCollectionEquality().hash(_categories), source, listItemId);
+  int get hashCode => Object.hash(runtimeType, id, locale, name,
+      const DeepCollectionEquality().hash(_categories), popularity);
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.
@@ -218,23 +217,23 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
 
 abstract class _ShoppingItemSuggestion extends ShoppingItemSuggestion {
   const factory _ShoppingItemSuggestion(
-      {required final String product,
-      required final String quantity,
+      {required final String id,
+      required final String locale,
+      required final String name,
       required final List<String> categories,
-      required final ShoppingItemSuggestionSource source,
-      final String? listItemId}) = _$ShoppingItemSuggestionImpl;
+      final int? popularity}) = _$ShoppingItemSuggestionImpl;
   const _ShoppingItemSuggestion._() : super._();
 
   @override
-  String get product;
+  String get id;
   @override
-  String get quantity;
+  String get locale;
+  @override
+  String get name;
   @override
   List<String> get categories;
   @override
-  ShoppingItemSuggestionSource get source;
-  @override
-  String? get listItemId;
+  int? get popularity;
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'shopping_item_suggestion_repo.dart';
+part of 'shopping_item_repo.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingItemSuggestionRepoHash() =>
-    r'b19d7feb190c8cfc6b9ca04ac172d301770b84d3';
+String _$shoppingListItemRepoHash() =>
+    r'dfaca9a7ac3d74905a8f67f26aae68abc54dc8f4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,28 +30,37 @@ class _SystemHash {
   }
 }
 
-/// See also [shoppingItemSuggestionRepo].
-@ProviderFor(shoppingItemSuggestionRepo)
-const shoppingItemSuggestionRepoProvider = ShoppingItemSuggestionRepoFamily();
+abstract class _$ShoppingListItemRepo
+    extends BuildlessAutoDisposeStreamNotifier<List<ShoppingItem>> {
+  late final String listId;
 
-/// See also [shoppingItemSuggestionRepo].
-class ShoppingItemSuggestionRepoFamily
-    extends Family<ShoppingItemSuggestionRepo> {
-  /// See also [shoppingItemSuggestionRepo].
-  const ShoppingItemSuggestionRepoFamily();
+  Stream<List<ShoppingItem>> build(
+    String listId,
+  );
+}
 
-  /// See also [shoppingItemSuggestionRepo].
-  ShoppingItemSuggestionRepoProvider call(
+/// See also [ShoppingListItemRepo].
+@ProviderFor(ShoppingListItemRepo)
+const shoppingListItemRepoProvider = ShoppingListItemRepoFamily();
+
+/// See also [ShoppingListItemRepo].
+class ShoppingListItemRepoFamily
+    extends Family<AsyncValue<List<ShoppingItem>>> {
+  /// See also [ShoppingListItemRepo].
+  const ShoppingListItemRepoFamily();
+
+  /// See also [ShoppingListItemRepo].
+  ShoppingListItemRepoProvider call(
     String listId,
   ) {
-    return ShoppingItemSuggestionRepoProvider(
+    return ShoppingListItemRepoProvider(
       listId,
     );
   }
 
   @override
-  ShoppingItemSuggestionRepoProvider getProviderOverride(
-    covariant ShoppingItemSuggestionRepoProvider provider,
+  ShoppingListItemRepoProvider getProviderOverride(
+    covariant ShoppingListItemRepoProvider provider,
   ) {
     return call(
       provider.listId,
@@ -70,33 +79,31 @@ class ShoppingItemSuggestionRepoFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'shoppingItemSuggestionRepoProvider';
+  String? get name => r'shoppingListItemRepoProvider';
 }
 
-/// See also [shoppingItemSuggestionRepo].
-class ShoppingItemSuggestionRepoProvider
-    extends AutoDisposeProvider<ShoppingItemSuggestionRepo> {
-  /// See also [shoppingItemSuggestionRepo].
-  ShoppingItemSuggestionRepoProvider(
+/// See also [ShoppingListItemRepo].
+class ShoppingListItemRepoProvider
+    extends AutoDisposeStreamNotifierProviderImpl<ShoppingListItemRepo,
+        List<ShoppingItem>> {
+  /// See also [ShoppingListItemRepo].
+  ShoppingListItemRepoProvider(
     String listId,
   ) : this._internal(
-          (ref) => shoppingItemSuggestionRepo(
-            ref as ShoppingItemSuggestionRepoRef,
-            listId,
-          ),
-          from: shoppingItemSuggestionRepoProvider,
-          name: r'shoppingItemSuggestionRepoProvider',
+          () => ShoppingListItemRepo()..listId = listId,
+          from: shoppingListItemRepoProvider,
+          name: r'shoppingListItemRepoProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$shoppingItemSuggestionRepoHash,
-          dependencies: ShoppingItemSuggestionRepoFamily._dependencies,
+                  : _$shoppingListItemRepoHash,
+          dependencies: ShoppingListItemRepoFamily._dependencies,
           allTransitiveDependencies:
-              ShoppingItemSuggestionRepoFamily._allTransitiveDependencies,
+              ShoppingListItemRepoFamily._allTransitiveDependencies,
           listId: listId,
         );
 
-  ShoppingItemSuggestionRepoProvider._internal(
+  ShoppingListItemRepoProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,14 +116,20 @@ class ShoppingItemSuggestionRepoProvider
   final String listId;
 
   @override
-  Override overrideWith(
-    ShoppingItemSuggestionRepo Function(ShoppingItemSuggestionRepoRef provider)
-        create,
+  Stream<List<ShoppingItem>> runNotifierBuild(
+    covariant ShoppingListItemRepo notifier,
   ) {
+    return notifier.build(
+      listId,
+    );
+  }
+
+  @override
+  Override overrideWith(ShoppingListItemRepo Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ShoppingItemSuggestionRepoProvider._internal(
-        (ref) => create(ref as ShoppingItemSuggestionRepoRef),
+      override: ShoppingListItemRepoProvider._internal(
+        () => create()..listId = listId,
         from: from,
         name: null,
         dependencies: null,
@@ -128,14 +141,14 @@ class ShoppingItemSuggestionRepoProvider
   }
 
   @override
-  AutoDisposeProviderElement<ShoppingItemSuggestionRepo> createElement() {
-    return _ShoppingItemSuggestionRepoProviderElement(this);
+  AutoDisposeStreamNotifierProviderElement<ShoppingListItemRepo,
+      List<ShoppingItem>> createElement() {
+    return _ShoppingListItemRepoProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ShoppingItemSuggestionRepoProvider &&
-        other.listId == listId;
+    return other is ShoppingListItemRepoProvider && other.listId == listId;
   }
 
   @override
@@ -149,19 +162,19 @@ class ShoppingItemSuggestionRepoProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ShoppingItemSuggestionRepoRef
-    on AutoDisposeProviderRef<ShoppingItemSuggestionRepo> {
+mixin ShoppingListItemRepoRef
+    on AutoDisposeStreamNotifierProviderRef<List<ShoppingItem>> {
   /// The parameter `listId` of this provider.
   String get listId;
 }
 
-class _ShoppingItemSuggestionRepoProviderElement
-    extends AutoDisposeProviderElement<ShoppingItemSuggestionRepo>
-    with ShoppingItemSuggestionRepoRef {
-  _ShoppingItemSuggestionRepoProviderElement(super.provider);
+class _ShoppingListItemRepoProviderElement
+    extends AutoDisposeStreamNotifierProviderElement<ShoppingListItemRepo,
+        List<ShoppingItem>> with ShoppingListItemRepoRef {
+  _ShoppingListItemRepoProviderElement(super.provider);
 
   @override
-  String get listId => (origin as ShoppingItemSuggestionRepoProvider).listId;
+  String get listId => (origin as ShoppingListItemRepoProvider).listId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

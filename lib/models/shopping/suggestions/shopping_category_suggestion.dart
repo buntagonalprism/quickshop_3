@@ -7,12 +7,9 @@ class ShoppingCategorySuggestion with _$ShoppingCategorySuggestion {
   const ShoppingCategorySuggestion._();
 
   const factory ShoppingCategorySuggestion({
+    required String id,
+    required String locale,
     required String name,
-    required ShoppingCategorySuggestionSource source,
-  }) = _ShoppingItemCategorySuggestion;
-}
-
-enum ShoppingCategorySuggestionSource {
-  history,
-  suggested,
+    int? popularity,
+  }) = _ShoppingCategorySuggestion;
 }

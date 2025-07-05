@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/shopping/suggestions/shopping_item_suggestion.dart';
-import '../../../../repositories/shopping_item_repo.dart';
-import '../../../../repositories/shopping_item_suggestion_repo.dart';
+import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
+import '../../../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
+import '../../../../repositories/shopping/shopping_item_repo.dart';
 import '../../../../router.dart';
 import 'item_search_view_model.dart';
 import 'shopping_item_view.dart';
@@ -145,14 +145,18 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
     );
   }
 
-  void _onAddSuggestion(ShoppingItemSuggestion suggestion) async {
-    await ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addSuggestion(suggestion);
+  void _onAddSuggestion(ShoppingItemAutocomplete suggestion) async {
+    await ref
+        .read(shoppingListItemRepoProvider(widget.listId).notifier)
+        .addAutocomplete(suggestion);
     ref.read(routerProvider).pop();
     _showConfirmationSnackbar(suggestion.displayName);
   }
 
-  void _onAddMoreFromSuggestion(ShoppingItemSuggestion suggestion) async {
-    await ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addSuggestion(suggestion);
+  void _onAddMoreFromSuggestion(ShoppingItemAutocomplete suggestion) async {
+    await ref
+        .read(shoppingListItemRepoProvider(widget.listId).notifier)
+        .addAutocomplete(suggestion);
     _showConfirmationSnackbar(suggestion.displayName);
     _resetFilter();
   }
@@ -180,8 +184,8 @@ class ItemSuggestionsList extends ConsumerStatefulWidget {
     super.key,
   });
   final String listId;
-  final Function(ShoppingItemSuggestion) onAdd;
-  final Function(ShoppingItemSuggestion) onAddMore;
+  final Function(ShoppingItemAutocomplete) onAdd;
+  final Function(ShoppingItemAutocomplete) onAddMore;
 
   @override
   ConsumerState<ItemSuggestionsList> createState() => _ItemSuggestionsListState();
@@ -193,24 +197,24 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
 
   @override
   Widget build(BuildContext context) {
-    final suggestionsAsync = ref.watch(itemSuggestionsProvider(widget.listId));
-    if (suggestionsAsync.isLoading && !suggestionsAsync.hasValue) {
+    final autocompleteAsync = ref.watch(itemAutocompleteProvider(widget.listId));
+    if (autocompleteAsync.isLoading && !autocompleteAsync.hasValue) {
       return const Center(child: CircularProgressIndicator());
     }
-    if (suggestionsAsync.hasError) {
+    if (autocompleteAsync.hasError) {
       return const Center(child: Text('Failed to load suggestions'));
     }
-    final suggestions = suggestionsAsync.requireValue;
-    if (suggestions.isEmpty) {
+    final autocompletes = autocompleteAsync.requireValue;
+    if (autocompletes.isEmpty) {
       return const ItemSuggestionsEmpty();
     }
     return ListView.builder(
-      itemCount: suggestions.length,
+      itemCount: autocompletes.length,
       itemBuilder: (context, index) {
-        final suggestion = suggestions[index];
-        return switch (suggestion.source) {
-          ShoppingItemSuggestionSource.history ||
-          ShoppingItemSuggestionSource.suggested =>
+        final autocomplete = autocompletes[index];
+        return switch (autocomplete.source) {
+          ShoppingItemAutocompleteSource.history ||
+          ShoppingItemAutocompleteSource.suggested =>
             MenuAnchor(
               onClose: () {
                 setState(() {
@@ -224,8 +228,8 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
               builder: (context, controller, child) => ListTile(
                 visualDensity: VisualDensity.compact,
                 tileColor: highlightedIndex == index ? Colors.grey.shade200 : null,
-                title: Text(suggestion.displayName),
-                subtitle: Text(suggestion.categories.join(', ')),
+                title: Text(autocomplete.displayName),
+                subtitle: Text(autocomplete.categories.join(', ')),
                 onLongPress: () {
                   controller.open();
                   setState(() => highlightedIndex = index);
@@ -235,12 +239,12 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
                     controller.close();
                     setState(() => highlightedIndex = null);
                   } else if (!preventTaps) {
-                    widget.onAdd(suggestion);
+                    widget.onAdd(autocomplete);
                   }
                 },
                 trailing: IconButton(
                   icon: const Icon(Icons.add),
-                  onPressed: () => widget.onAddMore(suggestion),
+                  onPressed: () => widget.onAddMore(autocomplete),
                 ),
               ),
               style: const MenuStyle(
@@ -251,20 +255,20 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
                 MenuItemButton(
                   child: const Text('Remove'),
                   onPressed: () => ref
-                      .read(shoppingItemSuggestionRepoProvider(widget.listId))
-                      .removeSuggestion(suggestion),
+                      .read(shoppingItemAutocompleteRepoProvider(widget.listId))
+                      .removeSuggestion(autocomplete),
                 ),
                 MenuItemButton(
                   child: const Text('Edit'),
-                  onPressed: () => _onEditSuggestion(ref, suggestion),
+                  onPressed: () => _onEditSuggestion(ref, autocomplete),
                 ),
               ],
             ),
-          ShoppingItemSuggestionSource.list => ListTile(
+          ShoppingItemAutocompleteSource.list => ListTile(
               visualDensity: VisualDensity.compact,
               contentPadding: const EdgeInsets.only(left: 16, right: 4),
               title: Text(
-                suggestion.displayName,
+                autocomplete.displayName,
                 style: const TextStyle(fontStyle: FontStyle.italic),
               ),
               subtitle: const Text(
@@ -272,7 +276,7 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
               trailing: TextButton.icon(
-                onPressed: () => _onEditListItem(ref, suggestion),
+                onPressed: () => _onEditListItem(ref, autocomplete),
                 label: const Text('Edit'),
                 icon: const Icon(Icons.edit),
               ),
@@ -282,13 +286,13 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
     );
   }
 
-  void _onEditListItem(WidgetRef ref, ShoppingItemSuggestion suggestion) {
+  void _onEditListItem(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
     ref
         .read(routerProvider)
-        .go(Routes.shoppingListEditItem(widget.listId, suggestion.listItemId!).path);
+        .go(Routes.shoppingListEditItem(widget.listId, suggestion.sourceId).path);
   }
 
-  void _onEditSuggestion(WidgetRef ref, ShoppingItemSuggestion suggestion) {
+  void _onEditSuggestion(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
     // TODO: Show a suggestion edit page
     // TODO: This means that suggestions need a unique ID to identify them for editing
     print('On edit: $suggestion');
