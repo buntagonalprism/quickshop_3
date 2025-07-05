@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'analytics/crash_reporter.dart';
 import 'localization/app_localizations.dart';
 import 'repositories/settings_repo.dart';
-import 'repositories/shopping_category_suggestion_repo.dart';
+import 'repositories/shopping_category_history_repo.dart';
+import 'repositories/shopping_item_history_repo.dart';
 import 'repositories/user_repo.dart';
 import 'router.dart';
 import 'services/app_database_provider.dart';
@@ -80,8 +81,8 @@ class _EagerInitProviders extends ConsumerWidget {
     ref.watch(crashReporterProvider);
     ref.watch(appDatabaseProvider);
     ref.watch(userRepoProvider);
-    ref.watch(shoppingCategorySuggestionRepoProvider);
-    //ref.watch(shoppingItemSuggestionRepoProvider);
+    ref.watch(shoppingCategoryHistoryRepoProvider);
+    ref.watch(shoppingItemHistoryRepoProvider);
     return child;
   }
 }
