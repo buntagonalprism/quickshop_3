@@ -44,7 +44,7 @@ class DefaultFirebaseOptions {
     appId: String.fromEnvironment('firebaseWebAppId'),
     messagingSenderId: String.fromEnvironment('firebaseMessagingSenderId'),
     projectId: String.fromEnvironment('firebaseProjectId'),
-    authDomain: '${const String.fromEnvironment('firebaseProjectId')}.firebaseapp.com',
+    authDomain: '${String.fromEnvironment('firebaseProjectId')}.firebaseapp.com',
     storageBucket: String.fromEnvironment('firebaseStorageBucket'),
     measurementId: String.fromEnvironment('firebaseWebMeasurementId'),
   );
@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: String.fromEnvironment('firebaseAndroidAppId'),
     messagingSenderId: String.fromEnvironment('firebaseMessagingSenderId'),
     projectId: String.fromEnvironment('firebaseProjectId'),
-    databaseURL: 'https://${const String.fromEnvironment('firebaseProjectId')}.firebaseio.com',
+    databaseURL: 'https://${String.fromEnvironment('firebaseProjectId')}.firebaseio.com',
     storageBucket: String.fromEnvironment('firebaseStorageBucket'),
   );
 

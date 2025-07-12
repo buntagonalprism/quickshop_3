@@ -44,7 +44,7 @@ class FakeFirebaseAuth extends Mock implements auth.FirebaseAuth {
     return mockAuthUser;
   }
 
-  setUser(User? newUser) {
+  void setUser(User? newUser) {
     _user = newUser;
     _controller.add(_getMockAuthUser());
   }

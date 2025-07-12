@@ -241,6 +241,8 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
   /// into a Facebook message and trigger the issue. The "Share" button includes the following
   /// message to workaround the issue.
   void _shareLink(ListInvite invite) {
-    Share.share("I'd like to share this Quickshop shopping list with you: ${invite.url}");
+    SharePlus.instance.share(ShareParams(
+      text: "I'd like to share this Quickshop shopping list with you: ${invite.url}",
+    ));
   }
 }

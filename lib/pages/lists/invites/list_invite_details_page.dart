@@ -129,7 +129,9 @@ class _IsOwnerView extends StatelessWidget {
   }
 
   void _shareLink(ListInvite invite) {
-    Share.share("I'd like to share this Quickshop shopping list with you: ${invite.url}");
+    SharePlus.instance.share(ShareParams(
+      text: "I'd like to share this Quickshop shopping list with you: ${invite.url}",
+    ));
   }
 }
 
