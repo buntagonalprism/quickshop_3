@@ -2,7 +2,6 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../data/category_suggestions.dart';
 import 'tables/category_history_table.dart';
 import 'tables/category_suggestion_table.dart';
 import 'tables/item_history_table.dart';
@@ -45,29 +44,13 @@ class AppDatabase extends _$AppDatabase {
         await m.deleteTable(table.actualTableName);
         await m.createTable(table);
       }
-    }, beforeOpen: (details) async {
-      if (details.wasCreated) {
-        await batch((batch) {
-          final suggestions = <CategorySuggestionsTableCompanion>[];
-          for (final category in categorySuggestions) {
-            for (final token in category.split(' ')) {
-              if (token == '&' || token == '-' || token.isEmpty) continue;
-              suggestions.add(CategorySuggestionsTableCompanion.insert(
-                token: token.toLowerCase(),
-                name: category,
-              ));
-            }
-          }
-
-          batch.insertAll(categorySuggestionsTable, suggestions);
-        });
-      }
     });
   }
 
   Future<List<CategorySuggestionsRow>> getCategorySuggestions(String token) async {
+    // TODO: We need new query logic for the new structure
     return await (select(categorySuggestionsTable)
-          ..where((c) => c.token.like('${token.toLowerCase()}%')))
+          ..where((c) => c.nameLower.like('${token.toLowerCase()}%')))
         .get();
   }
 
@@ -87,6 +70,32 @@ class AppDatabase extends _$AppDatabase {
               if (token.isNotEmpty && token.length > 1)
                 TokenRow(
                   type: TokenType.categoryHistory.value,
+                  stringId: row.id,
+                  token: token,
+                ),
+        ],
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
+  Future<void> insertCategorySuggestions(List<CategorySuggestionsRow> rows) async {
+    await batch((batch) {
+      batch.deleteWhere(
+        tokenTable,
+        (c) =>
+            c.stringId.isIn(rows.map((r) => r.id)) &
+            c.type.equals(TokenType.categorySuggestion.value),
+      );
+      batch.insertAll(categorySuggestionsTable, rows, mode: InsertMode.insertOrReplace);
+      batch.insertAll(
+        tokenTable,
+        [
+          for (final row in rows)
+            for (final token in row.nameLower.split(' '))
+              if (token.isNotEmpty && token.length > 1)
+                TokenRow(
+                  type: TokenType.categorySuggestion.value,
                   stringId: row.id,
                   token: token,
                 ),
@@ -133,5 +142,17 @@ class AppDatabase extends _$AppDatabase {
     return row?.retrievedUntil != null
         ? DateTime.fromMillisecondsSinceEpoch(row!.retrievedUntil)
         : null;
+  }
+
+  Future<void> clearAllSuggestions() {
+    final suggestionProgressTypes = [
+      LoadProgressType.categorySuggestion.value,
+      LoadProgressType.itemSuggestion.value,
+    ];
+    return batch((batch) {
+      batch.deleteAll(categorySuggestionsTable);
+      batch.deleteAll(itemSuggestionsTable);
+      batch.deleteWhere(loadProgressTable, (t) => t.type.isIn(suggestionProgressTypes));
+    });
   }
 }

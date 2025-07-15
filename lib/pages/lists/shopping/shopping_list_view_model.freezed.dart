@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,32 +9,150 @@ part of 'shopping_list_view_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ShoppingListViewModel {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is ShoppingListViewModel);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ShoppingListViewModel()';
+  }
+}
+
+/// @nodoc
+class $ShoppingListViewModelCopyWith<$Res> {
+  $ShoppingListViewModelCopyWith(
+      ShoppingListViewModel _, $Res Function(ShoppingListViewModel) __);
+}
+
+/// Adds pattern-matching-related methods to [ShoppingListViewModel].
+extension ShoppingListViewModelPatterns on ShoppingListViewModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() error,
-    required TResult Function() loading,
-    required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ShoppingListPageItem> items)
-        success,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_NotFound value)? notFound,
+    TResult Function(_ShoppingList value)? success,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Error() when error != null:
+        return error(_that);
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _NotFound() when notFound != null:
+        return notFound(_that);
+      case _ShoppingList() when success != null:
+        return success(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? error,
-    TResult? Function()? loading,
-    TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Error value) error,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_NotFound value) notFound,
+    required TResult Function(_ShoppingList value) success,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Error():
+        return error(_that);
+      case _Loading():
+        return loading(_that);
+      case _NotFound():
+        return notFound(_that);
+      case _ShoppingList():
+        return success(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_NotFound value)? notFound,
+    TResult? Function(_ShoppingList value)? success,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Error() when error != null:
+        return error(_that);
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _NotFound() when notFound != null:
+        return notFound(_that);
+      case _ShoppingList() when success != null:
+        return success(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? error,
@@ -43,428 +161,203 @@ mixin _$ShoppingListViewModel {
     TResult Function(ListSummary list, List<ShoppingListPageItem> items)?
         success,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Error() when error != null:
+        return error();
+      case _Loading() when loading != null:
+        return loading();
+      case _NotFound() when notFound != null:
+        return notFound();
+      case _ShoppingList() when success != null:
+        return success(_that.list, _that.items);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Error value) error,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_NotFound value) notFound,
-    required TResult Function(_ShoppingList value) success,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult when<TResult extends Object?>({
+    required TResult Function() error,
+    required TResult Function() loading,
+    required TResult Function() notFound,
+    required TResult Function(
+            ListSummary list, List<ShoppingListPageItem> items)
+        success,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Error():
+        return error();
+      case _Loading():
+        return loading();
+      case _NotFound():
+        return notFound();
+      case _ShoppingList():
+        return success(_that.list, _that.items);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_NotFound value)? notFound,
-    TResult? Function(_ShoppingList value)? success,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_NotFound value)? notFound,
-    TResult Function(_ShoppingList value)? success,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ShoppingListViewModelCopyWith<$Res> {
-  factory $ShoppingListViewModelCopyWith(ShoppingListViewModel value,
-          $Res Function(ShoppingListViewModel) then) =
-      _$ShoppingListViewModelCopyWithImpl<$Res, ShoppingListViewModel>;
-}
-
-/// @nodoc
-class _$ShoppingListViewModelCopyWithImpl<$Res,
-        $Val extends ShoppingListViewModel>
-    implements $ShoppingListViewModelCopyWith<$Res> {
-  _$ShoppingListViewModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ShoppingListViewModel
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$ShoppingListViewModelCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ShoppingListViewModel
-  /// with the given fields replaced by the non-null parameter values.
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? error,
+    TResult? Function()? loading,
+    TResult? Function()? notFound,
+    TResult? Function(ListSummary list, List<ShoppingListPageItem> items)?
+        success,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Error() when error != null:
+        return error();
+      case _Loading() when loading != null:
+        return loading();
+      case _NotFound() when notFound != null:
+        return notFound();
+      case _ShoppingList() when success != null:
+        return success(_that.list, _that.items);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
 
-class _$ErrorImpl extends _Error {
-  const _$ErrorImpl() : super._();
+class _Error extends ShoppingListViewModel {
+  const _Error() : super._();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Error);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'ShoppingListViewModel.error()';
   }
+}
+
+/// @nodoc
+
+class _Loading extends ShoppingListViewModel {
+  const _Loading() : super._();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ErrorImpl);
+        (other.runtimeType == runtimeType && other is _Loading);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() error,
-    required TResult Function() loading,
-    required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ShoppingListPageItem> items)
-        success,
-  }) {
-    return error();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? error,
-    TResult? Function()? loading,
-    TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-  }) {
-    return error?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? error,
-    TResult Function()? loading,
-    TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Error value) error,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_NotFound value) notFound,
-    required TResult Function(_ShoppingList value) success,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_NotFound value)? notFound,
-    TResult? Function(_ShoppingList value)? success,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_NotFound value)? notFound,
-    TResult Function(_ShoppingList value)? success,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Error extends ShoppingListViewModel {
-  const factory _Error() = _$ErrorImpl;
-  const _Error._() : super._();
-}
-
-/// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$ShoppingListViewModelCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ShoppingListViewModel
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$LoadingImpl extends _Loading {
-  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
     return 'ShoppingListViewModel.loading()';
   }
+}
+
+/// @nodoc
+
+class _NotFound extends ShoppingListViewModel {
+  const _NotFound() : super._();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType && other is _NotFound);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() error,
-    required TResult Function() loading,
-    required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ShoppingListPageItem> items)
-        success,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? error,
-    TResult? Function()? loading,
-    TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? error,
-    TResult Function()? loading,
-    TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Error value) error,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_NotFound value) notFound,
-    required TResult Function(_ShoppingList value) success,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_NotFound value)? notFound,
-    TResult? Function(_ShoppingList value)? success,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_NotFound value)? notFound,
-    TResult Function(_ShoppingList value)? success,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Loading extends ShoppingListViewModel {
-  const factory _Loading() = _$LoadingImpl;
-  const _Loading._() : super._();
-}
-
-/// @nodoc
-abstract class _$$NotFoundImplCopyWith<$Res> {
-  factory _$$NotFoundImplCopyWith(
-          _$NotFoundImpl value, $Res Function(_$NotFoundImpl) then) =
-      __$$NotFoundImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$NotFoundImplCopyWithImpl<$Res>
-    extends _$ShoppingListViewModelCopyWithImpl<$Res, _$NotFoundImpl>
-    implements _$$NotFoundImplCopyWith<$Res> {
-  __$$NotFoundImplCopyWithImpl(
-      _$NotFoundImpl _value, $Res Function(_$NotFoundImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ShoppingListViewModel
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$NotFoundImpl extends _NotFound {
-  const _$NotFoundImpl() : super._();
 
   @override
   String toString() {
     return 'ShoppingListViewModel.notFound()';
   }
+}
+
+/// @nodoc
+
+class _ShoppingList extends ShoppingListViewModel {
+  const _ShoppingList(
+      {required this.list, required final List<ShoppingListPageItem> items})
+      : _items = items,
+        super._();
+
+  final ListSummary list;
+  final List<ShoppingListPageItem> _items;
+  List<ShoppingListPageItem> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
+
+  /// Create a copy of ShoppingListViewModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ShoppingListCopyWith<_ShoppingList> get copyWith =>
+      __$ShoppingListCopyWithImpl<_ShoppingList>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$NotFoundImpl);
+        (other.runtimeType == runtimeType &&
+            other is _ShoppingList &&
+            (identical(other.list, list) || other.list == list) &&
+            const DeepCollectionEquality().equals(other._items, _items));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType, list, const DeepCollectionEquality().hash(_items));
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() error,
-    required TResult Function() loading,
-    required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ShoppingListPageItem> items)
-        success,
-  }) {
-    return notFound();
+  String toString() {
+    return 'ShoppingListViewModel.success(list: $list, items: $items)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? error,
-    TResult? Function()? loading,
-    TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-  }) {
-    return notFound?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? error,
-    TResult Function()? loading,
-    TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-    required TResult orElse(),
-  }) {
-    if (notFound != null) {
-      return notFound();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Error value) error,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_NotFound value) notFound,
-    required TResult Function(_ShoppingList value) success,
-  }) {
-    return notFound(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_NotFound value)? notFound,
-    TResult? Function(_ShoppingList value)? success,
-  }) {
-    return notFound?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_NotFound value)? notFound,
-    TResult Function(_ShoppingList value)? success,
-    required TResult orElse(),
-  }) {
-    if (notFound != null) {
-      return notFound(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _NotFound extends ShoppingListViewModel {
-  const factory _NotFound() = _$NotFoundImpl;
-  const _NotFound._() : super._();
 }
 
 /// @nodoc
-abstract class _$$ShoppingListImplCopyWith<$Res> {
-  factory _$$ShoppingListImplCopyWith(
-          _$ShoppingListImpl value, $Res Function(_$ShoppingListImpl) then) =
-      __$$ShoppingListImplCopyWithImpl<$Res>;
+abstract mixin class _$ShoppingListCopyWith<$Res>
+    implements $ShoppingListViewModelCopyWith<$Res> {
+  factory _$ShoppingListCopyWith(
+          _ShoppingList value, $Res Function(_ShoppingList) _then) =
+      __$ShoppingListCopyWithImpl;
   @useResult
   $Res call({ListSummary list, List<ShoppingListPageItem> items});
 
@@ -472,28 +365,27 @@ abstract class _$$ShoppingListImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ShoppingListImplCopyWithImpl<$Res>
-    extends _$ShoppingListViewModelCopyWithImpl<$Res, _$ShoppingListImpl>
-    implements _$$ShoppingListImplCopyWith<$Res> {
-  __$$ShoppingListImplCopyWithImpl(
-      _$ShoppingListImpl _value, $Res Function(_$ShoppingListImpl) _then)
-      : super(_value, _then);
+class __$ShoppingListCopyWithImpl<$Res>
+    implements _$ShoppingListCopyWith<$Res> {
+  __$ShoppingListCopyWithImpl(this._self, this._then);
+
+  final _ShoppingList _self;
+  final $Res Function(_ShoppingList) _then;
 
   /// Create a copy of ShoppingListViewModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? list = null,
     Object? items = null,
   }) {
-    return _then(_$ShoppingListImpl(
+    return _then(_ShoppingList(
       list: null == list
-          ? _value.list
+          ? _self.list
           : list // ignore: cast_nullable_to_non_nullable
               as ListSummary,
       items: null == items
-          ? _value._items
+          ? _self._items
           : items // ignore: cast_nullable_to_non_nullable
               as List<ShoppingListPageItem>,
     ));
@@ -504,220 +396,246 @@ class __$$ShoppingListImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $ListSummaryCopyWith<$Res> get list {
-    return $ListSummaryCopyWith<$Res>(_value.list, (value) {
-      return _then(_value.copyWith(list: value));
+    return $ListSummaryCopyWith<$Res>(_self.list, (value) {
+      return _then(_self.copyWith(list: value));
     });
   }
 }
 
 /// @nodoc
-
-class _$ShoppingListImpl extends _ShoppingList {
-  const _$ShoppingListImpl(
-      {required this.list, required final List<ShoppingListPageItem> items})
-      : _items = items,
-        super._();
-
-  @override
-  final ListSummary list;
-  final List<ShoppingListPageItem> _items;
-  @override
-  List<ShoppingListPageItem> get items {
-    if (_items is EqualUnmodifiableListView) return _items;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_items);
-  }
-
-  @override
-  String toString() {
-    return 'ShoppingListViewModel.success(list: $list, items: $items)';
-  }
-
+mixin _$ShoppingListPageItem {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ShoppingListImpl &&
-            (identical(other.list, list) || other.list == list) &&
-            const DeepCollectionEquality().equals(other._items, _items));
+        (other.runtimeType == runtimeType && other is ShoppingListPageItem);
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, list, const DeepCollectionEquality().hash(_items));
-
-  /// Create a copy of ShoppingListViewModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ShoppingListImplCopyWith<_$ShoppingListImpl> get copyWith =>
-      __$$ShoppingListImplCopyWithImpl<_$ShoppingListImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() error,
-    required TResult Function() loading,
-    required TResult Function() notFound,
-    required TResult Function(
-            ListSummary list, List<ShoppingListPageItem> items)
-        success,
-  }) {
-    return success(list, items);
+  String toString() {
+    return 'ShoppingListPageItem()';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? error,
-    TResult? Function()? loading,
-    TResult? Function()? notFound,
-    TResult? Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-  }) {
-    return success?.call(list, items);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? error,
-    TResult Function()? loading,
-    TResult Function()? notFound,
-    TResult Function(ListSummary list, List<ShoppingListPageItem> items)?
-        success,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(list, items);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Error value) error,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_NotFound value) notFound,
-    required TResult Function(_ShoppingList value) success,
-  }) {
-    return success(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_NotFound value)? notFound,
-    TResult? Function(_ShoppingList value)? success,
-  }) {
-    return success?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_NotFound value)? notFound,
-    TResult Function(_ShoppingList value)? success,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ShoppingList extends ShoppingListViewModel {
-  const factory _ShoppingList(
-      {required final ListSummary list,
-      required final List<ShoppingListPageItem> items}) = _$ShoppingListImpl;
-  const _ShoppingList._() : super._();
-
-  ListSummary get list;
-  List<ShoppingListPageItem> get items;
-
-  /// Create a copy of ShoppingListViewModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShoppingListImplCopyWith<_$ShoppingListImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$ShoppingListPageItem {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ShoppingItem item) item,
-    required TResult Function(String name) category,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ShoppingItem item)? item,
-    TResult? Function(String name)? category,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ShoppingItem item)? item,
-    TResult Function(String name)? category,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Item value) item,
-    required TResult Function(_Category value) category,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Item value)? item,
-    TResult? Function(_Category value)? category,
-  }) =>
-      throw _privateConstructorUsedError;
+class $ShoppingListPageItemCopyWith<$Res> {
+  $ShoppingListPageItemCopyWith(
+      ShoppingListPageItem _, $Res Function(ShoppingListPageItem) __);
+}
+
+/// Adds pattern-matching-related methods to [ShoppingListPageItem].
+extension ShoppingListPageItemPatterns on ShoppingListPageItem {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Item value)? item,
     TResult Function(_Category value)? category,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Item() when item != null:
+        return item(_that);
+      case _Category() when category != null:
+        return category(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Item value) item,
+    required TResult Function(_Category value) category,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Item():
+        return item(_that);
+      case _Category():
+        return category(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Item value)? item,
+    TResult? Function(_Category value)? category,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Item() when item != null:
+        return item(_that);
+      case _Category() when category != null:
+        return category(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(ShoppingItem item)? item,
+    TResult Function(String name)? category,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Item() when item != null:
+        return item(_that.item);
+      case _Category() when category != null:
+        return category(_that.name);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(ShoppingItem item) item,
+    required TResult Function(String name) category,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Item():
+        return item(_that.item);
+      case _Category():
+        return category(_that.name);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(ShoppingItem item)? item,
+    TResult? Function(String name)? category,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Item() when item != null:
+        return item(_that.item);
+      case _Category() when category != null:
+        return category(_that.name);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $ShoppingListPageItemCopyWith<$Res> {
-  factory $ShoppingListPageItemCopyWith(ShoppingListPageItem value,
-          $Res Function(ShoppingListPageItem) then) =
-      _$ShoppingListPageItemCopyWithImpl<$Res, ShoppingListPageItem>;
-}
 
-/// @nodoc
-class _$ShoppingListPageItemCopyWithImpl<$Res,
-        $Val extends ShoppingListPageItem>
-    implements $ShoppingListPageItemCopyWith<$Res> {
-  _$ShoppingListPageItemCopyWithImpl(this._value, this._then);
+class _Item implements ShoppingListPageItem {
+  const _Item({required this.item});
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ShoppingItem item;
 
   /// Create a copy of ShoppingListPageItem
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ItemCopyWith<_Item> get copyWith =>
+      __$ItemCopyWithImpl<_Item>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Item &&
+            (identical(other.item, item) || other.item == item));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, item);
+
+  @override
+  String toString() {
+    return 'ShoppingListPageItem.item(item: $item)';
+  }
 }
 
 /// @nodoc
-abstract class _$$ItemImplCopyWith<$Res> {
-  factory _$$ItemImplCopyWith(
-          _$ItemImpl value, $Res Function(_$ItemImpl) then) =
-      __$$ItemImplCopyWithImpl<$Res>;
+abstract mixin class _$ItemCopyWith<$Res>
+    implements $ShoppingListPageItemCopyWith<$Res> {
+  factory _$ItemCopyWith(_Item value, $Res Function(_Item) _then) =
+      __$ItemCopyWithImpl;
   @useResult
   $Res call({ShoppingItem item});
 
@@ -725,22 +643,21 @@ abstract class _$$ItemImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ItemImplCopyWithImpl<$Res>
-    extends _$ShoppingListPageItemCopyWithImpl<$Res, _$ItemImpl>
-    implements _$$ItemImplCopyWith<$Res> {
-  __$$ItemImplCopyWithImpl(_$ItemImpl _value, $Res Function(_$ItemImpl) _then)
-      : super(_value, _then);
+class __$ItemCopyWithImpl<$Res> implements _$ItemCopyWith<$Res> {
+  __$ItemCopyWithImpl(this._self, this._then);
+
+  final _Item _self;
+  final $Res Function(_Item) _then;
 
   /// Create a copy of ShoppingListPageItem
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? item = null,
   }) {
-    return _then(_$ItemImpl(
+    return _then(_Item(
       item: null == item
-          ? _value.item
+          ? _self.item
           : item // ignore: cast_nullable_to_non_nullable
               as ShoppingItem,
     ));
@@ -751,255 +668,72 @@ class __$$ItemImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $ShoppingItemCopyWith<$Res> get item {
-    return $ShoppingItemCopyWith<$Res>(_value.item, (value) {
-      return _then(_value.copyWith(item: value));
+    return $ShoppingItemCopyWith<$Res>(_self.item, (value) {
+      return _then(_self.copyWith(item: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$ItemImpl implements _Item {
-  const _$ItemImpl({required this.item});
+class _Category implements ShoppingListPageItem {
+  const _Category({required this.name});
 
-  @override
-  final ShoppingItem item;
-
-  @override
-  String toString() {
-    return 'ShoppingListPageItem.item(item: $item)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ItemImpl &&
-            (identical(other.item, item) || other.item == item));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, item);
-
-  /// Create a copy of ShoppingListPageItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
-      __$$ItemImplCopyWithImpl<_$ItemImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ShoppingItem item) item,
-    required TResult Function(String name) category,
-  }) {
-    return item(this.item);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ShoppingItem item)? item,
-    TResult? Function(String name)? category,
-  }) {
-    return item?.call(this.item);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ShoppingItem item)? item,
-    TResult Function(String name)? category,
-    required TResult orElse(),
-  }) {
-    if (item != null) {
-      return item(this.item);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Item value) item,
-    required TResult Function(_Category value) category,
-  }) {
-    return item(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Item value)? item,
-    TResult? Function(_Category value)? category,
-  }) {
-    return item?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Item value)? item,
-    TResult Function(_Category value)? category,
-    required TResult orElse(),
-  }) {
-    if (item != null) {
-      return item(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Item implements ShoppingListPageItem {
-  const factory _Item({required final ShoppingItem item}) = _$ItemImpl;
-
-  ShoppingItem get item;
-
-  /// Create a copy of ShoppingListPageItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$CategoryImplCopyWith<$Res> {
-  factory _$$CategoryImplCopyWith(
-          _$CategoryImpl value, $Res Function(_$CategoryImpl) then) =
-      __$$CategoryImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String name});
-}
-
-/// @nodoc
-class __$$CategoryImplCopyWithImpl<$Res>
-    extends _$ShoppingListPageItemCopyWithImpl<$Res, _$CategoryImpl>
-    implements _$$CategoryImplCopyWith<$Res> {
-  __$$CategoryImplCopyWithImpl(
-      _$CategoryImpl _value, $Res Function(_$CategoryImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ShoppingListPageItem
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? name = null,
-  }) {
-    return _then(_$CategoryImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$CategoryImpl implements _Category {
-  const _$CategoryImpl({required this.name});
-
-  @override
   final String name;
 
-  @override
-  String toString() {
-    return 'ShoppingListPageItem.category(name: $name)';
-  }
+  /// Create a copy of ShoppingListPageItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CategoryCopyWith<_Category> get copyWith =>
+      __$CategoryCopyWithImpl<_Category>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoryImpl &&
+            other is _Category &&
             (identical(other.name, name) || other.name == name));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
+  @override
+  String toString() {
+    return 'ShoppingListPageItem.category(name: $name)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$CategoryCopyWith<$Res>
+    implements $ShoppingListPageItemCopyWith<$Res> {
+  factory _$CategoryCopyWith(_Category value, $Res Function(_Category) _then) =
+      __$CategoryCopyWithImpl;
+  @useResult
+  $Res call({String name});
+}
+
+/// @nodoc
+class __$CategoryCopyWithImpl<$Res> implements _$CategoryCopyWith<$Res> {
+  __$CategoryCopyWithImpl(this._self, this._then);
+
+  final _Category _self;
+  final $Res Function(_Category) _then;
+
   /// Create a copy of ShoppingListPageItem
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
-      __$$CategoryImplCopyWithImpl<_$CategoryImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ShoppingItem item) item,
-    required TResult Function(String name) category,
+  $Res call({
+    Object? name = null,
   }) {
-    return category(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ShoppingItem item)? item,
-    TResult? Function(String name)? category,
-  }) {
-    return category?.call(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ShoppingItem item)? item,
-    TResult Function(String name)? category,
-    required TResult orElse(),
-  }) {
-    if (category != null) {
-      return category(name);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Item value) item,
-    required TResult Function(_Category value) category,
-  }) {
-    return category(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Item value)? item,
-    TResult? Function(_Category value)? category,
-  }) {
-    return category?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Item value)? item,
-    TResult Function(_Category value)? category,
-    required TResult orElse(),
-  }) {
-    if (category != null) {
-      return category(this);
-    }
-    return orElse();
+    return _then(_Category(
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class _Category implements ShoppingListPageItem {
-  const factory _Category({required final String name}) = _$CategoryImpl;
-
-  String get name;
-
-  /// Create a copy of ShoppingListPageItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

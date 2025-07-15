@@ -9,7 +9,7 @@ part 'item_search_view_model.freezed.dart';
 part 'item_search_view_model.g.dart';
 
 @freezed
-class ItemSuggestion with _$ItemSuggestion {
+abstract class ItemSuggestion with _$ItemSuggestion {
   const ItemSuggestion._();
 
   const factory ItemSuggestion({

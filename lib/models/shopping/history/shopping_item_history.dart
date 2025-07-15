@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'shopping_item_history.freezed.dart';
 
 @freezed
-class ShoppingItemHistory with _$ShoppingItemHistory {
+abstract class ShoppingItemHistory with _$ShoppingItemHistory {
   const ShoppingItemHistory._();
 
   const factory ShoppingItemHistory({

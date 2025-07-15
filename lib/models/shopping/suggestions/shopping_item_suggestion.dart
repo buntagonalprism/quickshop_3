@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'shopping_item_suggestion.freezed.dart';
 
 @freezed
-class ShoppingItemSuggestion with _$ShoppingItemSuggestion {
+abstract class ShoppingItemSuggestion with _$ShoppingItemSuggestion {
   const ShoppingItemSuggestion._();
 
   const factory ShoppingItemSuggestion({

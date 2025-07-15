@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'http_result.freezed.dart';
 
 @freezed
-class HttpResult with _$HttpResult {
+abstract class HttpResult with _$HttpResult {
   const HttpResult._();
 
   const factory HttpResult.success({

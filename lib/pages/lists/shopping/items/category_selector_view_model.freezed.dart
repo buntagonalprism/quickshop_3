@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,185 +9,46 @@ part of 'category_selector_view_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CategorySelectorItem {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() newCategory,
-    required TResult Function(String name) heading,
-    required TResult Function(String name) suggestion,
-    required TResult Function(String name) history,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? newCategory,
-    TResult? Function(String name)? heading,
-    TResult? Function(String name)? suggestion,
-    TResult? Function(String name)? history,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? newCategory,
-    TResult Function(String name)? heading,
-    TResult Function(String name)? suggestion,
-    TResult Function(String name)? history,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_NewCategory value) newCategory,
-    required TResult Function(_Heading value) heading,
-    required TResult Function(_Suggestion value) suggestion,
-    required TResult Function(_History value) history,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewCategory value)? newCategory,
-    TResult? Function(_Heading value)? heading,
-    TResult? Function(_Suggestion value)? suggestion,
-    TResult? Function(_History value)? history,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewCategory value)? newCategory,
-    TResult Function(_Heading value)? heading,
-    TResult Function(_Suggestion value)? suggestion,
-    TResult Function(_History value)? history,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CategorySelectorItemCopyWith<$Res> {
-  factory $CategorySelectorItemCopyWith(CategorySelectorItem value,
-          $Res Function(CategorySelectorItem) then) =
-      _$CategorySelectorItemCopyWithImpl<$Res, CategorySelectorItem>;
-}
-
-/// @nodoc
-class _$CategorySelectorItemCopyWithImpl<$Res,
-        $Val extends CategorySelectorItem>
-    implements $CategorySelectorItemCopyWith<$Res> {
-  _$CategorySelectorItemCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$NewCategoryImplCopyWith<$Res> {
-  factory _$$NewCategoryImplCopyWith(
-          _$NewCategoryImpl value, $Res Function(_$NewCategoryImpl) then) =
-      __$$NewCategoryImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$NewCategoryImplCopyWithImpl<$Res>
-    extends _$CategorySelectorItemCopyWithImpl<$Res, _$NewCategoryImpl>
-    implements _$$NewCategoryImplCopyWith<$Res> {
-  __$$NewCategoryImplCopyWithImpl(
-      _$NewCategoryImpl _value, $Res Function(_$NewCategoryImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$NewCategoryImpl extends _NewCategory {
-  const _$NewCategoryImpl() : super._();
-
-  @override
-  String toString() {
-    return 'CategorySelectorItem.newCategory()';
-  }
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$NewCategoryImpl);
+        (other.runtimeType == runtimeType && other is CategorySelectorItem);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() newCategory,
-    required TResult Function(String name) heading,
-    required TResult Function(String name) suggestion,
-    required TResult Function(String name) history,
-  }) {
-    return newCategory();
+  String toString() {
+    return 'CategorySelectorItem()';
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? newCategory,
-    TResult? Function(String name)? heading,
-    TResult? Function(String name)? suggestion,
-    TResult? Function(String name)? history,
-  }) {
-    return newCategory?.call();
-  }
+/// @nodoc
+class $CategorySelectorItemCopyWith<$Res> {
+  $CategorySelectorItemCopyWith(
+      CategorySelectorItem _, $Res Function(CategorySelectorItem) __);
+}
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? newCategory,
-    TResult Function(String name)? heading,
-    TResult Function(String name)? suggestion,
-    TResult Function(String name)? history,
-    required TResult orElse(),
-  }) {
-    if (newCategory != null) {
-      return newCategory();
-    }
-    return orElse();
-  }
+/// Adds pattern-matching-related methods to [CategorySelectorItem].
+extension CategorySelectorItemPatterns on CategorySelectorItem {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_NewCategory value) newCategory,
-    required TResult Function(_Heading value) heading,
-    required TResult Function(_Suggestion value) suggestion,
-    required TResult Function(_History value) history,
-  }) {
-    return newCategory(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewCategory value)? newCategory,
-    TResult? Function(_Heading value)? heading,
-    TResult? Function(_Suggestion value)? suggestion,
-    TResult? Function(_History value)? history,
-  }) {
-    return newCategory?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_NewCategory value)? newCategory,
@@ -196,198 +57,271 @@ class _$NewCategoryImpl extends _NewCategory {
     TResult Function(_History value)? history,
     required TResult orElse(),
   }) {
-    if (newCategory != null) {
-      return newCategory(this);
+    final _that = this;
+    switch (_that) {
+      case _NewCategory() when newCategory != null:
+        return newCategory(_that);
+      case _Heading() when heading != null:
+        return heading(_that);
+      case _Suggestion() when suggestion != null:
+        return suggestion(_that);
+      case _History() when history != null:
+        return history(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_NewCategory value) newCategory,
+    required TResult Function(_Heading value) heading,
+    required TResult Function(_Suggestion value) suggestion,
+    required TResult Function(_History value) history,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _NewCategory():
+        return newCategory(_that);
+      case _Heading():
+        return heading(_that);
+      case _Suggestion():
+        return suggestion(_that);
+      case _History():
+        return history(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_NewCategory value)? newCategory,
+    TResult? Function(_Heading value)? heading,
+    TResult? Function(_Suggestion value)? suggestion,
+    TResult? Function(_History value)? history,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _NewCategory() when newCategory != null:
+        return newCategory(_that);
+      case _Heading() when heading != null:
+        return heading(_that);
+      case _Suggestion() when suggestion != null:
+        return suggestion(_that);
+      case _History() when history != null:
+        return history(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? newCategory,
+    TResult Function(String name)? heading,
+    TResult Function(String name)? suggestion,
+    TResult Function(String name)? history,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _NewCategory() when newCategory != null:
+        return newCategory();
+      case _Heading() when heading != null:
+        return heading(_that.name);
+      case _Suggestion() when suggestion != null:
+        return suggestion(_that.name);
+      case _History() when history != null:
+        return history(_that.name);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() newCategory,
+    required TResult Function(String name) heading,
+    required TResult Function(String name) suggestion,
+    required TResult Function(String name) history,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _NewCategory():
+        return newCategory();
+      case _Heading():
+        return heading(_that.name);
+      case _Suggestion():
+        return suggestion(_that.name);
+      case _History():
+        return history(_that.name);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? newCategory,
+    TResult? Function(String name)? heading,
+    TResult? Function(String name)? suggestion,
+    TResult? Function(String name)? history,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _NewCategory() when newCategory != null:
+        return newCategory();
+      case _Heading() when heading != null:
+        return heading(_that.name);
+      case _Suggestion() when suggestion != null:
+        return suggestion(_that.name);
+      case _History() when history != null:
+        return history(_that.name);
+      case _:
+        return null;
+    }
   }
 }
 
-abstract class _NewCategory extends CategorySelectorItem {
-  const factory _NewCategory() = _$NewCategoryImpl;
-  const _NewCategory._() : super._();
+/// @nodoc
+
+class _NewCategory extends CategorySelectorItem {
+  const _NewCategory() : super._();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _NewCategory);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'CategorySelectorItem.newCategory()';
+  }
 }
 
 /// @nodoc
-abstract class _$$HeadingImplCopyWith<$Res> {
-  factory _$$HeadingImplCopyWith(
-          _$HeadingImpl value, $Res Function(_$HeadingImpl) then) =
-      __$$HeadingImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String name});
-}
 
-/// @nodoc
-class __$$HeadingImplCopyWithImpl<$Res>
-    extends _$CategorySelectorItemCopyWithImpl<$Res, _$HeadingImpl>
-    implements _$$HeadingImplCopyWith<$Res> {
-  __$$HeadingImplCopyWithImpl(
-      _$HeadingImpl _value, $Res Function(_$HeadingImpl) _then)
-      : super(_value, _then);
+class _Heading extends CategorySelectorItem {
+  const _Heading(this.name) : super._();
+
+  final String name;
 
   /// Create a copy of CategorySelectorItem
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  _$HeadingCopyWith<_Heading> get copyWith =>
+      __$HeadingCopyWithImpl<_Heading>(this, _$identity);
+
   @override
-  $Res call({
-    Object? name = null,
-  }) {
-    return _then(_$HeadingImpl(
-      null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Heading &&
+            (identical(other.name, name) || other.name == name));
   }
-}
-
-/// @nodoc
-
-class _$HeadingImpl extends _Heading {
-  const _$HeadingImpl(this.name) : super._();
 
   @override
-  final String name;
+  int get hashCode => Object.hash(runtimeType, name);
 
   @override
   String toString() {
     return 'CategorySelectorItem.heading(name: $name)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$HeadingImpl &&
-            (identical(other.name, name) || other.name == name));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, name);
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$HeadingImplCopyWith<_$HeadingImpl> get copyWith =>
-      __$$HeadingImplCopyWithImpl<_$HeadingImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() newCategory,
-    required TResult Function(String name) heading,
-    required TResult Function(String name) suggestion,
-    required TResult Function(String name) history,
-  }) {
-    return heading(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? newCategory,
-    TResult? Function(String name)? heading,
-    TResult? Function(String name)? suggestion,
-    TResult? Function(String name)? history,
-  }) {
-    return heading?.call(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? newCategory,
-    TResult Function(String name)? heading,
-    TResult Function(String name)? suggestion,
-    TResult Function(String name)? history,
-    required TResult orElse(),
-  }) {
-    if (heading != null) {
-      return heading(name);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_NewCategory value) newCategory,
-    required TResult Function(_Heading value) heading,
-    required TResult Function(_Suggestion value) suggestion,
-    required TResult Function(_History value) history,
-  }) {
-    return heading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewCategory value)? newCategory,
-    TResult? Function(_Heading value)? heading,
-    TResult? Function(_Suggestion value)? suggestion,
-    TResult? Function(_History value)? history,
-  }) {
-    return heading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewCategory value)? newCategory,
-    TResult Function(_Heading value)? heading,
-    TResult Function(_Suggestion value)? suggestion,
-    TResult Function(_History value)? history,
-    required TResult orElse(),
-  }) {
-    if (heading != null) {
-      return heading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Heading extends CategorySelectorItem {
-  const factory _Heading(final String name) = _$HeadingImpl;
-  const _Heading._() : super._();
-
-  String get name;
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HeadingImplCopyWith<_$HeadingImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SuggestionImplCopyWith<$Res> {
-  factory _$$SuggestionImplCopyWith(
-          _$SuggestionImpl value, $Res Function(_$SuggestionImpl) then) =
-      __$$SuggestionImplCopyWithImpl<$Res>;
+abstract mixin class _$HeadingCopyWith<$Res>
+    implements $CategorySelectorItemCopyWith<$Res> {
+  factory _$HeadingCopyWith(_Heading value, $Res Function(_Heading) _then) =
+      __$HeadingCopyWithImpl;
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$SuggestionImplCopyWithImpl<$Res>
-    extends _$CategorySelectorItemCopyWithImpl<$Res, _$SuggestionImpl>
-    implements _$$SuggestionImplCopyWith<$Res> {
-  __$$SuggestionImplCopyWithImpl(
-      _$SuggestionImpl _value, $Res Function(_$SuggestionImpl) _then)
-      : super(_value, _then);
+class __$HeadingCopyWithImpl<$Res> implements _$HeadingCopyWith<$Res> {
+  __$HeadingCopyWithImpl(this._self, this._then);
+
+  final _Heading _self;
+  final $Res Function(_Heading) _then;
 
   /// Create a copy of CategorySelectorItem
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$SuggestionImpl(
+    return _then(_Heading(
       null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -396,151 +330,61 @@ class __$$SuggestionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SuggestionImpl extends _Suggestion {
-  const _$SuggestionImpl(this.name) : super._();
+class _Suggestion extends CategorySelectorItem {
+  const _Suggestion(this.name) : super._();
+
+  final String name;
+
+  /// Create a copy of CategorySelectorItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SuggestionCopyWith<_Suggestion> get copyWith =>
+      __$SuggestionCopyWithImpl<_Suggestion>(this, _$identity);
 
   @override
-  final String name;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Suggestion &&
+            (identical(other.name, name) || other.name == name));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, name);
 
   @override
   String toString() {
     return 'CategorySelectorItem.suggestion(name: $name)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SuggestionImpl &&
-            (identical(other.name, name) || other.name == name));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, name);
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuggestionImplCopyWith<_$SuggestionImpl> get copyWith =>
-      __$$SuggestionImplCopyWithImpl<_$SuggestionImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() newCategory,
-    required TResult Function(String name) heading,
-    required TResult Function(String name) suggestion,
-    required TResult Function(String name) history,
-  }) {
-    return suggestion(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? newCategory,
-    TResult? Function(String name)? heading,
-    TResult? Function(String name)? suggestion,
-    TResult? Function(String name)? history,
-  }) {
-    return suggestion?.call(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? newCategory,
-    TResult Function(String name)? heading,
-    TResult Function(String name)? suggestion,
-    TResult Function(String name)? history,
-    required TResult orElse(),
-  }) {
-    if (suggestion != null) {
-      return suggestion(name);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_NewCategory value) newCategory,
-    required TResult Function(_Heading value) heading,
-    required TResult Function(_Suggestion value) suggestion,
-    required TResult Function(_History value) history,
-  }) {
-    return suggestion(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewCategory value)? newCategory,
-    TResult? Function(_Heading value)? heading,
-    TResult? Function(_Suggestion value)? suggestion,
-    TResult? Function(_History value)? history,
-  }) {
-    return suggestion?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewCategory value)? newCategory,
-    TResult Function(_Heading value)? heading,
-    TResult Function(_Suggestion value)? suggestion,
-    TResult Function(_History value)? history,
-    required TResult orElse(),
-  }) {
-    if (suggestion != null) {
-      return suggestion(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Suggestion extends CategorySelectorItem {
-  const factory _Suggestion(final String name) = _$SuggestionImpl;
-  const _Suggestion._() : super._();
-
-  String get name;
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SuggestionImplCopyWith<_$SuggestionImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$HistoryImplCopyWith<$Res> {
-  factory _$$HistoryImplCopyWith(
-          _$HistoryImpl value, $Res Function(_$HistoryImpl) then) =
-      __$$HistoryImplCopyWithImpl<$Res>;
+abstract mixin class _$SuggestionCopyWith<$Res>
+    implements $CategorySelectorItemCopyWith<$Res> {
+  factory _$SuggestionCopyWith(
+          _Suggestion value, $Res Function(_Suggestion) _then) =
+      __$SuggestionCopyWithImpl;
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$HistoryImplCopyWithImpl<$Res>
-    extends _$CategorySelectorItemCopyWithImpl<$Res, _$HistoryImpl>
-    implements _$$HistoryImplCopyWith<$Res> {
-  __$$HistoryImplCopyWithImpl(
-      _$HistoryImpl _value, $Res Function(_$HistoryImpl) _then)
-      : super(_value, _then);
+class __$SuggestionCopyWithImpl<$Res> implements _$SuggestionCopyWith<$Res> {
+  __$SuggestionCopyWithImpl(this._self, this._then);
+
+  final _Suggestion _self;
+  final $Res Function(_Suggestion) _then;
 
   /// Create a copy of CategorySelectorItem
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$HistoryImpl(
+    return _then(_Suggestion(
       null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -549,120 +393,64 @@ class __$$HistoryImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$HistoryImpl extends _History {
-  const _$HistoryImpl(this.name) : super._();
+class _History extends CategorySelectorItem {
+  const _History(this.name) : super._();
 
-  @override
   final String name;
 
-  @override
-  String toString() {
-    return 'CategorySelectorItem.history(name: $name)';
-  }
+  /// Create a copy of CategorySelectorItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$HistoryCopyWith<_History> get copyWith =>
+      __$HistoryCopyWithImpl<_History>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HistoryImpl &&
+            other is _History &&
             (identical(other.name, name) || other.name == name));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
+  @override
+  String toString() {
+    return 'CategorySelectorItem.history(name: $name)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$HistoryCopyWith<$Res>
+    implements $CategorySelectorItemCopyWith<$Res> {
+  factory _$HistoryCopyWith(_History value, $Res Function(_History) _then) =
+      __$HistoryCopyWithImpl;
+  @useResult
+  $Res call({String name});
+}
+
+/// @nodoc
+class __$HistoryCopyWithImpl<$Res> implements _$HistoryCopyWith<$Res> {
+  __$HistoryCopyWithImpl(this._self, this._then);
+
+  final _History _self;
+  final $Res Function(_History) _then;
+
   /// Create a copy of CategorySelectorItem
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$HistoryImplCopyWith<_$HistoryImpl> get copyWith =>
-      __$$HistoryImplCopyWithImpl<_$HistoryImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() newCategory,
-    required TResult Function(String name) heading,
-    required TResult Function(String name) suggestion,
-    required TResult Function(String name) history,
+  $Res call({
+    Object? name = null,
   }) {
-    return history(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? newCategory,
-    TResult? Function(String name)? heading,
-    TResult? Function(String name)? suggestion,
-    TResult? Function(String name)? history,
-  }) {
-    return history?.call(name);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? newCategory,
-    TResult Function(String name)? heading,
-    TResult Function(String name)? suggestion,
-    TResult Function(String name)? history,
-    required TResult orElse(),
-  }) {
-    if (history != null) {
-      return history(name);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_NewCategory value) newCategory,
-    required TResult Function(_Heading value) heading,
-    required TResult Function(_Suggestion value) suggestion,
-    required TResult Function(_History value) history,
-  }) {
-    return history(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewCategory value)? newCategory,
-    TResult? Function(_Heading value)? heading,
-    TResult? Function(_Suggestion value)? suggestion,
-    TResult? Function(_History value)? history,
-  }) {
-    return history?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewCategory value)? newCategory,
-    TResult Function(_Heading value)? heading,
-    TResult Function(_Suggestion value)? suggestion,
-    TResult Function(_History value)? history,
-    required TResult orElse(),
-  }) {
-    if (history != null) {
-      return history(this);
-    }
-    return orElse();
+    return _then(_History(
+      null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class _History extends CategorySelectorItem {
-  const factory _History(final String name) = _$HistoryImpl;
-  const _History._() : super._();
-
-  String get name;
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HistoryImplCopyWith<_$HistoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -5,7 +5,7 @@ import 'user/user.dart';
 part 'list_summary.freezed.dart';
 
 @freezed
-class ListSummary with _$ListSummary {
+abstract class ListSummary with _$ListSummary {
   const ListSummary._();
 
   const factory ListSummary({

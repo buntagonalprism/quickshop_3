@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,95 +9,54 @@ part of 'shopping_item_suggestion.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ShoppingItemSuggestion {
-  String get id => throw _privateConstructorUsedError;
-  String get locale => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  List<String> get categories => throw _privateConstructorUsedError;
-  int? get popularity => throw _privateConstructorUsedError;
+  String get id;
+  String get locale;
+  String get name;
+  List<String> get categories;
+  int? get popularity;
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ShoppingItemSuggestionCopyWith<ShoppingItemSuggestion> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ShoppingItemSuggestionCopyWith<$Res> {
-  factory $ShoppingItemSuggestionCopyWith(ShoppingItemSuggestion value,
-          $Res Function(ShoppingItemSuggestion) then) =
-      _$ShoppingItemSuggestionCopyWithImpl<$Res, ShoppingItemSuggestion>;
-  @useResult
-  $Res call(
-      {String id,
-      String locale,
-      String name,
-      List<String> categories,
-      int? popularity});
-}
-
-/// @nodoc
-class _$ShoppingItemSuggestionCopyWithImpl<$Res,
-        $Val extends ShoppingItemSuggestion>
-    implements $ShoppingItemSuggestionCopyWith<$Res> {
-  _$ShoppingItemSuggestionCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ShoppingItemSuggestion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ShoppingItemSuggestionCopyWith<ShoppingItemSuggestion> get copyWith =>
+      _$ShoppingItemSuggestionCopyWithImpl<ShoppingItemSuggestion>(
+          this as ShoppingItemSuggestion, _$identity);
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? locale = null,
-    Object? name = null,
-    Object? categories = null,
-    Object? popularity = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      locale: null == locale
-          ? _value.locale
-          : locale // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      categories: null == categories
-          ? _value.categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      popularity: freezed == popularity
-          ? _value.popularity
-          : popularity // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ShoppingItemSuggestion &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
+            (identical(other.name, name) || other.name == name) &&
+            const DeepCollectionEquality()
+                .equals(other.categories, categories) &&
+            (identical(other.popularity, popularity) ||
+                other.popularity == popularity));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id, locale, name,
+      const DeepCollectionEquality().hash(categories), popularity);
+
+  @override
+  String toString() {
+    return 'ShoppingItemSuggestion(id: $id, locale: $locale, name: $name, categories: $categories, popularity: $popularity)';
   }
 }
 
 /// @nodoc
-abstract class _$$ShoppingItemSuggestionImplCopyWith<$Res>
-    implements $ShoppingItemSuggestionCopyWith<$Res> {
-  factory _$$ShoppingItemSuggestionImplCopyWith(
-          _$ShoppingItemSuggestionImpl value,
-          $Res Function(_$ShoppingItemSuggestionImpl) then) =
-      __$$ShoppingItemSuggestionImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ShoppingItemSuggestionCopyWith<$Res> {
+  factory $ShoppingItemSuggestionCopyWith(ShoppingItemSuggestion value,
+          $Res Function(ShoppingItemSuggestion) _then) =
+      _$ShoppingItemSuggestionCopyWithImpl;
   @useResult
   $Res call(
       {String id,
@@ -108,14 +67,12 @@ abstract class _$$ShoppingItemSuggestionImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ShoppingItemSuggestionImplCopyWithImpl<$Res>
-    extends _$ShoppingItemSuggestionCopyWithImpl<$Res,
-        _$ShoppingItemSuggestionImpl>
-    implements _$$ShoppingItemSuggestionImplCopyWith<$Res> {
-  __$$ShoppingItemSuggestionImplCopyWithImpl(
-      _$ShoppingItemSuggestionImpl _value,
-      $Res Function(_$ShoppingItemSuggestionImpl) _then)
-      : super(_value, _then);
+class _$ShoppingItemSuggestionCopyWithImpl<$Res>
+    implements $ShoppingItemSuggestionCopyWith<$Res> {
+  _$ShoppingItemSuggestionCopyWithImpl(this._self, this._then);
+
+  final ShoppingItemSuggestion _self;
+  final $Res Function(ShoppingItemSuggestion) _then;
 
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.
@@ -128,35 +85,201 @@ class __$$ShoppingItemSuggestionImplCopyWithImpl<$Res>
     Object? categories = null,
     Object? popularity = freezed,
   }) {
-    return _then(_$ShoppingItemSuggestionImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       locale: null == locale
-          ? _value.locale
+          ? _self.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       categories: null == categories
-          ? _value._categories
+          ? _self.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
       popularity: freezed == popularity
-          ? _value.popularity
+          ? _self.popularity
           : popularity // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [ShoppingItemSuggestion].
+extension ShoppingItemSuggestionPatterns on ShoppingItemSuggestion {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ShoppingItemSuggestion value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItemSuggestion() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ShoppingItemSuggestion value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItemSuggestion():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ShoppingItemSuggestion value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItemSuggestion() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String id, String locale, String name,
+            List<String> categories, int? popularity)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItemSuggestion() when $default != null:
+        return $default(_that.id, _that.locale, _that.name, _that.categories,
+            _that.popularity);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String id, String locale, String name,
+            List<String> categories, int? popularity)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItemSuggestion():
+        return $default(_that.id, _that.locale, _that.name, _that.categories,
+            _that.popularity);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String id, String locale, String name,
+            List<String> categories, int? popularity)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItemSuggestion() when $default != null:
+        return $default(_that.id, _that.locale, _that.name, _that.categories,
+            _that.popularity);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
-  const _$ShoppingItemSuggestionImpl(
+class _ShoppingItemSuggestion extends ShoppingItemSuggestion {
+  const _ShoppingItemSuggestion(
       {required this.id,
       required this.locale,
       required this.name,
@@ -182,16 +305,20 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
   @override
   final int? popularity;
 
+  /// Create a copy of ShoppingItemSuggestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ShoppingItemSuggestion(id: $id, locale: $locale, name: $name, categories: $categories, popularity: $popularity)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ShoppingItemSuggestionCopyWith<_ShoppingItemSuggestion> get copyWith =>
+      __$ShoppingItemSuggestionCopyWithImpl<_ShoppingItemSuggestion>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShoppingItemSuggestionImpl &&
+            other is _ShoppingItemSuggestion &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.name, name) || other.name == name) &&
@@ -205,40 +332,70 @@ class _$ShoppingItemSuggestionImpl extends _ShoppingItemSuggestion {
   int get hashCode => Object.hash(runtimeType, id, locale, name,
       const DeepCollectionEquality().hash(_categories), popularity);
 
+  @override
+  String toString() {
+    return 'ShoppingItemSuggestion(id: $id, locale: $locale, name: $name, categories: $categories, popularity: $popularity)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ShoppingItemSuggestionCopyWith<$Res>
+    implements $ShoppingItemSuggestionCopyWith<$Res> {
+  factory _$ShoppingItemSuggestionCopyWith(_ShoppingItemSuggestion value,
+          $Res Function(_ShoppingItemSuggestion) _then) =
+      __$ShoppingItemSuggestionCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String locale,
+      String name,
+      List<String> categories,
+      int? popularity});
+}
+
+/// @nodoc
+class __$ShoppingItemSuggestionCopyWithImpl<$Res>
+    implements _$ShoppingItemSuggestionCopyWith<$Res> {
+  __$ShoppingItemSuggestionCopyWithImpl(this._self, this._then);
+
+  final _ShoppingItemSuggestion _self;
+  final $Res Function(_ShoppingItemSuggestion) _then;
+
   /// Create a copy of ShoppingItemSuggestion
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ShoppingItemSuggestionImplCopyWith<_$ShoppingItemSuggestionImpl>
-      get copyWith => __$$ShoppingItemSuggestionImplCopyWithImpl<
-          _$ShoppingItemSuggestionImpl>(this, _$identity);
+  $Res call({
+    Object? id = null,
+    Object? locale = null,
+    Object? name = null,
+    Object? categories = null,
+    Object? popularity = freezed,
+  }) {
+    return _then(_ShoppingItemSuggestion(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      locale: null == locale
+          ? _self.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      categories: null == categories
+          ? _self._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      popularity: freezed == popularity
+          ? _self.popularity
+          : popularity // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
 
-abstract class _ShoppingItemSuggestion extends ShoppingItemSuggestion {
-  const factory _ShoppingItemSuggestion(
-      {required final String id,
-      required final String locale,
-      required final String name,
-      required final List<String> categories,
-      final int? popularity}) = _$ShoppingItemSuggestionImpl;
-  const _ShoppingItemSuggestion._() : super._();
-
-  @override
-  String get id;
-  @override
-  String get locale;
-  @override
-  String get name;
-  @override
-  List<String> get categories;
-  @override
-  int? get popularity;
-
-  /// Create a copy of ShoppingItemSuggestion
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShoppingItemSuggestionImplCopyWith<_$ShoppingItemSuggestionImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

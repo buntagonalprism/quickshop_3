@@ -10,6 +10,7 @@ import 'repositories/shopping/history/shopping_item_history_repo.dart';
 import 'repositories/user_repo.dart';
 import 'router.dart';
 import 'services/app_database_provider.dart';
+import 'services/locale_service.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -41,7 +42,15 @@ class MyApp extends StatelessWidget {
           //
           // The appTitle is defined in .arb files found in the localization
           // directory.
-          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
+          onGenerateTitle: (BuildContext context) {
+            final locale = Localizations.localeOf(context);
+            Future.delayed(
+              Duration.zero,
+              () => ref.read(localeServiceProvider.notifier).setLocale(locale),
+            );
+
+            return AppLocalizations.of(context)!.appTitle;
+          },
 
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the

@@ -6,7 +6,7 @@ part 'shopping_item_name_parser.freezed.dart';
 part 'shopping_item_name_parser.g.dart';
 
 @freezed
-class ParsedShoppingItem with _$ParsedShoppingItem {
+abstract class ParsedShoppingItem with _$ParsedShoppingItem {
   const ParsedShoppingItem._();
 
   const factory ParsedShoppingItem({

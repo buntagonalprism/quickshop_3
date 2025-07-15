@@ -56,7 +56,7 @@ const _seperator = '-';
 ///   UserSortKey(primary: 23, secondary: '1234'),
 /// ];
 @freezed
-class UserSortKey with _$UserSortKey {
+abstract class UserSortKey with _$UserSortKey {
   const UserSortKey._();
 
   const factory UserSortKey({

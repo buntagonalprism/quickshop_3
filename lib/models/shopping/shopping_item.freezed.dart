@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,121 +9,75 @@ part of 'shopping_item.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ShoppingItem {
-  String get id => throw _privateConstructorUsedError;
-  String get path => throw _privateConstructorUsedError;
-  String get product => throw _privateConstructorUsedError;
-  String get quantity => throw _privateConstructorUsedError;
-  List<String> get categories => throw _privateConstructorUsedError;
-  String get addedByUserId => throw _privateConstructorUsedError;
-  String get lastModifiedByUserId => throw _privateConstructorUsedError;
-  DateTime get lastModifiedAt => throw _privateConstructorUsedError;
-  bool get completed => throw _privateConstructorUsedError;
+  String get id;
+  String get path;
+  String get product;
+  String get quantity;
+  List<String> get categories;
+  String get addedByUserId;
+  String get lastModifiedByUserId;
+  DateTime get lastModifiedAt;
+  bool get completed;
 
   /// Create a copy of ShoppingItem
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ShoppingItemCopyWith<ShoppingItem> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ShoppingItemCopyWith<$Res> {
-  factory $ShoppingItemCopyWith(
-          ShoppingItem value, $Res Function(ShoppingItem) then) =
-      _$ShoppingItemCopyWithImpl<$Res, ShoppingItem>;
-  @useResult
-  $Res call(
-      {String id,
-      String path,
-      String product,
-      String quantity,
-      List<String> categories,
-      String addedByUserId,
-      String lastModifiedByUserId,
-      DateTime lastModifiedAt,
-      bool completed});
-}
-
-/// @nodoc
-class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
-    implements $ShoppingItemCopyWith<$Res> {
-  _$ShoppingItemCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ShoppingItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ShoppingItemCopyWith<ShoppingItem> get copyWith =>
+      _$ShoppingItemCopyWithImpl<ShoppingItem>(
+          this as ShoppingItem, _$identity);
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? path = null,
-    Object? product = null,
-    Object? quantity = null,
-    Object? categories = null,
-    Object? addedByUserId = null,
-    Object? lastModifiedByUserId = null,
-    Object? lastModifiedAt = null,
-    Object? completed = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      path: null == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      product: null == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as String,
-      categories: null == categories
-          ? _value.categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      addedByUserId: null == addedByUserId
-          ? _value.addedByUserId
-          : addedByUserId // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastModifiedByUserId: null == lastModifiedByUserId
-          ? _value.lastModifiedByUserId
-          : lastModifiedByUserId // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastModifiedAt: null == lastModifiedAt
-          ? _value.lastModifiedAt
-          : lastModifiedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      completed: null == completed
-          ? _value.completed
-          : completed // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ShoppingItem &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.path, path) || other.path == path) &&
+            (identical(other.product, product) || other.product == product) &&
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity) &&
+            const DeepCollectionEquality()
+                .equals(other.categories, categories) &&
+            (identical(other.addedByUserId, addedByUserId) ||
+                other.addedByUserId == addedByUserId) &&
+            (identical(other.lastModifiedByUserId, lastModifiedByUserId) ||
+                other.lastModifiedByUserId == lastModifiedByUserId) &&
+            (identical(other.lastModifiedAt, lastModifiedAt) ||
+                other.lastModifiedAt == lastModifiedAt) &&
+            (identical(other.completed, completed) ||
+                other.completed == completed));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      path,
+      product,
+      quantity,
+      const DeepCollectionEquality().hash(categories),
+      addedByUserId,
+      lastModifiedByUserId,
+      lastModifiedAt,
+      completed);
+
+  @override
+  String toString() {
+    return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
   }
 }
 
 /// @nodoc
-abstract class _$$ShoppingItemImplCopyWith<$Res>
-    implements $ShoppingItemCopyWith<$Res> {
-  factory _$$ShoppingItemImplCopyWith(
-          _$ShoppingItemImpl value, $Res Function(_$ShoppingItemImpl) then) =
-      __$$ShoppingItemImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ShoppingItemCopyWith<$Res> {
+  factory $ShoppingItemCopyWith(
+          ShoppingItem value, $Res Function(ShoppingItem) _then) =
+      _$ShoppingItemCopyWithImpl;
   @useResult
   $Res call(
       {String id,
@@ -138,12 +92,11 @@ abstract class _$$ShoppingItemImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ShoppingItemImplCopyWithImpl<$Res>
-    extends _$ShoppingItemCopyWithImpl<$Res, _$ShoppingItemImpl>
-    implements _$$ShoppingItemImplCopyWith<$Res> {
-  __$$ShoppingItemImplCopyWithImpl(
-      _$ShoppingItemImpl _value, $Res Function(_$ShoppingItemImpl) _then)
-      : super(_value, _then);
+class _$ShoppingItemCopyWithImpl<$Res> implements $ShoppingItemCopyWith<$Res> {
+  _$ShoppingItemCopyWithImpl(this._self, this._then);
+
+  final ShoppingItem _self;
+  final $Res Function(ShoppingItem) _then;
 
   /// Create a copy of ShoppingItem
   /// with the given fields replaced by the non-null parameter values.
@@ -160,51 +113,265 @@ class __$$ShoppingItemImplCopyWithImpl<$Res>
     Object? lastModifiedAt = null,
     Object? completed = null,
   }) {
-    return _then(_$ShoppingItemImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       path: null == path
-          ? _value.path
+          ? _self.path
           : path // ignore: cast_nullable_to_non_nullable
               as String,
       product: null == product
-          ? _value.product
+          ? _self.product
           : product // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: null == quantity
-          ? _value.quantity
+          ? _self.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as String,
       categories: null == categories
-          ? _value._categories
+          ? _self.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
       addedByUserId: null == addedByUserId
-          ? _value.addedByUserId
+          ? _self.addedByUserId
           : addedByUserId // ignore: cast_nullable_to_non_nullable
               as String,
       lastModifiedByUserId: null == lastModifiedByUserId
-          ? _value.lastModifiedByUserId
+          ? _self.lastModifiedByUserId
           : lastModifiedByUserId // ignore: cast_nullable_to_non_nullable
               as String,
       lastModifiedAt: null == lastModifiedAt
-          ? _value.lastModifiedAt
+          ? _self.lastModifiedAt
           : lastModifiedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       completed: null == completed
-          ? _value.completed
+          ? _self.completed
           : completed // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [ShoppingItem].
+extension ShoppingItemPatterns on ShoppingItem {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ShoppingItem value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItem() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ShoppingItem value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItem():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ShoppingItem value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItem() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            String id,
+            String path,
+            String product,
+            String quantity,
+            List<String> categories,
+            String addedByUserId,
+            String lastModifiedByUserId,
+            DateTime lastModifiedAt,
+            bool completed)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItem() when $default != null:
+        return $default(
+            _that.id,
+            _that.path,
+            _that.product,
+            _that.quantity,
+            _that.categories,
+            _that.addedByUserId,
+            _that.lastModifiedByUserId,
+            _that.lastModifiedAt,
+            _that.completed);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            String id,
+            String path,
+            String product,
+            String quantity,
+            List<String> categories,
+            String addedByUserId,
+            String lastModifiedByUserId,
+            DateTime lastModifiedAt,
+            bool completed)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItem():
+        return $default(
+            _that.id,
+            _that.path,
+            _that.product,
+            _that.quantity,
+            _that.categories,
+            _that.addedByUserId,
+            _that.lastModifiedByUserId,
+            _that.lastModifiedAt,
+            _that.completed);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            String id,
+            String path,
+            String product,
+            String quantity,
+            List<String> categories,
+            String addedByUserId,
+            String lastModifiedByUserId,
+            DateTime lastModifiedAt,
+            bool completed)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingItem() when $default != null:
+        return $default(
+            _that.id,
+            _that.path,
+            _that.product,
+            _that.quantity,
+            _that.categories,
+            _that.addedByUserId,
+            _that.lastModifiedByUserId,
+            _that.lastModifiedAt,
+            _that.completed);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$ShoppingItemImpl extends _ShoppingItem {
-  const _$ShoppingItemImpl(
+class _ShoppingItem extends ShoppingItem {
+  const _ShoppingItem(
       {required this.id,
       required this.path,
       required this.product,
@@ -242,16 +409,19 @@ class _$ShoppingItemImpl extends _ShoppingItem {
   @override
   final bool completed;
 
+  /// Create a copy of ShoppingItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ShoppingItemCopyWith<_ShoppingItem> get copyWith =>
+      __$ShoppingItemCopyWithImpl<_ShoppingItem>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShoppingItemImpl &&
+            other is _ShoppingItem &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.path, path) || other.path == path) &&
             (identical(other.product, product) || other.product == product) &&
@@ -282,51 +452,94 @@ class _$ShoppingItemImpl extends _ShoppingItem {
       lastModifiedAt,
       completed);
 
+  @override
+  String toString() {
+    return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ShoppingItemCopyWith<$Res>
+    implements $ShoppingItemCopyWith<$Res> {
+  factory _$ShoppingItemCopyWith(
+          _ShoppingItem value, $Res Function(_ShoppingItem) _then) =
+      __$ShoppingItemCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String path,
+      String product,
+      String quantity,
+      List<String> categories,
+      String addedByUserId,
+      String lastModifiedByUserId,
+      DateTime lastModifiedAt,
+      bool completed});
+}
+
+/// @nodoc
+class __$ShoppingItemCopyWithImpl<$Res>
+    implements _$ShoppingItemCopyWith<$Res> {
+  __$ShoppingItemCopyWithImpl(this._self, this._then);
+
+  final _ShoppingItem _self;
+  final $Res Function(_ShoppingItem) _then;
+
   /// Create a copy of ShoppingItem
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ShoppingItemImplCopyWith<_$ShoppingItemImpl> get copyWith =>
-      __$$ShoppingItemImplCopyWithImpl<_$ShoppingItemImpl>(this, _$identity);
+  $Res call({
+    Object? id = null,
+    Object? path = null,
+    Object? product = null,
+    Object? quantity = null,
+    Object? categories = null,
+    Object? addedByUserId = null,
+    Object? lastModifiedByUserId = null,
+    Object? lastModifiedAt = null,
+    Object? completed = null,
+  }) {
+    return _then(_ShoppingItem(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      path: null == path
+          ? _self.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
+      product: null == product
+          ? _self.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as String,
+      quantity: null == quantity
+          ? _self.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as String,
+      categories: null == categories
+          ? _self._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      addedByUserId: null == addedByUserId
+          ? _self.addedByUserId
+          : addedByUserId // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastModifiedByUserId: null == lastModifiedByUserId
+          ? _self.lastModifiedByUserId
+          : lastModifiedByUserId // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastModifiedAt: null == lastModifiedAt
+          ? _self.lastModifiedAt
+          : lastModifiedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      completed: null == completed
+          ? _self.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
-abstract class _ShoppingItem extends ShoppingItem {
-  const factory _ShoppingItem(
-      {required final String id,
-      required final String path,
-      required final String product,
-      required final String quantity,
-      required final List<String> categories,
-      required final String addedByUserId,
-      required final String lastModifiedByUserId,
-      required final DateTime lastModifiedAt,
-      required final bool completed}) = _$ShoppingItemImpl;
-  const _ShoppingItem._() : super._();
-
-  @override
-  String get id;
-  @override
-  String get path;
-  @override
-  String get product;
-  @override
-  String get quantity;
-  @override
-  List<String> get categories;
-  @override
-  String get addedByUserId;
-  @override
-  String get lastModifiedByUserId;
-  @override
-  DateTime get lastModifiedAt;
-  @override
-  bool get completed;
-
-  /// Create a copy of ShoppingItem
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShoppingItemImplCopyWith<_$ShoppingItemImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

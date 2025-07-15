@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,95 +9,55 @@ part of 'shopping_category_history.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ShoppingCategoryHistory {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get nameLower => throw _privateConstructorUsedError;
-  int get usageCount => throw _privateConstructorUsedError;
-  DateTime get lastUsed => throw _privateConstructorUsedError;
+  String get id;
+  String get name;
+  String get nameLower;
+  int get usageCount;
+  DateTime get lastUsed;
 
   /// Create a copy of ShoppingCategoryHistory
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ShoppingCategoryHistoryCopyWith<ShoppingCategoryHistory> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ShoppingCategoryHistoryCopyWith<$Res> {
-  factory $ShoppingCategoryHistoryCopyWith(ShoppingCategoryHistory value,
-          $Res Function(ShoppingCategoryHistory) then) =
-      _$ShoppingCategoryHistoryCopyWithImpl<$Res, ShoppingCategoryHistory>;
-  @useResult
-  $Res call(
-      {String id,
-      String name,
-      String nameLower,
-      int usageCount,
-      DateTime lastUsed});
-}
-
-/// @nodoc
-class _$ShoppingCategoryHistoryCopyWithImpl<$Res,
-        $Val extends ShoppingCategoryHistory>
-    implements $ShoppingCategoryHistoryCopyWith<$Res> {
-  _$ShoppingCategoryHistoryCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ShoppingCategoryHistory
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ShoppingCategoryHistoryCopyWith<ShoppingCategoryHistory> get copyWith =>
+      _$ShoppingCategoryHistoryCopyWithImpl<ShoppingCategoryHistory>(
+          this as ShoppingCategoryHistory, _$identity);
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? nameLower = null,
-    Object? usageCount = null,
-    Object? lastUsed = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameLower: null == nameLower
-          ? _value.nameLower
-          : nameLower // ignore: cast_nullable_to_non_nullable
-              as String,
-      usageCount: null == usageCount
-          ? _value.usageCount
-          : usageCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      lastUsed: null == lastUsed
-          ? _value.lastUsed
-          : lastUsed // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ShoppingCategoryHistory &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.nameLower, nameLower) ||
+                other.nameLower == nameLower) &&
+            (identical(other.usageCount, usageCount) ||
+                other.usageCount == usageCount) &&
+            (identical(other.lastUsed, lastUsed) ||
+                other.lastUsed == lastUsed));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, nameLower, usageCount, lastUsed);
+
+  @override
+  String toString() {
+    return 'ShoppingCategoryHistory(id: $id, name: $name, nameLower: $nameLower, usageCount: $usageCount, lastUsed: $lastUsed)';
   }
 }
 
 /// @nodoc
-abstract class _$$ShoppingCategoryHistoryImplCopyWith<$Res>
-    implements $ShoppingCategoryHistoryCopyWith<$Res> {
-  factory _$$ShoppingCategoryHistoryImplCopyWith(
-          _$ShoppingCategoryHistoryImpl value,
-          $Res Function(_$ShoppingCategoryHistoryImpl) then) =
-      __$$ShoppingCategoryHistoryImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ShoppingCategoryHistoryCopyWith<$Res> {
+  factory $ShoppingCategoryHistoryCopyWith(ShoppingCategoryHistory value,
+          $Res Function(ShoppingCategoryHistory) _then) =
+      _$ShoppingCategoryHistoryCopyWithImpl;
   @useResult
   $Res call(
       {String id,
@@ -108,14 +68,12 @@ abstract class _$$ShoppingCategoryHistoryImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ShoppingCategoryHistoryImplCopyWithImpl<$Res>
-    extends _$ShoppingCategoryHistoryCopyWithImpl<$Res,
-        _$ShoppingCategoryHistoryImpl>
-    implements _$$ShoppingCategoryHistoryImplCopyWith<$Res> {
-  __$$ShoppingCategoryHistoryImplCopyWithImpl(
-      _$ShoppingCategoryHistoryImpl _value,
-      $Res Function(_$ShoppingCategoryHistoryImpl) _then)
-      : super(_value, _then);
+class _$ShoppingCategoryHistoryCopyWithImpl<$Res>
+    implements $ShoppingCategoryHistoryCopyWith<$Res> {
+  _$ShoppingCategoryHistoryCopyWithImpl(this._self, this._then);
+
+  final ShoppingCategoryHistory _self;
+  final $Res Function(ShoppingCategoryHistory) _then;
 
   /// Create a copy of ShoppingCategoryHistory
   /// with the given fields replaced by the non-null parameter values.
@@ -128,35 +86,201 @@ class __$$ShoppingCategoryHistoryImplCopyWithImpl<$Res>
     Object? usageCount = null,
     Object? lastUsed = null,
   }) {
-    return _then(_$ShoppingCategoryHistoryImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       nameLower: null == nameLower
-          ? _value.nameLower
+          ? _self.nameLower
           : nameLower // ignore: cast_nullable_to_non_nullable
               as String,
       usageCount: null == usageCount
-          ? _value.usageCount
+          ? _self.usageCount
           : usageCount // ignore: cast_nullable_to_non_nullable
               as int,
       lastUsed: null == lastUsed
-          ? _value.lastUsed
+          ? _self.lastUsed
           : lastUsed // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [ShoppingCategoryHistory].
+extension ShoppingCategoryHistoryPatterns on ShoppingCategoryHistory {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ShoppingCategoryHistory value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingCategoryHistory() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ShoppingCategoryHistory value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingCategoryHistory():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ShoppingCategoryHistory value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingCategoryHistory() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String id, String name, String nameLower, int usageCount,
+            DateTime lastUsed)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingCategoryHistory() when $default != null:
+        return $default(_that.id, _that.name, _that.nameLower, _that.usageCount,
+            _that.lastUsed);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String id, String name, String nameLower, int usageCount,
+            DateTime lastUsed)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingCategoryHistory():
+        return $default(_that.id, _that.name, _that.nameLower, _that.usageCount,
+            _that.lastUsed);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String id, String name, String nameLower, int usageCount,
+            DateTime lastUsed)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ShoppingCategoryHistory() when $default != null:
+        return $default(_that.id, _that.name, _that.nameLower, _that.usageCount,
+            _that.lastUsed);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$ShoppingCategoryHistoryImpl extends _ShoppingCategoryHistory {
-  const _$ShoppingCategoryHistoryImpl(
+class _ShoppingCategoryHistory extends ShoppingCategoryHistory {
+  const _ShoppingCategoryHistory(
       {required this.id,
       required this.name,
       required this.nameLower,
@@ -175,16 +299,20 @@ class _$ShoppingCategoryHistoryImpl extends _ShoppingCategoryHistory {
   @override
   final DateTime lastUsed;
 
+  /// Create a copy of ShoppingCategoryHistory
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ShoppingCategoryHistory(id: $id, name: $name, nameLower: $nameLower, usageCount: $usageCount, lastUsed: $lastUsed)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ShoppingCategoryHistoryCopyWith<_ShoppingCategoryHistory> get copyWith =>
+      __$ShoppingCategoryHistoryCopyWithImpl<_ShoppingCategoryHistory>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShoppingCategoryHistoryImpl &&
+            other is _ShoppingCategoryHistory &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.nameLower, nameLower) ||
@@ -199,40 +327,70 @@ class _$ShoppingCategoryHistoryImpl extends _ShoppingCategoryHistory {
   int get hashCode =>
       Object.hash(runtimeType, id, name, nameLower, usageCount, lastUsed);
 
+  @override
+  String toString() {
+    return 'ShoppingCategoryHistory(id: $id, name: $name, nameLower: $nameLower, usageCount: $usageCount, lastUsed: $lastUsed)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ShoppingCategoryHistoryCopyWith<$Res>
+    implements $ShoppingCategoryHistoryCopyWith<$Res> {
+  factory _$ShoppingCategoryHistoryCopyWith(_ShoppingCategoryHistory value,
+          $Res Function(_ShoppingCategoryHistory) _then) =
+      __$ShoppingCategoryHistoryCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String name,
+      String nameLower,
+      int usageCount,
+      DateTime lastUsed});
+}
+
+/// @nodoc
+class __$ShoppingCategoryHistoryCopyWithImpl<$Res>
+    implements _$ShoppingCategoryHistoryCopyWith<$Res> {
+  __$ShoppingCategoryHistoryCopyWithImpl(this._self, this._then);
+
+  final _ShoppingCategoryHistory _self;
+  final $Res Function(_ShoppingCategoryHistory) _then;
+
   /// Create a copy of ShoppingCategoryHistory
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ShoppingCategoryHistoryImplCopyWith<_$ShoppingCategoryHistoryImpl>
-      get copyWith => __$$ShoppingCategoryHistoryImplCopyWithImpl<
-          _$ShoppingCategoryHistoryImpl>(this, _$identity);
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? nameLower = null,
+    Object? usageCount = null,
+    Object? lastUsed = null,
+  }) {
+    return _then(_ShoppingCategoryHistory(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      nameLower: null == nameLower
+          ? _self.nameLower
+          : nameLower // ignore: cast_nullable_to_non_nullable
+              as String,
+      usageCount: null == usageCount
+          ? _self.usageCount
+          : usageCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastUsed: null == lastUsed
+          ? _self.lastUsed
+          : lastUsed // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
 }
 
-abstract class _ShoppingCategoryHistory extends ShoppingCategoryHistory {
-  const factory _ShoppingCategoryHistory(
-      {required final String id,
-      required final String name,
-      required final String nameLower,
-      required final int usageCount,
-      required final DateTime lastUsed}) = _$ShoppingCategoryHistoryImpl;
-  const _ShoppingCategoryHistory._() : super._();
-
-  @override
-  String get id;
-  @override
-  String get name;
-  @override
-  String get nameLower;
-  @override
-  int get usageCount;
-  @override
-  DateTime get lastUsed;
-
-  /// Create a copy of ShoppingCategoryHistory
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShoppingCategoryHistoryImplCopyWith<_$ShoppingCategoryHistoryImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

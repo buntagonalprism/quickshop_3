@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,79 +9,239 @@ part of 'checklist_entry.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ChecklistEntry {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ChecklistItem item) item,
-    required TResult Function(ChecklistHeading heading) heading,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ChecklistItem item)? item,
-    TResult? Function(ChecklistHeading heading)? heading,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ChecklistItem item)? item,
-    TResult Function(ChecklistHeading heading)? heading,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ChecklistEntryItem value) item,
-    required TResult Function(_ChecklistEntryHeading value) heading,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ChecklistEntryItem value)? item,
-    TResult? Function(_ChecklistEntryHeading value)? heading,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is ChecklistEntry);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ChecklistEntry()';
+  }
+}
+
+/// @nodoc
+class $ChecklistEntryCopyWith<$Res> {
+  $ChecklistEntryCopyWith(ChecklistEntry _, $Res Function(ChecklistEntry) __);
+}
+
+/// Adds pattern-matching-related methods to [ChecklistEntry].
+extension ChecklistEntryPatterns on ChecklistEntry {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ChecklistEntryItem value)? item,
     TResult Function(_ChecklistEntryHeading value)? heading,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistEntryItem() when item != null:
+        return item(_that);
+      case _ChecklistEntryHeading() when heading != null:
+        return heading(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ChecklistEntryItem value) item,
+    required TResult Function(_ChecklistEntryHeading value) heading,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistEntryItem():
+        return item(_that);
+      case _ChecklistEntryHeading():
+        return heading(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_ChecklistEntryItem value)? item,
+    TResult? Function(_ChecklistEntryHeading value)? heading,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistEntryItem() when item != null:
+        return item(_that);
+      case _ChecklistEntryHeading() when heading != null:
+        return heading(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(ChecklistItem item)? item,
+    TResult Function(ChecklistHeading heading)? heading,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistEntryItem() when item != null:
+        return item(_that.item);
+      case _ChecklistEntryHeading() when heading != null:
+        return heading(_that.heading);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(ChecklistItem item) item,
+    required TResult Function(ChecklistHeading heading) heading,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistEntryItem():
+        return item(_that.item);
+      case _ChecklistEntryHeading():
+        return heading(_that.heading);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(ChecklistItem item)? item,
+    TResult? Function(ChecklistHeading heading)? heading,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistEntryItem() when item != null:
+        return item(_that.item);
+      case _ChecklistEntryHeading() when heading != null:
+        return heading(_that.heading);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $ChecklistEntryCopyWith<$Res> {
-  factory $ChecklistEntryCopyWith(
-          ChecklistEntry value, $Res Function(ChecklistEntry) then) =
-      _$ChecklistEntryCopyWithImpl<$Res, ChecklistEntry>;
-}
 
-/// @nodoc
-class _$ChecklistEntryCopyWithImpl<$Res, $Val extends ChecklistEntry>
-    implements $ChecklistEntryCopyWith<$Res> {
-  _$ChecklistEntryCopyWithImpl(this._value, this._then);
+class _ChecklistEntryItem extends ChecklistEntry {
+  const _ChecklistEntryItem(this.item) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ChecklistItem item;
 
   /// Create a copy of ChecklistEntry
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ChecklistEntryItemCopyWith<_ChecklistEntryItem> get copyWith =>
+      __$ChecklistEntryItemCopyWithImpl<_ChecklistEntryItem>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ChecklistEntryItem &&
+            (identical(other.item, item) || other.item == item));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, item);
+
+  @override
+  String toString() {
+    return 'ChecklistEntry.item(item: $item)';
+  }
 }
 
 /// @nodoc
-abstract class _$$ChecklistEntryItemImplCopyWith<$Res> {
-  factory _$$ChecklistEntryItemImplCopyWith(_$ChecklistEntryItemImpl value,
-          $Res Function(_$ChecklistEntryItemImpl) then) =
-      __$$ChecklistEntryItemImplCopyWithImpl<$Res>;
+abstract mixin class _$ChecklistEntryItemCopyWith<$Res>
+    implements $ChecklistEntryCopyWith<$Res> {
+  factory _$ChecklistEntryItemCopyWith(
+          _ChecklistEntryItem value, $Res Function(_ChecklistEntryItem) _then) =
+      __$ChecklistEntryItemCopyWithImpl;
   @useResult
   $Res call({ChecklistItem item});
 
@@ -89,23 +249,22 @@ abstract class _$$ChecklistEntryItemImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ChecklistEntryItemImplCopyWithImpl<$Res>
-    extends _$ChecklistEntryCopyWithImpl<$Res, _$ChecklistEntryItemImpl>
-    implements _$$ChecklistEntryItemImplCopyWith<$Res> {
-  __$$ChecklistEntryItemImplCopyWithImpl(_$ChecklistEntryItemImpl _value,
-      $Res Function(_$ChecklistEntryItemImpl) _then)
-      : super(_value, _then);
+class __$ChecklistEntryItemCopyWithImpl<$Res>
+    implements _$ChecklistEntryItemCopyWith<$Res> {
+  __$ChecklistEntryItemCopyWithImpl(this._self, this._then);
+
+  final _ChecklistEntryItem _self;
+  final $Res Function(_ChecklistEntryItem) _then;
 
   /// Create a copy of ChecklistEntry
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? item = null,
   }) {
-    return _then(_$ChecklistEntryItemImpl(
+    return _then(_ChecklistEntryItem(
       null == item
-          ? _value.item
+          ? _self.item
           : item // ignore: cast_nullable_to_non_nullable
               as ChecklistItem,
     ));
@@ -116,128 +275,50 @@ class __$$ChecklistEntryItemImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $ChecklistItemCopyWith<$Res> get item {
-    return $ChecklistItemCopyWith<$Res>(_value.item, (value) {
-      return _then(_value.copyWith(item: value));
+    return $ChecklistItemCopyWith<$Res>(_self.item, (value) {
+      return _then(_self.copyWith(item: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$ChecklistEntryItemImpl extends _ChecklistEntryItem {
-  const _$ChecklistEntryItemImpl(this.item) : super._();
+class _ChecklistEntryHeading extends ChecklistEntry {
+  const _ChecklistEntryHeading(this.heading) : super._();
 
-  @override
-  final ChecklistItem item;
+  final ChecklistHeading heading;
 
-  @override
-  String toString() {
-    return 'ChecklistEntry.item(item: $item)';
-  }
+  /// Create a copy of ChecklistEntry
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ChecklistEntryHeadingCopyWith<_ChecklistEntryHeading> get copyWith =>
+      __$ChecklistEntryHeadingCopyWithImpl<_ChecklistEntryHeading>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChecklistEntryItemImpl &&
-            (identical(other.item, item) || other.item == item));
+            other is _ChecklistEntryHeading &&
+            (identical(other.heading, heading) || other.heading == heading));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, item);
-
-  /// Create a copy of ChecklistEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ChecklistEntryItemImplCopyWith<_$ChecklistEntryItemImpl> get copyWith =>
-      __$$ChecklistEntryItemImplCopyWithImpl<_$ChecklistEntryItemImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, heading);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ChecklistItem item) item,
-    required TResult Function(ChecklistHeading heading) heading,
-  }) {
-    return item(this.item);
+  String toString() {
+    return 'ChecklistEntry.heading(heading: $heading)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ChecklistItem item)? item,
-    TResult? Function(ChecklistHeading heading)? heading,
-  }) {
-    return item?.call(this.item);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ChecklistItem item)? item,
-    TResult Function(ChecklistHeading heading)? heading,
-    required TResult orElse(),
-  }) {
-    if (item != null) {
-      return item(this.item);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ChecklistEntryItem value) item,
-    required TResult Function(_ChecklistEntryHeading value) heading,
-  }) {
-    return item(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ChecklistEntryItem value)? item,
-    TResult? Function(_ChecklistEntryHeading value)? heading,
-  }) {
-    return item?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ChecklistEntryItem value)? item,
-    TResult Function(_ChecklistEntryHeading value)? heading,
-    required TResult orElse(),
-  }) {
-    if (item != null) {
-      return item(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ChecklistEntryItem extends ChecklistEntry {
-  const factory _ChecklistEntryItem(final ChecklistItem item) =
-      _$ChecklistEntryItemImpl;
-  const _ChecklistEntryItem._() : super._();
-
-  ChecklistItem get item;
-
-  /// Create a copy of ChecklistEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChecklistEntryItemImplCopyWith<_$ChecklistEntryItemImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ChecklistEntryHeadingImplCopyWith<$Res> {
-  factory _$$ChecklistEntryHeadingImplCopyWith(
-          _$ChecklistEntryHeadingImpl value,
-          $Res Function(_$ChecklistEntryHeadingImpl) then) =
-      __$$ChecklistEntryHeadingImplCopyWithImpl<$Res>;
+abstract mixin class _$ChecklistEntryHeadingCopyWith<$Res>
+    implements $ChecklistEntryCopyWith<$Res> {
+  factory _$ChecklistEntryHeadingCopyWith(_ChecklistEntryHeading value,
+          $Res Function(_ChecklistEntryHeading) _then) =
+      __$ChecklistEntryHeadingCopyWithImpl;
   @useResult
   $Res call({ChecklistHeading heading});
 
@@ -245,23 +326,22 @@ abstract class _$$ChecklistEntryHeadingImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ChecklistEntryHeadingImplCopyWithImpl<$Res>
-    extends _$ChecklistEntryCopyWithImpl<$Res, _$ChecklistEntryHeadingImpl>
-    implements _$$ChecklistEntryHeadingImplCopyWith<$Res> {
-  __$$ChecklistEntryHeadingImplCopyWithImpl(_$ChecklistEntryHeadingImpl _value,
-      $Res Function(_$ChecklistEntryHeadingImpl) _then)
-      : super(_value, _then);
+class __$ChecklistEntryHeadingCopyWithImpl<$Res>
+    implements _$ChecklistEntryHeadingCopyWith<$Res> {
+  __$ChecklistEntryHeadingCopyWithImpl(this._self, this._then);
+
+  final _ChecklistEntryHeading _self;
+  final $Res Function(_ChecklistEntryHeading) _then;
 
   /// Create a copy of ChecklistEntry
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? heading = null,
   }) {
-    return _then(_$ChecklistEntryHeadingImpl(
+    return _then(_ChecklistEntryHeading(
       null == heading
-          ? _value.heading
+          ? _self.heading
           : heading // ignore: cast_nullable_to_non_nullable
               as ChecklistHeading,
     ));
@@ -272,141 +352,53 @@ class __$$ChecklistEntryHeadingImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $ChecklistHeadingCopyWith<$Res> get heading {
-    return $ChecklistHeadingCopyWith<$Res>(_value.heading, (value) {
-      return _then(_value.copyWith(heading: value));
+    return $ChecklistHeadingCopyWith<$Res>(_self.heading, (value) {
+      return _then(_self.copyWith(heading: value));
     });
   }
 }
 
 /// @nodoc
+mixin _$ChecklistItem {
+  String get id;
+  String get name;
+  bool get completed;
+  UserSortKey get sortKey;
 
-class _$ChecklistEntryHeadingImpl extends _ChecklistEntryHeading {
-  const _$ChecklistEntryHeadingImpl(this.heading) : super._();
-
-  @override
-  final ChecklistHeading heading;
-
-  @override
-  String toString() {
-    return 'ChecklistEntry.heading(heading: $heading)';
-  }
+  /// Create a copy of ChecklistItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $ChecklistItemCopyWith<ChecklistItem> get copyWith =>
+      _$ChecklistItemCopyWithImpl<ChecklistItem>(
+          this as ChecklistItem, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChecklistEntryHeadingImpl &&
-            (identical(other.heading, heading) || other.heading == heading));
+            other is ChecklistItem &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.completed, completed) ||
+                other.completed == completed) &&
+            (identical(other.sortKey, sortKey) || other.sortKey == sortKey));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, heading);
-
-  /// Create a copy of ChecklistEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ChecklistEntryHeadingImplCopyWith<_$ChecklistEntryHeadingImpl>
-      get copyWith => __$$ChecklistEntryHeadingImplCopyWithImpl<
-          _$ChecklistEntryHeadingImpl>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, id, name, completed, sortKey);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ChecklistItem item) item,
-    required TResult Function(ChecklistHeading heading) heading,
-  }) {
-    return heading(this.heading);
+  String toString() {
+    return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ChecklistItem item)? item,
-    TResult? Function(ChecklistHeading heading)? heading,
-  }) {
-    return heading?.call(this.heading);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ChecklistItem item)? item,
-    TResult Function(ChecklistHeading heading)? heading,
-    required TResult orElse(),
-  }) {
-    if (heading != null) {
-      return heading(this.heading);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ChecklistEntryItem value) item,
-    required TResult Function(_ChecklistEntryHeading value) heading,
-  }) {
-    return heading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ChecklistEntryItem value)? item,
-    TResult? Function(_ChecklistEntryHeading value)? heading,
-  }) {
-    return heading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ChecklistEntryItem value)? item,
-    TResult Function(_ChecklistEntryHeading value)? heading,
-    required TResult orElse(),
-  }) {
-    if (heading != null) {
-      return heading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ChecklistEntryHeading extends ChecklistEntry {
-  const factory _ChecklistEntryHeading(final ChecklistHeading heading) =
-      _$ChecklistEntryHeadingImpl;
-  const _ChecklistEntryHeading._() : super._();
-
-  ChecklistHeading get heading;
-
-  /// Create a copy of ChecklistEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChecklistEntryHeadingImplCopyWith<_$ChecklistEntryHeadingImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$ChecklistItem {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  bool get completed => throw _privateConstructorUsedError;
-  UserSortKey get sortKey => throw _privateConstructorUsedError;
-
-  /// Create a copy of ChecklistItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ChecklistItemCopyWith<ChecklistItem> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ChecklistItemCopyWith<$Res> {
+abstract mixin class $ChecklistItemCopyWith<$Res> {
   factory $ChecklistItemCopyWith(
-          ChecklistItem value, $Res Function(ChecklistItem) then) =
-      _$ChecklistItemCopyWithImpl<$Res, ChecklistItem>;
+          ChecklistItem value, $Res Function(ChecklistItem) _then) =
+      _$ChecklistItemCopyWithImpl;
   @useResult
   $Res call({String id, String name, bool completed, UserSortKey sortKey});
 
@@ -414,14 +406,12 @@ abstract class $ChecklistItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChecklistItemCopyWithImpl<$Res, $Val extends ChecklistItem>
+class _$ChecklistItemCopyWithImpl<$Res>
     implements $ChecklistItemCopyWith<$Res> {
-  _$ChecklistItemCopyWithImpl(this._value, this._then);
+  _$ChecklistItemCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ChecklistItem _self;
+  final $Res Function(ChecklistItem) _then;
 
   /// Create a copy of ChecklistItem
   /// with the given fields replaced by the non-null parameter values.
@@ -433,24 +423,24 @@ class _$ChecklistItemCopyWithImpl<$Res, $Val extends ChecklistItem>
     Object? completed = null,
     Object? sortKey = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       completed: null == completed
-          ? _value.completed
+          ? _self.completed
           : completed // ignore: cast_nullable_to_non_nullable
               as bool,
       sortKey: null == sortKey
-          ? _value.sortKey
+          ? _self.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
               as UserSortKey,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of ChecklistItem
@@ -458,69 +448,179 @@ class _$ChecklistItemCopyWithImpl<$Res, $Val extends ChecklistItem>
   @override
   @pragma('vm:prefer-inline')
   $UserSortKeyCopyWith<$Res> get sortKey {
-    return $UserSortKeyCopyWith<$Res>(_value.sortKey, (value) {
-      return _then(_value.copyWith(sortKey: value) as $Val);
+    return $UserSortKeyCopyWith<$Res>(_self.sortKey, (value) {
+      return _then(_self.copyWith(sortKey: value));
     });
   }
 }
 
-/// @nodoc
-abstract class _$$ChecklistItemImplCopyWith<$Res>
-    implements $ChecklistItemCopyWith<$Res> {
-  factory _$$ChecklistItemImplCopyWith(
-          _$ChecklistItemImpl value, $Res Function(_$ChecklistItemImpl) then) =
-      __$$ChecklistItemImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String id, String name, bool completed, UserSortKey sortKey});
+/// Adds pattern-matching-related methods to [ChecklistItem].
+extension ChecklistItemPatterns on ChecklistItem {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  $UserSortKeyCopyWith<$Res> get sortKey;
-}
-
-/// @nodoc
-class __$$ChecklistItemImplCopyWithImpl<$Res>
-    extends _$ChecklistItemCopyWithImpl<$Res, _$ChecklistItemImpl>
-    implements _$$ChecklistItemImplCopyWith<$Res> {
-  __$$ChecklistItemImplCopyWithImpl(
-      _$ChecklistItemImpl _value, $Res Function(_$ChecklistItemImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ChecklistItem
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? completed = null,
-    Object? sortKey = null,
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ChecklistItem value)? $default, {
+    required TResult orElse(),
   }) {
-    return _then(_$ChecklistItemImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      completed: null == completed
-          ? _value.completed
-          : completed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      sortKey: null == sortKey
-          ? _value.sortKey
-          : sortKey // ignore: cast_nullable_to_non_nullable
-              as UserSortKey,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _ChecklistItem() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ChecklistItem value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistItem():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ChecklistItem value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistItem() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            String id, String name, bool completed, UserSortKey sortKey)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistItem() when $default != null:
+        return $default(_that.id, _that.name, _that.completed, _that.sortKey);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            String id, String name, bool completed, UserSortKey sortKey)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistItem():
+        return $default(_that.id, _that.name, _that.completed, _that.sortKey);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            String id, String name, bool completed, UserSortKey sortKey)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistItem() when $default != null:
+        return $default(_that.id, _that.name, _that.completed, _that.sortKey);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$ChecklistItemImpl extends _ChecklistItem {
-  const _$ChecklistItemImpl(
+class _ChecklistItem extends ChecklistItem {
+  const _ChecklistItem(
       {required this.id,
       required this.name,
       required this.completed,
@@ -536,16 +636,19 @@ class _$ChecklistItemImpl extends _ChecklistItem {
   @override
   final UserSortKey sortKey;
 
+  /// Create a copy of ChecklistItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ChecklistItemCopyWith<_ChecklistItem> get copyWith =>
+      __$ChecklistItemCopyWithImpl<_ChecklistItem>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChecklistItemImpl &&
+            other is _ChecklistItem &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.completed, completed) ||
@@ -556,58 +659,113 @@ class _$ChecklistItemImpl extends _ChecklistItem {
   @override
   int get hashCode => Object.hash(runtimeType, id, name, completed, sortKey);
 
-  /// Create a copy of ChecklistItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ChecklistItemImplCopyWith<_$ChecklistItemImpl> get copyWith =>
-      __$$ChecklistItemImplCopyWithImpl<_$ChecklistItemImpl>(this, _$identity);
+  String toString() {
+    return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey)';
+  }
 }
 
-abstract class _ChecklistItem extends ChecklistItem {
-  const factory _ChecklistItem(
-      {required final String id,
-      required final String name,
-      required final bool completed,
-      required final UserSortKey sortKey}) = _$ChecklistItemImpl;
-  const _ChecklistItem._() : super._();
+/// @nodoc
+abstract mixin class _$ChecklistItemCopyWith<$Res>
+    implements $ChecklistItemCopyWith<$Res> {
+  factory _$ChecklistItemCopyWith(
+          _ChecklistItem value, $Res Function(_ChecklistItem) _then) =
+      __$ChecklistItemCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String id, String name, bool completed, UserSortKey sortKey});
 
   @override
-  String get id;
-  @override
-  String get name;
-  @override
-  bool get completed;
-  @override
-  UserSortKey get sortKey;
+  $UserSortKeyCopyWith<$Res> get sortKey;
+}
+
+/// @nodoc
+class __$ChecklistItemCopyWithImpl<$Res>
+    implements _$ChecklistItemCopyWith<$Res> {
+  __$ChecklistItemCopyWithImpl(this._self, this._then);
+
+  final _ChecklistItem _self;
+  final $Res Function(_ChecklistItem) _then;
 
   /// Create a copy of ChecklistItem
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChecklistItemImplCopyWith<_$ChecklistItemImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? completed = null,
+    Object? sortKey = null,
+  }) {
+    return _then(_ChecklistItem(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      completed: null == completed
+          ? _self.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      sortKey: null == sortKey
+          ? _self.sortKey
+          : sortKey // ignore: cast_nullable_to_non_nullable
+              as UserSortKey,
+    ));
+  }
+
+  /// Create a copy of ChecklistItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserSortKeyCopyWith<$Res> get sortKey {
+    return $UserSortKeyCopyWith<$Res>(_self.sortKey, (value) {
+      return _then(_self.copyWith(sortKey: value));
+    });
+  }
 }
 
 /// @nodoc
 mixin _$ChecklistHeading {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  UserSortKey get sortKey => throw _privateConstructorUsedError;
+  String get id;
+  String get name;
+  UserSortKey get sortKey;
 
   /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $ChecklistHeadingCopyWith<ChecklistHeading> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$ChecklistHeadingCopyWithImpl<ChecklistHeading>(
+          this as ChecklistHeading, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ChecklistHeading &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.sortKey, sortKey) || other.sortKey == sortKey));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, sortKey);
+
+  @override
+  String toString() {
+    return 'ChecklistHeading(id: $id, name: $name, sortKey: $sortKey)';
+  }
 }
 
 /// @nodoc
-abstract class $ChecklistHeadingCopyWith<$Res> {
+abstract mixin class $ChecklistHeadingCopyWith<$Res> {
   factory $ChecklistHeadingCopyWith(
-          ChecklistHeading value, $Res Function(ChecklistHeading) then) =
-      _$ChecklistHeadingCopyWithImpl<$Res, ChecklistHeading>;
+          ChecklistHeading value, $Res Function(ChecklistHeading) _then) =
+      _$ChecklistHeadingCopyWithImpl;
   @useResult
   $Res call({String id, String name, UserSortKey sortKey});
 
@@ -615,14 +773,12 @@ abstract class $ChecklistHeadingCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChecklistHeadingCopyWithImpl<$Res, $Val extends ChecklistHeading>
+class _$ChecklistHeadingCopyWithImpl<$Res>
     implements $ChecklistHeadingCopyWith<$Res> {
-  _$ChecklistHeadingCopyWithImpl(this._value, this._then);
+  _$ChecklistHeadingCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ChecklistHeading _self;
+  final $Res Function(ChecklistHeading) _then;
 
   /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
@@ -633,20 +789,20 @@ class _$ChecklistHeadingCopyWithImpl<$Res, $Val extends ChecklistHeading>
     Object? name = null,
     Object? sortKey = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       sortKey: null == sortKey
-          ? _value.sortKey
+          ? _self.sortKey
           : sortKey // ignore: cast_nullable_to_non_nullable
               as UserSortKey,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of ChecklistHeading
@@ -654,64 +810,173 @@ class _$ChecklistHeadingCopyWithImpl<$Res, $Val extends ChecklistHeading>
   @override
   @pragma('vm:prefer-inline')
   $UserSortKeyCopyWith<$Res> get sortKey {
-    return $UserSortKeyCopyWith<$Res>(_value.sortKey, (value) {
-      return _then(_value.copyWith(sortKey: value) as $Val);
+    return $UserSortKeyCopyWith<$Res>(_self.sortKey, (value) {
+      return _then(_self.copyWith(sortKey: value));
     });
   }
 }
 
-/// @nodoc
-abstract class _$$ChecklistHeadingImplCopyWith<$Res>
-    implements $ChecklistHeadingCopyWith<$Res> {
-  factory _$$ChecklistHeadingImplCopyWith(_$ChecklistHeadingImpl value,
-          $Res Function(_$ChecklistHeadingImpl) then) =
-      __$$ChecklistHeadingImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String id, String name, UserSortKey sortKey});
+/// Adds pattern-matching-related methods to [ChecklistHeading].
+extension ChecklistHeadingPatterns on ChecklistHeading {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  $UserSortKeyCopyWith<$Res> get sortKey;
-}
-
-/// @nodoc
-class __$$ChecklistHeadingImplCopyWithImpl<$Res>
-    extends _$ChecklistHeadingCopyWithImpl<$Res, _$ChecklistHeadingImpl>
-    implements _$$ChecklistHeadingImplCopyWith<$Res> {
-  __$$ChecklistHeadingImplCopyWithImpl(_$ChecklistHeadingImpl _value,
-      $Res Function(_$ChecklistHeadingImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ChecklistHeading
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? sortKey = null,
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ChecklistHeading value)? $default, {
+    required TResult orElse(),
   }) {
-    return _then(_$ChecklistHeadingImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      sortKey: null == sortKey
-          ? _value.sortKey
-          : sortKey // ignore: cast_nullable_to_non_nullable
-              as UserSortKey,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _ChecklistHeading() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ChecklistHeading value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistHeading():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ChecklistHeading value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistHeading() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String id, String name, UserSortKey sortKey)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistHeading() when $default != null:
+        return $default(_that.id, _that.name, _that.sortKey);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String id, String name, UserSortKey sortKey) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistHeading():
+        return $default(_that.id, _that.name, _that.sortKey);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String id, String name, UserSortKey sortKey)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ChecklistHeading() when $default != null:
+        return $default(_that.id, _that.name, _that.sortKey);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$ChecklistHeadingImpl extends _ChecklistHeading {
-  const _$ChecklistHeadingImpl(
+class _ChecklistHeading extends ChecklistHeading {
+  const _ChecklistHeading(
       {required this.id, required this.name, required this.sortKey})
       : super._();
 
@@ -722,16 +987,19 @@ class _$ChecklistHeadingImpl extends _ChecklistHeading {
   @override
   final UserSortKey sortKey;
 
+  /// Create a copy of ChecklistHeading
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ChecklistHeading(id: $id, name: $name, sortKey: $sortKey)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ChecklistHeadingCopyWith<_ChecklistHeading> get copyWith =>
+      __$ChecklistHeadingCopyWithImpl<_ChecklistHeading>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChecklistHeadingImpl &&
+            other is _ChecklistHeading &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.sortKey, sortKey) || other.sortKey == sortKey));
@@ -740,34 +1008,68 @@ class _$ChecklistHeadingImpl extends _ChecklistHeading {
   @override
   int get hashCode => Object.hash(runtimeType, id, name, sortKey);
 
+  @override
+  String toString() {
+    return 'ChecklistHeading(id: $id, name: $name, sortKey: $sortKey)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ChecklistHeadingCopyWith<$Res>
+    implements $ChecklistHeadingCopyWith<$Res> {
+  factory _$ChecklistHeadingCopyWith(
+          _ChecklistHeading value, $Res Function(_ChecklistHeading) _then) =
+      __$ChecklistHeadingCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String id, String name, UserSortKey sortKey});
+
+  @override
+  $UserSortKeyCopyWith<$Res> get sortKey;
+}
+
+/// @nodoc
+class __$ChecklistHeadingCopyWithImpl<$Res>
+    implements _$ChecklistHeadingCopyWith<$Res> {
+  __$ChecklistHeadingCopyWithImpl(this._self, this._then);
+
+  final _ChecklistHeading _self;
+  final $Res Function(_ChecklistHeading) _then;
+
   /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChecklistHeadingImplCopyWith<_$ChecklistHeadingImpl> get copyWith =>
-      __$$ChecklistHeadingImplCopyWithImpl<_$ChecklistHeadingImpl>(
-          this, _$identity);
-}
-
-abstract class _ChecklistHeading extends ChecklistHeading {
-  const factory _ChecklistHeading(
-      {required final String id,
-      required final String name,
-      required final UserSortKey sortKey}) = _$ChecklistHeadingImpl;
-  const _ChecklistHeading._() : super._();
-
-  @override
-  String get id;
-  @override
-  String get name;
-  @override
-  UserSortKey get sortKey;
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? sortKey = null,
+  }) {
+    return _then(_ChecklistHeading(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      sortKey: null == sortKey
+          ? _self.sortKey
+          : sortKey // ignore: cast_nullable_to_non_nullable
+              as UserSortKey,
+    ));
+  }
 
   /// Create a copy of ChecklistHeading
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChecklistHeadingImplCopyWith<_$ChecklistHeadingImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $UserSortKeyCopyWith<$Res> get sortKey {
+    return $UserSortKeyCopyWith<$Res>(_self.sortKey, (value) {
+      return _then(_self.copyWith(sortKey: value));
+    });
+  }
 }
+
+// dart format on

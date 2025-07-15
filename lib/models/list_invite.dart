@@ -5,7 +5,7 @@ import 'list_summary.dart';
 part 'list_invite.freezed.dart';
 
 @freezed
-class ListInvite with _$ListInvite {
+abstract class ListInvite with _$ListInvite {
   const ListInvite._();
 
   const factory ListInvite({

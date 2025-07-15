@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,124 +9,78 @@ part of 'list_summary.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ListSummary {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String get id;
+  String get name;
 
   /// The ID of the user who created the list
-  String get ownerId => throw _privateConstructorUsedError;
+  String get ownerId;
 
   /// List of user IDs who can edit the list, including the owner
-  List<String> get editorIds => throw _privateConstructorUsedError;
+  List<String> get editorIds;
 
   /// List of user details of users who can edit the list, including the owner
-  List<User> get editors => throw _privateConstructorUsedError;
+  List<User> get editors;
 
   /// Number of items in the list
-  int get itemCount => throw _privateConstructorUsedError;
+  int get itemCount;
 
   /// When the list was last modified by a specific user, in milliseconds since the epoch.
-  Map<String, int> get lastModified => throw _privateConstructorUsedError;
-  ListType get listType => throw _privateConstructorUsedError;
+  Map<String, int> get lastModified;
+  ListType get listType;
 
   /// Create a copy of ListSummary
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ListSummaryCopyWith<ListSummary> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ListSummaryCopyWith<$Res> {
-  factory $ListSummaryCopyWith(
-          ListSummary value, $Res Function(ListSummary) then) =
-      _$ListSummaryCopyWithImpl<$Res, ListSummary>;
-  @useResult
-  $Res call(
-      {String id,
-      String name,
-      String ownerId,
-      List<String> editorIds,
-      List<User> editors,
-      int itemCount,
-      Map<String, int> lastModified,
-      ListType listType});
-}
-
-/// @nodoc
-class _$ListSummaryCopyWithImpl<$Res, $Val extends ListSummary>
-    implements $ListSummaryCopyWith<$Res> {
-  _$ListSummaryCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ListSummary
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ListSummaryCopyWith<ListSummary> get copyWith =>
+      _$ListSummaryCopyWithImpl<ListSummary>(this as ListSummary, _$identity);
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? ownerId = null,
-    Object? editorIds = null,
-    Object? editors = null,
-    Object? itemCount = null,
-    Object? lastModified = null,
-    Object? listType = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      ownerId: null == ownerId
-          ? _value.ownerId
-          : ownerId // ignore: cast_nullable_to_non_nullable
-              as String,
-      editorIds: null == editorIds
-          ? _value.editorIds
-          : editorIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      editors: null == editors
-          ? _value.editors
-          : editors // ignore: cast_nullable_to_non_nullable
-              as List<User>,
-      itemCount: null == itemCount
-          ? _value.itemCount
-          : itemCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      lastModified: null == lastModified
-          ? _value.lastModified
-          : lastModified // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
-      listType: null == listType
-          ? _value.listType
-          : listType // ignore: cast_nullable_to_non_nullable
-              as ListType,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ListSummary &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            const DeepCollectionEquality().equals(other.editorIds, editorIds) &&
+            const DeepCollectionEquality().equals(other.editors, editors) &&
+            (identical(other.itemCount, itemCount) ||
+                other.itemCount == itemCount) &&
+            const DeepCollectionEquality()
+                .equals(other.lastModified, lastModified) &&
+            (identical(other.listType, listType) ||
+                other.listType == listType));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      ownerId,
+      const DeepCollectionEquality().hash(editorIds),
+      const DeepCollectionEquality().hash(editors),
+      itemCount,
+      const DeepCollectionEquality().hash(lastModified),
+      listType);
+
+  @override
+  String toString() {
+    return 'ListSummary(id: $id, name: $name, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, itemCount: $itemCount, lastModified: $lastModified, listType: $listType)';
   }
 }
 
 /// @nodoc
-abstract class _$$ListSummaryImplCopyWith<$Res>
-    implements $ListSummaryCopyWith<$Res> {
-  factory _$$ListSummaryImplCopyWith(
-          _$ListSummaryImpl value, $Res Function(_$ListSummaryImpl) then) =
-      __$$ListSummaryImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ListSummaryCopyWith<$Res> {
+  factory $ListSummaryCopyWith(
+          ListSummary value, $Res Function(ListSummary) _then) =
+      _$ListSummaryCopyWithImpl;
   @useResult
   $Res call(
       {String id,
@@ -140,12 +94,11 @@ abstract class _$$ListSummaryImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ListSummaryImplCopyWithImpl<$Res>
-    extends _$ListSummaryCopyWithImpl<$Res, _$ListSummaryImpl>
-    implements _$$ListSummaryImplCopyWith<$Res> {
-  __$$ListSummaryImplCopyWithImpl(
-      _$ListSummaryImpl _value, $Res Function(_$ListSummaryImpl) _then)
-      : super(_value, _then);
+class _$ListSummaryCopyWithImpl<$Res> implements $ListSummaryCopyWith<$Res> {
+  _$ListSummaryCopyWithImpl(this._self, this._then);
+
+  final ListSummary _self;
+  final $Res Function(ListSummary) _then;
 
   /// Create a copy of ListSummary
   /// with the given fields replaced by the non-null parameter values.
@@ -161,47 +114,234 @@ class __$$ListSummaryImplCopyWithImpl<$Res>
     Object? lastModified = null,
     Object? listType = null,
   }) {
-    return _then(_$ListSummaryImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       ownerId: null == ownerId
-          ? _value.ownerId
+          ? _self.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
       editorIds: null == editorIds
-          ? _value._editorIds
+          ? _self.editorIds
           : editorIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
       editors: null == editors
-          ? _value._editors
+          ? _self.editors
           : editors // ignore: cast_nullable_to_non_nullable
               as List<User>,
       itemCount: null == itemCount
-          ? _value.itemCount
+          ? _self.itemCount
           : itemCount // ignore: cast_nullable_to_non_nullable
               as int,
       lastModified: null == lastModified
-          ? _value._lastModified
+          ? _self.lastModified
           : lastModified // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
       listType: null == listType
-          ? _value.listType
+          ? _self.listType
           : listType // ignore: cast_nullable_to_non_nullable
               as ListType,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [ListSummary].
+extension ListSummaryPatterns on ListSummary {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ListSummary value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ListSummary() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ListSummary value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ListSummary():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ListSummary value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ListSummary() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            String id,
+            String name,
+            String ownerId,
+            List<String> editorIds,
+            List<User> editors,
+            int itemCount,
+            Map<String, int> lastModified,
+            ListType listType)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ListSummary() when $default != null:
+        return $default(_that.id, _that.name, _that.ownerId, _that.editorIds,
+            _that.editors, _that.itemCount, _that.lastModified, _that.listType);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            String id,
+            String name,
+            String ownerId,
+            List<String> editorIds,
+            List<User> editors,
+            int itemCount,
+            Map<String, int> lastModified,
+            ListType listType)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ListSummary():
+        return $default(_that.id, _that.name, _that.ownerId, _that.editorIds,
+            _that.editors, _that.itemCount, _that.lastModified, _that.listType);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            String id,
+            String name,
+            String ownerId,
+            List<String> editorIds,
+            List<User> editors,
+            int itemCount,
+            Map<String, int> lastModified,
+            ListType listType)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ListSummary() when $default != null:
+        return $default(_that.id, _that.name, _that.ownerId, _that.editorIds,
+            _that.editors, _that.itemCount, _that.lastModified, _that.listType);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$ListSummaryImpl extends _ListSummary {
-  const _$ListSummaryImpl(
+class _ListSummary extends ListSummary {
+  const _ListSummary(
       {required this.id,
       required this.name,
       required this.ownerId,
@@ -264,16 +404,19 @@ class _$ListSummaryImpl extends _ListSummary {
   @override
   final ListType listType;
 
+  /// Create a copy of ListSummary
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ListSummary(id: $id, name: $name, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, itemCount: $itemCount, lastModified: $lastModified, listType: $listType)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ListSummaryCopyWith<_ListSummary> get copyWith =>
+      __$ListSummaryCopyWithImpl<_ListSummary>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListSummaryImpl &&
+            other is _ListSummary &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
@@ -300,58 +443,87 @@ class _$ListSummaryImpl extends _ListSummary {
       const DeepCollectionEquality().hash(_lastModified),
       listType);
 
+  @override
+  String toString() {
+    return 'ListSummary(id: $id, name: $name, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, itemCount: $itemCount, lastModified: $lastModified, listType: $listType)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ListSummaryCopyWith<$Res>
+    implements $ListSummaryCopyWith<$Res> {
+  factory _$ListSummaryCopyWith(
+          _ListSummary value, $Res Function(_ListSummary) _then) =
+      __$ListSummaryCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String name,
+      String ownerId,
+      List<String> editorIds,
+      List<User> editors,
+      int itemCount,
+      Map<String, int> lastModified,
+      ListType listType});
+}
+
+/// @nodoc
+class __$ListSummaryCopyWithImpl<$Res> implements _$ListSummaryCopyWith<$Res> {
+  __$ListSummaryCopyWithImpl(this._self, this._then);
+
+  final _ListSummary _self;
+  final $Res Function(_ListSummary) _then;
+
   /// Create a copy of ListSummary
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ListSummaryImplCopyWith<_$ListSummaryImpl> get copyWith =>
-      __$$ListSummaryImplCopyWithImpl<_$ListSummaryImpl>(this, _$identity);
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? ownerId = null,
+    Object? editorIds = null,
+    Object? editors = null,
+    Object? itemCount = null,
+    Object? lastModified = null,
+    Object? listType = null,
+  }) {
+    return _then(_ListSummary(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      ownerId: null == ownerId
+          ? _self.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String,
+      editorIds: null == editorIds
+          ? _self._editorIds
+          : editorIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      editors: null == editors
+          ? _self._editors
+          : editors // ignore: cast_nullable_to_non_nullable
+              as List<User>,
+      itemCount: null == itemCount
+          ? _self.itemCount
+          : itemCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastModified: null == lastModified
+          ? _self._lastModified
+          : lastModified // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
+      listType: null == listType
+          ? _self.listType
+          : listType // ignore: cast_nullable_to_non_nullable
+              as ListType,
+    ));
+  }
 }
 
-abstract class _ListSummary extends ListSummary {
-  const factory _ListSummary(
-      {required final String id,
-      required final String name,
-      required final String ownerId,
-      required final List<String> editorIds,
-      required final List<User> editors,
-      required final int itemCount,
-      required final Map<String, int> lastModified,
-      required final ListType listType}) = _$ListSummaryImpl;
-  const _ListSummary._() : super._();
-
-  @override
-  String get id;
-  @override
-  String get name;
-
-  /// The ID of the user who created the list
-  @override
-  String get ownerId;
-
-  /// List of user IDs who can edit the list, including the owner
-  @override
-  List<String> get editorIds;
-
-  /// List of user details of users who can edit the list, including the owner
-  @override
-  List<User> get editors;
-
-  /// Number of items in the list
-  @override
-  int get itemCount;
-
-  /// When the list was last modified by a specific user, in milliseconds since the epoch.
-  @override
-  Map<String, int> get lastModified;
-  @override
-  ListType get listType;
-
-  /// Create a copy of ListSummary
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ListSummaryImplCopyWith<_$ListSummaryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

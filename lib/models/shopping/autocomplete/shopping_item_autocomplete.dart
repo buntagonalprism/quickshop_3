@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'shopping_item_autocomplete.freezed.dart';
 
 @freezed
-class ShoppingItemAutocomplete with _$ShoppingItemAutocomplete {
+abstract class ShoppingItemAutocomplete with _$ShoppingItemAutocomplete {
   const ShoppingItemAutocomplete._();
 
   const factory ShoppingItemAutocomplete({

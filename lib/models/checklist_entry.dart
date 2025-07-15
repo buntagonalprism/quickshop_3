@@ -5,7 +5,7 @@ import 'user_sortable.dart';
 part 'checklist_entry.freezed.dart';
 
 @freezed
-class ChecklistEntry with _$ChecklistEntry implements UserSortable {
+sealed class ChecklistEntry with _$ChecklistEntry implements UserSortable {
   const ChecklistEntry._();
 
   const factory ChecklistEntry.item(ChecklistItem item) = _ChecklistEntryItem;
@@ -36,7 +36,7 @@ class ChecklistEntry with _$ChecklistEntry implements UserSortable {
 }
 
 @freezed
-class ChecklistItem with _$ChecklistItem implements UserSortable {
+abstract class ChecklistItem with _$ChecklistItem implements UserSortable {
   const ChecklistItem._();
 
   const factory ChecklistItem({
@@ -53,7 +53,7 @@ class ChecklistItem with _$ChecklistItem implements UserSortable {
 }
 
 @freezed
-class ChecklistHeading with _$ChecklistHeading implements UserSortable {
+abstract class ChecklistHeading with _$ChecklistHeading implements UserSortable {
   const ChecklistHeading._();
 
   const factory ChecklistHeading({
