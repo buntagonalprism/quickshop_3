@@ -79,30 +79,41 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
+  Future<void> insertItemSuggestions(List<ItemSuggestionsRow> rows) async {
+    await batch((batch) {
+      batch.insertAll(itemSuggestionsTable, rows, mode: InsertMode.insertOrReplace);
+      _updateTokens(batch, TokenType.itemSuggestion, {for (var row in rows) row.id: row.nameLower});
+    });
+  }
+
   Future<void> insertCategorySuggestions(List<CategorySuggestionsRow> rows) async {
     await batch((batch) {
-      batch.deleteWhere(
-        tokenTable,
-        (c) =>
-            c.stringId.isIn(rows.map((r) => r.id)) &
-            c.type.equals(TokenType.categorySuggestion.value),
-      );
       batch.insertAll(categorySuggestionsTable, rows, mode: InsertMode.insertOrReplace);
-      batch.insertAll(
-        tokenTable,
-        [
-          for (final row in rows)
-            for (final token in row.nameLower.split(' '))
-              if (token.isNotEmpty && token.length > 1)
-                TokenRow(
-                  type: TokenType.categorySuggestion.value,
-                  stringId: row.id,
-                  token: token,
-                ),
-        ],
-        mode: InsertMode.insertOrReplace,
-      );
+      _updateTokens(
+          batch, TokenType.categorySuggestion, {for (var row in rows) row.id: row.nameLower});
     });
+  }
+
+  void _updateTokens(Batch batch, TokenType type, Map<String, String> itemNamesById) {
+    final itemKeys = itemNamesById.keys.toSet();
+    batch.deleteWhere(
+      tokenTable,
+      (c) => c.stringId.isIn(itemKeys) & c.type.equals(type.value),
+    );
+    batch.insertAll(
+      tokenTable,
+      [
+        for (final entry in itemNamesById.entries)
+          for (final token in entry.value.toLowerCase().split(' '))
+            if (token.isNotEmpty && token.length > 1)
+              TokenRow(
+                type: type.value,
+                stringId: entry.key,
+                token: token,
+              ),
+      ],
+      mode: InsertMode.insertOrReplace,
+    );
   }
 
   Future<void> insertItemHistory(List<ItemHistoryRow> rows) async {

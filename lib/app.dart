@@ -7,6 +7,8 @@ import 'localization/app_localizations.dart';
 import 'repositories/settings_repo.dart';
 import 'repositories/shopping/history/shopping_category_history_repo.dart';
 import 'repositories/shopping/history/shopping_item_history_repo.dart';
+import 'repositories/shopping/suggestions/shopping_category_suggestion_repo.dart';
+import 'repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
 import 'repositories/user_repo.dart';
 import 'router.dart';
 import 'services/app_database_provider.dart';
@@ -92,6 +94,8 @@ class _EagerInitProviders extends ConsumerWidget {
     ref.watch(userRepoProvider);
     ref.watch(shoppingCategoryHistoryRepoProvider);
     ref.watch(shoppingItemHistoryRepoProvider);
+    ref.watch(shoppingCategorySuggestionRepoProvider);
+    ref.watch(shoppingItemSuggestionRepoProvider);
     return child;
   }
 }

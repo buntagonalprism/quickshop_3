@@ -6,25 +6,25 @@ part of 'shopping_item_suggestion_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingCategorySuggestionRepoHash() =>
-    r'5a0a9c7d82f28b812517c56972748fcd49f3eaa5';
+String _$shoppingItemSuggestionRepoHash() =>
+    r'eaf88145bd78c0ba7a3b3544c130ddad736e6454';
 
-/// See also [shoppingCategorySuggestionRepo].
-@ProviderFor(shoppingCategorySuggestionRepo)
-final shoppingCategorySuggestionRepoProvider =
+/// See also [shoppingItemSuggestionRepo].
+@ProviderFor(shoppingItemSuggestionRepo)
+final shoppingItemSuggestionRepoProvider =
     AutoDisposeProvider<ShoppingItemSuggestionRepo>.internal(
-  shoppingCategorySuggestionRepo,
-  name: r'shoppingCategorySuggestionRepoProvider',
+  shoppingItemSuggestionRepo,
+  name: r'shoppingItemSuggestionRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$shoppingCategorySuggestionRepoHash,
+      : _$shoppingItemSuggestionRepoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ShoppingCategorySuggestionRepoRef
+typedef ShoppingItemSuggestionRepoRef
     = AutoDisposeProviderRef<ShoppingItemSuggestionRepo>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

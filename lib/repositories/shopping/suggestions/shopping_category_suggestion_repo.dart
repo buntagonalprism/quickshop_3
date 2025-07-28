@@ -28,47 +28,40 @@ class ShoppingCategorySuggestionRepo {
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
   SharedPreferencesWithCache get _prefs => _ref.read(sharedPrefsProvider);
 
-  DateTime _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(0);
-
-  String? _locale;
+  String? _currentLangCode;
+  static const _suggestionsLangCodeKey = 'categorySuggestionsLangCode';
   StreamSubscription? _summarySub;
 
   ShoppingCategorySuggestionRepo(this._ref) {
-    _locale = _prefs.getString('retrievedSuggestionsLocale');
+    _currentLangCode = _prefs.getString(_suggestionsLangCodeKey);
     _ref.listen(
       localeServiceProvider,
       (_, locale) async {
-        final newLocale = locale.countryCode!;
-        if (_locale != newLocale) {
-          _locale = newLocale;
+        final newLangCode = locale.languageCode;
+        if (_currentLangCode != newLangCode) {
+          _currentLangCode = newLangCode;
 
           await _db.clearAllSuggestions();
-          _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(0);
-          _init();
         }
+        _watchSuggestions(newLangCode);
       },
       fireImmediately: true,
     );
-    _init();
   }
 
-  void _init() async {
-    final progress = await _db.getLoadProgress(LoadProgressType.categorySuggestion);
-    if (progress != null) {
-      _retrievedUntil = progress;
-    }
+  void _watchSuggestions(String langCode) async {
+    final loadProgress = await _db.getLoadProgress(LoadProgressType.categorySuggestion) ??
+        DateTime.fromMillisecondsSinceEpoch(0);
 
     _summarySub?.cancel();
     _summarySub = _fs.collection('suggestions').doc('categories').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         final data = snapshot.data();
-        if (data != null) {
-          if (_locale == null) {
-            final lastUpdatedForLocale =
-                data['lastUpdated'][_locale!] ?? DateTime.fromMillisecondsSinceEpoch(0);
-            if (_retrievedUntil.isBefore(lastUpdatedForLocale)) {
-              _fetchSuggestions(_locale!, _retrievedUntil, lastUpdatedForLocale);
-            }
+        if (data != null && _currentLangCode != null) {
+          final lastUpdatedTimestamp = data['lastUpdated'][_currentLangCode!] ?? 0;
+          final lastUpdated = DateTime.fromMillisecondsSinceEpoch(lastUpdatedTimestamp);
+          if (loadProgress.isBefore(lastUpdated)) {
+            _fetchSuggestions(_currentLangCode!, loadProgress, lastUpdated);
           }
         }
       }
@@ -83,12 +76,12 @@ class ShoppingCategorySuggestionRepo {
     throw UnimplementedError('not implemented yet.');
   }
 
-  Future<void> _fetchSuggestions(String locale, DateTime since, DateTime lastUpdated) async {
+  Future<void> _fetchSuggestions(String langCode, DateTime since, DateTime lastUpdated) async {
     const pageSize = 100;
     final baseQuery = _fs
         .collection('suggestions')
         .doc('categories')
-        .collection(locale)
+        .collection(langCode)
         .where('updated', isGreaterThan: since.millisecondsSinceEpoch)
         .orderBy('updated')
         .orderBy(FieldPath.documentId)
@@ -109,24 +102,20 @@ class ShoppingCategorySuggestionRepo {
       return;
     }
 
-    if (_locale == locale) {
+    if (_currentLangCode == langCode) {
       await _db.insertCategorySuggestions(
         allDocs.map((doc) {
           final data = doc.data()!;
           return CategorySuggestionsRow(
             id: doc.id,
             name: data['name'],
-            nameLower: data['nameLower'],
+            nameLower: (data['name'] as String).toLowerCase(),
           );
         }).toList(),
       );
 
-      _retrievedUntil = lastUpdated;
-      _prefs.setString('retrievedSuggestionsLocale', locale);
-      await _db.saveLoadProgress(
-        LoadProgressType.categorySuggestion,
-        _retrievedUntil,
-      );
+      await _prefs.setString(_suggestionsLangCodeKey, langCode);
+      await _db.saveLoadProgress(LoadProgressType.categorySuggestion, lastUpdated);
     }
   }
 }
