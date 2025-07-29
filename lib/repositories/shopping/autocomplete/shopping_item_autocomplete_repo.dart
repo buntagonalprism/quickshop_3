@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/item_suggestions.dart';
 import '../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../models/shopping/shopping_item.dart';
+import '../../../services/app_database_provider.dart';
 import '../../../services/shopping_item_name_parser.dart';
 import '../../delay_provider_dispose.dart';
 import '../shopping_item_repo.dart';
@@ -43,22 +44,20 @@ class ShoppingItemAutocompleteRepo {
       }
     }
 
-    // Simulate a database query for suggestion matches
-    await Future.delayed(const Duration(milliseconds: 200));
+    final db = _ref.read(appDatabaseProvider);
+    final itemSuggestionsData = await db.getItemSuggestions(product);
 
-    for (var entry in itemSuggestionsData.entries) {
+    for (var entry in itemSuggestionsData) {
       final suggestion = ShoppingItemAutocomplete(
-        product: entry.key,
-        categories: [entry.value],
+        product: entry.name,
+        categories: ['Placeholder'],
         quantity: parsedItem.quantity,
-        source: entry.key.hashCode % 2 == 0
-            ? ShoppingItemAutocompleteSource.suggested
-            : ShoppingItemAutocompleteSource.history,
-        sourceId: '123',
+        source: ShoppingItemAutocompleteSource.suggested,
+        sourceId: entry.id,
       );
-      if (entry.key.toLowerCase().startsWith(product)) {
+      if (entry.nameLower.startsWith(product)) {
         startMatches.add(suggestion);
-      } else if (entry.key.toLowerCase().contains(product)) {
+      } else {
         middleMatches.add(suggestion);
       }
     }

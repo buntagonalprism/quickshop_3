@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -78,6 +79,38 @@ class AppDatabase extends _$AppDatabase {
         mode: InsertMode.insertOrReplace,
       );
     });
+  }
+
+  Future<List<ItemSuggestionsRow>> getItemSuggestions(String queryString) async {
+    final trimmedLowerQuery = queryString.trim().toLowerCase();
+    final queryTokens = trimmedLowerQuery.replaceAll('%', '').split(' ').where((t) => t.isNotEmpty);
+    if (queryTokens.isEmpty) {
+      return [];
+    }
+    final query = select(itemSuggestionsTable).join([
+      innerJoin(
+          tokenTable,
+          tokenTable.stringId.equalsExp(itemSuggestionsTable.id) &
+              tokenTable.type.equals(TokenType.itemSuggestion.value)),
+    ])
+      ..where(queryTokens.map((token) => tokenTable.token.like('$token%')).reduce((a, b) => a | b));
+
+    final joinResults = await query.get();
+    final tokenMatchCounts = <String, int>{};
+    final itemSuggestions = <ItemSuggestionsRow>[];
+    for (final row in joinResults) {
+      final item = row.readTable(itemSuggestionsTable);
+      if (!tokenMatchCounts.containsKey(item.id)) {
+        tokenMatchCounts[item.id] = 0;
+        itemSuggestions.add(item);
+      }
+      tokenMatchCounts[item.id] = tokenMatchCounts[item.id]! + 1;
+    }
+    if (queryTokens.length > 1) {
+      // Sort suggestions by the number of matching tokens, descending
+      itemSuggestions.sortBy<num>((i) => -tokenMatchCounts[i.id]!);
+    }
+    return itemSuggestions;
   }
 
   Future<void> insertItemSuggestions(List<ItemSuggestionsRow> rows) async {
