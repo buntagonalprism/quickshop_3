@@ -8,9 +8,12 @@ part 'app_database_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 AppDatabase appDatabase(Ref ref) {
-  final userId = ref.watch(userIdProvider);
-  if (userId == null) {
-    return AppDatabase('unauthenticated');
+  // Ensure that we have a unique AppDatabase instance per user which we only create once.
+  final userId = ref.watch(userIdProvider) ?? 'unauthenticated';
+  if (!_appDatabasesByUserId.containsKey(userId)) {
+    _appDatabasesByUserId[userId] = AppDatabase(userId);
   }
-  return AppDatabase(userId);
+  return _appDatabasesByUserId[userId]!;
 }
+
+final _appDatabasesByUserId = <String, AppDatabase>{};

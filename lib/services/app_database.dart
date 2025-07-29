@@ -26,6 +26,7 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   static QueryExecutor _openConnection(String dbFileName) {
+    driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
     return driftDatabase(
       name: dbFileName,
       native: const DriftNativeOptions(
