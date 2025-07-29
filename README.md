@@ -61,6 +61,10 @@ To connect the Quickshop app to a local Firebase emulator:
     - **Android Emulator**:
         - Set the entry in the local settings JSON file: `"FIRESTORE_EMULATOR_HOST": "10.0.2.2:8080"` to `app_secrets_dev.json`
         - This IP address automatically redirects requests on the Android emulator to the corresponding port on the host computer. 
+    - **Screen Mirroring Physical Devices**:    
+        - Android emulators can be quite slow, but it is convenient to have the running app accessible on desktop to quickly type and control with a mouse. 
+        - [scrcpy](https://github.com/Genymobile/scrcpy) is a tool which makes it easy to mirror the screen of a physical Android phone to any computer.
+        - Due to a bug in Flutter (fixed in master but not yet in stable as of 3.32), use `scrcpy --no-mouse-hover` to avoid exceptions. See: https://github.com/flutter/flutter/issues/160144
     
 2. Run the "Local (debug)" launch configuration, which 
 
