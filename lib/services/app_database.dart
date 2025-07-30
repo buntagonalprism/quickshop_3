@@ -81,36 +81,61 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
+  Future<List<ItemHistoryRow>> getItemHistory(String queryString) async {
+    return _queryByTokens<ItemHistoryRow, ItemHistoryTable>(
+      table: itemHistoryTable,
+      idColumn: itemHistoryTable.id,
+      idGetter: (row) => row.id,
+      type: TokenType.itemHistory,
+      queryString: queryString,
+    );
+  }
+
   Future<List<ItemSuggestionsRow>> getItemSuggestions(String queryString) async {
+    return _queryByTokens<ItemSuggestionsRow, ItemSuggestionsTable>(
+      table: itemSuggestionsTable,
+      idColumn: itemSuggestionsTable.id,
+      idGetter: (row) => row.id,
+      type: TokenType.itemSuggestion,
+      queryString: queryString,
+    );
+  }
+
+  Future<List<Row>> _queryByTokens<Row extends DataClass, Tbl extends Table>({
+    required TableInfo<Tbl, Row> table,
+    required GeneratedColumn<String> idColumn,
+    required String Function(Row) idGetter,
+    required TokenType type,
+    required String queryString,
+  }) async {
     final trimmedLowerQuery = queryString.trim().toLowerCase();
     final queryTokens = trimmedLowerQuery.replaceAll('%', '').split(' ').where((t) => t.isNotEmpty);
     if (queryTokens.isEmpty) {
       return [];
     }
-    final query = select(itemSuggestionsTable).join([
+    final query = select(table).join([
       innerJoin(
-          tokenTable,
-          tokenTable.stringId.equalsExp(itemSuggestionsTable.id) &
-              tokenTable.type.equals(TokenType.itemSuggestion.value)),
+          tokenTable, tokenTable.stringId.equalsExp(idColumn) & tokenTable.type.equals(type.value)),
     ])
       ..where(queryTokens.map((token) => tokenTable.token.like('$token%')).reduce((a, b) => a | b));
 
     final joinResults = await query.get();
     final tokenMatchCounts = <String, int>{};
-    final itemSuggestions = <ItemSuggestionsRow>[];
+    final rowResults = <Row>[];
     for (final row in joinResults) {
-      final item = row.readTable(itemSuggestionsTable);
-      if (!tokenMatchCounts.containsKey(item.id)) {
-        tokenMatchCounts[item.id] = 0;
-        itemSuggestions.add(item);
+      final item = row.readTable(table);
+      final itemId = idGetter(item);
+      if (!tokenMatchCounts.containsKey(itemId)) {
+        tokenMatchCounts[itemId] = 0;
+        rowResults.add(item);
       }
-      tokenMatchCounts[item.id] = tokenMatchCounts[item.id]! + 1;
+      tokenMatchCounts[itemId] = tokenMatchCounts[itemId]! + 1;
     }
     if (queryTokens.length > 1) {
       // Sort suggestions by the number of matching tokens, descending
-      itemSuggestions.sortBy<num>((i) => -tokenMatchCounts[i.id]!);
+      rowResults.sortBy<num>((i) => -tokenMatchCounts[idGetter(i)]!);
     }
-    return itemSuggestions;
+    return rowResults;
   }
 
   Future<void> insertItemSuggestions(List<ItemSuggestionsRow> rows) async {

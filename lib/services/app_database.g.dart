@@ -27,8 +27,14 @@ class $ItemSuggestionsTableTable extends ItemSuggestionsTable
   late final GeneratedColumn<String> nameLower = GeneratedColumn<String>(
       'name_lower', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _categoriesMeta =
+      const VerificationMeta('categories');
   @override
-  List<GeneratedColumn> get $columns => [id, name, nameLower];
+  late final GeneratedColumn<String> categories = GeneratedColumn<String>(
+      'categories', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, name, nameLower, categories];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -56,6 +62,14 @@ class $ItemSuggestionsTableTable extends ItemSuggestionsTable
     } else if (isInserting) {
       context.missing(_nameLowerMeta);
     }
+    if (data.containsKey('categories')) {
+      context.handle(
+          _categoriesMeta,
+          categories.isAcceptableOrUnknown(
+              data['categories']!, _categoriesMeta));
+    } else if (isInserting) {
+      context.missing(_categoriesMeta);
+    }
     return context;
   }
 
@@ -71,6 +85,8 @@ class $ItemSuggestionsTableTable extends ItemSuggestionsTable
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       nameLower: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name_lower'])!,
+      categories: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}categories'])!,
     );
   }
 
@@ -85,14 +101,19 @@ class ItemSuggestionsRow extends DataClass
   final String id;
   final String name;
   final String nameLower;
+  final String categories;
   const ItemSuggestionsRow(
-      {required this.id, required this.name, required this.nameLower});
+      {required this.id,
+      required this.name,
+      required this.nameLower,
+      required this.categories});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
     map['name_lower'] = Variable<String>(nameLower);
+    map['categories'] = Variable<String>(categories);
     return map;
   }
 
@@ -101,6 +122,7 @@ class ItemSuggestionsRow extends DataClass
       id: Value(id),
       name: Value(name),
       nameLower: Value(nameLower),
+      categories: Value(categories),
     );
   }
 
@@ -111,6 +133,7 @@ class ItemSuggestionsRow extends DataClass
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       nameLower: serializer.fromJson<String>(json['nameLower']),
+      categories: serializer.fromJson<String>(json['categories']),
     );
   }
   @override
@@ -120,20 +143,25 @@ class ItemSuggestionsRow extends DataClass
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
       'nameLower': serializer.toJson<String>(nameLower),
+      'categories': serializer.toJson<String>(categories),
     };
   }
 
-  ItemSuggestionsRow copyWith({String? id, String? name, String? nameLower}) =>
+  ItemSuggestionsRow copyWith(
+          {String? id, String? name, String? nameLower, String? categories}) =>
       ItemSuggestionsRow(
         id: id ?? this.id,
         name: name ?? this.name,
         nameLower: nameLower ?? this.nameLower,
+        categories: categories ?? this.categories,
       );
   ItemSuggestionsRow copyWithCompanion(ItemSuggestionsTableCompanion data) {
     return ItemSuggestionsRow(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       nameLower: data.nameLower.present ? data.nameLower.value : this.nameLower,
+      categories:
+          data.categories.present ? data.categories.value : this.categories,
     );
   }
 
@@ -142,20 +170,22 @@ class ItemSuggestionsRow extends DataClass
     return (StringBuffer('ItemSuggestionsRow(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('nameLower: $nameLower')
+          ..write('nameLower: $nameLower, ')
+          ..write('categories: $categories')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, nameLower);
+  int get hashCode => Object.hash(id, name, nameLower, categories);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ItemSuggestionsRow &&
           other.id == this.id &&
           other.name == this.name &&
-          other.nameLower == this.nameLower);
+          other.nameLower == this.nameLower &&
+          other.categories == this.categories);
 }
 
 class ItemSuggestionsTableCompanion
@@ -163,31 +193,37 @@ class ItemSuggestionsTableCompanion
   final Value<String> id;
   final Value<String> name;
   final Value<String> nameLower;
+  final Value<String> categories;
   final Value<int> rowid;
   const ItemSuggestionsTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.nameLower = const Value.absent(),
+    this.categories = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ItemSuggestionsTableCompanion.insert({
     required String id,
     required String name,
     required String nameLower,
+    required String categories,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
-        nameLower = Value(nameLower);
+        nameLower = Value(nameLower),
+        categories = Value(categories);
   static Insertable<ItemSuggestionsRow> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? nameLower,
+    Expression<String>? categories,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (nameLower != null) 'name_lower': nameLower,
+      if (categories != null) 'categories': categories,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -196,11 +232,13 @@ class ItemSuggestionsTableCompanion
       {Value<String>? id,
       Value<String>? name,
       Value<String>? nameLower,
+      Value<String>? categories,
       Value<int>? rowid}) {
     return ItemSuggestionsTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       nameLower: nameLower ?? this.nameLower,
+      categories: categories ?? this.categories,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -217,6 +255,9 @@ class ItemSuggestionsTableCompanion
     if (nameLower.present) {
       map['name_lower'] = Variable<String>(nameLower.value);
     }
+    if (categories.present) {
+      map['categories'] = Variable<String>(categories.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -229,6 +270,7 @@ class ItemSuggestionsTableCompanion
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('nameLower: $nameLower, ')
+          ..write('categories: $categories, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1622,6 +1664,7 @@ typedef $$ItemSuggestionsTableTableCreateCompanionBuilder
   required String id,
   required String name,
   required String nameLower,
+  required String categories,
   Value<int> rowid,
 });
 typedef $$ItemSuggestionsTableTableUpdateCompanionBuilder
@@ -1629,6 +1672,7 @@ typedef $$ItemSuggestionsTableTableUpdateCompanionBuilder
   Value<String> id,
   Value<String> name,
   Value<String> nameLower,
+  Value<String> categories,
   Value<int> rowid,
 });
 
@@ -1649,6 +1693,9 @@ class $$ItemSuggestionsTableTableFilterComposer
 
   ColumnFilters<String> get nameLower => $composableBuilder(
       column: $table.nameLower, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get categories => $composableBuilder(
+      column: $table.categories, builder: (column) => ColumnFilters(column));
 }
 
 class $$ItemSuggestionsTableTableOrderingComposer
@@ -1668,6 +1715,9 @@ class $$ItemSuggestionsTableTableOrderingComposer
 
   ColumnOrderings<String> get nameLower => $composableBuilder(
       column: $table.nameLower, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get categories => $composableBuilder(
+      column: $table.categories, builder: (column) => ColumnOrderings(column));
 }
 
 class $$ItemSuggestionsTableTableAnnotationComposer
@@ -1687,6 +1737,9 @@ class $$ItemSuggestionsTableTableAnnotationComposer
 
   GeneratedColumn<String> get nameLower =>
       $composableBuilder(column: $table.nameLower, builder: (column) => column);
+
+  GeneratedColumn<String> get categories => $composableBuilder(
+      column: $table.categories, builder: (column) => column);
 }
 
 class $$ItemSuggestionsTableTableTableManager extends RootTableManager<
@@ -1722,24 +1775,28 @@ class $$ItemSuggestionsTableTableTableManager extends RootTableManager<
             Value<String> id = const Value.absent(),
             Value<String> name = const Value.absent(),
             Value<String> nameLower = const Value.absent(),
+            Value<String> categories = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               ItemSuggestionsTableCompanion(
             id: id,
             name: name,
             nameLower: nameLower,
+            categories: categories,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String id,
             required String name,
             required String nameLower,
+            required String categories,
             Value<int> rowid = const Value.absent(),
           }) =>
               ItemSuggestionsTableCompanion.insert(
             id: id,
             name: name,
             nameLower: nameLower,
+            categories: categories,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

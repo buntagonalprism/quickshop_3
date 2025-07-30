@@ -8,7 +8,7 @@ abstract class ShoppingItemSuggestion with _$ShoppingItemSuggestion {
 
   const factory ShoppingItemSuggestion({
     required String id,
-    required String locale,
+    required String langCode,
     required String name,
     required List<String> categories,
     int? popularity,
