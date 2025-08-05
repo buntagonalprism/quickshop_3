@@ -81,10 +81,19 @@ The `firebaseGoogleAuthWebClientId` can be found in the Firebase console as the 
 
 Debug and upload keystores and corresponding properties files should be placed into the `android/keystore` folder. See [here](https://docs.flutter.dev/deployment/android#configure-signing-in-gradle) for a general description of the android app signing approach. 
 
-### Database Debugging
-[sqflite](https://pub.dev/packages/sqflite) is used for local storage of data on the device. This package is a wrapper around the native sqlite database capability provided in Android and iOS operating systems. During development it can be useful to view the contents of this database. When targeting Android devices, Android Studio includes a built-in database inspector that can attach to Flutter apps running in debug mode, making it easy to browse the tables and rows in the app's sqlite databases. 
+### Database Viewing
+[Drift](https://drift.simonbinder.eu/) is used for local storage of data on the device. This package is a wrapper around the native sqlite database capability provided in Android and iOS operating systems, with support for object-relational mapping (ORM) and query watching. Drift includes a built-in database inspector that can be used to inspect the contents of the app database. To use it:
 
-The database inspector can be opened in Android Studio from `View > Tool Windows > App Inspection`, then select the process for the application running in debug mode. See full instructions here: https://developer.android.com/studio/inspect/database#open
+1. Start debugging the app in Visual Studio Code
+2. Press `CTRL + SHIFT + P` to bring up the command palete, and enter `Dart: Open DevTools in Browser`
+3. Select the `Drift` tab within the devtools browser window
+
+### Database Unit Tests
+https://drift.simonbinder.eu/testing/
+
+Install SQLite version as close as possible to that used by Drift. See https://pub.dev/packages/sqlite3_flutter_libs/changelog
+
+SQLite download links are available here: https://www.sqlite.org/download.html. Note that the links to older versions of SQLite are not listed on this site, to encourage always using the latest version, but download links all have a consistent format. E.g. if the current link to download Windows binaries for version 3.50.4 is https://www.sqlite.org/2025/sqlite-dll-win-x64-3500400.zip, then to download the older version 3.50.3 simply change the 4 to a 3 https://www.sqlite.org/2025/sqlite-dll-win-x64-3500300.zip
 
 ## Assets
 The `assets` directory houses images, fonts, and any other files you want to

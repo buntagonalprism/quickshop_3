@@ -11,7 +11,7 @@ AppDatabase appDatabase(Ref ref) {
   // Ensure that we have a unique AppDatabase instance per user which we only create once.
   final userId = ref.watch(userIdProvider) ?? 'unauthenticated';
   if (!_appDatabasesByUserId.containsKey(userId)) {
-    _appDatabasesByUserId[userId] = AppDatabase(userId);
+    _appDatabasesByUserId[userId] = AppDatabase(DatabaseFileNameConfig(userId));
   }
   return _appDatabasesByUserId[userId]!;
 }

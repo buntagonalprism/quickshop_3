@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,19 +11,17 @@ import 'tables/token_table.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [
-  ItemSuggestionsTable,
-  CategorySuggestionsTable,
-  ItemHistoryTable,
-  CategoryHistoryTable,
-  TokenTable,
-  LoadProgressTable,
-])
-class AppDatabase extends _$AppDatabase {
-  AppDatabase(String dbFileName) : super(_openConnection(dbFileName));
+sealed class AppDatabaseConfig {
+  QueryExecutor get executor;
+}
+
+class DatabaseFileNameConfig extends AppDatabaseConfig {
+  final String dbFileName;
+
+  DatabaseFileNameConfig(this.dbFileName);
 
   @override
-  int get schemaVersion => 1;
+  QueryExecutor get executor => _openConnection(dbFileName);
 
   static QueryExecutor _openConnection(String dbFileName) {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -37,6 +34,28 @@ class AppDatabase extends _$AppDatabase {
       ),
     );
   }
+}
+
+class QueryExecutorConfig extends AppDatabaseConfig {
+  @override
+  final QueryExecutor executor;
+
+  QueryExecutorConfig(this.executor);
+}
+
+@DriftDatabase(tables: [
+  ItemSuggestionsTable,
+  CategorySuggestionsTable,
+  ItemHistoryTable,
+  CategoryHistoryTable,
+  TokenTable,
+  LoadProgressTable,
+])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase(AppDatabaseConfig config) : super(config.executor);
+
+  @override
+  int get schemaVersion => 1;
 
   @override
   MigrationStrategy get migration {
@@ -68,26 +87,36 @@ class AppDatabase extends _$AppDatabase {
         tokenTable,
         [
           for (final row in rows)
-            for (final token in row.nameLower.split(' '))
-              if (token.isNotEmpty && token.length > 1)
-                TokenRow(
-                  type: TokenType.categoryHistory.value,
-                  stringId: row.id,
-                  token: token,
-                ),
+            for (final token in _toTokens(row.nameLower))
+              TokenRow(
+                type: TokenType.categoryHistory.value,
+                stringId: row.id,
+                token: token,
+              ),
         ],
         mode: InsertMode.insertOrReplace,
       );
     });
   }
 
+  Iterable<String> _toTokens(String name) {
+    // Don't search on empty strings
+    if (name.trim().isEmpty) {
+      return [];
+    }
+    return name.toLowerCase().split(' ').map((t) => t.trim()).where((t) => t.isNotEmpty).toSet();
+  }
+
   Future<List<ItemHistoryRow>> getItemHistory(String queryString) async {
     return _queryByTokens<ItemHistoryRow, ItemHistoryTable>(
       table: itemHistoryTable,
       idColumn: itemHistoryTable.id,
+      nameColumn: itemHistoryTable.nameLower,
+      nameGetter: (row) => row.nameLower,
       idGetter: (row) => row.id,
       type: TokenType.itemHistory,
       queryString: queryString,
+      orderByDescColumn: itemHistoryTable.usageCount,
     );
   }
 
@@ -95,6 +124,8 @@ class AppDatabase extends _$AppDatabase {
     return _queryByTokens<ItemSuggestionsRow, ItemSuggestionsTable>(
       table: itemSuggestionsTable,
       idColumn: itemSuggestionsTable.id,
+      nameColumn: itemSuggestionsTable.nameLower,
+      nameGetter: (row) => row.nameLower,
       idGetter: (row) => row.id,
       type: TokenType.itemSuggestion,
       queryString: queryString,
@@ -104,12 +135,18 @@ class AppDatabase extends _$AppDatabase {
   Future<List<Row>> _queryByTokens<Row extends DataClass, Tbl extends Table>({
     required TableInfo<Tbl, Row> table,
     required GeneratedColumn<String> idColumn,
+    required GeneratedColumn<String> nameColumn,
     required String Function(Row) idGetter,
+    required String Function(Row) nameGetter,
     required TokenType type,
     required String queryString,
+    GeneratedColumn<int>? orderByDescColumn,
+    int limit = 20,
   }) async {
-    final trimmedLowerQuery = queryString.trim().toLowerCase();
-    final queryTokens = trimmedLowerQuery.replaceAll('%', '').split(' ').where((t) => t.isNotEmpty);
+    final queryLower = queryString.toLowerCase();
+    final queryTokens = _toTokens(queryLower.replaceAll('%', ''));
+    final amountOfTokenMatches = tokenTable.stringId.count();
+
     if (queryTokens.isEmpty) {
       return [];
     }
@@ -117,23 +154,21 @@ class AppDatabase extends _$AppDatabase {
       innerJoin(
           tokenTable, tokenTable.stringId.equalsExp(idColumn) & tokenTable.type.equals(type.value)),
     ])
-      ..where(queryTokens.map((token) => tokenTable.token.like('$token%')).reduce((a, b) => a | b));
+      ..where(queryTokens.map((token) => tokenTable.token.like('$token%')).reduce((a, b) => a | b))
+      ..addColumns([amountOfTokenMatches])
+      ..groupBy([idColumn], having: amountOfTokenMatches.isBiggerOrEqualValue(queryTokens.length))
+      ..orderBy([
+        if (orderByDescColumn != null)
+          OrderingTerm(expression: orderByDescColumn, mode: OrderingMode.desc),
+        OrderingTerm(expression: nameColumn, mode: OrderingMode.asc),
+      ])
+      ..limit(limit);
 
     final joinResults = await query.get();
-    final tokenMatchCounts = <String, int>{};
-    final rowResults = <Row>[];
-    for (final row in joinResults) {
-      final item = row.readTable(table);
-      final itemId = idGetter(item);
-      if (!tokenMatchCounts.containsKey(itemId)) {
-        tokenMatchCounts[itemId] = 0;
-        rowResults.add(item);
-      }
-      tokenMatchCounts[itemId] = tokenMatchCounts[itemId]! + 1;
-    }
+    final rowResults = joinResults.map((row) => row.readTable(table)).toList();
     if (queryTokens.length > 1) {
-      // Sort suggestions by the number of matching tokens, descending
-      rowResults.sortBy<num>((i) => -tokenMatchCounts[idGetter(i)]!);
+      // Keep only rows that contain the full query string in their name in order
+      rowResults.retainWhere((i) => nameGetter(i).toLowerCase().contains(queryLower));
     }
     return rowResults;
   }
