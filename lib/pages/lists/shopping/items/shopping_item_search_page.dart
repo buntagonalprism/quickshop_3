@@ -304,24 +304,27 @@ class ItemSuggestionsPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ListTile(
-          leading: Icon(Icons.search),
-          title: Text('Start typing to search suggested items and your item history'),
-        ),
-        ListTile(
-          leading: Icon(Icons.edit),
-          title: Text('Long press suggestions to edit or delete them'),
-        ),
-        ListTile(
-          leading: Icon(Icons.info_outline),
-          title: Text('For better suggestions, put item quantities and product sizes at the start'),
-          subtitle: Text(
-              'For example: 2 small green apples, 500g mince beef, two cans of tomato soup, a large loaf of bread'),
-        )
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text('Start typing to search suggested items and your item history'),
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Long press suggestions to edit or delete them'),
+          ),
+          ListTile(
+            leading: Icon(Icons.info_outline),
+            title:
+                Text('For better suggestions, put item quantities and product sizes at the start'),
+            subtitle: Text(
+                'For example: 2 small green apples, 500g mince beef, two cans of tomato soup, a large loaf of bread'),
+          )
+        ],
+      ),
     );
   }
 }
