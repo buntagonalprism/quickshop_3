@@ -25,7 +25,7 @@ class ShoppingCategoryAutocompleteRepo {
     final start = DateTime.now();
     // TODO: Verify that the query is properly case-insensitive and handles multi-word filters
 
-    final categorySuggestions = await _db.getCategorySuggestions(filter);
+    final categorySuggestions = await _db.categorySuggestionDao.query(filter);
     _log.captureSpan(start, 'Category suggestions query');
     return categorySuggestions
         .mapIndexed((index, suggestion) => ShoppingCategoryAutocomplete(

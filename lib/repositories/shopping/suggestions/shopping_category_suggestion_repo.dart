@@ -50,7 +50,7 @@ class ShoppingCategorySuggestionRepo {
   }
 
   void _watchSuggestions(String langCode) async {
-    final loadProgress = await _db.getLoadProgress(LoadProgressType.categorySuggestion) ??
+    final loadProgress = await _db.loadProgressDao.get(LoadProgressType.categorySuggestion) ??
         DateTime.fromMillisecondsSinceEpoch(0);
 
     _summarySub?.cancel();
@@ -103,7 +103,7 @@ class ShoppingCategorySuggestionRepo {
     }
 
     if (_currentLangCode == langCode) {
-      await _db.insertCategorySuggestions(
+      await _db.categorySuggestionDao.insert(
         allDocs.map((doc) {
           final data = doc.data()!;
           return CategorySuggestionsRow(
@@ -115,7 +115,7 @@ class ShoppingCategorySuggestionRepo {
       );
 
       await _prefs.setString(_suggestionsLangCodeKey, langCode);
-      await _db.saveLoadProgress(LoadProgressType.categorySuggestion, lastUpdated);
+      await _db.loadProgressDao.save(LoadProgressType.categorySuggestion, lastUpdated);
     }
   }
 }

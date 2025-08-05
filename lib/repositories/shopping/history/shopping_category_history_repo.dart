@@ -30,7 +30,7 @@ class ShoppingCategoryHistoryRepo {
   }
 
   void _init() async {
-    final progress = await _db.getLoadProgress(LoadProgressType.categoryHistory);
+    final progress = await _db.loadProgressDao.get(LoadProgressType.categoryHistory);
     if (progress != null) {
       _retrievedUntil = progress;
     }
@@ -81,7 +81,7 @@ class ShoppingCategoryHistoryRepo {
       return;
     }
 
-    await _db.insertCategoryHistory(
+    await _db.categoryHistoryDao.insert(
       allDocs.map((doc) {
         final data = doc.data()!;
         return CategoryHistoryRow(
@@ -97,7 +97,7 @@ class ShoppingCategoryHistoryRepo {
     _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(
       allDocs.last.data()!['lastUsed'],
     );
-    await _db.saveLoadProgress(
+    await _db.loadProgressDao.save(
       LoadProgressType.categoryHistory,
       _retrievedUntil,
     );

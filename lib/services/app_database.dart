@@ -2,6 +2,11 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'daos/category_history_dao.dart';
+import 'daos/category_suggestion_dao.dart';
+import 'daos/item_history_dao.dart';
+import 'daos/item_suggestion_dao.dart';
+import 'daos/load_progress_dao.dart';
 import 'tables/category_history_table.dart';
 import 'tables/category_suggestion_table.dart';
 import 'tables/item_history_table.dart';
@@ -50,6 +55,12 @@ class QueryExecutorConfig extends AppDatabaseConfig {
   CategoryHistoryTable,
   TokenTable,
   LoadProgressTable,
+], daos: [
+  ItemSuggestionDao,
+  CategorySuggestionDao,
+  ItemHistoryDao,
+  CategoryHistoryDao,
+  LoadProgressDao,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(AppDatabaseConfig config) : super(config.executor);
@@ -68,37 +79,6 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  Future<List<CategorySuggestionsRow>> getCategorySuggestions(String token) async {
-    // TODO: We need new query logic for the new structure
-    return await (select(categorySuggestionsTable)
-          ..where((c) => c.nameLower.like('${token.toLowerCase()}%')))
-        .get();
-  }
-
-  Future<void> insertCategoryHistory(List<CategoryHistoryRow> rows) async {
-    await batch((batch) {
-      batch.deleteWhere(
-        tokenTable,
-        (c) =>
-            c.stringId.isIn(rows.map((r) => r.id)) & c.type.equals(TokenType.categoryHistory.value),
-      );
-      batch.insertAll(categoryHistoryTable, rows, mode: InsertMode.insertOrReplace);
-      batch.insertAll(
-        tokenTable,
-        [
-          for (final row in rows)
-            for (final token in _toTokens(row.nameLower))
-              TokenRow(
-                type: TokenType.categoryHistory.value,
-                stringId: row.id,
-                token: token,
-              ),
-        ],
-        mode: InsertMode.insertOrReplace,
-      );
-    });
-  }
-
   Iterable<String> _toTokens(String name) {
     // Don't search on empty strings
     if (name.trim().isEmpty) {
@@ -107,32 +87,7 @@ class AppDatabase extends _$AppDatabase {
     return name.toLowerCase().split(' ').map((t) => t.trim()).where((t) => t.isNotEmpty).toSet();
   }
 
-  Future<List<ItemHistoryRow>> getItemHistory(String queryString) async {
-    return _queryByTokens<ItemHistoryRow, ItemHistoryTable>(
-      table: itemHistoryTable,
-      idColumn: itemHistoryTable.id,
-      nameColumn: itemHistoryTable.nameLower,
-      nameGetter: (row) => row.nameLower,
-      idGetter: (row) => row.id,
-      type: TokenType.itemHistory,
-      queryString: queryString,
-      orderByDescColumn: itemHistoryTable.usageCount,
-    );
-  }
-
-  Future<List<ItemSuggestionsRow>> getItemSuggestions(String queryString) async {
-    return _queryByTokens<ItemSuggestionsRow, ItemSuggestionsTable>(
-      table: itemSuggestionsTable,
-      idColumn: itemSuggestionsTable.id,
-      nameColumn: itemSuggestionsTable.nameLower,
-      nameGetter: (row) => row.nameLower,
-      idGetter: (row) => row.id,
-      type: TokenType.itemSuggestion,
-      queryString: queryString,
-    );
-  }
-
-  Future<List<Row>> _queryByTokens<Row extends DataClass, Tbl extends Table>({
+  Future<List<Row>> queryByTokens<Row extends DataClass, Tbl extends Table>({
     required TableInfo<Tbl, Row> table,
     required GeneratedColumn<String> idColumn,
     required GeneratedColumn<String> nameColumn,
@@ -173,22 +128,7 @@ class AppDatabase extends _$AppDatabase {
     return rowResults;
   }
 
-  Future<void> insertItemSuggestions(List<ItemSuggestionsRow> rows) async {
-    await batch((batch) {
-      batch.insertAll(itemSuggestionsTable, rows, mode: InsertMode.insertOrReplace);
-      _updateTokens(batch, TokenType.itemSuggestion, {for (var row in rows) row.id: row.nameLower});
-    });
-  }
-
-  Future<void> insertCategorySuggestions(List<CategorySuggestionsRow> rows) async {
-    await batch((batch) {
-      batch.insertAll(categorySuggestionsTable, rows, mode: InsertMode.insertOrReplace);
-      _updateTokens(
-          batch, TokenType.categorySuggestion, {for (var row in rows) row.id: row.nameLower});
-    });
-  }
-
-  void _updateTokens(Batch batch, TokenType type, Map<String, String> itemNamesById) {
+  void updateTokens(Batch batch, TokenType type, Map<String, String> itemNamesById) {
     final itemKeys = itemNamesById.keys.toSet();
     batch.deleteWhere(
       tokenTable,
@@ -208,45 +148,6 @@ class AppDatabase extends _$AppDatabase {
       ],
       mode: InsertMode.insertOrReplace,
     );
-  }
-
-  Future<void> insertItemHistory(List<ItemHistoryRow> rows) async {
-    await batch((batch) {
-      batch.deleteWhere(
-        tokenTable,
-        (c) => c.stringId.isIn(rows.map((r) => r.id)) & c.type.equals(TokenType.itemHistory.value),
-      );
-      batch.insertAll(itemHistoryTable, rows, mode: InsertMode.insertOrReplace);
-      batch.insertAll(
-        tokenTable,
-        [
-          for (final row in rows)
-            for (final token in row.nameLower.split(' '))
-              if (token.isNotEmpty && token.length > 1)
-                TokenRow(
-                  type: TokenType.itemHistory.value,
-                  stringId: row.id,
-                  token: token,
-                ),
-        ],
-        mode: InsertMode.insertOrReplace,
-      );
-    });
-  }
-
-  Future<void> saveLoadProgress(LoadProgressType type, DateTime retrievedUntil) async {
-    await into(loadProgressTable).insert(
-      LoadProgressRow(type: type.value, retrievedUntil: retrievedUntil.millisecondsSinceEpoch),
-      mode: InsertMode.insertOrReplace,
-    );
-  }
-
-  Future<DateTime?> getLoadProgress(LoadProgressType type) async {
-    final row = await (select(loadProgressTable)..where((t) => t.type.equals(type.value)))
-        .getSingleOrNull();
-    return row?.retrievedUntil != null
-        ? DateTime.fromMillisecondsSinceEpoch(row!.retrievedUntil)
-        : null;
   }
 
   Future<void> clearAllSuggestions() {

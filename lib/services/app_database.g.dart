@@ -1645,6 +1645,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TokenTableTable tokenTable = $TokenTableTable(this);
   late final $LoadProgressTableTable loadProgressTable =
       $LoadProgressTableTable(this);
+  late final ItemSuggestionDao itemSuggestionDao =
+      ItemSuggestionDao(this as AppDatabase);
+  late final CategorySuggestionDao categorySuggestionDao =
+      CategorySuggestionDao(this as AppDatabase);
+  late final ItemHistoryDao itemHistoryDao =
+      ItemHistoryDao(this as AppDatabase);
+  late final CategoryHistoryDao categoryHistoryDao =
+      CategoryHistoryDao(this as AppDatabase);
+  late final LoadProgressDao loadProgressDao =
+      LoadProgressDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

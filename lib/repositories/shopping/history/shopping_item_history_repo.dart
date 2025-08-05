@@ -30,7 +30,7 @@ class ShoppingItemHistoryRepo {
   }
 
   void _init() async {
-    final progress = await _db.getLoadProgress(LoadProgressType.itemHistory);
+    final progress = await _db.loadProgressDao.get(LoadProgressType.itemHistory);
     if (progress != null) {
       _retrievedUntil = progress;
     }
@@ -47,7 +47,7 @@ class ShoppingItemHistoryRepo {
 
   Future<List<ShoppingItemHistory>> searchHistory(String query) async {
     final start = DateTime.now();
-    final itemHistoryData = await _db.getItemHistory(query);
+    final itemHistoryData = await _db.itemHistoryDao.query(query);
     _log.captureSpan(start, '$ShoppingItemHistoryRepo.$searchHistory');
     return itemHistoryData.map((entry) {
       return ShoppingItemHistory(
@@ -87,7 +87,7 @@ class ShoppingItemHistoryRepo {
       return;
     }
 
-    await _db.insertItemHistory(
+    await _db.itemHistoryDao.insert(
       allDocs.map((doc) {
         final data = doc.data()!;
         return ItemHistoryRow(
@@ -104,7 +104,7 @@ class ShoppingItemHistoryRepo {
     _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(
       allDocs.last.data()!['lastUsed'],
     );
-    await _db.saveLoadProgress(
+    await _db.loadProgressDao.save(
       LoadProgressType.itemHistory,
       _retrievedUntil,
     );

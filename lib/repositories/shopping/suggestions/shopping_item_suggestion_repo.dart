@@ -50,7 +50,7 @@ class ShoppingItemSuggestionRepo {
   }
 
   void _watchSuggestions(String langCode) async {
-    final loadProgress = await _db.getLoadProgress(LoadProgressType.itemSuggestion) ??
+    final loadProgress = await _db.loadProgressDao.get(LoadProgressType.itemSuggestion) ??
         DateTime.fromMillisecondsSinceEpoch(0);
 
     _summarySub?.cancel();
@@ -70,7 +70,7 @@ class ShoppingItemSuggestionRepo {
 
   Future<List<ShoppingItemSuggestion>> searchSuggestions(String query) async {
     final start = DateTime.now();
-    final itemSuggestionsData = await _db.getItemSuggestions(query);
+    final itemSuggestionsData = await _db.itemSuggestionDao.query(query);
     _log.captureSpan(start, '$ShoppingItemSuggestionRepo.$searchSuggestions');
     return itemSuggestionsData.map((entry) {
       return ShoppingItemSuggestion(
@@ -109,7 +109,7 @@ class ShoppingItemSuggestionRepo {
     }
 
     if (_currentLangCode == langCode) {
-      await _db.insertItemSuggestions(
+      await _db.itemSuggestionDao.insert(
         allDocs.map((doc) {
           final data = doc.data()!;
           return ItemSuggestionsRow(
@@ -122,7 +122,7 @@ class ShoppingItemSuggestionRepo {
       );
 
       await _prefs.setString(_suggestionsLangCodeKey, langCode);
-      await _db.saveLoadProgress(LoadProgressType.itemSuggestion, lastUpdated);
+      await _db.loadProgressDao.save(LoadProgressType.itemSuggestion, lastUpdated);
     }
   }
 }
