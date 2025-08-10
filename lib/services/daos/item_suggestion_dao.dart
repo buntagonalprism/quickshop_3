@@ -27,6 +27,7 @@ class ItemSuggestionDao extends DatabaseAccessor<AppDatabase> with _$ItemSuggest
       idGetter: (row) => row.id,
       type: TokenType.itemSuggestion,
       queryString: queryString,
+      orderByDescColumn: itemSuggestionsTable.popularity,
     );
   }
 }

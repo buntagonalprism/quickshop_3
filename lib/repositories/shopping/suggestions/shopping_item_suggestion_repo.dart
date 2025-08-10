@@ -78,6 +78,7 @@ class ShoppingItemSuggestionRepo {
         name: entry.name,
         langCode: _currentLangCode ?? '',
         categories: entry.categories.split('|'),
+        popularity: entry.popularity,
       );
     }).toList();
   }
@@ -117,6 +118,7 @@ class ShoppingItemSuggestionRepo {
             name: data['name'],
             nameLower: (data['name'] as String).toLowerCase(),
             categories: (data['categories'] as List<dynamic>).join('|'),
+            popularity: data['popularity'] ?? 0,
           );
         }).toList(),
       );

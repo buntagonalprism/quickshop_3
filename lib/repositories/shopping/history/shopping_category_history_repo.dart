@@ -47,12 +47,17 @@ class ShoppingCategoryHistoryRepo {
 
   Future<List<ShoppingCategoryHistory>> searchHistory(String query) async {
     final start = DateTime.now();
-    // TODO: Verify that the query is properly case-insensitive and handles multi-word filters
-
+    final categoryHistory = await _db.categoryHistoryDao.query(query);
     _log.captureSpan(start, '$ShoppingCategoryHistoryRepo.$searchHistory');
-    throw UnimplementedError(
-      'ShoppingCategoryHistoryRepo.getHistory is not implemented yet.',
-    );
+    return categoryHistory.map((row) {
+      return ShoppingCategoryHistory(
+        id: row.id,
+        name: row.name,
+        nameLower: row.nameLower,
+        usageCount: row.usageCount,
+        lastUsed: DateTime.fromMillisecondsSinceEpoch(row.lastUsed),
+      );
+    }).toList();
   }
 
   Future<void> _fetchHistory(String userId, DateTime since) async {

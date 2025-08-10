@@ -70,10 +70,15 @@ class ShoppingCategorySuggestionRepo {
 
   Future<List<ShoppingCategorySuggestion>> searchSuggestions(String query) async {
     final start = DateTime.now();
-    // TODO: Verify that the query is properly case-insensitive and handles multi-word filters
-
+    final suggestions = await _db.categorySuggestionDao.query(query);
     _log.captureSpan(start, '$ShoppingCategorySuggestionRepo.$searchSuggestions');
-    throw UnimplementedError('not implemented yet.');
+    return suggestions.map((row) {
+      return ShoppingCategorySuggestion(
+        id: row.id,
+        name: row.name,
+        popularity: row.popularity,
+      );
+    }).toList();
   }
 
   Future<void> _fetchSuggestions(String langCode, DateTime since, DateTime lastUpdated) async {
@@ -110,6 +115,7 @@ class ShoppingCategorySuggestionRepo {
             id: doc.id,
             name: data['name'],
             nameLower: (data['name'] as String).toLowerCase(),
+            popularity: data['popularity'] ?? 0,
           );
         }).toList(),
       );

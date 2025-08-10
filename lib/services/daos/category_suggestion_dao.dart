@@ -28,6 +28,7 @@ class CategorySuggestionDao extends DatabaseAccessor<AppDatabase>
       idGetter: (row) => row.id,
       type: TokenType.categorySuggestion,
       queryString: queryString,
+      orderByDescColumn: categorySuggestionsTable.popularity,
     );
   }
 }

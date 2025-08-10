@@ -294,7 +294,6 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
 
   void _onEditSuggestion(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
     // TODO: Show a suggestion edit page
-    // TODO: This means that suggestions need a unique ID to identify them for editing
     print('On edit: $suggestion');
   }
 }

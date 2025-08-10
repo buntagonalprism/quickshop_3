@@ -6,6 +6,7 @@ class ItemSuggestionsTable extends Table {
   TextColumn get name => text()();
   TextColumn get nameLower => text()();
   TextColumn get categories => text()();
+  IntColumn get popularity => integer().withDefault(const Constant(0))();
 
   @override
   String get tableName => 'ItemSuggestions';

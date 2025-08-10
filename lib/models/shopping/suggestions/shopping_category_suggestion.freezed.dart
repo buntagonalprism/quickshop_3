@@ -15,7 +15,6 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShoppingCategorySuggestion {
   String get id;
-  String get locale;
   String get name;
   int? get popularity;
 
@@ -34,18 +33,17 @@ mixin _$ShoppingCategorySuggestion {
         (other.runtimeType == runtimeType &&
             other is ShoppingCategorySuggestion &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.popularity, popularity) ||
                 other.popularity == popularity));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, locale, name, popularity);
+  int get hashCode => Object.hash(runtimeType, id, name, popularity);
 
   @override
   String toString() {
-    return 'ShoppingCategorySuggestion(id: $id, locale: $locale, name: $name, popularity: $popularity)';
+    return 'ShoppingCategorySuggestion(id: $id, name: $name, popularity: $popularity)';
   }
 }
 
@@ -55,7 +53,7 @@ abstract mixin class $ShoppingCategorySuggestionCopyWith<$Res> {
           $Res Function(ShoppingCategorySuggestion) _then) =
       _$ShoppingCategorySuggestionCopyWithImpl;
   @useResult
-  $Res call({String id, String locale, String name, int? popularity});
+  $Res call({String id, String name, int? popularity});
 }
 
 /// @nodoc
@@ -72,7 +70,6 @@ class _$ShoppingCategorySuggestionCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? locale = null,
     Object? name = null,
     Object? popularity = freezed,
   }) {
@@ -80,10 +77,6 @@ class _$ShoppingCategorySuggestionCopyWithImpl<$Res>
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      locale: null == locale
-          ? _self.locale
-          : locale // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _self.name
@@ -190,14 +183,13 @@ extension ShoppingCategorySuggestionPatterns on ShoppingCategorySuggestion {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String locale, String name, int? popularity)?
-        $default, {
+    TResult Function(String id, String name, int? popularity)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _ShoppingCategorySuggestion() when $default != null:
-        return $default(_that.id, _that.locale, _that.name, _that.popularity);
+        return $default(_that.id, _that.name, _that.popularity);
       case _:
         return orElse();
     }
@@ -218,13 +210,12 @@ extension ShoppingCategorySuggestionPatterns on ShoppingCategorySuggestion {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, String locale, String name, int? popularity)
-        $default,
+    TResult Function(String id, String name, int? popularity) $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ShoppingCategorySuggestion():
-        return $default(_that.id, _that.locale, _that.name, _that.popularity);
+        return $default(_that.id, _that.name, _that.popularity);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -244,13 +235,12 @@ extension ShoppingCategorySuggestionPatterns on ShoppingCategorySuggestion {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String locale, String name, int? popularity)?
-        $default,
+    TResult? Function(String id, String name, int? popularity)? $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ShoppingCategorySuggestion() when $default != null:
-        return $default(_that.id, _that.locale, _that.name, _that.popularity);
+        return $default(_that.id, _that.name, _that.popularity);
       case _:
         return null;
     }
@@ -261,16 +251,11 @@ extension ShoppingCategorySuggestionPatterns on ShoppingCategorySuggestion {
 
 class _ShoppingCategorySuggestion extends ShoppingCategorySuggestion {
   const _ShoppingCategorySuggestion(
-      {required this.id,
-      required this.locale,
-      required this.name,
-      this.popularity})
+      {required this.id, required this.name, this.popularity})
       : super._();
 
   @override
   final String id;
-  @override
-  final String locale;
   @override
   final String name;
   @override
@@ -291,18 +276,17 @@ class _ShoppingCategorySuggestion extends ShoppingCategorySuggestion {
         (other.runtimeType == runtimeType &&
             other is _ShoppingCategorySuggestion &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.popularity, popularity) ||
                 other.popularity == popularity));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, locale, name, popularity);
+  int get hashCode => Object.hash(runtimeType, id, name, popularity);
 
   @override
   String toString() {
-    return 'ShoppingCategorySuggestion(id: $id, locale: $locale, name: $name, popularity: $popularity)';
+    return 'ShoppingCategorySuggestion(id: $id, name: $name, popularity: $popularity)';
   }
 }
 
@@ -315,7 +299,7 @@ abstract mixin class _$ShoppingCategorySuggestionCopyWith<$Res>
       __$ShoppingCategorySuggestionCopyWithImpl;
   @override
   @useResult
-  $Res call({String id, String locale, String name, int? popularity});
+  $Res call({String id, String name, int? popularity});
 }
 
 /// @nodoc
@@ -332,7 +316,6 @@ class __$ShoppingCategorySuggestionCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
-    Object? locale = null,
     Object? name = null,
     Object? popularity = freezed,
   }) {
@@ -340,10 +323,6 @@ class __$ShoppingCategorySuggestionCopyWithImpl<$Res>
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      locale: null == locale
-          ? _self.locale
-          : locale // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _self.name
