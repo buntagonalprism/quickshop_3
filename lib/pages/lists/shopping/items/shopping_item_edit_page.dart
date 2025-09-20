@@ -4,17 +4,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/shopping/shopping_item.dart';
 import '../../../../repositories/shopping/shopping_item_repo.dart';
 import '../../../../router.dart';
+import 'models/shopping_item_errors.dart';
+import 'models/shopping_item_raw_data.dart';
 import 'shopping_item_edit_view_model.dart';
 import 'shopping_item_view.dart';
 
-class ShoppingItemEditPage extends ConsumerWidget {
+class ShoppingItemEditPage extends ConsumerStatefulWidget {
   ShoppingItemEditPage({required this.listId, required this.itemId}) : super(key: Key(itemId));
   final String listId;
   final String itemId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final editVm = ref.watch(shoppingItemEditViewModelProvider(listId, itemId));
+  ConsumerState<ShoppingItemEditPage> createState() => _ShoppingItemEditPageState();
+}
+
+class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
+  ShoppingItemRawData? rawData;
+  ShoppingItemErrors? errors;
+
+  @override
+  Widget build(BuildContext context) {
+    final editVm = ref.watch(shoppingItemEditViewModelProvider(widget.listId, widget.itemId));
 
     return Scaffold(
       appBar: AppBar(
@@ -37,10 +47,47 @@ class ShoppingItemEditPage extends ConsumerWidget {
         error: () => const Center(child: Text('Error loading item')),
         notFound: () => const Center(child: Text('Item not found')),
         success: (item) {
-          return ShoppingItemView(listId: listId, data: ShoppingItemViewEditData(item: item));
+          return ShoppingItemView(
+            listId: widget.listId,
+            data: ShoppingItemViewEditData(item: item),
+            errors: errors,
+            onDataChanged: (updatedRawData) {
+              rawData = updatedRawData;
+            },
+            onDone: () => _saveUpdatedItem(item),
+          );
         },
       ),
     );
+  }
+
+  void _saveUpdatedItem(ShoppingItem originalItem) {
+    // No data changed, nothing to save
+    final data = rawData;
+    if (data == null) {
+      Navigator.of(context).pop();
+      return;
+    }
+
+    // Validate
+    errors = ShoppingItemErrors.validate(data);
+    if (errors!.hasErrors) {
+      setState(() {});
+      return;
+    }
+
+    ref.read(shoppingListItemRepoProvider(widget.listId).notifier).updateItem(
+          item: originalItem,
+          newName: data.product,
+          newQuantity: data.quantity,
+          newCategories: data.categories,
+        );
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Updated item to ${data.displayName}'),
+      duration: const Duration(milliseconds: 2400),
+    ));
+    Navigator.of(context).pop();
   }
 
   void _showDeleteConfirmationDialog(BuildContext context, WidgetRef ref, ShoppingItem item) {
@@ -71,7 +118,7 @@ class ShoppingItemEditPage extends ConsumerWidget {
   }
 
   void _deleteItem(BuildContext context, WidgetRef ref, ShoppingItem item) {
-    ref.read(shoppingListItemRepoProvider(listId).notifier).deleteItem(item);
+    ref.read(shoppingListItemRepoProvider(widget.listId).notifier).deleteItem(item);
     ref.read(routerProvider).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Deleted item ${item.displayName}'),

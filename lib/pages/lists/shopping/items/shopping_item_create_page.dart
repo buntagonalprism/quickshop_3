@@ -7,6 +7,7 @@ import '../../../../repositories/shopping/shopping_item_repo.dart';
 import '../../../../router.dart';
 import '../../../../widgets/padding.dart';
 import 'category_selector.dart';
+import 'models/shopping_item_raw_data.dart';
 import 'shopping_item_create_view_model.dart';
 import 'shopping_item_view.dart';
 
@@ -18,14 +19,15 @@ class ShoppingItemCreatePage extends ConsumerStatefulWidget {
   ConsumerState<ShoppingItemCreatePage> createState() => _ShoppingItemCreatePageState();
 }
 
-class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
-    with SingleTickerProviderStateMixin {
+class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage> with SingleTickerProviderStateMixin {
   late final tabController = TabController(length: 3, vsync: this);
-  String? nameError;
+  bool showErrors = false;
+  int childrenResetKey = DateTime.now().millisecondsSinceEpoch;
 
   @override
   Widget build(BuildContext context) {
     final createData = ref.watch(shoppingItemCreateViewModelProvider);
+    final screenTitle = ['New item', 'Select category', 'Edit item details'][tabController.index];
     return PopScope(
       canPop: tabController.index == 0,
       onPopInvokedWithResult: (didPop, _) {
@@ -36,32 +38,130 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(['New item', 'Select category', 'Edit item details'][tabController.index]),
+          title: Text(screenTitle),
           actions: const [
             ShoppingItemTooltipAction(),
           ],
         ),
-        body: TabBarView(
-          controller: tabController,
-          physics: const NeverScrollableScrollPhysics(),
+        body: Column(
           children: [
-            ShoppingItemSearchView(
-              onCategoryRequired: () => moveToTab(1),
-              listId: widget.listId,
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  ShoppingItemSearchView(
+                    key: ValueKey('search_$childrenResetKey'),
+                    showErrors: showErrors,
+                    onAutocompleteSelected: onAutocompleteSelected,
+                    listId: widget.listId,
+                  ),
+                  ShoppingItemCategorySelectView(
+                    key: ValueKey('category_$childrenResetKey'),
+                    showErrors: showErrors,
+                    onEditItem: () => moveToTab(2),
+                  ),
+                  ShoppingItemView(
+                    key: ValueKey('edit_$childrenResetKey'),
+                    listId: widget.listId,
+                    data: ShoppingItemViewCreateData(
+                      rawData: ShoppingItemRawData(
+                        product: createData.data.product,
+                        quantity: createData.data.quantity,
+                        categories: createData.data.categories,
+                      ),
+                    ),
+                    errors: showErrors ? createData.itemErrors : null,
+                    onDataChanged: (rawData) {
+                      ref.read(shoppingItemCreateViewModelProvider.notifier).setRawData(rawData);
+                    },
+                    onDone: () => onDone(addMore: false),
+                  ),
+                ],
+              ),
             ),
-            ShoppingItemCategorySelectView(onEditItem: () => moveToTab(2)),
-            ShoppingItemView(
-              listId: widget.listId,
-              data: ShoppingItemViewCreateData(
-                product: createData.product,
-                quantity: createData.quantity,
-                categories: createData.selectedCategories,
+            Material(
+              elevation: 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton.icon(
+                    onPressed: () => onDone(addMore: true),
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add more'),
+                  ),
+                  TextButton.icon(
+                    onPressed: () => onDone(addMore: false),
+                    icon: const Icon(Icons.check),
+                    label: const Text('Done'),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void onAutocompleteSelected(ShoppingItemAutocomplete suggestion, bool addMore) async {
+    await ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addAutocomplete(suggestion);
+    ref.read(routerProvider).pop();
+    showConfirmationSnackbar(suggestion.displayName);
+    if (addMore) {
+      resetPage();
+    }
+  }
+
+  void onDone({bool addMore = false}) async {
+    final itemRepo = ref.read(shoppingListItemRepoProvider(widget.listId).notifier);
+    final createData = ref.read(shoppingItemCreateViewModelProvider);
+    final isValid = ref.read(shoppingItemCreateViewModelProvider.notifier).validate();
+    if (!isValid) {
+      setState(() => showErrors = true);
+      return;
+    }
+
+    if (tabController.index == 0) {
+      final result = await itemRepo.addItemByName(createData.filter);
+      result.when(
+        categoryRequired: () => moveToTab(1),
+        success: (addedItem) {
+          showConfirmationSnackbar(addedItem.displayName);
+          if (addMore) {
+            resetPage();
+          } else {
+            ref.read(routerProvider).pop();
+          }
+        },
+      );
+    } else {
+      final createData = ref.read(shoppingItemCreateViewModelProvider);
+      itemRepo.addItem(
+        productName: createData.data.product,
+        quantity: createData.data.quantity,
+        categories: createData.data.categories,
+      );
+      showConfirmationSnackbar(createData.data.displayName);
+    }
+  }
+
+  void showConfirmationSnackbar(String displayName) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Added $displayName to list'),
+        duration: const Duration(milliseconds: 2400),
+      ));
+    }
+  }
+
+  void resetPage() {
+    moveToTab(0);
+    showErrors = false;
+    ref.read(shoppingItemCreateViewModelProvider.notifier).reset();
+    setState(() {
+      childrenResetKey = DateTime.now().millisecondsSinceEpoch;
+    });
   }
 
   void moveToTab(int index) {
@@ -73,9 +173,11 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 }
 
 class ShoppingItemSearchView extends ConsumerStatefulWidget {
-  const ShoppingItemSearchView({required this.onCategoryRequired, required this.listId, super.key});
-  final VoidCallback onCategoryRequired;
+  const ShoppingItemSearchView(
+      {required this.listId, required this.showErrors, required this.onAutocompleteSelected, super.key});
   final String listId;
+  final bool showErrors;
+  final Function(ShoppingItemAutocomplete autocomplete, bool addMore) onAutocompleteSelected;
 
   @override
   ConsumerState<ShoppingItemSearchView> createState() => _ShoppingItemSearchViewState();
@@ -95,14 +197,14 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
 
   @override
   Widget build(BuildContext context) {
-    final filterValue = ref.watch(shoppingItemCreateViewModelProvider).filter;
+    final createData = ref.watch(shoppingItemCreateViewModelProvider);
     return Column(children: [
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         child: TextField(
           decoration: InputDecoration(
             labelText: 'Enter item name',
-            errorText: nameError,
+            errorText: widget.showErrors ? createData.filterError : null,
           ),
           autofocus: true,
           controller: nameController,
@@ -112,85 +214,15 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
         ),
       ),
       Expanded(
-        child: filterValue.isEmpty
+        child: createData.filter.isEmpty
             ? const ItemSuggestionsPlaceholder()
             : ItemSuggestionsList(
                 listId: widget.listId,
-                onAdd: _onAddSuggestion,
-                onAddMore: _onAddMoreFromSuggestion,
+                onAdd: (suggestion) => widget.onAutocompleteSelected(suggestion, false),
+                onAddMore: (suggestion) => widget.onAutocompleteSelected(suggestion, true),
               ),
       ),
-      Material(
-        elevation: 4,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton.icon(
-              onPressed: () => _onDone(addMore: true),
-              icon: const Icon(Icons.add),
-              label: const Text('Add more'),
-            ),
-            TextButton.icon(
-              onPressed: () => _onDone(addMore: false),
-              icon: const Icon(Icons.check),
-              label: const Text('Done'),
-            ),
-          ],
-        ),
-      ),
     ]);
-  }
-
-  void _onDone({bool addMore = false}) async {
-    final itemName = nameController.text.trim();
-    setState(() => nameError = itemName.isEmpty ? 'Please enter an item name' : null);
-    if (nameError != null) {
-      return;
-    }
-
-    final itemRepo = ref.read(shoppingListItemRepoProvider(widget.listId).notifier);
-    final result = await itemRepo.addItemByName(itemName);
-    result.when(
-      categoryRequired: widget.onCategoryRequired,
-      success: (addedItem) {
-        _showConfirmationSnackbar(addedItem.displayName);
-        if (addMore) {
-          _resetFilter();
-        } else {
-          ref.read(routerProvider).pop();
-        }
-      },
-    );
-  }
-
-  void _onAddSuggestion(ShoppingItemAutocomplete suggestion) async {
-    await ref
-        .read(shoppingListItemRepoProvider(widget.listId).notifier)
-        .addAutocomplete(suggestion);
-    ref.read(routerProvider).pop();
-    _showConfirmationSnackbar(suggestion.displayName);
-  }
-
-  void _onAddMoreFromSuggestion(ShoppingItemAutocomplete suggestion) async {
-    await ref
-        .read(shoppingListItemRepoProvider(widget.listId).notifier)
-        .addAutocomplete(suggestion);
-    _showConfirmationSnackbar(suggestion.displayName);
-    _resetFilter();
-  }
-
-  void _resetFilter() {
-    nameController.text = '';
-    ref.read(shoppingItemCreateViewModelProvider.notifier).setFilter('');
-  }
-
-  void _showConfirmationSnackbar(String displayName) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Added $displayName to list'),
-        duration: const Duration(milliseconds: 2400),
-      ));
-    }
   }
 }
 
@@ -231,9 +263,7 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
       itemBuilder: (context, index) {
         final autocomplete = autocompletes[index];
         return switch (autocomplete.source) {
-          ShoppingItemAutocompleteSource.history ||
-          ShoppingItemAutocompleteSource.suggested =>
-            MenuAnchor(
+          ShoppingItemAutocompleteSource.history || ShoppingItemAutocompleteSource.suggested => MenuAnchor(
               onClose: () {
                 setState(() {
                   highlightedIndex = null;
@@ -272,9 +302,8 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
               menuChildren: [
                 MenuItemButton(
                   child: const Text('Remove'),
-                  onPressed: () => ref
-                      .read(shoppingItemAutocompleteRepoProvider(widget.listId))
-                      .removeSuggestion(autocomplete),
+                  onPressed: () =>
+                      ref.read(shoppingItemAutocompleteRepoProvider(widget.listId)).removeSuggestion(autocomplete),
                 ),
                 MenuItemButton(
                   child: const Text('Edit'),
@@ -305,9 +334,7 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
   }
 
   void _onEditListItem(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
-    ref
-        .read(routerProvider)
-        .go(Routes.shoppingListEditItem(widget.listId, suggestion.sourceId).path);
+    ref.read(routerProvider).go(Routes.shoppingListEditItem(widget.listId, suggestion.sourceId).path);
   }
 
   void _onEditSuggestion(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
@@ -335,8 +362,7 @@ class ItemSuggestionsPlaceholder extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.info_outline),
-            title:
-                Text('For better suggestions, put item quantities and product sizes at the start'),
+            title: Text('For better suggestions, put item quantities and product sizes at the start'),
             subtitle: Text(
                 'For example: 2 small green apples, 500g mince beef, two cans of tomato soup, a large loaf of bread'),
           )
@@ -359,11 +385,11 @@ class ItemSuggestionsEmpty extends StatelessWidget {
 
 class ShoppingItemCategorySelectView extends ConsumerStatefulWidget {
   final VoidCallback onEditItem;
-  const ShoppingItemCategorySelectView({required this.onEditItem, super.key});
+  final bool showErrors;
+  const ShoppingItemCategorySelectView({required this.onEditItem, required this.showErrors, super.key});
 
   @override
-  ConsumerState<ShoppingItemCategorySelectView> createState() =>
-      _ShoppingItemCategorySelectViewState();
+  ConsumerState<ShoppingItemCategorySelectView> createState() => _ShoppingItemCategorySelectViewState();
 }
 
 class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCategorySelectView> {
@@ -379,6 +405,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
     final bodyStyle = Theme.of(context).textTheme.bodyMedium;
     final bodyBoldStyle = bodyStyle?.copyWith(fontWeight: FontWeight.bold);
     final createData = ref.watch(shoppingItemCreateViewModelProvider);
+    categoryError = widget.showErrors ? createData.itemErrors?.categoriesError : null;
     return Column(
       children: [
         Expanded(
@@ -403,7 +430,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                             text: 'Base product name: ',
                             style: bodyBoldStyle,
                             children: [
-                              TextSpan(text: createData.product, style: bodyStyle),
+                              TextSpan(text: createData.data.product, style: bodyStyle),
                             ],
                           )),
                           2.vertical,
@@ -412,10 +439,9 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                             style: bodyBoldStyle,
                             children: [
                               TextSpan(
-                                  text: createData.quantity.isNotEmpty
-                                      ? createData.quantity
-                                      : 'Not specified',
-                                  style: bodyStyle),
+                                text: createData.data.quantity.isNotEmpty ? createData.data.quantity : 'Not specified',
+                                style: bodyStyle,
+                              ),
                             ],
                           )),
                         ],
@@ -431,11 +457,9 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                 ),
                 16.vertical,
                 CategorySelector(
-                  selectedCategories: createData.selectedCategories,
+                  selectedCategories: createData.data.categories,
                   onCategoriesChanged: (categories) {
-                    ref
-                        .read(shoppingItemCreateViewModelProvider.notifier)
-                        .setSelectedCategories(categories);
+                    ref.read(shoppingItemCreateViewModelProvider.notifier).setSelectedCategories(categories);
                   },
                   error: categoryError,
                 ),

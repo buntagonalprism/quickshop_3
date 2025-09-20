@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/shopping/shopping_item.dart';
-import '../../../../repositories/shopping/shopping_item_repo.dart';
 import '../../../../repositories/tooltips_repo.dart';
-import '../../../../router.dart';
 import '../../../../widgets/padding.dart';
 import '../../../../widgets/tooltip_button.dart';
 import 'category_selector.dart';
+import 'models/shopping_item_errors.dart';
+import 'models/shopping_item_raw_data.dart';
 
 sealed class ShoppingItemViewData {}
 
@@ -17,20 +17,24 @@ class ShoppingItemViewEditData extends ShoppingItemViewData {
 }
 
 class ShoppingItemViewCreateData extends ShoppingItemViewData {
-  ShoppingItemViewCreateData({
-    required this.product,
-    required this.quantity,
-    required this.categories,
-  });
-  final String product;
-  final String quantity;
-  final List<String> categories;
+  ShoppingItemViewCreateData({required this.rawData});
+  final ShoppingItemRawData rawData;
 }
 
 class ShoppingItemView extends ConsumerStatefulWidget {
-  const ShoppingItemView({required this.listId, required this.data, super.key});
+  const ShoppingItemView({
+    required this.listId,
+    required this.data,
+    required this.onDataChanged,
+    required this.onDone,
+    this.errors,
+    super.key,
+  });
   final String listId;
   final ShoppingItemViewData data;
+  final Function(ShoppingItemRawData rawData) onDataChanged;
+  final VoidCallback onDone;
+  final ShoppingItemErrors? errors;
 
   @override
   ConsumerState<ShoppingItemView> createState() => _ShoppingItemViewState();
@@ -44,8 +48,6 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   final productFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
   final categoriesFocusNode = FocusNode();
-  String? productError;
-  String? categoriesError;
 
   late final _Mode mode;
 
@@ -59,20 +61,23 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
         selectedCategories = item.categories;
         mode = _Mode.edit;
         break;
-      case ShoppingItemViewCreateData(:final product, :final quantity, :final categories):
-        productController = TextEditingController(text: product);
-        quantityController = TextEditingController(text: quantity);
-        selectedCategories = categories;
+      case ShoppingItemViewCreateData(:final rawData):
+        productController = TextEditingController(text: rawData.product);
+        quantityController = TextEditingController(text: rawData.quantity);
+        selectedCategories = rawData.categories;
         mode = _Mode.create;
         break;
     }
-    productController.addListener(onProductChanges);
+    productController.addListener(onDataChanges);
+    quantityController.addListener(onDataChanges);
   }
 
-  void onProductChanges() {
-    if (productError != null && productController.text.isNotEmpty) {
-      setState(() => productError = null);
-    }
+  void onDataChanges() {
+    widget.onDataChanged(ShoppingItemRawData(
+      product: productController.text,
+      quantity: quantityController.text,
+      categories: selectedCategories,
+    ));
   }
 
   @override
@@ -80,6 +85,9 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
     productFocusNode.dispose();
     productController.dispose();
     categoriesController.dispose();
+    categoriesFocusNode.dispose();
+    quantityFocusNode.dispose();
+    quantityController.dispose();
     super.dispose();
   }
 
@@ -108,7 +116,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                         fontWeight: FontWeight.normal,
                       ),
                       border: const OutlineInputBorder(),
-                      errorText: productError,
+                      errorText: widget.errors?.productError,
                       suffixIcon: TooltipButton(
                         title: 'Product name',
                         message:
@@ -148,110 +156,19 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                     onCategoriesChanged: (newCategories) {
                       setState(() {
                         selectedCategories = newCategories;
-                        if (newCategories.isNotEmpty) {
-                          categoriesError = null;
-                        }
+                        onDataChanges();
                       });
                     },
-                    error: categoriesError,
-                    onSubmitted: _onDone,
+                    error: widget.errors?.categoriesError,
+                    onSubmitted: widget.onDone,
                   ),
                 ],
               ),
             ),
           ),
         ),
-        Material(
-          elevation: 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              mode == _Mode.create
-                  ? TextButton.icon(
-                      onPressed: _onAddMore,
-                      icon: const Icon(Icons.add),
-                      label: const Text('Add more'),
-                    )
-                  : const SizedBox(),
-              TextButton.icon(
-                onPressed: _onDone,
-                icon: const Icon(Icons.check),
-                label: const Text('Done'),
-              ),
-            ],
-          ),
-        ),
       ],
     );
-  }
-
-  void _onDone() {
-    if (_validate()) {
-      _saveItem();
-      ref.read(routerProvider).pop();
-    }
-  }
-
-  void _onAddMore() {
-    if (_validate()) {
-      _saveItem();
-      _resetPage();
-    }
-  }
-
-  bool _validate() {
-    productError = productController.text.trim().isEmpty ? 'Please enter a product name' : null;
-    categoriesError = selectedCategories.isEmpty ? 'Please select at least one category' : null;
-    setState(() {});
-    return ![productError, categoriesError].any((err) => err != null);
-  }
-
-  void _saveItem() {
-    if (widget.data case ShoppingItemViewEditData editData) {
-      _saveUpdatedItem(editData.item);
-    } else {
-      _saveNewItem();
-    }
-  }
-
-  void _saveNewItem() {
-    final name = productController.text.trim();
-    final quantity = quantityController.text.trim();
-    ref.read(shoppingListItemRepoProvider(widget.listId).notifier).addItem(
-          productName: name,
-          quantity: quantity,
-          categories: selectedCategories,
-        );
-    final displayName = quantity.isEmpty ? name : '$quantity $name';
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Added $displayName to list'),
-      duration: const Duration(milliseconds: 2400),
-    ));
-  }
-
-  void _saveUpdatedItem(ShoppingItem item) {
-    final name = productController.text.trim();
-    final quantity = quantityController.text.trim();
-    ref.read(shoppingListItemRepoProvider(widget.listId).notifier).updateItem(
-          item: item,
-          newName: name,
-          newQuantity: quantity,
-          newCategories: selectedCategories,
-        );
-    final displayName = quantity.isEmpty ? name : '$quantity $name';
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Updated item to $displayName'),
-      duration: const Duration(milliseconds: 2400),
-    ));
-  }
-
-  void _resetPage() {
-    productController.clear();
-    quantityController.clear();
-    categoriesController.clear();
-    selectedCategories.clear();
-    productFocusNode.requestFocus();
   }
 }
 
@@ -267,22 +184,15 @@ class ShoppingItemTooltipAction extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final showNameTooltip = ref.watch(tooltipsRepoProvider(TooltipType.shoppingItemName));
     final showQuantityTooltip = ref.watch(tooltipsRepoProvider(TooltipType.shoppingItemQuantity));
-    final showCategoriesTooltip =
-        ref.watch(tooltipsRepoProvider(TooltipType.shoppingItemCategories));
+    final showCategoriesTooltip = ref.watch(tooltipsRepoProvider(TooltipType.shoppingItemCategories));
 
     if ([showNameTooltip, showQuantityTooltip, showCategoriesTooltip].any((e) => !e)) {
       return IconButton(
         icon: const Icon(Icons.help_outline),
         onPressed: () {
-          ref
-              .read(tooltipsRepoProvider(TooltipType.shoppingItemName).notifier)
-              .setDisplayTooltip(true);
-          ref
-              .read(tooltipsRepoProvider(TooltipType.shoppingItemQuantity).notifier)
-              .setDisplayTooltip(true);
-          ref
-              .read(tooltipsRepoProvider(TooltipType.shoppingItemCategories).notifier)
-              .setDisplayTooltip(true);
+          ref.read(tooltipsRepoProvider(TooltipType.shoppingItemName).notifier).setDisplayTooltip(true);
+          ref.read(tooltipsRepoProvider(TooltipType.shoppingItemQuantity).notifier).setDisplayTooltip(true);
+          ref.read(tooltipsRepoProvider(TooltipType.shoppingItemCategories).notifier).setDisplayTooltip(true);
         },
       );
     }

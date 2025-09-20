@@ -15,9 +15,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShoppingItemCreateData {
   String get filter;
-  String get product;
-  String get quantity;
-  List<String> get selectedCategories;
+  ShoppingItemRawData get data;
+  String? get filterError;
+  ShoppingItemErrors? get itemErrors;
 
   /// Create a copy of ShoppingItemCreateData
   /// with the given fields replaced by the non-null parameter values.
@@ -33,20 +33,20 @@ mixin _$ShoppingItemCreateData {
         (other.runtimeType == runtimeType &&
             other is ShoppingItemCreateData &&
             (identical(other.filter, filter) || other.filter == filter) &&
-            (identical(other.product, product) || other.product == product) &&
-            (identical(other.quantity, quantity) ||
-                other.quantity == quantity) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedCategories, selectedCategories));
+            (identical(other.data, data) || other.data == data) &&
+            (identical(other.filterError, filterError) ||
+                other.filterError == filterError) &&
+            (identical(other.itemErrors, itemErrors) ||
+                other.itemErrors == itemErrors));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, filter, product, quantity,
-      const DeepCollectionEquality().hash(selectedCategories));
+  int get hashCode =>
+      Object.hash(runtimeType, filter, data, filterError, itemErrors);
 
   @override
   String toString() {
-    return 'ShoppingItemCreateData(filter: $filter, product: $product, quantity: $quantity, selectedCategories: $selectedCategories)';
+    return 'ShoppingItemCreateData(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
   }
 }
 
@@ -58,9 +58,11 @@ abstract mixin class $ShoppingItemCreateDataCopyWith<$Res> {
   @useResult
   $Res call(
       {String filter,
-      String product,
-      String quantity,
-      List<String> selectedCategories});
+      ShoppingItemRawData data,
+      String? filterError,
+      ShoppingItemErrors? itemErrors});
+
+  $ShoppingItemRawDataCopyWith<$Res> get data;
 }
 
 /// @nodoc
@@ -77,28 +79,38 @@ class _$ShoppingItemCreateDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? filter = null,
-    Object? product = null,
-    Object? quantity = null,
-    Object? selectedCategories = null,
+    Object? data = null,
+    Object? filterError = freezed,
+    Object? itemErrors = freezed,
   }) {
     return _then(_self.copyWith(
       filter: null == filter
           ? _self.filter
           : filter // ignore: cast_nullable_to_non_nullable
               as String,
-      product: null == product
-          ? _self.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantity: null == quantity
-          ? _self.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as String,
-      selectedCategories: null == selectedCategories
-          ? _self.selectedCategories
-          : selectedCategories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      data: null == data
+          ? _self.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as ShoppingItemRawData,
+      filterError: freezed == filterError
+          ? _self.filterError
+          : filterError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      itemErrors: freezed == itemErrors
+          ? _self.itemErrors
+          : itemErrors // ignore: cast_nullable_to_non_nullable
+              as ShoppingItemErrors?,
     ));
+  }
+
+  /// Create a copy of ShoppingItemCreateData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ShoppingItemRawDataCopyWith<$Res> get data {
+    return $ShoppingItemRawDataCopyWith<$Res>(_self.data, (value) {
+      return _then(_self.copyWith(data: value));
+    });
   }
 }
 
@@ -195,16 +207,16 @@ extension ShoppingItemCreateDataPatterns on ShoppingItemCreateData {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String filter, String product, String quantity,
-            List<String> selectedCategories)?
+    TResult Function(String filter, ShoppingItemRawData data,
+            String? filterError, ShoppingItemErrors? itemErrors)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _ShoppingItemCreateData() when $default != null:
-        return $default(_that.filter, _that.product, _that.quantity,
-            _that.selectedCategories);
+        return $default(
+            _that.filter, _that.data, _that.filterError, _that.itemErrors);
       case _:
         return orElse();
     }
@@ -225,15 +237,15 @@ extension ShoppingItemCreateDataPatterns on ShoppingItemCreateData {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String filter, String product, String quantity,
-            List<String> selectedCategories)
+    TResult Function(String filter, ShoppingItemRawData data,
+            String? filterError, ShoppingItemErrors? itemErrors)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ShoppingItemCreateData():
-        return $default(_that.filter, _that.product, _that.quantity,
-            _that.selectedCategories);
+        return $default(
+            _that.filter, _that.data, _that.filterError, _that.itemErrors);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -253,15 +265,15 @@ extension ShoppingItemCreateDataPatterns on ShoppingItemCreateData {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String filter, String product, String quantity,
-            List<String> selectedCategories)?
+    TResult? Function(String filter, ShoppingItemRawData data,
+            String? filterError, ShoppingItemErrors? itemErrors)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ShoppingItemCreateData() when $default != null:
-        return $default(_that.filter, _that.product, _that.quantity,
-            _that.selectedCategories);
+        return $default(
+            _that.filter, _that.data, _that.filterError, _that.itemErrors);
       case _:
         return null;
     }
@@ -273,26 +285,19 @@ extension ShoppingItemCreateDataPatterns on ShoppingItemCreateData {
 class _ShoppingItemCreateData extends ShoppingItemCreateData {
   const _ShoppingItemCreateData(
       {required this.filter,
-      required this.product,
-      required this.quantity,
-      required final List<String> selectedCategories})
-      : _selectedCategories = selectedCategories,
-        super._();
+      required this.data,
+      this.filterError,
+      this.itemErrors})
+      : super._();
 
   @override
   final String filter;
   @override
-  final String product;
+  final ShoppingItemRawData data;
   @override
-  final String quantity;
-  final List<String> _selectedCategories;
+  final String? filterError;
   @override
-  List<String> get selectedCategories {
-    if (_selectedCategories is EqualUnmodifiableListView)
-      return _selectedCategories;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_selectedCategories);
-  }
+  final ShoppingItemErrors? itemErrors;
 
   /// Create a copy of ShoppingItemCreateData
   /// with the given fields replaced by the non-null parameter values.
@@ -309,20 +314,20 @@ class _ShoppingItemCreateData extends ShoppingItemCreateData {
         (other.runtimeType == runtimeType &&
             other is _ShoppingItemCreateData &&
             (identical(other.filter, filter) || other.filter == filter) &&
-            (identical(other.product, product) || other.product == product) &&
-            (identical(other.quantity, quantity) ||
-                other.quantity == quantity) &&
-            const DeepCollectionEquality()
-                .equals(other._selectedCategories, _selectedCategories));
+            (identical(other.data, data) || other.data == data) &&
+            (identical(other.filterError, filterError) ||
+                other.filterError == filterError) &&
+            (identical(other.itemErrors, itemErrors) ||
+                other.itemErrors == itemErrors));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, filter, product, quantity,
-      const DeepCollectionEquality().hash(_selectedCategories));
+  int get hashCode =>
+      Object.hash(runtimeType, filter, data, filterError, itemErrors);
 
   @override
   String toString() {
-    return 'ShoppingItemCreateData(filter: $filter, product: $product, quantity: $quantity, selectedCategories: $selectedCategories)';
+    return 'ShoppingItemCreateData(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
   }
 }
 
@@ -336,9 +341,12 @@ abstract mixin class _$ShoppingItemCreateDataCopyWith<$Res>
   @useResult
   $Res call(
       {String filter,
-      String product,
-      String quantity,
-      List<String> selectedCategories});
+      ShoppingItemRawData data,
+      String? filterError,
+      ShoppingItemErrors? itemErrors});
+
+  @override
+  $ShoppingItemRawDataCopyWith<$Res> get data;
 }
 
 /// @nodoc
@@ -355,28 +363,38 @@ class __$ShoppingItemCreateDataCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? filter = null,
-    Object? product = null,
-    Object? quantity = null,
-    Object? selectedCategories = null,
+    Object? data = null,
+    Object? filterError = freezed,
+    Object? itemErrors = freezed,
   }) {
     return _then(_ShoppingItemCreateData(
       filter: null == filter
           ? _self.filter
           : filter // ignore: cast_nullable_to_non_nullable
               as String,
-      product: null == product
-          ? _self.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantity: null == quantity
-          ? _self.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as String,
-      selectedCategories: null == selectedCategories
-          ? _self._selectedCategories
-          : selectedCategories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      data: null == data
+          ? _self.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as ShoppingItemRawData,
+      filterError: freezed == filterError
+          ? _self.filterError
+          : filterError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      itemErrors: freezed == itemErrors
+          ? _self.itemErrors
+          : itemErrors // ignore: cast_nullable_to_non_nullable
+              as ShoppingItemErrors?,
     ));
+  }
+
+  /// Create a copy of ShoppingItemCreateData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ShoppingItemRawDataCopyWith<$Res> get data {
+    return $ShoppingItemRawDataCopyWith<$Res>(_self.data, (value) {
+      return _then(_self.copyWith(data: value));
+    });
   }
 }
 
