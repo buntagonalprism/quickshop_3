@@ -37,7 +37,7 @@ class ShoppingItemEditPage extends ConsumerWidget {
         error: () => const Center(child: Text('Error loading item')),
         notFound: () => const Center(child: Text('Item not found')),
         success: (item) {
-          return ShoppingItemView(listId: listId, item: item);
+          return ShoppingItemView(listId: listId, data: ShoppingItemViewEditData(item: item));
         },
       ),
     );

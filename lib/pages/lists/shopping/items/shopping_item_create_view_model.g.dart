@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'item_search_view_model.dart';
+part of 'shopping_item_create_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$itemAutocompleteHash() => r'921252a85bbd25409c1f633bdabf99697f240449';
+String _$itemAutocompleteHash() => r'cebfbf2689dadb0d9c9e7ecabfed623f377e63b2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -164,20 +164,23 @@ class _ItemAutocompleteProviderElement
   String get listId => (origin as ItemAutocompleteProvider).listId;
 }
 
-String _$itemFilterHash() => r'c074d5d919e5da3a73c794d0798466d00ffecec9';
+String _$shoppingItemCreateViewModelHash() =>
+    r'6ff99cfa047f689e9f7b504e13ad54220437610c';
 
-/// See also [ItemFilter].
-@ProviderFor(ItemFilter)
-final itemFilterProvider =
-    AutoDisposeNotifierProvider<ItemFilter, String>.internal(
-  ItemFilter.new,
-  name: r'itemFilterProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$itemFilterHash,
+/// See also [ShoppingItemCreateViewModel].
+@ProviderFor(ShoppingItemCreateViewModel)
+final shoppingItemCreateViewModelProvider = AutoDisposeNotifierProvider<
+    ShoppingItemCreateViewModel, ShoppingItemCreateData>.internal(
+  ShoppingItemCreateViewModel.new,
+  name: r'shoppingItemCreateViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$shoppingItemCreateViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ItemFilter = AutoDisposeNotifier<String>;
+typedef _$ShoppingItemCreateViewModel
+    = AutoDisposeNotifier<ShoppingItemCreateData>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

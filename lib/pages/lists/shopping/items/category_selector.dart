@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../repositories/tooltips_repo.dart';
-import '../../../../widgets/toggle_tooltip.dart';
+import '../../../../widgets/padding.dart';
+import '../../../../widgets/tooltip_button.dart';
 import 'category_selector_view_model.dart';
 
 class CategorySelector extends StatefulWidget {
@@ -75,129 +75,126 @@ class _CategorySelectorState extends State<CategorySelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        InputDecorator(
-          isFocused: focusNode.hasFocus,
-          decoration: InputDecoration(
-            labelText: 'Categories',
-            border: const OutlineInputBorder(),
-            contentPadding: const EdgeInsets.fromLTRB(12, 16, 12, 4),
-            errorText: widget.error,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              widget.selectedCategories.isEmpty
-                  ? const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      child: Text(
-                        'No categories selected',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  : Wrap(
-                      spacing: 8,
-                      children: widget.selectedCategories
-                          .map((category) => Chip(
-                                label: Text(category),
-                                onDeleted: () => widget.onCategoriesChanged(
-                                    List.from(widget.selectedCategories)..remove(category)),
-                              ))
-                          .toList(),
-                    ),
-              LayoutBuilder(builder: (context, constraints) {
-                return Consumer(builder: (context, ref, _) {
-                  final vm = ref.watch(categorySelectorViewModelProvider);
-                  return RawAutocomplete<CategorySelectorItem>(
-                    optionsViewOpenDirection: OptionsViewOpenDirection.up,
+    return InputDecorator(
+      isFocused: focusNode.hasFocus,
+      decoration: InputDecoration(
+        labelText: 'Categories',
+        border: const OutlineInputBorder(),
+        contentPadding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+        isDense: true,
+        errorText: widget.error,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          12.vertical,
+          widget.selectedCategories.isEmpty
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 14.0),
+                  child: Text(
+                    'No categories selected',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : Wrap(
+                  spacing: 8,
+                  children: widget.selectedCategories
+                      .map((category) => Chip(
+                            label: Text(category),
+                            onDeleted: () => widget.onCategoriesChanged(
+                                List.from(widget.selectedCategories)..remove(category)),
+                          ))
+                      .toList(),
+                ),
+          2.vertical,
+          LayoutBuilder(builder: (context, constraints) {
+            return Consumer(builder: (context, ref, _) {
+              final vm = ref.watch(categorySelectorViewModelProvider);
+              return RawAutocomplete<CategorySelectorItem>(
+                optionsViewOpenDirection: OptionsViewOpenDirection.up,
+                focusNode: focusNode,
+                textEditingController: controller,
+                optionsBuilder: (textEditingValue) {
+                  if (textEditingValue.text.isEmpty) {
+                    return const [];
+                  }
+                  // While the search query for items is being performed, the autocomplete will
+                  // show the items from the last successfully completd query.
+                  return vm.getItems(textEditingValue.text);
+                },
+                fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+                  return TextFormField(
+                    controller: textEditingController,
                     focusNode: focusNode,
-                    textEditingController: controller,
-                    optionsBuilder: (textEditingValue) {
-                      if (textEditingValue.text.isEmpty) {
-                        return const [];
-                      }
-                      // While the search query for items is being performed, the autocomplete will
-                      // show the items from the last successfully completd query.
-                      return vm.getItems(textEditingValue.text);
-                    },
-                    fieldViewBuilder:
-                        (context, textEditingController, focusNode, onFieldSubmitted) {
-                      return TextFormField(
-                        controller: textEditingController,
-                        focusNode: focusNode,
-                        onFieldSubmitted: (String value) => widget.onSubmitted?.call(),
-                        textInputAction: TextInputAction.done,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter category name',
-                          hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
-                          border: InputBorder.none,
-                        ),
-                      );
-                    },
-                    optionsViewBuilder: (context, onSelected, options) {
-                      return Align(
-                        alignment: Alignment.bottomLeft,
-                        child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxHeight: 200, maxWidth: constraints.maxWidth),
-                          child: Material(
-                            elevation: 4,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: options.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final option = options.elementAt(index);
-                                return option.when(
-                                  newCategory: () => ListTile(
-                                    title: Text.rich(
-                                      TextSpan(
-                                        text: 'Add new category: ',
-                                        children: [
-                                          TextSpan(
-                                            text: controller.text,
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () => _addCategory(controller.text),
-                                  ),
-                                  heading: (name) => ListTile(
-                                    title: Text(name),
-                                    enabled: false,
-                                  ),
-                                  suggestion: (name) => ListTile(
-                                    title: Text(name),
-                                    onTap: () => _addCategory(name),
-                                  ),
-                                  history: (name) => ListTile(
-                                    title: Text(name),
-                                    onTap: () => _addCategory(name),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                    onFieldSubmitted: (String value) => widget.onSubmitted?.call(),
+                    textInputAction: TextInputAction.done,
+                    textCapitalization: TextCapitalization.sentences,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter category name',
+                      hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
+                      border: InputBorder.none,
+                      suffixIcon: TooltipButton(
+                        title: 'Product categories',
+                        message:
+                            'The categories where you might find this product in store. For example:\n\nDairy, Sauces, Herbs & Spices, Bakery, Laundry, Cleaning Supplies.',
+                      ),
+                    ),
                   );
-                });
-              }),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-        const ToggleTooltip(
-          type: TooltipType.shoppingItemCategories,
-          message:
-              'E.g. dairy, sauces, fruit & vegetables, meat, bakery, herbs and spices, laundry. These are the categories where you might find this item in store.',
-        ),
-      ],
+                },
+                optionsViewBuilder: (context, onSelected, options) {
+                  return Align(
+                    alignment: Alignment.bottomLeft,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: 200, maxWidth: constraints.maxWidth),
+                      child: Material(
+                        elevation: 4,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: options.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final option = options.elementAt(index);
+                            return option.when(
+                              newCategory: () => ListTile(
+                                title: Text.rich(
+                                  TextSpan(
+                                    text: 'Add new category: ',
+                                    children: [
+                                      TextSpan(
+                                        text: controller.text,
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onTap: () => _addCategory(controller.text),
+                              ),
+                              heading: (name) => ListTile(
+                                title: Text(name),
+                                enabled: false,
+                              ),
+                              suggestion: (name) => ListTile(
+                                title: Text(name),
+                                onTap: () => _addCategory(name),
+                              ),
+                              history: (name) => ListTile(
+                                title: Text(name),
+                                onTap: () => _addCategory(name),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            });
+          }),
+          4.vertical,
+        ],
+      ),
     );
   }
 

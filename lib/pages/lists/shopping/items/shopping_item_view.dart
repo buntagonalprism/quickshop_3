@@ -5,13 +5,32 @@ import '../../../../models/shopping/shopping_item.dart';
 import '../../../../repositories/shopping/shopping_item_repo.dart';
 import '../../../../repositories/tooltips_repo.dart';
 import '../../../../router.dart';
-import '../../../../widgets/toggle_tooltip.dart';
+import '../../../../widgets/padding.dart';
+import '../../../../widgets/tooltip_button.dart';
 import 'category_selector.dart';
 
+sealed class ShoppingItemViewData {}
+
+class ShoppingItemViewEditData extends ShoppingItemViewData {
+  ShoppingItemViewEditData({required this.item});
+  final ShoppingItem item;
+}
+
+class ShoppingItemViewCreateData extends ShoppingItemViewData {
+  ShoppingItemViewCreateData({
+    required this.product,
+    required this.quantity,
+    required this.categories,
+  });
+  final String product;
+  final String quantity;
+  final List<String> categories;
+}
+
 class ShoppingItemView extends ConsumerStatefulWidget {
-  const ShoppingItemView({required this.listId, this.item, super.key});
+  const ShoppingItemView({required this.listId, required this.data, super.key});
   final String listId;
-  final ShoppingItem? item;
+  final ShoppingItemViewData data;
 
   @override
   ConsumerState<ShoppingItemView> createState() => _ShoppingItemViewState();
@@ -33,10 +52,20 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   @override
   void initState() {
     super.initState();
-    productController = TextEditingController(text: widget.item?.product);
-    quantityController = TextEditingController(text: widget.item?.quantity);
-    selectedCategories = widget.item?.categories ?? [];
-    mode = widget.item == null ? _Mode.create : _Mode.edit;
+    switch (widget.data) {
+      case ShoppingItemViewEditData(:final item):
+        productController = TextEditingController(text: item.product);
+        quantityController = TextEditingController(text: item.quantity);
+        selectedCategories = item.categories;
+        mode = _Mode.edit;
+        break;
+      case ShoppingItemViewCreateData(:final product, :final quantity, :final categories):
+        productController = TextEditingController(text: product);
+        quantityController = TextEditingController(text: quantity);
+        selectedCategories = categories;
+        mode = _Mode.create;
+        break;
+    }
     productController.addListener(onProductChanges);
   }
 
@@ -80,38 +109,38 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                       ),
                       border: const OutlineInputBorder(),
                       errorText: productError,
+                      suffixIcon: TooltipButton(
+                        title: 'Product name',
+                        message:
+                            'The base name of the product, without any quantity or size. For example:\n\nMilk, Tomato sauce, Cucumbers, Chicken thigh, Sourdough bread, Paprika, Fabric softener.',
+                      ),
                     ),
                     controller: productController,
                     onSubmitted: (value) => quantityFocusNode.requestFocus(),
                   ),
-                  const ToggleTooltip(
-                    type: TooltipType.shoppingItemName,
-                    message:
-                        'E.g. milk, tomato sauce, cucumbers, chicken thigh, sourdough bread, paprika, fabric softener',
-                  ),
-                  const SizedBox(height: 24),
+                  20.vertical,
                   TextField(
                     focusNode: quantityFocusNode,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.sentences,
                     decoration: const InputDecoration(
-                      labelText: 'Quantity (optional)',
+                      labelText: 'Quantity / size (optional)',
                       hintText: 'Enter quantity',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.normal,
                       ),
                       border: OutlineInputBorder(),
+                      suffixIcon: TooltipButton(
+                        title: 'Quantity / size',
+                        message:
+                            'The quantity or size of the product you want to buy. For example:\n\none, 2, 3 kg, four litres, 5 cans, two dozen, a few, several, or leave blank',
+                      ),
                     ),
                     controller: quantityController,
                     onSubmitted: (_) => categoriesFocusNode.requestFocus(),
                   ),
-                  const ToggleTooltip(
-                    type: TooltipType.shoppingItemQuantity,
-                    message:
-                        'E.g. one, 2, 3 kg, four litres, 5 cans, two dozen, a few, several, or leave blank',
-                  ),
-                  const SizedBox(height: 28),
+                  20.vertical,
                   CategorySelector(
                     focusNode: categoriesFocusNode,
                     controller: categoriesController,
@@ -178,10 +207,10 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   }
 
   void _saveItem() {
-    if (mode == _Mode.create) {
-      _saveNewItem();
+    if (widget.data case ShoppingItemViewEditData editData) {
+      _saveUpdatedItem(editData.item);
     } else {
-      _saveUpdatedItem();
+      _saveNewItem();
     }
   }
 
@@ -200,11 +229,11 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
     ));
   }
 
-  void _saveUpdatedItem() {
+  void _saveUpdatedItem(ShoppingItem item) {
     final name = productController.text.trim();
     final quantity = quantityController.text.trim();
     ref.read(shoppingListItemRepoProvider(widget.listId).notifier).updateItem(
-          item: widget.item!,
+          item: item,
           newName: name,
           newQuantity: quantity,
           newCategories: selectedCategories,
