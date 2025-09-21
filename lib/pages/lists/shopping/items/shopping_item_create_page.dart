@@ -58,6 +58,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                   ),
                   ShoppingItemCategorySelectView(
                     key: ValueKey('category_$childrenResetKey'),
+                    listId: widget.listId,
                     showErrors: showErrors,
                     onEditItem: () => moveToTab(2),
                   ),
@@ -382,9 +383,15 @@ class ItemSuggestionsEmpty extends StatelessWidget {
 }
 
 class ShoppingItemCategorySelectView extends ConsumerStatefulWidget {
+  final String listId;
   final VoidCallback onEditItem;
   final bool showErrors;
-  const ShoppingItemCategorySelectView({required this.onEditItem, required this.showErrors, super.key});
+  const ShoppingItemCategorySelectView({
+    required this.listId,
+    required this.onEditItem,
+    required this.showErrors,
+    super.key,
+  });
 
   @override
   ConsumerState<ShoppingItemCategorySelectView> createState() => _ShoppingItemCategorySelectViewState();
@@ -455,6 +462,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                 ),
                 16.vertical,
                 CategorySelector(
+                  listId: widget.listId,
                   selectedCategories: model.data.categories,
                   onCategoriesChanged: (categories) {
                     ref.read(shoppingItemCreateViewModelProvider.notifier).setSelectedCategories(categories);

@@ -31,20 +31,19 @@ class CategoryFilter extends _$CategoryFilter {
 }
 
 @riverpod
-CategorySelectorViewModel categorySelectorViewModel(Ref ref) {
-  return CategorySelectorViewModel._(ref);
+CategorySelectorViewModel categorySelectorViewModel(Ref ref, String listId) {
+  return CategorySelectorViewModel._(ref, listId);
 }
 
 class CategorySelectorViewModel {
   final Ref _ref;
-  CategorySelectorViewModel._(this._ref);
+  final String listId;
+  CategorySelectorViewModel._(this._ref, this.listId);
 
   Future<List<CategorySelectorItem>> getItems(String filter) async {
-    final autocompleteRepo = _ref.read(shoppingCategoryAutocompleteRepoProvider);
+    final autocompleteRepo = _ref.read(shoppingCategoryAutocompleteRepoProvider(listId));
     final autocompletes = await autocompleteRepo.getAutocomplete(filter);
-    final items = autocompletes
-        .map((autocomplete) => CategorySelectorItem.suggestion(autocomplete.name))
-        .toList();
+    final items = autocompletes.map((autocomplete) => CategorySelectorItem.suggestion(autocomplete.name)).toList();
     if (items.isEmpty || filter.length > 3) {
       items.insert(0, const CategorySelectorItem.newCategory());
     }

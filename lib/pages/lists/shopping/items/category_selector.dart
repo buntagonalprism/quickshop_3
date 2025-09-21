@@ -7,6 +7,7 @@ import 'category_selector_view_model.dart';
 
 class CategorySelector extends StatefulWidget {
   const CategorySelector({
+    required this.listId,
     required this.selectedCategories,
     required this.onCategoriesChanged,
     required this.error,
@@ -15,6 +16,7 @@ class CategorySelector extends StatefulWidget {
     this.onSubmitted,
     super.key,
   });
+  final String listId;
   final List<String> selectedCategories;
   final void Function(List<String>) onCategoriesChanged;
   final String? error;
@@ -102,15 +104,15 @@ class _CategorySelectorState extends State<CategorySelector> {
                   children: widget.selectedCategories
                       .map((category) => Chip(
                             label: Text(category),
-                            onDeleted: () => widget.onCategoriesChanged(
-                                List.from(widget.selectedCategories)..remove(category)),
+                            onDeleted: () =>
+                                widget.onCategoriesChanged(List.from(widget.selectedCategories)..remove(category)),
                           ))
                       .toList(),
                 ),
           2.vertical,
           LayoutBuilder(builder: (context, constraints) {
             return Consumer(builder: (context, ref, _) {
-              final vm = ref.watch(categorySelectorViewModelProvider);
+              final vm = ref.watch(categorySelectorViewModelProvider(widget.listId));
               return RawAutocomplete<CategorySelectorItem>(
                 optionsViewOpenDirection: OptionsViewOpenDirection.up,
                 focusNode: focusNode,

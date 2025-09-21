@@ -150,6 +150,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                   ),
                   20.vertical,
                   CategorySelector(
+                    listId: widget.listId,
                     focusNode: categoriesFocusNode,
                     controller: categoriesController,
                     selectedCategories: selectedCategories,

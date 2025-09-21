@@ -16,4 +16,5 @@ abstract class ShoppingCategoryAutocomplete with _$ShoppingCategoryAutocomplete 
 enum ShoppingCategoryAutocompleteSource {
   history,
   suggested,
+  list,
 }

@@ -40,9 +40,9 @@ class ShoppingItemAutocompleteRepo {
       final listItems = listItemsAsync.requireValue;
       for (var item in listItems) {
         if (item.product.toLowerCase().startsWith(product)) {
-          startMatches.add(_listItemToSuggestion(item));
+          startMatches.add(_listItemToAutcomplete(item));
         } else if (item.product.toLowerCase().contains(product)) {
-          middleMatches.add(_listItemToSuggestion(item));
+          middleMatches.add(_listItemToAutcomplete(item));
         }
       }
     }
@@ -113,7 +113,7 @@ class ShoppingItemAutocompleteRepo {
     itemSuggestionsData.remove(suggestion.product);
   }
 
-  ShoppingItemAutocomplete _listItemToSuggestion(ShoppingItem item) {
+  ShoppingItemAutocomplete _listItemToAutcomplete(ShoppingItem item) {
     return ShoppingItemAutocomplete(
       product: item.product,
       categories: item.categories,

@@ -1,36 +1,87 @@
-import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../analytics/logger.dart';
 import '../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
-import '../../../services/app_database.dart';
-import '../../../services/app_database_provider.dart';
+import '../history/shopping_category_history_repo.dart';
+import '../shopping_item_repo.dart';
+import '../suggestions/shopping_category_suggestion_repo.dart';
 
 part 'shopping_category_autocomplete_repo.g.dart';
 
 @riverpod
-ShoppingCategoryAutocompleteRepo shoppingCategoryAutocompleteRepo(Ref ref) {
-  return ShoppingCategoryAutocompleteRepo(ref);
+ShoppingCategoryAutocompleteRepo shoppingCategoryAutocompleteRepo(Ref ref, String listId) {
+  return ShoppingCategoryAutocompleteRepo(ref, listId);
 }
 
 class ShoppingCategoryAutocompleteRepo {
+  final String listId;
   final Ref _ref;
-  AppDatabase get _db => _ref.read(appDatabaseProvider);
-  Logger get _log => _ref.read(loggerProvider);
+  ShoppingCategorySuggestionRepo get _suggestionRepo => _ref.read(shoppingCategorySuggestionRepoProvider);
+  ShoppingCategoryHistoryRepo get _historyRepo => _ref.read(shoppingCategoryHistoryRepoProvider);
 
-  ShoppingCategoryAutocompleteRepo(this._ref);
+  ShoppingCategoryAutocompleteRepo(this._ref, this.listId);
 
   Future<List<ShoppingCategoryAutocomplete>> getAutocomplete(String filter) async {
-    final start = DateTime.now();
-    final categorySuggestions = await _db.categorySuggestionDao.query(filter);
-    _log.captureSpan(start, 'Category suggestions query');
-    return categorySuggestions
-        .mapIndexed((index, suggestion) => ShoppingCategoryAutocomplete(
-              name: suggestion.name,
-              source: ShoppingCategoryAutocompleteSource.suggested,
-              sourceId: index.toString(),
-            ))
-        .toList();
+    final query = filter.trim().toLowerCase();
+    final startMatches = <ShoppingCategoryAutocomplete>[];
+    final middleMatches = <ShoppingCategoryAutocomplete>[];
+
+    final includedCategories = <String>{};
+
+    addIfNotAlreadyIncluded(ShoppingCategoryAutocomplete item) {
+      if (!includedCategories.contains(item.name.toLowerCase())) {
+        includedCategories.add(item.name.toLowerCase());
+        if (item.name.toLowerCase().startsWith(query)) {
+          startMatches.add(item);
+        } else {
+          middleMatches.add(item);
+        }
+      }
+    }
+
+    // Add existing categories from the current shopping list as highest priority
+    final listItemsAsync = _ref.read(shoppingListItemRepoProvider(listId));
+    if (listItemsAsync.hasValue) {
+      final listItems = listItemsAsync.requireValue;
+      for (var item in listItems) {
+        for (var category in item.categories) {
+          if (category.toLowerCase().startsWith(query) || category.toLowerCase().contains(query)) {
+            addIfNotAlreadyIncluded(_listCategoryToAutocomplete(category, item.id));
+          }
+        }
+      }
+    }
+
+    // Then add categories from the user's history
+    final history = await _historyRepo.searchHistory(query);
+    for (var historyCategory in history) {
+      final autocomplete = ShoppingCategoryAutocomplete(
+        name: historyCategory.name,
+        source: ShoppingCategoryAutocompleteSource.history,
+        sourceId: historyCategory.id,
+      );
+      addIfNotAlreadyIncluded(autocomplete);
+    }
+
+    // Finally, add common suggestions
+    final suggestions = await _suggestionRepo.searchSuggestions(query);
+    for (var suggestion in suggestions) {
+      final autocomplete = ShoppingCategoryAutocomplete(
+        name: suggestion.name,
+        source: ShoppingCategoryAutocompleteSource.suggested,
+        sourceId: suggestion.id,
+      );
+      addIfNotAlreadyIncluded(autocomplete);
+    }
+
+    return [...startMatches, ...middleMatches];
+  }
+
+  ShoppingCategoryAutocomplete _listCategoryToAutocomplete(String categoryName, String itemId) {
+    return ShoppingCategoryAutocomplete(
+      name: categoryName,
+      source: ShoppingCategoryAutocompleteSource.list,
+      sourceId: itemId,
+    );
   }
 }
