@@ -26,7 +26,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   @override
   Widget build(BuildContext context) {
-    final createData = ref.watch(shoppingItemCreateViewModelProvider);
+    final model = ref.watch(shoppingItemCreateViewModelProvider);
     final screenTitle = ['New item', 'Select category', 'Edit item details'][tabController.index];
     return PopScope(
       canPop: tabController.index == 0,
@@ -66,12 +66,12 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                     listId: widget.listId,
                     data: ShoppingItemViewCreateData(
                       rawData: ShoppingItemRawData(
-                        product: createData.data.product,
-                        quantity: createData.data.quantity,
-                        categories: createData.data.categories,
+                        product: model.data.product,
+                        quantity: model.data.quantity,
+                        categories: model.data.categories,
                       ),
                     ),
-                    errors: showErrors ? createData.itemErrors : null,
+                    errors: showErrors ? model.itemErrors : null,
                     onDataChanged: (rawData) {
                       ref.read(shoppingItemCreateViewModelProvider.notifier).setRawData(rawData);
                     },
@@ -115,15 +115,14 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   void onDone({bool addMore = false}) async {
     final itemRepo = ref.read(shoppingListItemRepoProvider(widget.listId).notifier);
-    final createData = ref.read(shoppingItemCreateViewModelProvider);
-    final isValid = ref.read(shoppingItemCreateViewModelProvider.notifier).validate();
-    if (!isValid) {
+    final model = ref.read(shoppingItemCreateViewModelProvider);
+    if (model.hasErrors) {
       setState(() => showErrors = true);
       return;
     }
 
     if (tabController.index == 0) {
-      final result = await itemRepo.addItemByName(createData.filter);
+      final result = await itemRepo.addItemByName(model.filter);
       result.when(
         categoryRequired: () => moveToTab(1),
         success: (addedItem) {
@@ -136,13 +135,12 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
         },
       );
     } else {
-      final createData = ref.read(shoppingItemCreateViewModelProvider);
       itemRepo.addItem(
-        productName: createData.data.product,
-        quantity: createData.data.quantity,
-        categories: createData.data.categories,
+        productName: model.data.product,
+        quantity: model.data.quantity,
+        categories: model.data.categories,
       );
-      showConfirmationSnackbar(createData.data.displayName);
+      showConfirmationSnackbar(model.data.displayName);
     }
   }
 
@@ -197,14 +195,14 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
 
   @override
   Widget build(BuildContext context) {
-    final createData = ref.watch(shoppingItemCreateViewModelProvider);
+    final model = ref.watch(shoppingItemCreateViewModelProvider);
     return Column(children: [
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         child: TextField(
           decoration: InputDecoration(
             labelText: 'Enter item name',
-            errorText: widget.showErrors ? createData.filterError : null,
+            errorText: widget.showErrors ? model.filterError : null,
           ),
           autofocus: true,
           controller: nameController,
@@ -214,7 +212,7 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
         ),
       ),
       Expanded(
-        child: createData.filter.isEmpty
+        child: model.filter.isEmpty
             ? const ItemSuggestionsPlaceholder()
             : ItemSuggestionsList(
                 listId: widget.listId,
@@ -404,8 +402,8 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
   Widget build(BuildContext context) {
     final bodyStyle = Theme.of(context).textTheme.bodyMedium;
     final bodyBoldStyle = bodyStyle?.copyWith(fontWeight: FontWeight.bold);
-    final createData = ref.watch(shoppingItemCreateViewModelProvider);
-    categoryError = widget.showErrors ? createData.itemErrors?.categoriesError : null;
+    final model = ref.watch(shoppingItemCreateViewModelProvider);
+    categoryError = widget.showErrors ? model.itemErrors?.categoriesError : null;
     return Column(
       children: [
         Expanded(
@@ -430,7 +428,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                             text: 'Base product name: ',
                             style: bodyBoldStyle,
                             children: [
-                              TextSpan(text: createData.data.product, style: bodyStyle),
+                              TextSpan(text: model.data.product, style: bodyStyle),
                             ],
                           )),
                           2.vertical,
@@ -439,7 +437,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                             style: bodyBoldStyle,
                             children: [
                               TextSpan(
-                                text: createData.data.quantity.isNotEmpty ? createData.data.quantity : 'Not specified',
+                                text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
                                 style: bodyStyle,
                               ),
                             ],
@@ -457,7 +455,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                 ),
                 16.vertical,
                 CategorySelector(
-                  selectedCategories: createData.data.categories,
+                  selectedCategories: model.data.categories,
                   onCategoriesChanged: (categories) {
                     ref.read(shoppingItemCreateViewModelProvider.notifier).setSelectedCategories(categories);
                   },

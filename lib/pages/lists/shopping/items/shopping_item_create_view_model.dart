@@ -18,43 +18,34 @@ Future<List<ShoppingItemAutocomplete>> itemAutocomplete(Ref ref, String listId) 
   return repo.getAutocomplete(filter);
 }
 
-class ShoppingItemCreateErrors {
-  final String? filter;
-  final ShoppingItemErrors item;
-
-  ShoppingItemCreateErrors({
-    required this.filter,
-    required this.item,
-  });
-  bool get hasErrors => filter != null || item.hasErrors;
-}
-
 @freezed
-abstract class ShoppingItemCreateData with _$ShoppingItemCreateData {
-  const ShoppingItemCreateData._();
+abstract class ShoppingItemCreateModel with _$ShoppingItemCreateModel {
+  const ShoppingItemCreateModel._();
 
-  const factory ShoppingItemCreateData({
+  const factory ShoppingItemCreateModel({
     required String filter,
     required ShoppingItemRawData data,
     String? filterError,
     ShoppingItemErrors? itemErrors,
   }) = _ShoppingItemCreateData;
 
-  factory ShoppingItemCreateData.empty() => ShoppingItemCreateData(
+  factory ShoppingItemCreateModel.empty() => ShoppingItemCreateModel(
         filter: '',
         data: ShoppingItemRawData.empty(),
       );
+
+  bool get hasErrors => filterError != null || itemErrors?.hasErrors == true;
 }
 
 @riverpod
 class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
   @override
-  ShoppingItemCreateData build() {
-    return ShoppingItemCreateData.empty();
+  ShoppingItemCreateModel build() {
+    return ShoppingItemCreateModel.empty();
   }
 
   void reset() {
-    state = ShoppingItemCreateData.empty();
+    state = ShoppingItemCreateModel.empty();
   }
 
   void setFilter(String filter) {
@@ -68,27 +59,30 @@ class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
     );
   }
 
-  bool validate() {
-    state = state.copyWith(
-      filterError: state.filter.isEmpty ? 'Please enter an item name' : null,
-      itemErrors: ShoppingItemErrors.validate(state.data),
-    );
-    return state.filterError == null && !state.itemErrors!.hasErrors;
-  }
-
   void setProduct(String product) {
     state = state.copyWith.data(product: product);
+    _validate();
   }
 
   void setQuantity(String quantity) {
     state = state.copyWith.data(quantity: quantity);
+    _validate();
   }
 
   void setSelectedCategories(List<String> selectedCategories) {
     state = state.copyWith.data(categories: selectedCategories);
+    _validate();
   }
 
   void setRawData(ShoppingItemRawData rawData) {
     state = state.copyWith(data: rawData);
+    _validate();
+  }
+
+  void _validate() {
+    state = state.copyWith(
+      filterError: state.filter.isEmpty ? 'Please enter an item name' : null,
+      itemErrors: ShoppingItemErrors.validate(state.data),
+    );
   }
 }

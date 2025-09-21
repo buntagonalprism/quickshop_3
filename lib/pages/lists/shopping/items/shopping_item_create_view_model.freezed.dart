@@ -13,25 +13,25 @@ part of 'shopping_item_create_view_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$ShoppingItemCreateData {
+mixin _$ShoppingItemCreateModel {
   String get filter;
   ShoppingItemRawData get data;
   String? get filterError;
   ShoppingItemErrors? get itemErrors;
 
-  /// Create a copy of ShoppingItemCreateData
+  /// Create a copy of ShoppingItemCreateModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $ShoppingItemCreateDataCopyWith<ShoppingItemCreateData> get copyWith =>
-      _$ShoppingItemCreateDataCopyWithImpl<ShoppingItemCreateData>(
-          this as ShoppingItemCreateData, _$identity);
+  $ShoppingItemCreateModelCopyWith<ShoppingItemCreateModel> get copyWith =>
+      _$ShoppingItemCreateModelCopyWithImpl<ShoppingItemCreateModel>(
+          this as ShoppingItemCreateModel, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ShoppingItemCreateData &&
+            other is ShoppingItemCreateModel &&
             (identical(other.filter, filter) || other.filter == filter) &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.filterError, filterError) ||
@@ -46,15 +46,15 @@ mixin _$ShoppingItemCreateData {
 
   @override
   String toString() {
-    return 'ShoppingItemCreateData(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
+    return 'ShoppingItemCreateModel(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
   }
 }
 
 /// @nodoc
-abstract mixin class $ShoppingItemCreateDataCopyWith<$Res> {
-  factory $ShoppingItemCreateDataCopyWith(ShoppingItemCreateData value,
-          $Res Function(ShoppingItemCreateData) _then) =
-      _$ShoppingItemCreateDataCopyWithImpl;
+abstract mixin class $ShoppingItemCreateModelCopyWith<$Res> {
+  factory $ShoppingItemCreateModelCopyWith(ShoppingItemCreateModel value,
+          $Res Function(ShoppingItemCreateModel) _then) =
+      _$ShoppingItemCreateModelCopyWithImpl;
   @useResult
   $Res call(
       {String filter,
@@ -66,14 +66,14 @@ abstract mixin class $ShoppingItemCreateDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ShoppingItemCreateDataCopyWithImpl<$Res>
-    implements $ShoppingItemCreateDataCopyWith<$Res> {
-  _$ShoppingItemCreateDataCopyWithImpl(this._self, this._then);
+class _$ShoppingItemCreateModelCopyWithImpl<$Res>
+    implements $ShoppingItemCreateModelCopyWith<$Res> {
+  _$ShoppingItemCreateModelCopyWithImpl(this._self, this._then);
 
-  final ShoppingItemCreateData _self;
-  final $Res Function(ShoppingItemCreateData) _then;
+  final ShoppingItemCreateModel _self;
+  final $Res Function(ShoppingItemCreateModel) _then;
 
-  /// Create a copy of ShoppingItemCreateData
+  /// Create a copy of ShoppingItemCreateModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -103,7 +103,7 @@ class _$ShoppingItemCreateDataCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of ShoppingItemCreateData
+  /// Create a copy of ShoppingItemCreateModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -114,8 +114,8 @@ class _$ShoppingItemCreateDataCopyWithImpl<$Res>
   }
 }
 
-/// Adds pattern-matching-related methods to [ShoppingItemCreateData].
-extension ShoppingItemCreateDataPatterns on ShoppingItemCreateData {
+/// Adds pattern-matching-related methods to [ShoppingItemCreateModel].
+extension ShoppingItemCreateModelPatterns on ShoppingItemCreateModel {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -282,7 +282,7 @@ extension ShoppingItemCreateDataPatterns on ShoppingItemCreateData {
 
 /// @nodoc
 
-class _ShoppingItemCreateData extends ShoppingItemCreateData {
+class _ShoppingItemCreateData extends ShoppingItemCreateModel {
   const _ShoppingItemCreateData(
       {required this.filter,
       required this.data,
@@ -299,7 +299,7 @@ class _ShoppingItemCreateData extends ShoppingItemCreateData {
   @override
   final ShoppingItemErrors? itemErrors;
 
-  /// Create a copy of ShoppingItemCreateData
+  /// Create a copy of ShoppingItemCreateModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -327,13 +327,13 @@ class _ShoppingItemCreateData extends ShoppingItemCreateData {
 
   @override
   String toString() {
-    return 'ShoppingItemCreateData(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
+    return 'ShoppingItemCreateModel(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
   }
 }
 
 /// @nodoc
 abstract mixin class _$ShoppingItemCreateDataCopyWith<$Res>
-    implements $ShoppingItemCreateDataCopyWith<$Res> {
+    implements $ShoppingItemCreateModelCopyWith<$Res> {
   factory _$ShoppingItemCreateDataCopyWith(_ShoppingItemCreateData value,
           $Res Function(_ShoppingItemCreateData) _then) =
       __$ShoppingItemCreateDataCopyWithImpl;
@@ -357,7 +357,7 @@ class __$ShoppingItemCreateDataCopyWithImpl<$Res>
   final _ShoppingItemCreateData _self;
   final $Res Function(_ShoppingItemCreateData) _then;
 
-  /// Create a copy of ShoppingItemCreateData
+  /// Create a copy of ShoppingItemCreateModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -387,7 +387,7 @@ class __$ShoppingItemCreateDataCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of ShoppingItemCreateData
+  /// Create a copy of ShoppingItemCreateModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')

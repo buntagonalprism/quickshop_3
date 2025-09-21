@@ -165,12 +165,12 @@ class _ItemAutocompleteProviderElement
 }
 
 String _$shoppingItemCreateViewModelHash() =>
-    r'7ca3bf5ae7171d0a45273a1239494eaad6ad1b20';
+    r'dd3d897507d4033181bb92cdfac4a7bc870597f8';
 
 /// See also [ShoppingItemCreateViewModel].
 @ProviderFor(ShoppingItemCreateViewModel)
 final shoppingItemCreateViewModelProvider = AutoDisposeNotifierProvider<
-    ShoppingItemCreateViewModel, ShoppingItemCreateData>.internal(
+    ShoppingItemCreateViewModel, ShoppingItemCreateModel>.internal(
   ShoppingItemCreateViewModel.new,
   name: r'shoppingItemCreateViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -181,6 +181,6 @@ final shoppingItemCreateViewModelProvider = AutoDisposeNotifierProvider<
 );
 
 typedef _$ShoppingItemCreateViewModel
-    = AutoDisposeNotifier<ShoppingItemCreateData>;
+    = AutoDisposeNotifier<ShoppingItemCreateModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

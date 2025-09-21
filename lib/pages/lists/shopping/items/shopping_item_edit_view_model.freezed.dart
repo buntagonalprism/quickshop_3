@@ -13,12 +13,11 @@ part of 'shopping_item_edit_view_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$ShoppingItemEditViewModel {
+mixin _$ShoppingItemEditModel {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is ShoppingItemEditViewModel);
+        (other.runtimeType == runtimeType && other is ShoppingItemEditModel);
   }
 
   @override
@@ -26,18 +25,18 @@ mixin _$ShoppingItemEditViewModel {
 
   @override
   String toString() {
-    return 'ShoppingItemEditViewModel()';
+    return 'ShoppingItemEditModel()';
   }
 }
 
 /// @nodoc
-class $ShoppingItemEditViewModelCopyWith<$Res> {
-  $ShoppingItemEditViewModelCopyWith(
-      ShoppingItemEditViewModel _, $Res Function(ShoppingItemEditViewModel) __);
+class $ShoppingItemEditModelCopyWith<$Res> {
+  $ShoppingItemEditModelCopyWith(
+      ShoppingItemEditModel _, $Res Function(ShoppingItemEditModel) __);
 }
 
-/// Adds pattern-matching-related methods to [ShoppingItemEditViewModel].
-extension ShoppingItemEditViewModelPatterns on ShoppingItemEditViewModel {
+/// Adds pattern-matching-related methods to [ShoppingItemEditModel].
+extension ShoppingItemEditModelPatterns on ShoppingItemEditModel {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -249,7 +248,7 @@ extension ShoppingItemEditViewModelPatterns on ShoppingItemEditViewModel {
 
 /// @nodoc
 
-class _Loading extends ShoppingItemEditViewModel {
+class _Loading extends ShoppingItemEditModel {
   const _Loading() : super._();
 
   @override
@@ -263,13 +262,13 @@ class _Loading extends ShoppingItemEditViewModel {
 
   @override
   String toString() {
-    return 'ShoppingItemEditViewModel.loading()';
+    return 'ShoppingItemEditModel.loading()';
   }
 }
 
 /// @nodoc
 
-class _Error extends ShoppingItemEditViewModel {
+class _Error extends ShoppingItemEditModel {
   const _Error() : super._();
 
   @override
@@ -283,13 +282,13 @@ class _Error extends ShoppingItemEditViewModel {
 
   @override
   String toString() {
-    return 'ShoppingItemEditViewModel.error()';
+    return 'ShoppingItemEditModel.error()';
   }
 }
 
 /// @nodoc
 
-class _NotFound extends ShoppingItemEditViewModel {
+class _NotFound extends ShoppingItemEditModel {
   const _NotFound() : super._();
 
   @override
@@ -303,18 +302,18 @@ class _NotFound extends ShoppingItemEditViewModel {
 
   @override
   String toString() {
-    return 'ShoppingItemEditViewModel.notFound()';
+    return 'ShoppingItemEditModel.notFound()';
   }
 }
 
 /// @nodoc
 
-class _Success extends ShoppingItemEditViewModel {
+class _Success extends ShoppingItemEditModel {
   const _Success({required this.item}) : super._();
 
   final ShoppingItem item;
 
-  /// Create a copy of ShoppingItemEditViewModel
+  /// Create a copy of ShoppingItemEditModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
@@ -334,13 +333,13 @@ class _Success extends ShoppingItemEditViewModel {
 
   @override
   String toString() {
-    return 'ShoppingItemEditViewModel.success(item: $item)';
+    return 'ShoppingItemEditModel.success(item: $item)';
   }
 }
 
 /// @nodoc
 abstract mixin class _$SuccessCopyWith<$Res>
-    implements $ShoppingItemEditViewModelCopyWith<$Res> {
+    implements $ShoppingItemEditModelCopyWith<$Res> {
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) _then) =
       __$SuccessCopyWithImpl;
   @useResult
@@ -356,7 +355,7 @@ class __$SuccessCopyWithImpl<$Res> implements _$SuccessCopyWith<$Res> {
   final _Success _self;
   final $Res Function(_Success) _then;
 
-  /// Create a copy of ShoppingItemEditViewModel
+  /// Create a copy of ShoppingItemEditModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   $Res call({
@@ -370,7 +369,7 @@ class __$SuccessCopyWithImpl<$Res> implements _$SuccessCopyWith<$Res> {
     ));
   }
 
-  /// Create a copy of ShoppingItemEditViewModel
+  /// Create a copy of ShoppingItemEditModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')

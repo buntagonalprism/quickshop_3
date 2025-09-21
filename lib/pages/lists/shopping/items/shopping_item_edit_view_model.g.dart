@@ -7,7 +7,7 @@ part of 'shopping_item_edit_view_model.dart';
 // **************************************************************************
 
 String _$shoppingItemEditViewModelHash() =>
-    r'ca357b3251d5c1ebff5c1a97cee8f11045cc8ee7';
+    r'5f2df0b69db6c44bf4a1b8f32b35784053da0ec1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,8 +35,7 @@ class _SystemHash {
 const shoppingItemEditViewModelProvider = ShoppingItemEditViewModelFamily();
 
 /// See also [shoppingItemEditViewModel].
-class ShoppingItemEditViewModelFamily
-    extends Family<ShoppingItemEditViewModel> {
+class ShoppingItemEditViewModelFamily extends Family<ShoppingItemEditModel> {
   /// See also [shoppingItemEditViewModel].
   const ShoppingItemEditViewModelFamily();
 
@@ -78,7 +77,7 @@ class ShoppingItemEditViewModelFamily
 
 /// See also [shoppingItemEditViewModel].
 class ShoppingItemEditViewModelProvider
-    extends AutoDisposeProvider<ShoppingItemEditViewModel> {
+    extends AutoDisposeProvider<ShoppingItemEditModel> {
   /// See also [shoppingItemEditViewModel].
   ShoppingItemEditViewModelProvider(
     String listId,
@@ -118,7 +117,7 @@ class ShoppingItemEditViewModelProvider
 
   @override
   Override overrideWith(
-    ShoppingItemEditViewModel Function(ShoppingItemEditViewModelRef provider)
+    ShoppingItemEditModel Function(ShoppingItemEditViewModelRef provider)
         create,
   ) {
     return ProviderOverride(
@@ -137,7 +136,7 @@ class ShoppingItemEditViewModelProvider
   }
 
   @override
-  AutoDisposeProviderElement<ShoppingItemEditViewModel> createElement() {
+  AutoDisposeProviderElement<ShoppingItemEditModel> createElement() {
     return _ShoppingItemEditViewModelProviderElement(this);
   }
 
@@ -161,7 +160,7 @@ class ShoppingItemEditViewModelProvider
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin ShoppingItemEditViewModelRef
-    on AutoDisposeProviderRef<ShoppingItemEditViewModel> {
+    on AutoDisposeProviderRef<ShoppingItemEditModel> {
   /// The parameter `listId` of this provider.
   String get listId;
 
@@ -170,7 +169,7 @@ mixin ShoppingItemEditViewModelRef
 }
 
 class _ShoppingItemEditViewModelProviderElement
-    extends AutoDisposeProviderElement<ShoppingItemEditViewModel>
+    extends AutoDisposeProviderElement<ShoppingItemEditModel>
     with ShoppingItemEditViewModelRef {
   _ShoppingItemEditViewModelProviderElement(super.provider);
 

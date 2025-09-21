@@ -11,29 +11,29 @@ part 'shopping_item_edit_view_model.freezed.dart';
 part 'shopping_item_edit_view_model.g.dart';
 
 @freezed
-class ShoppingItemEditViewModel with _$ShoppingItemEditViewModel {
-  const ShoppingItemEditViewModel._();
+class ShoppingItemEditModel with _$ShoppingItemEditModel {
+  const ShoppingItemEditModel._();
 
-  const factory ShoppingItemEditViewModel.loading() = _Loading;
-  const factory ShoppingItemEditViewModel.error() = _Error;
-  const factory ShoppingItemEditViewModel.notFound() = _NotFound;
-  const factory ShoppingItemEditViewModel.success({required ShoppingItem item}) = _Success;
+  const factory ShoppingItemEditModel.loading() = _Loading;
+  const factory ShoppingItemEditModel.error() = _Error;
+  const factory ShoppingItemEditModel.notFound() = _NotFound;
+  const factory ShoppingItemEditModel.success({required ShoppingItem item}) = _Success;
 }
 
 @riverpod
-ShoppingItemEditViewModel shoppingItemEditViewModel(Ref ref, String listId, String itemId) {
+ShoppingItemEditModel shoppingItemEditViewModel(Ref ref, String listId, String itemId) {
   final itemsValue = ref.watch(shoppingListItemRepoProvider(listId));
   if (itemsValue.isLoading) {
-    return const ShoppingItemEditViewModel.loading();
+    return const ShoppingItemEditModel.loading();
   }
   if (itemsValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(itemsValue);
-    return const ShoppingItemEditViewModel.error();
+    return const ShoppingItemEditModel.error();
   }
   final items = itemsValue.value!;
   final item = items.firstWhereOrNull((item) => item.path == 'lists/$listId/items/$itemId');
   if (item == null) {
-    return const ShoppingItemEditViewModel.notFound();
+    return const ShoppingItemEditModel.notFound();
   }
-  return ShoppingItemEditViewModel.success(item: item);
+  return ShoppingItemEditModel.success(item: item);
 }
