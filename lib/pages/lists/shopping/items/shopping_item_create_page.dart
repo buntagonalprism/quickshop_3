@@ -21,7 +21,7 @@ class ShoppingItemCreatePage extends ConsumerStatefulWidget {
 
 class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage> with SingleTickerProviderStateMixin {
   late final tabController = TabController(length: 3, vsync: this);
-  bool showErrors = false;
+  int showErrorsOnTab = -1;
   int childrenResetKey = DateTime.now().millisecondsSinceEpoch;
 
   @override
@@ -52,14 +52,14 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                 children: [
                   ShoppingItemSearchView(
                     key: ValueKey('search_$childrenResetKey'),
-                    showErrors: showErrors,
+                    showErrors: showErrorsOnTab == 0,
                     onAutocompleteSelected: onAutocompleteSelected,
                     listId: widget.listId,
                   ),
                   ShoppingItemCategorySelectView(
                     key: ValueKey('category_$childrenResetKey'),
                     listId: widget.listId,
-                    showErrors: showErrors,
+                    showErrors: showErrorsOnTab == 1,
                     onEditItem: () => moveToTab(2),
                   ),
                   ShoppingItemView(
@@ -72,7 +72,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                         categories: model.data.categories,
                       ),
                     ),
-                    errors: showErrors ? model.itemErrors : null,
+                    errors: showErrorsOnTab == 2 ? model.itemErrors : null,
                     onDataChanged: (rawData) {
                       ref.read(shoppingItemCreateViewModelProvider.notifier).setRawData(rawData);
                     },
@@ -119,32 +119,41 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   void onDone({bool addMore = false}) async {
     final itemRepo = ref.read(shoppingListItemRepoProvider(widget.listId).notifier);
+    ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
     final model = ref.read(shoppingItemCreateViewModelProvider);
-    if (model.hasErrors) {
-      setState(() => showErrors = true);
-      return;
+
+    onAddedItem() {
+      showConfirmationSnackbar(model.data.displayName);
+      if (addMore) {
+        resetPage();
+      } else {
+        ref.read(routerProvider).pop();
+      }
     }
 
     if (tabController.index == 0) {
+      if (model.filterError != null) {
+        setState(() => showErrorsOnTab = 0);
+        return;
+      }
       final result = await itemRepo.addItemByName(model.filter);
       result.when(
         categoryRequired: () => moveToTab(1),
         success: (addedItem) {
-          showConfirmationSnackbar(addedItem.displayName);
-          if (addMore) {
-            resetPage();
-          } else {
-            ref.read(routerProvider).pop();
-          }
+          onAddedItem();
         },
       );
     } else {
+      if (model.itemErrors?.hasErrors ?? false) {
+        setState(() => showErrorsOnTab = tabController.index);
+        return;
+      }
       itemRepo.addItem(
         productName: model.data.product,
         quantity: model.data.quantity,
         categories: model.data.categories,
       );
-      showConfirmationSnackbar(model.data.displayName);
+      onAddedItem();
     }
   }
 
@@ -159,7 +168,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   void resetPage() {
     moveToTab(0);
-    showErrors = false;
+
     ref.read(shoppingItemCreateViewModelProvider.notifier).reset();
     setState(() {
       childrenResetKey = DateTime.now().millisecondsSinceEpoch;
@@ -168,9 +177,10 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   void moveToTab(int index) {
     tabController.animateTo(index);
-    setState(() {
-      // This triggers a rebuild so the PopScope can update its canPop value
-    });
+    // When switching tabs, don't immediately show any errors - give the user a
+    // chance to enter input into the fields, and only show errors on submit.
+    ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
+    setState(() => showErrorsOnTab = -1);
   }
 }
 

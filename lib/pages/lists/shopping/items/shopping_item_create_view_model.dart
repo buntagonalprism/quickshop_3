@@ -39,6 +39,8 @@ abstract class ShoppingItemCreateModel with _$ShoppingItemCreateModel {
 
 @riverpod
 class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
+  bool _autoValidate = false;
+
   @override
   ShoppingItemCreateModel build() {
     return ShoppingItemCreateModel.empty();
@@ -46,6 +48,12 @@ class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
 
   void reset() {
     state = ShoppingItemCreateModel.empty();
+    _autoValidate = false;
+  }
+
+  void setAutoValidation(bool autoValidate) {
+    _autoValidate = autoValidate;
+    _validateIfEnabled();
   }
 
   void setFilter(String filter) {
@@ -57,29 +65,34 @@ class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
         quantity: parsedItem.quantity,
       ),
     );
+    _validateIfEnabled();
   }
 
   void setProduct(String product) {
     state = state.copyWith.data(product: product);
-    _validate();
+    _validateIfEnabled();
   }
 
   void setQuantity(String quantity) {
     state = state.copyWith.data(quantity: quantity);
-    _validate();
+    _validateIfEnabled();
   }
 
   void setSelectedCategories(List<String> selectedCategories) {
     state = state.copyWith.data(categories: selectedCategories);
-    _validate();
+    _validateIfEnabled();
   }
 
   void setRawData(ShoppingItemRawData rawData) {
     state = state.copyWith(data: rawData);
-    _validate();
+    _validateIfEnabled();
   }
 
-  void _validate() {
+  void _validateIfEnabled() {
+    if (!_autoValidate) {
+      return;
+    }
+
     state = state.copyWith(
       filterError: state.filter.isEmpty ? 'Please enter an item name' : null,
       itemErrors: ShoppingItemErrors.validate(state.data),
