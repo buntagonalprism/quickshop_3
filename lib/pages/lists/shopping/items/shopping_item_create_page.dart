@@ -83,20 +83,23 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
             ),
             Material(
               elevation: 4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton.icon(
-                    onPressed: () => onDone(addMore: true),
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add more'),
-                  ),
-                  TextButton.icon(
-                    onPressed: () => onDone(addMore: false),
-                    icon: const Icon(Icons.check),
-                    label: const Text('Done'),
-                  ),
-                ],
+              child: Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () => onDone(addMore: true),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add more'),
+                    ),
+                    TextButton.icon(
+                      onPressed: () => onDone(addMore: false),
+                      icon: const Icon(Icons.check),
+                      label: const Text('Done'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -411,86 +414,63 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
     final bodyBoldStyle = bodyStyle?.copyWith(fontWeight: FontWeight.bold);
     final model = ref.watch(shoppingItemCreateViewModelProvider);
     categoryError = widget.showErrors ? model.itemErrors?.categoriesError : null;
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: 16.horizontalSymmetric,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                16.vertical,
-                Text(
-                  "Select one or more categories for where you might find this product in store.",
-                  style: bodyStyle,
-                ),
-                6.vertical,
-                Row(
+    return Padding(
+      padding: 16.horizontalSymmetric,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          16.vertical,
+          Text(
+            "Select one or more categories for where you might find this product in store.",
+            style: bodyStyle,
+          ),
+          6.vertical,
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text.rich(TextSpan(
-                            text: 'Base product name: ',
-                            style: bodyBoldStyle,
-                            children: [
-                              TextSpan(text: model.data.product, style: bodyStyle),
-                            ],
-                          )),
-                          2.vertical,
-                          Text.rich(TextSpan(
-                            text: 'Quantity/size: ',
-                            style: bodyBoldStyle,
-                            children: [
-                              TextSpan(
-                                text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
-                                style: bodyStyle,
-                              ),
-                            ],
-                          )),
-                        ],
-                      ),
-                    ),
-                    8.horizontal,
-                    TextButton.icon(
-                      onPressed: widget.onEditItem,
-                      label: Text('Edit'),
-                      icon: Icon(Icons.edit),
-                    ),
+                    Text.rich(TextSpan(
+                      text: 'Base product name: ',
+                      style: bodyBoldStyle,
+                      children: [
+                        TextSpan(text: model.data.product, style: bodyStyle),
+                      ],
+                    )),
+                    2.vertical,
+                    Text.rich(TextSpan(
+                      text: 'Quantity/size: ',
+                      style: bodyBoldStyle,
+                      children: [
+                        TextSpan(
+                          text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
+                          style: bodyStyle,
+                        ),
+                      ],
+                    )),
                   ],
                 ),
-                16.vertical,
-                CategorySelector(
-                  listId: widget.listId,
-                  selectedCategories: model.data.categories,
-                  onCategoriesChanged: (categories) {
-                    ref.read(shoppingItemCreateViewModelProvider.notifier).setSelectedCategories(categories);
-                  },
-                  error: categoryError,
-                ),
-              ],
-            ),
-          ),
-        ),
-        Material(
-          elevation: 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+              ),
+              8.horizontal,
               TextButton.icon(
-                onPressed: _onDone,
-                icon: const Icon(Icons.check),
-                label: const Text('Done'),
+                onPressed: widget.onEditItem,
+                label: Text('Edit'),
+                icon: Icon(Icons.edit),
               ),
             ],
           ),
-        ),
-      ],
+          16.vertical,
+          CategorySelector(
+            listId: widget.listId,
+            selectedCategories: model.data.categories,
+            onCategoriesChanged: (categories) {
+              ref.read(shoppingItemCreateViewModelProvider.notifier).setSelectedCategories(categories);
+            },
+            error: categoryError,
+          ),
+        ],
+      ),
     );
-  }
-
-  void _onDone() {
-    print('On done');
   }
 }
