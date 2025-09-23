@@ -163,24 +163,6 @@ class _CategorySelectorViewModelProviderElement
   String get listId => (origin as CategorySelectorViewModelProvider).listId;
 }
 
-String _$categorySuggestionsHash() =>
-    r'cc09fc6a62f0a0ed370c46cbdc035c486a51fc5a';
-
-/// See also [categorySuggestions].
-@ProviderFor(categorySuggestions)
-final categorySuggestionsProvider = AutoDisposeProvider<List<String>>.internal(
-  categorySuggestions,
-  name: r'categorySuggestionsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$categorySuggestionsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CategorySuggestionsRef = AutoDisposeProviderRef<List<String>>;
 String _$categoryFilterHash() => r'e1541cb38ecdbb07e72fb5f47157bd863db23d1a';
 
 /// See also [CategoryFilter].

@@ -1,7 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/item_suggestions.dart';
 import '../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../models/shopping/shopping_item.dart';
 import '../../../services/shopping_item_name_parser.dart';
@@ -86,31 +85,20 @@ class ShoppingItemAutocompleteRepo {
 
   /// Returns a suggestion if one exists with an exact product name match for the given item
   Future<ShoppingItemAutocomplete?> getExactMatchSuggestionForItem(String item) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    final parser = _ref.read(shoppingItemNameParserProvider);
-    final parsedItem = parser.parse(item);
+    final parsedItem = _parser.parse(item);
     final product = parsedItem.product.trim().toLowerCase();
-    final suggestion = _itemSuggestionsDataLower[product];
-    if (suggestion == null) {
-      return null;
+    final autocompleteOptions = await getAutocomplete(product);
+    for (var option in autocompleteOptions) {
+      if (option.product.toLowerCase() == product) {
+        return option;
+      }
     }
-    return Future.value(ShoppingItemAutocomplete(
-      product: parsedItem.product,
-      categories: [suggestion],
-      quantity: parsedItem.quantity,
-      source: ShoppingItemAutocompleteSource.suggested,
-      sourceId: '123',
-    ));
+    return null;
   }
 
-  final _itemSuggestionsDataLower = itemSuggestionsData.map(
-    (key, value) => MapEntry(key.toLowerCase(), value),
-  );
-
   void removeSuggestion(ShoppingItemAutocomplete suggestion) async {
-    // Simulate a database delete
-    await Future.delayed(const Duration(milliseconds: 200));
-    itemSuggestionsData.remove(suggestion.product);
+    // TODO
+    throw UnimplementedError();
   }
 
   ShoppingItemAutocomplete _listItemToAutcomplete(ShoppingItem item) {

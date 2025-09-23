@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/category_suggestions.dart' as data;
 import '../../../../repositories/shopping/autocomplete/shopping_category_autocomplete_repo.dart';
 
 part 'category_selector_view_model.freezed.dart';
@@ -49,9 +48,4 @@ class CategorySelectorViewModel {
     }
     return items;
   }
-}
-
-@riverpod
-List<String> categorySuggestions(Ref ref) {
-  return data.categorySuggestions;
 }

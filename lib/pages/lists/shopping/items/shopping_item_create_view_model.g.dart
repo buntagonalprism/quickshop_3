@@ -165,7 +165,7 @@ class _ItemAutocompleteProviderElement
 }
 
 String _$shoppingItemCreateViewModelHash() =>
-    r'dd3d897507d4033181bb92cdfac4a7bc870597f8';
+    r'2962b2e3e6b3743f3e5cb87a35213eeb0d96e9bd';
 
 /// See also [ShoppingItemCreateViewModel].
 @ProviderFor(ShoppingItemCreateViewModel)
