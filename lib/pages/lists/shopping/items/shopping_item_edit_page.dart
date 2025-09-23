@@ -47,14 +47,36 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
         error: () => const Center(child: Text('Error loading item')),
         notFound: () => const Center(child: Text('Item not found')),
         success: (item) {
-          return ShoppingItemView(
-            listId: widget.listId,
-            data: ShoppingItemViewEditData(item: item),
-            errors: errors,
-            onDataChanged: (updatedRawData) {
-              rawData = updatedRawData;
-            },
-            onDone: () => _saveUpdatedItem(item),
+          return Column(
+            children: [
+              Expanded(
+                child: ShoppingItemView(
+                  listId: widget.listId,
+                  data: ShoppingItemViewEditData(item: item),
+                  errors: errors,
+                  onDataChanged: (updatedRawData) {
+                    setState(() {
+                      rawData = updatedRawData;
+                      errors = ShoppingItemErrors.validate(updatedRawData);
+                    });
+                  },
+                  onDone: () => _saveUpdatedItem(item),
+                ),
+              ),
+              Material(
+                elevation: 4,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+                  child: Center(
+                    child: TextButton.icon(
+                      onPressed: () => _saveUpdatedItem(item),
+                      icon: const Icon(Icons.check),
+                      label: const Text('Done'),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
