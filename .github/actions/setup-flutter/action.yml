@@ -1,0 +1,29 @@
+name: 'Setup Flutter from FVM'
+description: 'Read Flutter version from .fvmrc file and install Flutter'
+inputs:
+  channel:
+    description: 'Flutter channel to use'
+    required: false
+    default: 'stable'
+
+outputs:
+  flutter-version:
+    description: 'The Flutter version that was installed'
+    value: ${{ steps.get-version.outputs.version }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get Flutter version
+      id: get-version
+      shell: bash
+      run: |
+        VERSION=$(cat .fvmrc | sed -n 's/.*"flutter": "\([^"]*\)".*/\1/p')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Installing Flutter version: $VERSION"
+    
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ steps.get-version.outputs.version }}
+        channel: ${{ inputs.channel }}
