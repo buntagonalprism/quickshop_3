@@ -52,6 +52,7 @@ extension AddItemResultPatterns on AddItemResult {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_AddItemResultSuccess value)? success,
     TResult Function(_AddItemResultCategoryRequired value)? categoryRequired,
+    TResult Function(_AddItemResultAlreadyOnList value)? alreadyOnList,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -60,6 +61,8 @@ extension AddItemResultPatterns on AddItemResult {
         return success(_that);
       case _AddItemResultCategoryRequired() when categoryRequired != null:
         return categoryRequired(_that);
+      case _AddItemResultAlreadyOnList() when alreadyOnList != null:
+        return alreadyOnList(_that);
       case _:
         return orElse();
     }
@@ -83,6 +86,7 @@ extension AddItemResultPatterns on AddItemResult {
     required TResult Function(_AddItemResultSuccess value) success,
     required TResult Function(_AddItemResultCategoryRequired value)
         categoryRequired,
+    required TResult Function(_AddItemResultAlreadyOnList value) alreadyOnList,
   }) {
     final _that = this;
     switch (_that) {
@@ -90,6 +94,8 @@ extension AddItemResultPatterns on AddItemResult {
         return success(_that);
       case _AddItemResultCategoryRequired():
         return categoryRequired(_that);
+      case _AddItemResultAlreadyOnList():
+        return alreadyOnList(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -111,6 +117,7 @@ extension AddItemResultPatterns on AddItemResult {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_AddItemResultSuccess value)? success,
     TResult? Function(_AddItemResultCategoryRequired value)? categoryRequired,
+    TResult? Function(_AddItemResultAlreadyOnList value)? alreadyOnList,
   }) {
     final _that = this;
     switch (_that) {
@@ -118,6 +125,8 @@ extension AddItemResultPatterns on AddItemResult {
         return success(_that);
       case _AddItemResultCategoryRequired() when categoryRequired != null:
         return categoryRequired(_that);
+      case _AddItemResultAlreadyOnList() when alreadyOnList != null:
+        return alreadyOnList(_that);
       case _:
         return null;
     }
@@ -139,6 +148,7 @@ extension AddItemResultPatterns on AddItemResult {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ShoppingItem item)? success,
     TResult Function()? categoryRequired,
+    TResult Function(String productName)? alreadyOnList,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -147,6 +157,8 @@ extension AddItemResultPatterns on AddItemResult {
         return success(_that.item);
       case _AddItemResultCategoryRequired() when categoryRequired != null:
         return categoryRequired();
+      case _AddItemResultAlreadyOnList() when alreadyOnList != null:
+        return alreadyOnList(_that.productName);
       case _:
         return orElse();
     }
@@ -169,6 +181,7 @@ extension AddItemResultPatterns on AddItemResult {
   TResult when<TResult extends Object?>({
     required TResult Function(ShoppingItem item) success,
     required TResult Function() categoryRequired,
+    required TResult Function(String productName) alreadyOnList,
   }) {
     final _that = this;
     switch (_that) {
@@ -176,6 +189,8 @@ extension AddItemResultPatterns on AddItemResult {
         return success(_that.item);
       case _AddItemResultCategoryRequired():
         return categoryRequired();
+      case _AddItemResultAlreadyOnList():
+        return alreadyOnList(_that.productName);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -197,6 +212,7 @@ extension AddItemResultPatterns on AddItemResult {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ShoppingItem item)? success,
     TResult? Function()? categoryRequired,
+    TResult? Function(String productName)? alreadyOnList,
   }) {
     final _that = this;
     switch (_that) {
@@ -204,6 +220,8 @@ extension AddItemResultPatterns on AddItemResult {
         return success(_that.item);
       case _AddItemResultCategoryRequired() when categoryRequired != null:
         return categoryRequired();
+      case _AddItemResultAlreadyOnList() when alreadyOnList != null:
+        return alreadyOnList(_that.productName);
       case _:
         return null;
     }
@@ -305,6 +323,73 @@ class _AddItemResultCategoryRequired extends AddItemResult {
   @override
   String toString() {
     return 'AddItemResult.categoryRequired()';
+  }
+}
+
+/// @nodoc
+
+class _AddItemResultAlreadyOnList extends AddItemResult {
+  const _AddItemResultAlreadyOnList(this.productName) : super._();
+
+  final String productName;
+
+  /// Create a copy of AddItemResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$AddItemResultAlreadyOnListCopyWith<_AddItemResultAlreadyOnList>
+      get copyWith => __$AddItemResultAlreadyOnListCopyWithImpl<
+          _AddItemResultAlreadyOnList>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _AddItemResultAlreadyOnList &&
+            (identical(other.productName, productName) ||
+                other.productName == productName));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, productName);
+
+  @override
+  String toString() {
+    return 'AddItemResult.alreadyOnList(productName: $productName)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$AddItemResultAlreadyOnListCopyWith<$Res>
+    implements $AddItemResultCopyWith<$Res> {
+  factory _$AddItemResultAlreadyOnListCopyWith(
+          _AddItemResultAlreadyOnList value,
+          $Res Function(_AddItemResultAlreadyOnList) _then) =
+      __$AddItemResultAlreadyOnListCopyWithImpl;
+  @useResult
+  $Res call({String productName});
+}
+
+/// @nodoc
+class __$AddItemResultAlreadyOnListCopyWithImpl<$Res>
+    implements _$AddItemResultAlreadyOnListCopyWith<$Res> {
+  __$AddItemResultAlreadyOnListCopyWithImpl(this._self, this._then);
+
+  final _AddItemResultAlreadyOnList _self;
+  final $Res Function(_AddItemResultAlreadyOnList) _then;
+
+  /// Create a copy of AddItemResult
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? productName = null,
+  }) {
+    return _then(_AddItemResultAlreadyOnList(
+      null == productName
+          ? _self.productName
+          : productName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 

@@ -139,6 +139,12 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
       final result = await itemRepo.addItemByName(model.filter);
       result.when(
         categoryRequired: () => moveToTab(1),
+        alreadyOnList: (product) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('$product is already on your list'),
+            duration: const Duration(milliseconds: 2400),
+          ));
+        },
         success: (addedItem) {
           onAddedItem();
         },

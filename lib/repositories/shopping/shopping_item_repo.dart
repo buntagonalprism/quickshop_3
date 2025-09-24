@@ -21,6 +21,7 @@ class AddItemResult with _$AddItemResult {
 
   const factory AddItemResult.success(ShoppingItem item) = _AddItemResultSuccess;
   const factory AddItemResult.categoryRequired() = _AddItemResultCategoryRequired;
+  const factory AddItemResult.alreadyOnList(String productName) = _AddItemResultAlreadyOnList;
 }
 
 @riverpod
@@ -88,6 +89,9 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
     final autocomplete = await autocompleteRepo.getExactMatchSuggestionForItem(itemName);
     if (autocomplete == null) {
       return const AddItemResult.categoryRequired();
+    }
+    if (autocomplete.source == ShoppingItemAutocompleteSource.list) {
+      return AddItemResult.alreadyOnList(autocomplete.product);
     }
     final item = await addAutocomplete(autocomplete);
     return AddItemResult.success(item);
