@@ -94,8 +94,10 @@ class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
     }
 
     state = state.copyWith(
-      filterError: state.filter.isEmpty ? 'Please enter an item name' : null,
+      filterError: state.filter.isEmpty ? itemError : null,
       itemErrors: ShoppingItemErrors.validate(state.data),
     );
   }
+
+  static String itemError = 'Please enter an item name';
 }
