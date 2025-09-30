@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,8 +13,8 @@ import '../list_repo.dart';
 import '../user_repo.dart';
 import 'autocomplete/shopping_item_autocomplete_repo.dart';
 
-part 'shopping_item_repo.freezed.dart';
-part 'shopping_item_repo.g.dart';
+part 'shopping_items_repo.freezed.dart';
+part 'shopping_items_repo.g.dart';
 
 @freezed
 class AddItemResult with _$AddItemResult {
@@ -25,14 +26,27 @@ class AddItemResult with _$AddItemResult {
 }
 
 @riverpod
-class ShoppingListItemRepo extends _$ShoppingListItemRepo {
-  @override
-  Stream<List<ShoppingItem>> build(String listId) {
-    // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
-    if (ref.watch(listLeaveInProgressRepoProvider).contains(listId)) {
-      return const Stream.empty();
-    }
-    ref.delayDispose(const Duration(minutes: 15));
+Stream<List<ShoppingItem>> shoppingListItems(Ref ref, String listId) {
+  // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
+  if (ref.watch(listLeaveInProgressRepoProvider).contains(listId)) {
+    return const Stream.empty();
+  }
+  ref.delayDispose(const Duration(minutes: 15));
+  return ref.watch(shoppingListItemsRepoProvider(listId)).itemsStream;
+}
+
+@riverpod
+ShoppingListItemsRepo shoppingListItemsRepo(Ref ref, String listId) {
+  return ShoppingListItemsRepo(listId: listId, ref: ref);
+}
+
+class ShoppingListItemsRepo {
+  final String listId;
+  final Ref ref;
+
+  ShoppingListItemsRepo({required this.listId, required this.ref});
+
+  Stream<List<ShoppingItem>> get itemsStream {
     final fs = ref.watch(firestoreProvider);
     return fs.collection('lists/$listId/items').snapshots().map((snapshot) {
       return snapshot.docs.map(_fromFirestore).toList();
@@ -124,7 +138,7 @@ class ShoppingListItemRepo extends _$ShoppingListItemRepo {
   }
 
   Future<int> deleteCompletedItems() async {
-    final items = state.requireValue;
+    final items = ref.read(shoppingListItemsProvider(listId)).requireValue;
     final deletedItems = items.where((item) => item.completed).toList();
     if (items.isEmpty) {
       return 0; // No items to delete

@@ -6,7 +6,7 @@ import '../../../analytics/crash_reporter.dart';
 import '../../../models/list_summary.dart';
 import '../../../models/shopping/shopping_item.dart';
 import '../../../repositories/list_repo.dart';
-import '../../../repositories/shopping/shopping_item_repo.dart';
+import '../../../repositories/shopping/shopping_items_repo.dart';
 
 part 'shopping_list_view_model.freezed.dart';
 part 'shopping_list_view_model.g.dart';
@@ -58,7 +58,7 @@ ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
         );
   }
 
-  final itemsAsyncValue = ref.watch(shoppingListItemRepoProvider(list.id));
+  final itemsAsyncValue = ref.watch(shoppingListItemsProvider(list.id));
 
   if (itemsAsyncValue.isLoading) {
     return const ShoppingListViewModel.loading();

@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
 import '../history/shopping_category_history_repo.dart';
-import '../shopping_item_repo.dart';
+import '../shopping_items_repo.dart';
 import '../suggestions/shopping_category_suggestion_repo.dart';
 
 part 'shopping_category_autocomplete_repo.g.dart';
@@ -40,7 +40,7 @@ class ShoppingCategoryAutocompleteRepo {
     }
 
     // Add existing categories from the current shopping list as highest priority
-    final listItemsAsync = _ref.read(shoppingListItemRepoProvider(listId));
+    final listItemsAsync = _ref.read(shoppingListItemsProvider(listId));
     if (listItemsAsync.hasValue) {
       final listItems = listItemsAsync.requireValue;
       for (var item in listItems) {

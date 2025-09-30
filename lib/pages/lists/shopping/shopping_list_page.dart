@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../models/list_summary.dart';
 import '../../../models/shopping/shopping_item.dart';
-import '../../../repositories/shopping/shopping_item_repo.dart';
+import '../../../repositories/shopping/shopping_items_repo.dart';
 import '../../../router.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
@@ -56,8 +56,7 @@ class ShoppingListPage extends ConsumerWidget {
         icon: const Icon(Icons.add),
         onPressed: () {
           state.maybeWhen(
-            success: (list, _) =>
-                ref.read(routerProvider).go(Routes.shoppingListNewItem(list.id).path),
+            success: (list, _) => ref.read(routerProvider).go(Routes.shoppingListNewItem(list.id).path),
             orElse: () {},
           );
         },
@@ -66,8 +65,7 @@ class ShoppingListPage extends ConsumerWidget {
   }
 
   void onRemoveCheckedItems(BuildContext context, WidgetRef ref, String listId) async {
-    final deleteFuture =
-        ref.read(shoppingListItemRepoProvider(listId).notifier).deleteCompletedItems();
+    final deleteFuture = ref.read(shoppingListItemsRepoProvider(listId)).deleteCompletedItems();
     Navigator.pop(context);
     final deletedCount = await deleteFuture;
     if (context.mounted) {
@@ -137,9 +135,8 @@ class ShoppingItemTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      onTap: () => ref.read(shoppingListItemRepoProvider(list.id).notifier).toggleItem(item),
-      onLongPress: () =>
-          ref.read(routerProvider).go(Routes.shoppingListEditItem(list.id, item.id).path),
+      onTap: () => ref.read(shoppingListItemsRepoProvider(list.id)).toggleItem(item),
+      onLongPress: () => ref.read(routerProvider).go(Routes.shoppingListEditItem(list.id, item.id).path),
       title: Text(
         item.displayName,
         style: TextStyle(decoration: item.completed ? TextDecoration.lineThrough : null),
@@ -147,7 +144,7 @@ class ShoppingItemTile extends ConsumerWidget {
       trailing: Checkbox(
         value: item.completed,
         onChanged: (value) {
-          ref.read(shoppingListItemRepoProvider(list.id).notifier).toggleItem(item);
+          ref.read(shoppingListItemsRepoProvider(list.id)).toggleItem(item);
         },
       ),
     );
