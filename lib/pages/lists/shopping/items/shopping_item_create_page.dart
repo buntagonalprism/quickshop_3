@@ -233,7 +233,7 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
       ),
       Expanded(
         child: model.filter.isEmpty
-            ? const ItemSuggestionsPlaceholder()
+            ? const ItemAutocompletePlaceholder()
             : ItemSuggestionsList(
                 listId: widget.listId,
                 onAdd: (suggestion) => widget.onAutocompleteSelected(suggestion, false),
@@ -267,88 +267,120 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
   Widget build(BuildContext context) {
     final autocompleteAsync = ref.watch(itemAutocompleteProvider(widget.listId));
     if (autocompleteAsync.isLoading && !autocompleteAsync.hasValue) {
-      return const Center(child: CircularProgressIndicator());
+      return ItemAutocompleteLoading();
     }
     if (autocompleteAsync.hasError) {
-      return const Center(child: Text('Failed to load suggestions'));
+      return ItemAutocompleteError();
     }
     final autocompletes = autocompleteAsync.requireValue;
     if (autocompletes.isEmpty) {
-      return const ItemSuggestionsEmpty();
+      return const ItemAutocompleteEmpty();
     }
     return ListView.builder(
       itemCount: autocompletes.length,
       itemBuilder: (context, index) {
         final autocomplete = autocompletes[index];
-        return switch (autocomplete.source) {
-          ShoppingItemAutocompleteSource.history || ShoppingItemAutocompleteSource.suggested => MenuAnchor(
-              onClose: () {
-                setState(() {
-                  highlightedIndex = null;
-                  preventTaps = true;
-                });
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  setState(() => preventTaps = false);
-                });
-              },
-              builder: (context, controller, child) => ListTile(
-                visualDensity: VisualDensity.compact,
-                tileColor: highlightedIndex == index ? Colors.grey.shade200 : null,
-                title: Text(autocomplete.displayName),
-                subtitle: Text(autocomplete.categories.join(', ')),
-                onLongPress: () {
-                  controller.open();
-                  setState(() => highlightedIndex = index);
-                },
-                onTap: () {
-                  if (highlightedIndex != null) {
-                    controller.close();
-                    setState(() => highlightedIndex = null);
-                  } else if (!preventTaps) {
-                    widget.onAdd(autocomplete);
-                  }
-                },
-                trailing: IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () => widget.onAddMore(autocomplete),
-                ),
-              ),
-              style: const MenuStyle(
-                alignment: Alignment.center,
-              ),
-              alignmentOffset: const Offset(-36, 0),
-              menuChildren: [
-                MenuItemButton(
-                  child: const Text('Remove'),
-                  onPressed: () =>
-                      ref.read(shoppingItemAutocompleteRepoProvider(widget.listId)).removeSuggestion(autocomplete),
-                ),
-                MenuItemButton(
-                  child: const Text('Edit'),
-                  onPressed: () => _onEditSuggestion(ref, autocomplete),
-                ),
-              ],
-            ),
-          ShoppingItemAutocompleteSource.list => ListTile(
-              visualDensity: VisualDensity.compact,
-              contentPadding: const EdgeInsets.only(left: 16, right: 4),
-              title: Text(
-                autocomplete.displayName,
-                style: const TextStyle(fontStyle: FontStyle.italic),
-              ),
-              subtitle: const Text(
-                'Already on list',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-              trailing: TextButton.icon(
-                onPressed: () => _onEditListItem(ref, autocomplete),
-                label: const Text('Edit'),
-                icon: const Icon(Icons.edit),
-              ),
-            ),
-        };
+        return ItemAutocompleteEntry(
+          listId: widget.listId,
+          autocomplete: autocomplete,
+          onAdd: () => widget.onAdd(autocomplete),
+          onAddMore: () => widget.onAddMore(autocomplete),
+        );
       },
     );
+  }
+}
+
+class ItemAutocompleteEntry extends ConsumerStatefulWidget {
+  final String listId;
+  final ShoppingItemAutocomplete autocomplete;
+  final VoidCallback onAdd;
+  final VoidCallback onAddMore;
+  const ItemAutocompleteEntry({
+    super.key,
+    required this.listId,
+    required this.autocomplete,
+    required this.onAdd,
+    required this.onAddMore,
+  });
+
+  @override
+  ConsumerState<ItemAutocompleteEntry> createState() => _ItemAutocompleteEntryState();
+}
+
+class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
+  bool highlighted = false;
+  bool preventTaps = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (widget.autocomplete.source) {
+      ShoppingItemAutocompleteSource.history || ShoppingItemAutocompleteSource.suggested => MenuAnchor(
+          onClose: () {
+            setState(() {
+              highlighted = false;
+              preventTaps = true;
+            });
+            Future.delayed(const Duration(milliseconds: 300), () {
+              setState(() => preventTaps = false);
+            });
+          },
+          builder: (context, controller, child) => ListTile(
+            visualDensity: VisualDensity.compact,
+            tileColor: highlighted ? Colors.grey.shade200 : null,
+            title: Text(widget.autocomplete.displayName),
+            subtitle: Text(widget.autocomplete.categories.join(', ')),
+            onLongPress: () {
+              controller.open();
+              setState(() => highlighted = true);
+            },
+            onTap: () {
+              if (highlighted) {
+                controller.close();
+                setState(() => highlighted = false);
+              } else if (!preventTaps) {
+                widget.onAdd();
+              }
+            },
+            trailing: IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => widget.onAddMore(),
+            ),
+          ),
+          style: const MenuStyle(
+            alignment: Alignment.center,
+          ),
+          alignmentOffset: const Offset(-36, 0),
+          menuChildren: [
+            MenuItemButton(
+              child: const Text('Remove'),
+              onPressed: () =>
+                  ref.read(shoppingItemAutocompleteRepoProvider(widget.listId)).removeSuggestion(widget.autocomplete),
+            ),
+            MenuItemButton(
+              child: const Text('Edit'),
+              onPressed: () => _onEditSuggestion(ref, widget.autocomplete),
+            ),
+          ],
+        ),
+      ShoppingItemAutocompleteSource.list => ListTile(
+          visualDensity: VisualDensity.compact,
+          contentPadding: const EdgeInsets.only(left: 16, right: 4),
+          title: Text(
+            widget.autocomplete.displayName,
+            style: const TextStyle(fontStyle: FontStyle.italic),
+          ),
+          subtitle: const Text(
+            'Already on list',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+          trailing: TextButton.icon(
+            onPressed: () => _onEditListItem(ref, widget.autocomplete),
+            label: const Text('Edit'),
+            icon: const Icon(Icons.edit),
+          ),
+        ),
+    };
   }
 
   void _onEditListItem(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
@@ -361,8 +393,30 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
   }
 }
 
-class ItemSuggestionsPlaceholder extends StatelessWidget {
-  const ItemSuggestionsPlaceholder({super.key});
+class ItemAutocompleteError extends StatelessWidget {
+  const ItemAutocompleteError({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('Failed to load suggestions'));
+  }
+}
+
+class ItemAutocompleteLoading extends StatelessWidget {
+  const ItemAutocompleteLoading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
+  }
+}
+
+class ItemAutocompletePlaceholder extends StatelessWidget {
+  const ItemAutocompletePlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -390,8 +444,8 @@ class ItemSuggestionsPlaceholder extends StatelessWidget {
   }
 }
 
-class ItemSuggestionsEmpty extends StatelessWidget {
-  const ItemSuggestionsEmpty({super.key});
+class ItemAutocompleteEmpty extends StatelessWidget {
+  const ItemAutocompleteEmpty({super.key});
 
   @override
   Widget build(BuildContext context) {

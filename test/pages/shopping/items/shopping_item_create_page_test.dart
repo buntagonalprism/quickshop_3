@@ -1,39 +1,52 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quickshop/models/shopping/suggestions/shopping_item_suggestion.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
-import 'package:quickshop/services/app_database.dart';
-import 'package:quickshop/services/app_database_provider.dart';
+import 'package:quickshop/repositories/shopping/history/shopping_item_history_repo.dart';
+import 'package:quickshop/repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
+import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/firestore.dart';
 import 'package:quickshop/services/shared_preferences.dart';
 
+import '../../../fakes/fake_firebase_auth.dart';
 import '../../../fakes/fake_shared_preferences.dart';
 import '../../../mocks/mock_firestore.dart';
 
-class MockDb extends Mock implements AppDatabase {}
+class MockItemSuggestionRepo extends Mock implements ShoppingItemSuggestionRepo {}
+
+class MockItemHistoryRepo extends Mock implements ShoppingItemHistoryRepo {}
 
 void main() {
   final listId = 'test-list-id';
 
   late MockFirebaseFirestore fs;
-  late MockDb db;
+  late MockItemSuggestionRepo itemSuggestionRepo;
+  late MockItemHistoryRepo itemHistoryRepo;
   late FakeSharedPreferences prefs;
+  late FakeFirebaseAuth auth;
 
   setUp(() {
     fs = MockFirebaseFirestore();
-    db = MockDb();
+    itemSuggestionRepo = MockItemSuggestionRepo();
+    itemHistoryRepo = MockItemHistoryRepo();
     prefs = FakeSharedPreferences();
+    auth = FakeFirebaseAuth(user: buildUser());
   });
 
   Future<void> pumpScreen(WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: ProviderScope(
         overrides: [
-          appDatabaseProvider.overrideWithValue(db),
+          shoppingItemSuggestionRepoProvider.overrideWithValue(itemSuggestionRepo),
+          shoppingItemHistoryRepoProvider.overrideWithValue(itemHistoryRepo),
           firestoreProvider.overrideWithValue(fs),
           sharedPrefsProvider.overrideWithValue(prefs),
+          firebaseAuthProvider.overrideWithValue(auth),
         ],
         child: ShoppingItemCreatePage(listId: listId),
       ),
@@ -87,4 +100,93 @@ void main() {
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsNothing);
     });
   });
+
+  group('Autocomplete item search results display', () {
+    testWidgets(
+        'GIVEN user has not yet entered any text '
+        'THEN item create page instructions are shown', (WidgetTester tester) async {
+      await pumpScreen(tester);
+      expect(find.byType(ItemAutocompletePlaceholder), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN user has entered text '
+        'WHEN autocomplete items are loading '
+        'THEN loading indicator is shown', (WidgetTester tester) async {
+      await pumpScreen(tester);
+      answerLoading(() => itemSuggestionRepo.searchSuggestions(any()));
+      answerLoading(() => itemHistoryRepo.searchHistory(any()));
+      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.pump();
+      expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
+      expect(find.byType(ItemAutocompleteLoading), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN user has entered text '
+        'WHEN there is an error loading autocomplete items '
+        'THEN error view is shown', (WidgetTester tester) async {
+      await pumpScreen(tester);
+      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.pumpAndSettle();
+      expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
+      expect(find.byType(ItemAutocompleteError), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN user has entered text '
+        'WHEN there are no matching autocomplete items '
+        'THEN empty results view shown', (WidgetTester tester) async {
+      await pumpScreen(tester);
+      await tester.enterText(find.byType(TextField), 'No match');
+      await tester.pumpAndSettle();
+      expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
+      expect(find.byType(ItemAutocompleteEmpty), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN user has entered text '
+        'WHEN there are matching autocomplete items '
+        'THEN results are shown', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      when(() => itemSuggestionRepo.searchSuggestions('milk')).thenAnswer(
+        (_) async => [
+          buildItemSuggestion('Skim Milk', 'Dairy', popularity: 2),
+          buildItemSuggestion('Full fat Milk', 'Dairy', popularity: 5),
+          buildItemSuggestion('Milk', 'Dairy', popularity: 10),
+        ],
+      );
+
+      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.pumpAndSettle();
+      expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
+      expect(find.byType(ItemAutocompleteEntry), findsNWidgets(3));
+      expect(find.text('Milk'), findsOneWidget);
+      expect(find.text('Full fat Milk'), findsOneWidget);
+      expect(find.text('Skim Milk'), findsOneWidget);
+    });
+  });
+}
+
+ShoppingItemSuggestion buildItemSuggestion(String name, String categories, {int popularity = 0}) {
+  return ShoppingItemSuggestion(
+    id: name.toLowerCase().replaceAll(' ', '-'),
+    langCode: 'en',
+    name: name,
+    categories: categories.split(','),
+    popularity: popularity,
+  );
+}
+
+void answerLoading<T>(Future<T> Function() fn) {
+  when(fn).thenAnswer((_) => Completer<T>().future);
+}
+
+void answerError<T>(Future<T> Function() fn, Object error) {
+  when(fn).thenAnswer((_) => Future<T>.error(error));
+}
+
+void answerValue<T>(Future<T> Function() fn, T value) {
+  when(fn).thenAnswer((_) => Future<T>.value(value));
 }
