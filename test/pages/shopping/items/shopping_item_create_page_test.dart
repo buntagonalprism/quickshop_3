@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quickshop/models/shopping/shopping_item.dart';
 import 'package:quickshop/models/shopping/suggestions/shopping_item_suggestion.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
 import 'package:quickshop/repositories/shopping/history/shopping_item_history_repo.dart';
+import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
 import 'package:quickshop/repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/firestore.dart';
@@ -29,6 +31,7 @@ void main() {
   late MockItemHistoryRepo itemHistoryRepo;
   late FakeSharedPreferences prefs;
   late FakeFirebaseAuth auth;
+  late StreamController<List<ShoppingItem>> listItemsController;
 
   setUp(() {
     fs = MockFirebaseFirestore();
@@ -36,6 +39,7 @@ void main() {
     itemHistoryRepo = MockItemHistoryRepo();
     prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
+    listItemsController = StreamController<List<ShoppingItem>>.broadcast();
   });
 
   Future<void> pumpScreen(WidgetTester tester) async {
@@ -47,6 +51,7 @@ void main() {
           firestoreProvider.overrideWithValue(fs),
           sharedPrefsProvider.overrideWithValue(prefs),
           firebaseAuthProvider.overrideWithValue(auth),
+          shoppingListItemsProvider(listId).overrideWith((_) => listItemsController.stream),
         ],
         child: ShoppingItemCreatePage(listId: listId),
       ),
@@ -138,6 +143,9 @@ void main() {
         'WHEN there are no matching autocomplete items '
         'THEN empty results view shown', (WidgetTester tester) async {
       await pumpScreen(tester);
+      answerEmptyList(() => itemSuggestionRepo.searchSuggestions(any()));
+      answerEmptyList(() => itemHistoryRepo.searchHistory(any()));
+      listItemsController.add([]);
       await tester.enterText(find.byType(TextField), 'No match');
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
@@ -150,23 +158,30 @@ void main() {
         'THEN results are shown', (WidgetTester tester) async {
       await pumpScreen(tester);
 
-      when(() => itemSuggestionRepo.searchSuggestions('milk')).thenAnswer(
-        (_) async => [
-          buildItemSuggestion('Skim Milk', 'Dairy', popularity: 2),
-          buildItemSuggestion('Full fat Milk', 'Dairy', popularity: 5),
-          buildItemSuggestion('Milk', 'Dairy', popularity: 10),
-        ],
-      );
+      answerValue(() => itemSuggestionRepo.searchSuggestions('milk'), [
+        buildItemSuggestion('Skim Milk', 'Dairy', popularity: 2),
+        buildItemSuggestion('Full fat Milk', 'Dairy', popularity: 5),
+        buildItemSuggestion('Milk', 'Dairy', popularity: 10),
+      ]);
+      answerEmptyList(() => itemHistoryRepo.searchHistory('milk'));
+      listItemsController.add([]);
 
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
       expect(find.byType(ItemAutocompleteEntry), findsNWidgets(3));
-      expect(find.text('Milk'), findsOneWidget);
-      expect(find.text('Full fat Milk'), findsOneWidget);
-      expect(find.text('Skim Milk'), findsOneWidget);
+      expect(autocompletEntry('Milk'), findsOneWidget);
+      expect(autocompletEntry('Full fat Milk'), findsOneWidget);
+      expect(autocompletEntry('Skim Milk'), findsOneWidget);
     });
   });
+}
+
+Finder autocompletEntry(String text) {
+  return find.descendant(
+    of: find.byType(ItemAutocompleteEntry),
+    matching: find.text(text),
+  );
 }
 
 ShoppingItemSuggestion buildItemSuggestion(String name, String categories, {int popularity = 0}) {
@@ -189,4 +204,8 @@ void answerError<T>(Future<T> Function() fn, Object error) {
 
 void answerValue<T>(Future<T> Function() fn, T value) {
   when(fn).thenAnswer((_) => Future<T>.value(value));
+}
+
+void answerEmptyList<T>(Future<List<T>> Function() fn) {
+  when(fn).thenAnswer((_) => Future<List<T>>.value(<T>[]));
 }
