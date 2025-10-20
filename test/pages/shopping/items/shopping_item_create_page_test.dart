@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:quickshop/models/shopping/shopping_item.dart';
 import 'package:quickshop/models/shopping/suggestions/shopping_item_suggestion.dart';
@@ -11,6 +12,7 @@ import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_m
 import 'package:quickshop/repositories/shopping/history/shopping_item_history_repo.dart';
 import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
 import 'package:quickshop/repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
+import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/firestore.dart';
 import 'package:quickshop/services/shared_preferences.dart';
@@ -23,12 +25,15 @@ class MockItemSuggestionRepo extends Mock implements ShoppingItemSuggestionRepo 
 
 class MockItemHistoryRepo extends Mock implements ShoppingItemHistoryRepo {}
 
+class MockRouter extends Mock implements GoRouter {}
+
 void main() {
   final listId = 'test-list-id';
 
   late MockFirebaseFirestore fs;
   late MockItemSuggestionRepo itemSuggestionRepo;
   late MockItemHistoryRepo itemHistoryRepo;
+  late MockRouter router;
   late FakeSharedPreferences prefs;
   late FakeFirebaseAuth auth;
   late StreamController<List<ShoppingItem>> listItemsController;
@@ -37,6 +42,7 @@ void main() {
     fs = MockFirebaseFirestore();
     itemSuggestionRepo = MockItemSuggestionRepo();
     itemHistoryRepo = MockItemHistoryRepo();
+    router = MockRouter();
     prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
     listItemsController = StreamController<List<ShoppingItem>>.broadcast();
@@ -49,6 +55,7 @@ void main() {
           shoppingItemSuggestionRepoProvider.overrideWithValue(itemSuggestionRepo),
           shoppingItemHistoryRepoProvider.overrideWithValue(itemHistoryRepo),
           firestoreProvider.overrideWithValue(fs),
+          routerProvider.overrideWithValue(router),
           sharedPrefsProvider.overrideWithValue(prefs),
           firebaseAuthProvider.overrideWithValue(auth),
           shoppingListItemsProvider(listId).overrideWith((_) => listItemsController.stream),
