@@ -5,43 +5,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quickshop/models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import 'package:quickshop/models/shopping/shopping_item.dart';
-import 'package:quickshop/models/shopping/suggestions/shopping_item_suggestion.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
-import 'package:quickshop/repositories/shopping/history/shopping_item_history_repo.dart';
+import 'package:quickshop/repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
-import 'package:quickshop/repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
-import 'package:quickshop/services/firestore.dart';
 import 'package:quickshop/services/shared_preferences.dart';
 
 import '../../../fakes/fake_firebase_auth.dart';
 import '../../../fakes/fake_shared_preferences.dart';
-import '../../../mocks/mock_firestore.dart';
 
-class MockItemSuggestionRepo extends Mock implements ShoppingItemSuggestionRepo {}
-
-class MockItemHistoryRepo extends Mock implements ShoppingItemHistoryRepo {}
+class MockItemAutocompleteRepo extends Mock implements ShoppingItemAutocompleteRepo {}
 
 class MockRouter extends Mock implements GoRouter {}
 
 void main() {
   final listId = 'test-list-id';
 
-  late MockFirebaseFirestore fs;
-  late MockItemSuggestionRepo itemSuggestionRepo;
-  late MockItemHistoryRepo itemHistoryRepo;
+  late MockItemAutocompleteRepo itemAutocompleteRepo;
   late MockRouter router;
   late FakeSharedPreferences prefs;
   late FakeFirebaseAuth auth;
   late StreamController<List<ShoppingItem>> listItemsController;
 
   setUp(() {
-    fs = MockFirebaseFirestore();
-    itemSuggestionRepo = MockItemSuggestionRepo();
-    itemHistoryRepo = MockItemHistoryRepo();
+    itemAutocompleteRepo = MockItemAutocompleteRepo();
     router = MockRouter();
     prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
@@ -52,9 +43,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: ProviderScope(
         overrides: [
-          shoppingItemSuggestionRepoProvider.overrideWithValue(itemSuggestionRepo),
-          shoppingItemHistoryRepoProvider.overrideWithValue(itemHistoryRepo),
-          firestoreProvider.overrideWithValue(fs),
+          shoppingItemAutocompleteRepoProvider(listId).overrideWithValue(itemAutocompleteRepo),
           routerProvider.overrideWithValue(router),
           sharedPrefsProvider.overrideWithValue(prefs),
           firebaseAuthProvider.overrideWithValue(auth),
@@ -126,8 +115,7 @@ void main() {
         'WHEN autocomplete items are loading '
         'THEN loading indicator is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
-      answerLoading(() => itemSuggestionRepo.searchSuggestions(any()));
-      answerLoading(() => itemHistoryRepo.searchHistory(any()));
+      answerLoading(() => itemAutocompleteRepo.getAutocomplete(any()));
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pump();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
@@ -150,9 +138,7 @@ void main() {
         'WHEN there are no matching autocomplete items '
         'THEN empty results view shown', (WidgetTester tester) async {
       await pumpScreen(tester);
-      answerEmptyList(() => itemSuggestionRepo.searchSuggestions(any()));
-      answerEmptyList(() => itemHistoryRepo.searchHistory(any()));
-      listItemsController.add([]);
+      answerEmptyList(() => itemAutocompleteRepo.getAutocomplete(any()));
       await tester.enterText(find.byType(TextField), 'No match');
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
@@ -165,39 +151,43 @@ void main() {
         'THEN results are shown', (WidgetTester tester) async {
       await pumpScreen(tester);
 
-      answerValue(() => itemSuggestionRepo.searchSuggestions('milk'), [
-        buildItemSuggestion('Skim Milk', 'Dairy', popularity: 2),
-        buildItemSuggestion('Full fat Milk', 'Dairy', popularity: 5),
-        buildItemSuggestion('Milk', 'Dairy', popularity: 10),
+      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [
+        buildItemAutocomplete('Skim Milk', 'Dairy'),
+        buildItemAutocomplete('Full fat Milk', 'Dairy'),
+        buildItemAutocomplete('Milk', 'Dairy'),
       ]);
-      answerEmptyList(() => itemHistoryRepo.searchHistory('milk'));
       listItemsController.add([]);
 
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
       expect(find.byType(ItemAutocompleteEntry), findsNWidgets(3));
-      expect(autocompletEntry('Milk'), findsOneWidget);
-      expect(autocompletEntry('Full fat Milk'), findsOneWidget);
-      expect(autocompletEntry('Skim Milk'), findsOneWidget);
+      expect(findAutocompleteEntry('Milk'), findsOneWidget);
+      expect(findAutocompleteEntry('Full fat Milk'), findsOneWidget);
+      expect(findAutocompleteEntry('Skim Milk'), findsOneWidget);
     });
   });
 }
 
-Finder autocompletEntry(String text) {
+Finder findAutocompleteEntry(String text) {
   return find.descendant(
     of: find.byType(ItemAutocompleteEntry),
     matching: find.text(text),
   );
 }
 
-ShoppingItemSuggestion buildItemSuggestion(String name, String categories, {int popularity = 0}) {
-  return ShoppingItemSuggestion(
-    id: name.toLowerCase().replaceAll(' ', '-'),
-    langCode: 'en',
-    name: name,
+ShoppingItemAutocomplete buildItemAutocomplete(
+  String name,
+  String categories, {
+  String? quantity,
+  ShoppingItemAutocompleteSource source = ShoppingItemAutocompleteSource.suggested,
+}) {
+  return ShoppingItemAutocomplete(
+    source: source,
+    sourceId: name.toLowerCase().replaceAll(' ', '-'),
+    product: name,
     categories: categories.split(','),
-    popularity: popularity,
+    quantity: quantity ?? '',
   );
 }
 
