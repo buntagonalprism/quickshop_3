@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,6 +15,7 @@ import 'package:quickshop/services/shared_preferences.dart';
 
 import '../../../fakes/fake_firebase_auth.dart';
 import '../../../fakes/fake_shared_preferences.dart';
+import '../../../utilities/answerer.dart';
 
 class MockItemAutocompleteRepo extends Mock implements ShoppingItemAutocompleteRepo {}
 
@@ -169,9 +168,9 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
       expect(find.byType(ItemAutocompleteEntry), findsNWidgets(3));
-      expect(findAutocompleteEntry('Milk'), findsOneWidget);
-      expect(findAutocompleteEntry('Full fat Milk'), findsOneWidget);
-      expect(findAutocompleteEntry('Skim Milk'), findsOneWidget);
+      expect(find.autocompleteEntry('Milk'), findsOneWidget);
+      expect(find.autocompleteEntry('Full fat Milk'), findsOneWidget);
+      expect(find.autocompleteEntry('Skim Milk'), findsOneWidget);
     });
   });
 
@@ -189,7 +188,7 @@ void main() {
       await tester.enterText(textFieldFinder, 'Milk');
       await tester.pumpAndSettle();
 
-      await tester.tap(findAutocompleteEntry('Milk'));
+      await tester.tap(find.autocompleteEntry('Milk'));
       await tester.pumpAndSettle();
 
       verify(() => itemsRepo.addAutocomplete(autocomplete)).called(1);
@@ -210,7 +209,7 @@ void main() {
       await tester.enterText(textFieldFinder, 'Milk');
       await tester.pumpAndSettle();
 
-      await tester.tap(findAutocompletePlusButton('Milk'));
+      await tester.tap(find.autocompletePlusButton('Milk'));
       await tester.pumpAndSettle();
 
       verify(() => itemsRepo.addAutocomplete(autocomplete)).called(1);
@@ -331,29 +330,65 @@ void main() {
       verify(() => router.go(Routes.shoppingListEditItem(listId, autocomplete.sourceId).path)).called(1);
     });
   });
+
+  group('Category required for item', () {
+    testWidgets(
+        'GIVEN item name with no autocomplete match '
+        'WHEN tapping done '
+        'THEN category input view is shown', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      answer(() => itemAutocompleteRepo.getAutocomplete('Unknown Item')).withValue([]);
+      answer(() => itemsRepo.addItemByName('Unknown Item')).withValue(const AddItemResult.categoryRequired());
+
+      await tester.enterText(textFieldFinder, 'Unknown Item');
+      await tester.pumpAndSettle();
+
+      await tester.tap(doneButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ShoppingItemCategorySelectView), findsOneWidget);
+      expect(find.byType(ShoppingItemSearchView), findsNothing);
+    });
+
+    testWidgets(
+        'GIVEN item name with no autocomplete match '
+        'WHEN tapping add more '
+        'THEN category input view is shown', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      answer(() => itemAutocompleteRepo.getAutocomplete('Unknown Item')).withValue([]);
+      answer(() => itemsRepo.addItemByName('Unknown Item')).withValue(const AddItemResult.categoryRequired());
+
+      await tester.enterText(textFieldFinder, 'Unknown Item');
+      await tester.pumpAndSettle();
+
+      await tester.tap(addMoreButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ShoppingItemCategorySelectView), findsOneWidget);
+      expect(find.byType(ShoppingItemSearchView), findsNothing);
+    });
+  });
 }
 
-extension KeyFinderExtension on Key {
-  Finder get finder {
-    return find.byKey(this);
+extension _FinderExtensions on CommonFinders {
+  Finder autocompleteEntry(String text) {
+    return find.descendant(
+      of: find.byType(ItemAutocompleteEntry),
+      matching: find.text(text),
+    );
   }
-}
 
-Finder findAutocompleteEntry(String text) {
-  return find.descendant(
-    of: find.byType(ItemAutocompleteEntry),
-    matching: find.text(text),
-  );
-}
-
-Finder findAutocompletePlusButton(String text) {
-  return find.descendant(
-    of: find.ancestor(
-      of: findAutocompleteEntry(text),
-      matching: find.byType(ListTile),
-    ),
-    matching: find.byIcon(Icons.add),
-  );
+  Finder autocompletePlusButton(String text) {
+    return find.descendant(
+      of: find.ancestor(
+        of: find.autocompleteEntry(text),
+        matching: find.byType(ListTile),
+      ),
+      matching: find.byIcon(Icons.add),
+    );
+  }
 }
 
 ShoppingItemAutocomplete buildItemAutocomplete(
@@ -393,43 +428,4 @@ ShoppingItem buildShoppingItem(
 String? getTextFieldText(WidgetTester tester, [Finder? textFieldFinder]) {
   final textField = tester.widget<TextField>(textFieldFinder ?? find.byType(TextField));
   return textField.controller?.text;
-}
-
-Answerer<T> answer<T>(Future<T> Function() fn) {
-  return Answerer<T>(fn);
-}
-
-/// Helper class that saves a few characters when answering mocked methods
-/// and avoids the need to remember whether to use [thenAnswer] or [thenReturn].
-class Answerer<T> {
-  final FutureOr<T> Function() _fn;
-  Answerer(this._fn);
-
-  void withValue(T value) {
-    if (_fn is Future<T> Function()) {
-      when(_fn).thenAnswer((_) => Future.value(value));
-    } else {
-      when(_fn).thenReturn(value);
-    }
-  }
-
-  void withLoading() {
-    if (_fn is Future<T> Function()) {
-      when(_fn).thenAnswer((_) => Completer<T>().future);
-    } else {
-      throw UnsupportedError('Loading state is only supported for methods that return a future');
-    }
-  }
-
-  void withError(Object error) {
-    if (_fn is Future<T> Function()) {
-      when(_fn).thenAnswer((_) => Future<T>.error(error));
-    } else {
-      when(_fn).thenThrow(error);
-    }
-  }
-
-  void byInvocation(Future<T> Function(Invocation) fn) {
-    when(_fn).thenAnswer(fn);
-  }
 }
