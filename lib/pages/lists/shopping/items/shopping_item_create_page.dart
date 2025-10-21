@@ -110,10 +110,15 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   void onAutocompleteSelected(ShoppingItemAutocomplete suggestion, bool addMore) async {
     await ref.read(shoppingListItemsRepoProvider(widget.listId)).addAutocomplete(suggestion);
-    ref.read(routerProvider).pop();
-    showConfirmationSnackbar(suggestion.displayName);
+    onAddedItem(suggestion.displayName, addMore);
+  }
+
+  void onAddedItem(String displayName, bool addMore) {
+    showConfirmationSnackbar(displayName);
     if (addMore) {
       resetPage();
+    } else {
+      ref.read(routerProvider).pop();
     }
   }
 
@@ -121,15 +126,6 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
     final itemRepo = ref.read(shoppingListItemsRepoProvider(widget.listId));
     ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
     final model = ref.read(shoppingItemCreateViewModelProvider);
-
-    onAddedItem() {
-      showConfirmationSnackbar(model.data.displayName);
-      if (addMore) {
-        resetPage();
-      } else {
-        ref.read(routerProvider).pop();
-      }
-    }
 
     if (tabController.index == 0) {
       if (model.filterError != null) {
@@ -146,7 +142,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
           ));
         },
         success: (addedItem) {
-          onAddedItem();
+          onAddedItem(addedItem.displayName, addMore);
         },
       );
     } else {
@@ -159,7 +155,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
         quantity: model.data.quantity,
         categories: model.data.categories,
       );
-      onAddedItem();
+      onAddedItem(model.data.displayName, addMore);
     }
   }
 
