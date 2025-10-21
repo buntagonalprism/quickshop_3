@@ -24,6 +24,8 @@ class MockShoppingListItemsRepo extends Mock implements ShoppingListItemsRepo {}
 
 class MockRouter extends Mock implements GoRouter {}
 
+typedef _Keys = ShoppingItemCreatePageKeys;
+
 void main() {
   final listId = 'test-list-id';
 
@@ -40,6 +42,10 @@ void main() {
     prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
   });
+
+  final doneButtonFinder = find.byKey(_Keys.doneButton);
+  final addMoreButtonFinder = find.byKey(_Keys.addMoreButton);
+  final textFieldFinder = find.byType(TextField);
 
   Future<void> pumpScreen(WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
@@ -62,7 +68,7 @@ void main() {
         'WHEN tapping done '
         'THEN show error', (WidgetTester tester) async {
       await pumpScreen(tester);
-      await tester.tap(find.text('Done'));
+      await tester.tap(doneButtonFinder);
       await tester.pump();
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
     });
@@ -72,10 +78,10 @@ void main() {
         'WHEN entering item name '
         'THEN error disappears', (WidgetTester tester) async {
       await pumpScreen(tester);
-      await tester.tap(find.text('Done'));
+      await tester.tap(doneButtonFinder);
       await tester.pump();
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
-      await tester.enterText(find.byType(TextField), 'Test Item');
+      await tester.enterText(textFieldFinder, 'Test Item');
       await tester.pump();
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsNothing);
     });
@@ -85,7 +91,7 @@ void main() {
         'WHEN tapping add more '
         'THEN show error', (WidgetTester tester) async {
       await pumpScreen(tester);
-      await tester.tap(find.text('Add more'));
+      await tester.tap(addMoreButtonFinder);
       await tester.pump();
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
     });
@@ -95,10 +101,10 @@ void main() {
         'WHEN entering item name '
         'THEN error disappears', (WidgetTester tester) async {
       await pumpScreen(tester);
-      await tester.tap(find.text('Add more'));
+      await tester.tap(addMoreButtonFinder);
       await tester.pump();
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
-      await tester.enterText(find.byType(TextField), 'Test Item');
+      await tester.enterText(textFieldFinder, 'Test Item');
       await tester.pump();
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsNothing);
     });
@@ -117,8 +123,8 @@ void main() {
         'WHEN autocomplete items are loading '
         'THEN loading indicator is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
-      answerLoading(() => itemAutocompleteRepo.getAutocomplete(any()));
-      await tester.enterText(find.byType(TextField), 'Milk');
+      answer(() => itemAutocompleteRepo.getAutocomplete(any())).withLoading();
+      await tester.enterText(textFieldFinder, 'Milk');
       await tester.pump();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
       expect(find.byType(ItemAutocompleteLoading), findsOneWidget);
@@ -129,7 +135,7 @@ void main() {
         'WHEN there is an error loading autocomplete items '
         'THEN error view is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
-      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.enterText(textFieldFinder, 'Milk');
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
       expect(find.byType(ItemAutocompleteError), findsOneWidget);
@@ -140,8 +146,8 @@ void main() {
         'WHEN there are no matching autocomplete items '
         'THEN empty results view shown', (WidgetTester tester) async {
       await pumpScreen(tester);
-      answerEmptyList(() => itemAutocompleteRepo.getAutocomplete(any()));
-      await tester.enterText(find.byType(TextField), 'No match');
+      answer(() => itemAutocompleteRepo.getAutocomplete(any())).withValue([]);
+      await tester.enterText(textFieldFinder, 'No match');
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
       expect(find.byType(ItemAutocompleteEmpty), findsOneWidget);
@@ -153,13 +159,13 @@ void main() {
         'THEN results are shown', (WidgetTester tester) async {
       await pumpScreen(tester);
 
-      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
         buildItemAutocomplete('Milk', 'Dairy'),
       ]);
 
-      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.enterText(textFieldFinder, 'Milk');
       await tester.pumpAndSettle();
       expect(find.byType(ItemAutocompletePlaceholder), findsNothing);
       expect(find.byType(ItemAutocompleteEntry), findsNWidgets(3));
@@ -167,7 +173,9 @@ void main() {
       expect(findAutocompleteEntry('Full fat Milk'), findsOneWidget);
       expect(findAutocompleteEntry('Skim Milk'), findsOneWidget);
     });
+  });
 
+  group('Adding items from autocomplete suggestions', () {
     testWidgets(
         'GIVEN autocomplete items are shown '
         'WHEN tapping autocomplete item '
@@ -175,10 +183,10 @@ void main() {
       await pumpScreen(tester);
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
-      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
-      when(() => itemsRepo.addAutocomplete(autocomplete)).thenAnswer((_) async => buildShoppingItem('Milk', 'Dairy'));
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
+      answer(() => itemsRepo.addAutocomplete(autocomplete)).withValue(buildShoppingItem('Milk', 'Dairy'));
 
-      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.enterText(textFieldFinder, 'Milk');
       await tester.pumpAndSettle();
 
       await tester.tap(findAutocompleteEntry('Milk'));
@@ -196,16 +204,70 @@ void main() {
       await pumpScreen(tester);
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
-      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
-      when(() => itemsRepo.addAutocomplete(autocomplete)).thenAnswer((_) async => buildShoppingItem('Milk', 'Dairy'));
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
+      answer(() => itemsRepo.addAutocomplete(autocomplete)).withValue(buildShoppingItem('Milk', 'Dairy'));
 
-      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.enterText(textFieldFinder, 'Milk');
       await tester.pumpAndSettle();
 
       await tester.tap(findAutocompletePlusButton('Milk'));
       await tester.pumpAndSettle();
 
       verify(() => itemsRepo.addAutocomplete(autocomplete)).called(1);
+      verifyNever(() => router.pop());
+      expect(find.text('Added Milk to list'), findsOneWidget);
+      expect(getTextFieldText(tester), isEmpty);
+    });
+
+    testWidgets(
+        'GIVEN an exact match autocomplete item is shown '
+        'WHEN tapping done button '
+        'THEN exact match item is added to list and screen is popped', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      final exactMatch = buildItemAutocomplete('Milk', 'Dairy');
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([
+        exactMatch,
+        buildItemAutocomplete('Skim Milk', 'Dairy'),
+        buildItemAutocomplete('Full fat Milk', 'Dairy'),
+      ]);
+      answer(() => itemsRepo.addItemByName(exactMatch.displayName)).withValue(
+        AddItemResult.success(buildShoppingItem('Milk', 'Dairy')),
+      );
+
+      await tester.enterText(textFieldFinder, exactMatch.displayName);
+      await tester.pumpAndSettle();
+
+      await tester.tap(doneButtonFinder);
+      await tester.pumpAndSettle();
+
+      verify(() => itemsRepo.addItemByName(exactMatch.displayName)).called(1);
+      verify(() => router.pop()).called(1);
+      expect(find.text('Added Milk to list'), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN an exact match autocomplete item is shown '
+        'WHEN tapping add more button '
+        'THEN exact match item is added to list and screen is reset', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      final exactMatch = buildItemAutocomplete('Milk', 'Dairy');
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([
+        exactMatch,
+        buildItemAutocomplete('Skim Milk', 'Dairy'),
+        buildItemAutocomplete('Full fat Milk', 'Dairy'),
+      ]);
+      answer(() => itemsRepo.addItemByName(exactMatch.displayName))
+          .withValue(AddItemResult.success(buildShoppingItem('Milk', 'Dairy')));
+
+      await tester.enterText(textFieldFinder, exactMatch.displayName);
+      await tester.pumpAndSettle();
+
+      await tester.tap(addMoreButtonFinder);
+      await tester.pumpAndSettle();
+
+      verify(() => itemsRepo.addItemByName(exactMatch.displayName)).called(1);
       verifyNever(() => router.pop());
       expect(find.text('Added Milk to list'), findsOneWidget);
       expect(getTextFieldText(tester), isEmpty);
@@ -220,13 +282,13 @@ void main() {
       await pumpScreen(tester);
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
-      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
-      when(() => itemsRepo.addItemByName('Milk')).thenAnswer((_) async => const AddItemResult.alreadyOnList('Milk'));
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
+      answer(() => itemsRepo.addItemByName('Milk')).withValue(AddItemResult.alreadyOnList('Milk'));
 
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Done'));
+      await tester.tap(doneButtonFinder);
       await tester.pumpAndSettle();
 
       expect(find.text('Milk is already on your list'), findsOneWidget);
@@ -239,13 +301,13 @@ void main() {
       await pumpScreen(tester);
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
-      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
-      when(() => itemsRepo.addItemByName('Milk')).thenAnswer((_) async => const AddItemResult.alreadyOnList('Milk'));
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
+      answer(() => itemsRepo.addItemByName('Milk')).withValue(AddItemResult.alreadyOnList('Milk'));
 
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Add more'));
+      await tester.tap(addMoreButtonFinder);
       await tester.pumpAndSettle();
 
       expect(find.text('Milk is already on your list'), findsOneWidget);
@@ -258,9 +320,9 @@ void main() {
       await pumpScreen(tester);
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
-      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
+      answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
 
-      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.enterText(textFieldFinder, 'Milk');
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Edit'));
@@ -269,6 +331,12 @@ void main() {
       verify(() => router.go(Routes.shoppingListEditItem(listId, autocomplete.sourceId).path)).called(1);
     });
   });
+}
+
+extension KeyFinderExtension on Key {
+  Finder get finder {
+    return find.byKey(this);
+  }
 }
 
 Finder findAutocompleteEntry(String text) {
@@ -308,9 +376,10 @@ ShoppingItem buildShoppingItem(
   String categories, {
   String? quantity,
 }) {
+  final id = name.toLowerCase().replaceAll(' ', '-');
   return ShoppingItem(
-    id: name.toLowerCase().replaceAll(' ', '-'),
-    path: 'lists/test-list-id/items/${name.toLowerCase().replaceAll(' ', '-')}',
+    id: id,
+    path: 'lists/test-list-id/items/$id',
     product: name,
     quantity: quantity ?? '',
     categories: categories.split(','),
@@ -326,18 +395,22 @@ String? getTextFieldText(WidgetTester tester, [Finder? textFieldFinder]) {
   return textField.controller?.text;
 }
 
-void answerLoading<T>(Future<T> Function() fn) {
-  when(fn).thenAnswer((_) => Completer<T>().future);
+Answerer<T> answer<T>(Future<T> Function() fn) {
+  return Answerer<T>(fn);
 }
 
-void answerError<T>(Future<T> Function() fn, Object error) {
-  when(fn).thenAnswer((_) => Future<T>.error(error));
-}
+class Answerer<T> {
+  final Future<T> Function() _fn;
+  Answerer(this._fn);
+  void withValue(T value) {
+    when(_fn).thenAnswer((_) => Future.value(value));
+  }
 
-void answerValue<T>(Future<T> Function() fn, T value) {
-  when(fn).thenAnswer((_) => Future<T>.value(value));
-}
+  void withLoading() {
+    when(_fn).thenAnswer((_) => Completer<T>().future);
+  }
 
-void answerEmptyList<T>(Future<List<T>> Function() fn) {
-  when(fn).thenAnswer((_) => Future<List<T>>.value(<T>[]));
+  void withError(Object error) {
+    when(_fn).thenAnswer((_) => Future<T>.error(error));
+  }
 }

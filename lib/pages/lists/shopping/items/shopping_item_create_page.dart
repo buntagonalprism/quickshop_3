@@ -11,6 +11,14 @@ import 'models/shopping_item_raw_data.dart';
 import 'shopping_item_create_view_model.dart';
 import 'shopping_item_view.dart';
 
+class ShoppingItemCreatePageKeys {
+  static const addMoreButton = Key('add_more_button');
+  static const doneButton = Key('done_button');
+  static const itemInputField = Key('item_input_field');
+}
+
+typedef _Keys = ShoppingItemCreatePageKeys;
+
 class ShoppingItemCreatePage extends ConsumerStatefulWidget {
   const ShoppingItemCreatePage({required this.listId, super.key});
   final String listId;
@@ -89,11 +97,13 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton.icon(
+                      key: _Keys.addMoreButton,
                       onPressed: () => onDone(addMore: true),
                       icon: const Icon(Icons.add),
                       label: const Text('Add more'),
                     ),
                     TextButton.icon(
+                      key: _Keys.doneButton,
                       onPressed: () => onDone(addMore: false),
                       icon: const Icon(Icons.check),
                       label: const Text('Done'),
@@ -216,6 +226,7 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         child: TextField(
+          key: _Keys.itemInputField,
           decoration: InputDecoration(
             labelText: 'Enter item name',
             errorText: widget.showErrors ? model.filterError : null,
