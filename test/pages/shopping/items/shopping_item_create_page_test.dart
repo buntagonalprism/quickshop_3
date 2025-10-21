@@ -6,11 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:quickshop/models/shopping/autocomplete/shopping_item_autocomplete.dart';
-import 'package:quickshop/models/shopping/shopping_item.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
 import 'package:quickshop/repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
-import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/shared_preferences.dart';
@@ -29,14 +27,12 @@ void main() {
   late MockRouter router;
   late FakeSharedPreferences prefs;
   late FakeFirebaseAuth auth;
-  late StreamController<List<ShoppingItem>> listItemsController;
 
   setUp(() {
     itemAutocompleteRepo = MockItemAutocompleteRepo();
     router = MockRouter();
     prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
-    listItemsController = StreamController<List<ShoppingItem>>.broadcast();
   });
 
   Future<void> pumpScreen(WidgetTester tester) async {
@@ -47,7 +43,6 @@ void main() {
           routerProvider.overrideWithValue(router),
           sharedPrefsProvider.overrideWithValue(prefs),
           firebaseAuthProvider.overrideWithValue(auth),
-          shoppingListItemsProvider(listId).overrideWith((_) => listItemsController.stream),
         ],
         child: ShoppingItemCreatePage(listId: listId),
       ),
@@ -156,7 +151,6 @@ void main() {
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
         buildItemAutocomplete('Milk', 'Dairy'),
       ]);
-      listItemsController.add([]);
 
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pumpAndSettle();
@@ -165,6 +159,64 @@ void main() {
       expect(findAutocompleteEntry('Milk'), findsOneWidget);
       expect(findAutocompleteEntry('Full fat Milk'), findsOneWidget);
       expect(findAutocompleteEntry('Skim Milk'), findsOneWidget);
+    });
+  });
+
+  group('Items already on list', () {
+    testWidgets(
+        'GIVEN item name matches item already on list '
+        'WHEN tapping done '
+        'THEN shows snackbar "already on list"', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
+      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
+      answerValue(() => itemAutocompleteRepo.getExactMatchSuggestionForItem('Milk'), autocomplete);
+
+      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Done'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Milk is already on your list'), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN item name matches item already on list '
+        'WHEN tapping add more '
+        'THEN shows snackbar "already on list"', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
+      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
+      answerValue(() => itemAutocompleteRepo.getExactMatchSuggestionForItem('Milk'), autocomplete);
+
+      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add more'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Milk is already on your list'), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN item name matches item already on list '
+        'WHEN tapping Edit button on item '
+        'THEN opens item edit page', (WidgetTester tester) async {
+      await pumpScreen(tester);
+
+      final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
+      answerValue(() => itemAutocompleteRepo.getAutocomplete('milk'), [autocomplete]);
+
+      await tester.enterText(find.byType(TextField), 'Milk');
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Edit'));
+      await tester.pump();
+
+      verify(() => router.go(Routes.shoppingListEditItem(listId, autocomplete.sourceId).path)).called(1);
     });
   });
 }
