@@ -158,7 +158,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                           itemBuilder: (BuildContext context, int index) {
                             final option = options.elementAt(index);
                             return option.when(
-                              newCategory: () => ListTile(
+                              newCategory: () => CategoryAutocompleteTile(
                                 title: Text.rich(
                                   TextSpan(
                                     text: 'Add new category: ',
@@ -172,15 +172,15 @@ class _CategorySelectorState extends State<CategorySelector> {
                                 ),
                                 onTap: () => _addCategory(controller.text),
                               ),
-                              heading: (name) => ListTile(
-                                title: Text(name),
-                                enabled: false,
-                              ),
-                              suggestion: (name) => ListTile(
+                              list: (name) => CategoryAutocompleteTile(
                                 title: Text(name),
                                 onTap: () => _addCategory(name),
                               ),
-                              history: (name) => ListTile(
+                              suggestion: (name) => CategoryAutocompleteTile(
+                                title: Text(name),
+                                onTap: () => _addCategory(name),
+                              ),
+                              history: (name) => CategoryAutocompleteTile(
                                 title: Text(name),
                                 onTap: () => _addCategory(name),
                               ),
@@ -203,5 +203,19 @@ class _CategorySelectorState extends State<CategorySelector> {
   void _addCategory(String category) {
     widget.onCategoriesChanged(List.from(widget.selectedCategories)..add(category));
     controller.clear();
+  }
+}
+
+class CategoryAutocompleteTile extends StatelessWidget {
+  final Widget title;
+  final VoidCallback onTap;
+  const CategoryAutocompleteTile({super.key, required this.title, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: title,
+      onTap: onTap,
+    );
   }
 }

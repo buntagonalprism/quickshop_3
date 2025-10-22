@@ -17,6 +17,12 @@ class ShoppingItemCreatePageKeys {
   static const itemInputField = Key('item_input_field');
 }
 
+class ShoppingItemCreatePageStrings {
+  static String itemOnList(String displayName) => '$displayName is already on your list';
+  static String addedToList(String displayName) => 'Added $displayName to list';
+  static const String categoryRequired = 'Please select at least one category';
+}
+
 typedef _Keys = ShoppingItemCreatePageKeys;
 
 class ShoppingItemCreatePage extends ConsumerStatefulWidget {
@@ -147,7 +153,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
         categoryRequired: () => moveToTab(1),
         alreadyOnList: (product) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('$product is already on your list'),
+            content: Text(ShoppingItemCreatePageStrings.itemOnList(product)),
             duration: const Duration(milliseconds: 2400),
           ));
         },
@@ -172,7 +178,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   void showConfirmationSnackbar(String displayName) {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Added $displayName to list'),
+        content: Text(ShoppingItemCreatePageStrings.addedToList(displayName)),
         duration: const Duration(milliseconds: 2400),
       ));
     }

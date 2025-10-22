@@ -52,21 +52,21 @@ extension CategorySelectorItemPatterns on CategorySelectorItem {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_NewCategory value)? newCategory,
-    TResult Function(_Heading value)? heading,
     TResult Function(_Suggestion value)? suggestion,
     TResult Function(_History value)? history,
+    TResult Function(_List value)? list,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _NewCategory() when newCategory != null:
         return newCategory(_that);
-      case _Heading() when heading != null:
-        return heading(_that);
       case _Suggestion() when suggestion != null:
         return suggestion(_that);
       case _History() when history != null:
         return history(_that);
+      case _List() when list != null:
+        return list(_that);
       case _:
         return orElse();
     }
@@ -88,20 +88,20 @@ extension CategorySelectorItemPatterns on CategorySelectorItem {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_NewCategory value) newCategory,
-    required TResult Function(_Heading value) heading,
     required TResult Function(_Suggestion value) suggestion,
     required TResult Function(_History value) history,
+    required TResult Function(_List value) list,
   }) {
     final _that = this;
     switch (_that) {
       case _NewCategory():
         return newCategory(_that);
-      case _Heading():
-        return heading(_that);
       case _Suggestion():
         return suggestion(_that);
       case _History():
         return history(_that);
+      case _List():
+        return list(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -122,20 +122,20 @@ extension CategorySelectorItemPatterns on CategorySelectorItem {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_NewCategory value)? newCategory,
-    TResult? Function(_Heading value)? heading,
     TResult? Function(_Suggestion value)? suggestion,
     TResult? Function(_History value)? history,
+    TResult? Function(_List value)? list,
   }) {
     final _that = this;
     switch (_that) {
       case _NewCategory() when newCategory != null:
         return newCategory(_that);
-      case _Heading() when heading != null:
-        return heading(_that);
       case _Suggestion() when suggestion != null:
         return suggestion(_that);
       case _History() when history != null:
         return history(_that);
+      case _List() when list != null:
+        return list(_that);
       case _:
         return null;
     }
@@ -156,21 +156,21 @@ extension CategorySelectorItemPatterns on CategorySelectorItem {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newCategory,
-    TResult Function(String name)? heading,
     TResult Function(String name)? suggestion,
     TResult Function(String name)? history,
+    TResult Function(String name)? list,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _NewCategory() when newCategory != null:
         return newCategory();
-      case _Heading() when heading != null:
-        return heading(_that.name);
       case _Suggestion() when suggestion != null:
         return suggestion(_that.name);
       case _History() when history != null:
         return history(_that.name);
+      case _List() when list != null:
+        return list(_that.name);
       case _:
         return orElse();
     }
@@ -192,20 +192,20 @@ extension CategorySelectorItemPatterns on CategorySelectorItem {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newCategory,
-    required TResult Function(String name) heading,
     required TResult Function(String name) suggestion,
     required TResult Function(String name) history,
+    required TResult Function(String name) list,
   }) {
     final _that = this;
     switch (_that) {
       case _NewCategory():
         return newCategory();
-      case _Heading():
-        return heading(_that.name);
       case _Suggestion():
         return suggestion(_that.name);
       case _History():
         return history(_that.name);
+      case _List():
+        return list(_that.name);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -226,20 +226,20 @@ extension CategorySelectorItemPatterns on CategorySelectorItem {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? newCategory,
-    TResult? Function(String name)? heading,
     TResult? Function(String name)? suggestion,
     TResult? Function(String name)? history,
+    TResult? Function(String name)? list,
   }) {
     final _that = this;
     switch (_that) {
       case _NewCategory() when newCategory != null:
         return newCategory();
-      case _Heading() when heading != null:
-        return heading(_that.name);
       case _Suggestion() when suggestion != null:
         return suggestion(_that.name);
       case _History() when history != null:
         return history(_that.name);
+      case _List() when list != null:
+        return list(_that.name);
       case _:
         return null;
     }
@@ -263,68 +263,6 @@ class _NewCategory extends CategorySelectorItem {
   @override
   String toString() {
     return 'CategorySelectorItem.newCategory()';
-  }
-}
-
-/// @nodoc
-
-class _Heading extends CategorySelectorItem {
-  const _Heading(this.name) : super._();
-
-  final String name;
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$HeadingCopyWith<_Heading> get copyWith =>
-      __$HeadingCopyWithImpl<_Heading>(this, _$identity);
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _Heading &&
-            (identical(other.name, name) || other.name == name));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, name);
-
-  @override
-  String toString() {
-    return 'CategorySelectorItem.heading(name: $name)';
-  }
-}
-
-/// @nodoc
-abstract mixin class _$HeadingCopyWith<$Res>
-    implements $CategorySelectorItemCopyWith<$Res> {
-  factory _$HeadingCopyWith(_Heading value, $Res Function(_Heading) _then) =
-      __$HeadingCopyWithImpl;
-  @useResult
-  $Res call({String name});
-}
-
-/// @nodoc
-class __$HeadingCopyWithImpl<$Res> implements _$HeadingCopyWith<$Res> {
-  __$HeadingCopyWithImpl(this._self, this._then);
-
-  final _Heading _self;
-  final $Res Function(_Heading) _then;
-
-  /// Create a copy of CategorySelectorItem
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? name = null,
-  }) {
-    return _then(_Heading(
-      null == name
-          ? _self.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
   }
 }
 
@@ -445,6 +383,68 @@ class __$HistoryCopyWithImpl<$Res> implements _$HistoryCopyWith<$Res> {
     Object? name = null,
   }) {
     return _then(_History(
+      null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _List extends CategorySelectorItem {
+  const _List(this.name) : super._();
+
+  final String name;
+
+  /// Create a copy of CategorySelectorItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ListCopyWith<_List> get copyWith =>
+      __$ListCopyWithImpl<_List>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _List &&
+            (identical(other.name, name) || other.name == name));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, name);
+
+  @override
+  String toString() {
+    return 'CategorySelectorItem.list(name: $name)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ListCopyWith<$Res>
+    implements $CategorySelectorItemCopyWith<$Res> {
+  factory _$ListCopyWith(_List value, $Res Function(_List) _then) =
+      __$ListCopyWithImpl;
+  @useResult
+  $Res call({String name});
+}
+
+/// @nodoc
+class __$ListCopyWithImpl<$Res> implements _$ListCopyWith<$Res> {
+  __$ListCopyWithImpl(this._self, this._then);
+
+  final _List _self;
+  final $Res Function(_List) _then;
+
+  /// Create a copy of CategorySelectorItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? name = null,
+  }) {
+    return _then(_List(
       null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
