@@ -7,8 +7,10 @@ import 'package:quickshop/models/shopping/autocomplete/shopping_category_autocom
 import 'package:quickshop/models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import 'package:quickshop/models/shopping/shopping_item.dart';
 import 'package:quickshop/pages/lists/shopping/items/category_selector.dart';
+import 'package:quickshop/pages/lists/shopping/items/models/shopping_item_errors.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
+import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
 import 'package:quickshop/repositories/shopping/autocomplete/shopping_category_autocomplete_repo.dart';
 import 'package:quickshop/repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
@@ -70,6 +72,31 @@ void main() {
         child: ShoppingItemCreatePage(listId: listId),
       ),
     ));
+  }
+
+  Future<void> proceedToCategoryView(WidgetTester tester, String itemName) async {
+    await pumpScreen(tester);
+
+    answer(() => itemAutocompleteRepo.getAutocomplete(itemName)).withValue([]);
+    answer(() => itemsRepo.addItemByName(itemName)).withValue(const AddItemResult.categoryRequired());
+
+    await tester.enterText(itemInputFinder, itemName);
+    await tester.pumpAndSettle();
+
+    await tester.tap(doneButtonFinder);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ShoppingItemCategorySelectView), findsOneWidget);
+  }
+
+  Future<void> selectCategory(WidgetTester tester, String categoryName) async {
+    answer(() => categoryAutocompleteRepo.getAutocomplete(categoryName))
+        .withValue([buildCategoryAutocomplete(categoryName)]);
+    await tester.enterText(categoryInputFieldFinder, categoryName);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.categoryAutocompleteEntry(categoryName));
+    await tester.pumpAndSettle();
   }
 
   group('Item name error handling', () {
@@ -433,19 +460,191 @@ void main() {
 
       expect(find.text(_Strings.categoryRequired), findsOneWidget);
 
-      answer(() => categoryAutocompleteRepo.getAutocomplete('Dairy')).withValue([buildCategoryAutocomplete('Dairy')]);
-      await tester.enterText(categoryInputFieldFinder, 'Dairy');
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.categoryAutocompleteEntry('Dairy'));
-      await tester.pumpAndSettle();
+      final categoryName = 'Dairy';
+      await selectCategory(tester, categoryName);
 
       expect(find.text(_Strings.categoryRequired), findsNothing);
 
-      await tester.tap(find.selectedCategoryRemoveButton('Dairy'));
+      await tester.tap(find.selectedCategoryRemoveButton(categoryName));
       await tester.pumpAndSettle();
 
       expect(find.text(_Strings.categoryRequired), findsOneWidget);
+    });
+  });
+
+  group('Adding items after setting category ', () {
+    final itemName = 'Unknown Item';
+    final categoryName = 'My new category';
+
+    addItemFn() => itemsRepo.addItem(productName: itemName, quantity: '', categories: [categoryName]);
+
+    testWidgets(
+        'GIVEN category has been input in category view '
+        'WHEN add more is tapped '
+        'THEN item is added and item search screen shown', (WidgetTester tester) async {
+      await proceedToCategoryView(tester, itemName);
+
+      await selectCategory(tester, categoryName);
+
+      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+
+      await tester.tap(addMoreButtonFinder);
+      await tester.pumpAndSettle();
+
+      verify(addItemFn).called(1);
+      verifyNever(() => router.pop());
+      expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
+      expect(find.byType(ShoppingItemSearchView), findsOneWidget);
+      expect(getTextFieldText(tester, itemInputFinder), isEmpty);
+    });
+
+    testWidgets(
+        'GIVEN category has been input in category view '
+        'WHEN done is tapped '
+        'THEN item is added and screen is popped', (WidgetTester tester) async {
+      await proceedToCategoryView(tester, itemName);
+
+      await selectCategory(tester, categoryName);
+
+      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+
+      await tester.tap(doneButtonFinder);
+      await tester.pumpAndSettle();
+
+      verify(() => router.pop()).called(1);
+      expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
+    });
+  });
+
+  group('Full item edit view ', () {
+    final itemName = 'Unknown Item';
+    final categoryName = 'My category';
+
+    final keys = ShoppingItemView.keys;
+    final errors = ShoppingItemErrors.messages;
+
+    Future<void> proceedToItemEditView(WidgetTester tester, String itemName) async {
+      await proceedToCategoryView(tester, itemName);
+
+      await tester.tap(find.byKey(_Keys.editProductButton));
+      await tester.pumpAndSettle();
+    }
+
+    void verifyItemNotAdded() {
+      verifyNever(() => router.pop());
+      verifyNever(() => itemsRepo.addItem(
+            quantity: any(named: 'quantity'),
+            productName: any(named: 'productName'),
+            categories: any(named: 'categories'),
+          ));
+      expect(find.byType(ShoppingItemSearchView), findsNothing);
+    }
+
+    void setupAddItemAnswer() {
+      answer(() => itemsRepo.addItem(
+            productName: itemName,
+            quantity: '',
+            categories: [categoryName],
+          )).withValue(buildShoppingItem(itemName, categoryName));
+    }
+
+    testWidgets(
+        'GIVEN item category input view '
+        'WHEN tapping edit product button '
+        'THEN item edit view shown', (WidgetTester tester) async {
+      await proceedToItemEditView(tester, itemName);
+
+      expect(find.byType(ShoppingItemView), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN invalid input on item edit view '
+        'WHEN tapping done '
+        'THEN validation errors shown', (WidgetTester tester) async {
+      await proceedToItemEditView(tester, itemName);
+
+      await tester.enterText(find.byKey(keys.productInput), '');
+
+      await tester.tap(doneButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.text(errors.productNameMissing), findsOneWidget);
+      expect(find.text(errors.categoriesMissing), findsOneWidget);
+
+      await tester.enterText(find.byKey(keys.productInput), itemName);
+      await selectCategory(tester, categoryName);
+
+      expect(find.text(errors.productNameMissing), findsNothing);
+      expect(find.text(errors.categoriesMissing), findsNothing);
+
+      verifyItemNotAdded();
+    });
+
+    testWidgets(
+        'GIVEN invalid input on item edit view '
+        'WHEN tapping add more '
+        'THEN validation errors shown', (WidgetTester tester) async {
+      await proceedToItemEditView(tester, itemName);
+
+      await tester.enterText(find.byKey(keys.productInput), '');
+
+      await tester.tap(addMoreButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.text(errors.productNameMissing), findsOneWidget);
+      expect(find.text(errors.categoriesMissing), findsOneWidget);
+
+      await tester.enterText(find.byKey(keys.productInput), itemName);
+      await selectCategory(tester, categoryName);
+
+      expect(find.text(errors.productNameMissing), findsNothing);
+      expect(find.text(errors.categoriesMissing), findsNothing);
+
+      verifyItemNotAdded();
+    });
+
+    testWidgets(
+        'GIVEN valid data on item edit view '
+        'WHEN tapping done '
+        'THEN item is added and screen popped', (WidgetTester tester) async {
+      await proceedToItemEditView(tester, itemName);
+      await tester.enterText(find.byKey(keys.productInput), itemName);
+      await selectCategory(tester, categoryName);
+      setupAddItemAnswer();
+
+      await tester.tap(doneButtonFinder);
+      await tester.pumpAndSettle();
+
+      verify(() => itemsRepo.addItem(
+            productName: itemName,
+            quantity: '',
+            categories: [categoryName],
+          )).called(1);
+      verify(() => router.pop()).called(1);
+      expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
+    });
+
+    testWidgets(
+        'GIVEN valid data on item edit view '
+        'WHEN tapping add more '
+        'THEN item is added and screen reset to item search view', (WidgetTester tester) async {
+      await proceedToItemEditView(tester, itemName);
+      await tester.enterText(find.byKey(keys.productInput), itemName);
+      await selectCategory(tester, categoryName);
+      setupAddItemAnswer();
+
+      await tester.tap(addMoreButtonFinder);
+      await tester.pumpAndSettle();
+
+      verify(() => itemsRepo.addItem(
+            productName: itemName,
+            quantity: '',
+            categories: [categoryName],
+          )).called(1);
+      verifyNever(() => router.pop());
+      expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
+      expect(find.byType(ShoppingItemSearchView), findsOneWidget);
+      expect(getTextFieldText(tester, itemInputFinder), isEmpty);
     });
   });
 }

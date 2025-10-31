@@ -14,6 +14,7 @@ import 'shopping_item_view.dart';
 class ShoppingItemCreatePageKeys {
   static const addMoreButton = Key('add_more_button');
   static const doneButton = Key('done_button');
+  static const editProductButton = Key('edit_product_button');
   static const itemInputField = Key('item_input_field');
 }
 
@@ -90,7 +91,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                     onDataChanged: (rawData) {
                       ref.read(shoppingItemCreateViewModelProvider.notifier).setRawData(rawData);
                     },
-                    onDone: () => onDone(addMore: false),
+                    onSubmitted: () => onDone(addMore: false),
                   ),
                 ],
               ),
@@ -537,6 +538,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
               ),
               8.horizontal,
               TextButton.icon(
+                key: _Keys.editProductButton,
                 onPressed: widget.onEditItem,
                 label: Text('Edit'),
                 icon: Icon(Icons.edit),

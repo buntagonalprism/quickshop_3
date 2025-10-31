@@ -26,15 +26,21 @@ class ShoppingItemView extends ConsumerStatefulWidget {
     required this.listId,
     required this.data,
     required this.onDataChanged,
-    required this.onDone,
+    required this.onSubmitted,
     this.errors,
     super.key,
   });
   final String listId;
   final ShoppingItemViewData data;
   final Function(ShoppingItemRawData rawData) onDataChanged;
-  final VoidCallback onDone;
+  final VoidCallback onSubmitted;
   final ShoppingItemErrors? errors;
+
+  static const keys = (
+    productInput: Key('shopping_item_view_product_input'),
+    quantityInput: Key('shopping_item_view_quantity_input'),
+    categoriesInput: Key('shopping_item_view_categories_input'),
+  );
 
   @override
   ConsumerState<ShoppingItemView> createState() => _ShoppingItemViewState();
@@ -50,6 +56,8 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
   final categoriesFocusNode = FocusNode();
 
   late final _Mode mode;
+
+  static const keys = ShoppingItemView.keys;
 
   @override
   void initState() {
@@ -104,6 +112,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextField(
+                    key: keys.productInput,
                     autofocus: true,
                     focusNode: productFocusNode,
                     textInputAction: TextInputAction.next,
@@ -128,6 +137,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                   ),
                   20.vertical,
                   TextField(
+                    key: keys.quantityInput,
                     focusNode: quantityFocusNode,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.sentences,
@@ -150,6 +160,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                   ),
                   20.vertical,
                   CategorySelector(
+                    key: keys.categoriesInput,
                     listId: widget.listId,
                     focusNode: categoriesFocusNode,
                     controller: categoriesController,
@@ -161,7 +172,7 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                       });
                     },
                     error: widget.errors?.categoriesError,
-                    onSubmitted: widget.onDone,
+                    onSubmitted: widget.onSubmitted,
                   ),
                 ],
               ),

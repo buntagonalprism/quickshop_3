@@ -23,9 +23,14 @@ class ShoppingItemErrors {
 
   factory ShoppingItemErrors.validate(ShoppingItemRawData data) {
     return ShoppingItemErrors(
-      productError: data.product.isEmpty ? 'Please enter a product name' : null,
+      productError: data.product.isEmpty ? messages.productNameMissing : null,
       quantityError: null,
-      categoriesError: data.categories.isEmpty ? 'Please select at least one category' : null,
+      categoriesError: data.categories.isEmpty ? messages.categoriesMissing : null,
     );
   }
+
+  static const messages = (
+    productNameMissing: 'Please enter a product name',
+    categoriesMissing: 'Please select at least one category',
+  );
 }

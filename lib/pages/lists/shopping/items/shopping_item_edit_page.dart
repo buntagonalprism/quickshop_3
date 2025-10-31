@@ -60,7 +60,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
                       errors = ShoppingItemErrors.validate(updatedRawData);
                     });
                   },
-                  onDone: () => _saveUpdatedItem(item),
+                  onSubmitted: () => _saveUpdatedItem(item),
                 ),
               ),
               Material(
