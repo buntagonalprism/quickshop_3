@@ -3,9 +3,9 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
+import '../../../application/list_invite_providers.dart';
 import '../../../application/list_store.dart';
 import '../../../models/list_invite.dart';
-import '../../../repositories/list_invite_repo.dart';
 import '../../../repositories/user_repo.dart';
 
 part 'list_invite_view_model.freezed.dart';

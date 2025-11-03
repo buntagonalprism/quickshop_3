@@ -4,6 +4,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../analytics/crash_reporter.dart';
+import '../../../application/list_invite_providers.dart';
 import '../../../application/list_provider.dart';
 import '../../../models/list_invite.dart';
 import '../../../models/list_summary.dart';

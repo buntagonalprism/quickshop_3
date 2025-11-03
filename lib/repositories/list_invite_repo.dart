@@ -7,49 +7,9 @@ import '../analytics/analytics.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../services/firestore.dart';
-import 'delay_provider_dispose.dart';
 import 'user_repo.dart';
 
 part 'list_invite_repo.g.dart';
-
-/// Load a list invite by its id.
-///
-/// Will return null if the invite does not exist.
-@riverpod
-Stream<ListInvite?> listInviteById(Ref ref, String inviteId) {
-  final fs = ref.read(firestoreProvider);
-  return fs.collection('invites').doc(inviteId).snapshots().map((snapshot) {
-    if (!snapshot.exists) {
-      return null;
-    }
-    return _fromFirestore(snapshot);
-  });
-}
-
-/// Load the currently authenticated user's personal list invite for sharing a given list.
-///
-/// Will return null if the user has not created a sharing link for the list.
-@riverpod
-Stream<ListInvite?> userListInviteByListId(Ref ref, String listId) {
-  ref.delayDispose(const Duration(minutes: 5));
-  final fs = ref.read(firestoreProvider);
-  final user = ref.read(userRepoProvider);
-  if (user == null) {
-    return const Stream.empty();
-  }
-  return fs
-      .collection('invites')
-      .where('listId', isEqualTo: listId)
-      .where('inviterId', isEqualTo: user.id)
-      .snapshots()
-      .map((snapshot) {
-    if (snapshot.docs.isEmpty) {
-      return null;
-    }
-    final doc = snapshot.docs.first;
-    return _fromFirestore(doc);
-  });
-}
 
 @riverpod
 ListInviteRepo listInviteRepo(Ref ref) {
@@ -84,6 +44,36 @@ class ListInviteRepo {
     final fs = ref.read(firestoreProvider);
     await fs.collection('invites').doc(invite.id).delete();
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listInviteDeleted(invite.listType));
+  }
+
+  Stream<ListInvite?> listInviteById(String inviteId) {
+    final fs = ref.read(firestoreProvider);
+    return fs.collection('invites').doc(inviteId).snapshots().map((snapshot) {
+      if (!snapshot.exists) {
+        return null;
+      }
+      return _fromFirestore(snapshot);
+    });
+  }
+
+  Stream<ListInvite?> userListInviteByListId(String listId) {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
+    if (user == null) {
+      return const Stream.empty();
+    }
+    return fs
+        .collection('invites')
+        .where('listId', isEqualTo: listId)
+        .where('inviterId', isEqualTo: user.id)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+      final doc = snapshot.docs.first;
+      return _fromFirestore(doc);
+    });
   }
 }
 
