@@ -2,8 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/list_provider.dart';
+import '../../application/list_store.dart';
 import '../../models/list_summary.dart';
-import '../../repositories/list_repo.dart';
 import '../../repositories/user_repo.dart';
 import '../../router.dart';
 import '../../widgets/http_request_confirmation_dialog.dart';
@@ -135,7 +136,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             ),
             TextButton(
               onPressed: () {
-                ref.read(listRepoProvider.notifier).deleteList(list);
+                ref.read(listStoreProvider.notifier).deleteList(list);
                 Navigator.of(dialogContext).pop();
                 Scaffold.of(context).closeEndDrawer();
                 ref.read(routerProvider).pop();
@@ -164,7 +165,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               'Are you sure you want to leave this list? You will no longer be able to view or edit this list.',
           confirmationAction: 'Leave',
           requestInProgressMessage: 'Leaving list...',
-          onConfirm: () => ref.read(listRepoProvider.notifier).leaveList(list),
+          onConfirm: () => ref.read(listStoreProvider.notifier).leaveList(list),
           onSuccess: (_) {
             Navigator.of(dialogContext).pop();
             Scaffold.of(context).closeEndDrawer();

@@ -15,27 +15,31 @@ import 'user_repo.dart';
 part 'list_repo.g.dart';
 
 @Riverpod(keepAlive: true)
-class ListRepo extends _$ListRepo {
-  @override
-  Stream<List<ListSummary>> build() {
-    final fs = ref.watch(firestoreProvider);
-    final user = ref.watch(userRepoProvider);
+ListRepo listRepo(Ref ref) {
+  return ListRepo(ref);
+}
+
+class ListRepo {
+  final Ref ref;
+  ListRepo(this.ref);
+
+  Stream<List<ListSummary>> getAllLists() {
+    final fs = ref.read(firestoreProvider);
+    final user = ref.read(userRepoProvider);
     if (user == null) {
-      return const Stream.empty();
+      throw Exception('User not signed in');
     }
-    return fs
-        .collection('lists')
-        .where(_Fields.editorIds, arrayContains: user.id)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map(_fromFirestore).toList()
-        ..sort((a, b) => (b.lastModified[user.id] ?? 0).compareTo(a.lastModified[user.id] ?? 0));
-    });
+    return fs.collection('lists').where(_Fields.editorIds, arrayContains: user.id).snapshots().map(
+      (snapshot) {
+        return snapshot.docs.map(_fromFirestore).toList()
+          ..sort((a, b) => (b.lastModified[user.id] ?? 0).compareTo(a.lastModified[user.id] ?? 0));
+      },
+    );
   }
 
   /// Creates a new list and returns the list id
   Future<String> createList(String name, ListType listType) async {
-    final user = ref.watch(userRepoProvider);
+    final user = ref.read(userRepoProvider);
     if (user == null) {
       throw Exception('User not signed in');
     }
@@ -91,18 +95,6 @@ class ListRepo extends _$ListRepo {
     await fs.collection('lists').doc(list.id).delete();
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listDeleted(list.listType));
   }
-}
-
-@riverpod
-AsyncValue<ListSummary?> list(Ref ref, String listId) {
-  final result = ref.watch(listRepoProvider);
-  return result.when(
-    data: (lists) => AsyncValue.data(
-      lists.any((list) => list.id == listId) ? lists.firstWhere((list) => list.id == listId) : null,
-    ),
-    error: (error, trace) => AsyncValue.error(error, trace),
-    loading: AsyncValue.loading,
-  );
 }
 
 enum AcceptInviteResult {

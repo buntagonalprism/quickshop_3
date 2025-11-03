@@ -1,26 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'list_repo.dart';
+part of 'list_store.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listRepoHash() => r'd2da06d7d40341f488228766b5db4f09b4e92c3e';
+String _$listStoreHash() => r'5b735c56133c8097c5c54c8bb5857658bf8349e4';
 
-/// See also [listRepo].
-@ProviderFor(listRepo)
-final listRepoProvider = Provider<ListRepo>.internal(
-  listRepo,
-  name: r'listRepoProvider',
+/// See also [ListStore].
+@ProviderFor(ListStore)
+final listStoreProvider =
+    StreamNotifierProvider<ListStore, List<ListSummary>>.internal(
+  ListStore.new,
+  name: r'listStoreProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$listRepoHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$listStoreHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ListRepoRef = ProviderRef<ListRepo>;
+typedef _$ListStore = StreamNotifier<List<ListSummary>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

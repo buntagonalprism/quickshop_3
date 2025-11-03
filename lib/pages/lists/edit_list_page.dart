@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/list_provider.dart';
+import '../../application/list_store.dart';
 import '../../models/list_summary.dart';
-import '../../repositories/list_repo.dart';
 import '../../router.dart';
 import '../../widgets/button_progress_indicator.dart';
 
@@ -63,7 +64,7 @@ class __EditListViewState extends ConsumerState<_EditListView> {
       errorText = null;
     });
     try {
-      await ref.read(listRepoProvider.notifier).updateListName(widget.list, name);
+      await ref.read(listStoreProvider.notifier).updateListName(widget.list, name);
       if (mounted) {
         ref.read(routerProvider).pop();
       }

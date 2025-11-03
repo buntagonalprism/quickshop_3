@@ -3,10 +3,10 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
+import '../../../application/list_provider.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
-import '../../../repositories/list_repo.dart';
 
 part 'checklist_view_model.freezed.dart';
 part 'checklist_view_model.g.dart';

@@ -1,22 +1,22 @@
 # Quickshop 3
 
 My third complete rewrite of the Quickshop app. Using the following stack:
-- Global state: Riverpod
-- Local state: TODO: Hooks
-- Navigation: Go Router
-- Authentication: Firebase auth
-- Data sync: Firestore
-- Local data storage: SQFlite
-- Local preferences data: Shared preferences
-- UI Theme: material 3
-- HTTP: TBD
+- Global state: [Riverpod](https://pub.dev/packages/riverpod)
+- Navigation: [Go Router](https://pub.dev/packages/go_router)
+- Authentication: [Firebase Authentication](https://pub.dev/packages/firebase_auth)
+- Data sync: [Firestore](https://pub.dev/packages/cloud_firestore)
+- Local data persistance: [Drift](https://pub.dev/packages/drift)
+- Local preferences data: [Shared preferences](https://pub.dev/packages/shared_preferences)
+- HTTP: Plain old [http](https://pub.dev/packages/http)
+- UI Theme: [Material 3](https://m3.material.io/develop/flutter)
 
 ## Naming Conventions
 - `services`: Services are wrappers around accessing external systems like databases, HTTP calls, and authentication. 
 - `models`: Data models used by the application. All models use [freezed](https://pub.dev/packages/freezed) for immutability and equality generation. 
-- `repositories`: Repositories are [Riverpod](https://riverpod.dev/) `providers` which provide access to fetch and query data models, and may also support update operations as well. Repositories are intended to be used across multiple pages. 
+- `repositories`: Repositories use services to fetch, query, and update data models. There is generally one repository per data model type. They do not typically maintain any public state, and do not communicate with each other, as orchestration and caching should be performed in the stores. Where applicable, repositories may return a stream of data for read operations, where the stream emits new values as the data is updated.  
+- `stores`: Stores are [Riverpod](https://riverpod.dev/) `notifiers` which perform application-level in-memory data caching of data models, using data from repositories. Only data types where it makes sense to keep the entire dataset of that type in memory will have a store. But if a store does exist, all write operations should go through it rather than direct to the repository. This allows the store to make optimistic, synchronous updates to the in-memory state before asynchronously persisting the update via a repository. Write operations spanning multiple data types are also handled as methods on stores, where one store acts as the initiator and orchestrator, calling methods on other stores to notify them of the update. If a transaction is required, the initiating store is reponsible for creating the transaction and passing it to the other stores for them to pass down to their repositories. 
 - `pages`: Pages define top-level widgets within the app; a page is either a fullscreen widget, or a widget which fills the contents of a tabbed view. 
-- `view models`: View models agregate data from repositories and services, transforming the data for presentation in a page. A view model should only be used by its page. Depending on the requirements of the page, the view model may be either a data-only [freezed union class](https://pub.dev/packages/freezed#union-types), or class with both data and methods. 
+- `view models`: View models agregate data from stores and repositories, transforming the data for presentation in a page. A view model should only be used by its page. Depending on the requirements of the page, the view model may be a data-only [freezed union class](https://pub.dev/packages/freezed#union-types), a class with data and methods, or a Riverpod notifier. 
 
 ## Setup
 

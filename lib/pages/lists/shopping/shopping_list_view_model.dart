@@ -3,9 +3,9 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
+import '../../../application/list_provider.dart';
 import '../../../models/list_summary.dart';
 import '../../../models/shopping/shopping_item.dart';
-import '../../../repositories/list_repo.dart';
 import '../../../repositories/shopping/shopping_items_repo.dart';
 
 part 'shopping_list_view_model.freezed.dart';

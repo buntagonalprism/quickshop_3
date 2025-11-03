@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import '../../analytics/crash_reporter.dart';
+import '../../application/list_store.dart';
 import '../../models/list_summary.dart';
-import '../../repositories/list_repo.dart';
 import '../../repositories/user_repo.dart';
 import '../../router.dart';
 import '../../widgets/center_scrollable_column.dart';
@@ -22,7 +22,7 @@ class ListsPage extends ConsumerWidget {
         leading: const ProfileIcon(),
       ),
       body: Builder(builder: (context) {
-        final listsValue = ref.watch(listRepoProvider);
+        final listsValue = ref.watch(listStoreProvider);
         if (listsValue.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }

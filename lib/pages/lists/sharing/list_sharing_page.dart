@@ -4,11 +4,11 @@ import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../analytics/crash_reporter.dart';
+import '../../../application/list_provider.dart';
 import '../../../models/list_invite.dart';
 import '../../../models/list_summary.dart';
 import '../../../models/user/user.dart';
 import '../../../repositories/list_invite_repo.dart';
-import '../../../repositories/list_repo.dart';
 
 class ListSharingPage extends ConsumerStatefulWidget {
   const ListSharingPage({super.key, required this.listId});

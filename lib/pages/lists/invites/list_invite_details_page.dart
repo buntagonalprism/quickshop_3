@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../application/list_store.dart';
 import '../../../models/list_invite.dart';
 import '../../../models/list_summary.dart';
-import '../../../repositories/list_repo.dart';
 import '../../../router.dart';
 import '../../../services/http_result.dart';
 import '../../../widgets/button_progress_indicator.dart';
@@ -32,8 +32,7 @@ class ListInviteDetailsPage extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          notFound: () =>
-              const Center(child: Text('Invitation not found. It may have been deleted.')),
+          notFound: () => const Center(child: Text('Invitation not found. It may have been deleted.')),
           isOwner: (invite) => _IsOwnerView(invite: invite),
           pending: (invite) => _PendingInvitationView(invite: invite),
           accepted: (invite) => _InvitationAcceptedView(invite: invite),
@@ -94,8 +93,7 @@ class _IsOwnerView extends StatelessWidget {
         children: [
           Text.rich(
             TextSpan(
-              text:
-                  'This is your personal invite link for sharing the ${invite.listType.displayName} ',
+              text: 'This is your personal invite link for sharing the ${invite.listType.displayName} ',
               children: <TextSpan>[
                 TextSpan(
                   text: invite.listName,
@@ -196,7 +194,7 @@ class _PendingInvitationViewState extends ConsumerState<_PendingInvitationView> 
 
   void _acceptListInvitation() async {
     setState(() => _acceptInProgress = true);
-    final result = await ref.read(listRepoProvider.notifier).acceptListInvite(widget.invite);
+    final result = await ref.read(listStoreProvider.notifier).acceptListInvite(widget.invite);
     if (mounted) {
       if (result is HttpResultError) {
         final error = result.error;
