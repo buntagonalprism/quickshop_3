@@ -8,6 +8,7 @@ import '../../repositories/delay_provider_dispose.dart';
 import '../../repositories/list_leave_in_progress_repo.dart';
 import '../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import '../../repositories/shopping/shopping_items_repo.dart';
+import '../../services/shopping_item_name_parser.dart';
 
 part 'shopping_items_store.freezed.dart';
 part 'shopping_items_store.g.dart';
@@ -90,8 +91,18 @@ class ShoppingItemsStore extends _$ShoppingItemsStore {
   }
 
   Future<AddItemResult> addItemByName(String itemName) async {
+    final parser = ref.read(shoppingItemNameParserProvider);
+    final parsedItem = parser.parse(itemName);
+    final product = parsedItem.product.trim().toLowerCase();
     final autocompleteRepo = ref.read(shoppingItemAutocompleteRepoProvider(listId));
-    final autocomplete = await autocompleteRepo.getExactMatchSuggestionForItem(itemName);
+    final autocompleteOptions = await autocompleteRepo.getAutocomplete(product);
+    ShoppingItemAutocomplete? autocomplete;
+    for (var option in autocompleteOptions) {
+      if (option.product.toLowerCase() == product) {
+        autocomplete = option;
+        break;
+      }
+    }
     if (autocomplete == null) {
       return const AddItemResult.categoryRequired();
     }

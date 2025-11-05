@@ -77,8 +77,7 @@ void main() {
   Future<void> proceedToCategoryView(WidgetTester tester, String itemName) async {
     await pumpScreen(tester);
 
-    answer(() => itemAutocompleteRepo.getAutocomplete(itemName)).withValue([]);
-    answer(() => itemsRepo.addItemByName(itemName)).withValue(const AddItemResult.categoryRequired());
+    answer(() => itemAutocompleteRepo.getAutocomplete(itemName.toLowerCase())).withValue([]);
 
     await tester.enterText(itemInputFinder, itemName);
     await tester.pumpAndSettle();
@@ -221,7 +220,8 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      answer(() => itemsRepo.addAutocomplete(autocomplete)).withValue(buildShoppingItem('Milk', 'Dairy'));
+      addFn() => itemsRepo.addItem(productName: 'Milk', quantity: '', categories: ['Dairy']);
+      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
       await tester.pumpAndSettle();
@@ -229,7 +229,7 @@ void main() {
       await tester.tap(find.itemAutocompleteEntry('Milk'));
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addAutocomplete(autocomplete)).called(1);
+      verify(addFn).called(1);
       verify(() => router.pop()).called(1);
       expect(find.text(_Strings.addedToList('Milk')), findsOneWidget);
     });
@@ -242,7 +242,8 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      answer(() => itemsRepo.addAutocomplete(autocomplete)).withValue(buildShoppingItem('Milk', 'Dairy'));
+      addFn() => itemsRepo.addItem(productName: 'Milk', quantity: '', categories: ['Dairy']);
+      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
       await tester.pumpAndSettle();
@@ -250,7 +251,7 @@ void main() {
       await tester.tap(find.itemAutocompletePlusButton('Milk'));
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addAutocomplete(autocomplete)).called(1);
+      verify(addFn).called(1);
       verifyNever(() => router.pop());
       expect(find.text(_Strings.addedToList('Milk')), findsOneWidget);
       expect(getTextFieldText(tester), isEmpty);
@@ -268,9 +269,8 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      answer(() => itemsRepo.addItemByName(exactMatch.displayName)).withValue(
-        AddItemResult.success(buildShoppingItem('Milk', 'Dairy')),
-      );
+      addFn() => itemsRepo.addItem(productName: 'Milk', quantity: '', categories: ['Dairy']);
+      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
       await tester.pumpAndSettle();
@@ -278,7 +278,7 @@ void main() {
       await tester.tap(doneButtonFinder);
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addItemByName(exactMatch.displayName)).called(1);
+      verify(addFn).called(1);
       verify(() => router.pop()).called(1);
       expect(find.text(_Strings.addedToList('Milk')), findsOneWidget);
     });
@@ -295,8 +295,8 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      answer(() => itemsRepo.addItemByName(exactMatch.displayName))
-          .withValue(AddItemResult.success(buildShoppingItem('Milk', 'Dairy')));
+      addFn() => itemsRepo.addItem(productName: exactMatch.displayName, quantity: '', categories: ['Dairy']);
+      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
       await tester.pumpAndSettle();
@@ -304,7 +304,7 @@ void main() {
       await tester.tap(addMoreButtonFinder);
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addItemByName(exactMatch.displayName)).called(1);
+      verify(addFn).called(1);
       verifyNever(() => router.pop());
       expect(find.text(_Strings.addedToList('Milk')), findsOneWidget);
       expect(getTextFieldText(tester), isEmpty);
@@ -320,7 +320,6 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      answer(() => itemsRepo.addItemByName('Milk')).withValue(AddItemResult.alreadyOnList('Milk'));
 
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pumpAndSettle();
@@ -339,7 +338,6 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy', source: ShoppingItemAutocompleteSource.list);
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      answer(() => itemsRepo.addItemByName('Milk')).withValue(AddItemResult.alreadyOnList('Milk'));
 
       await tester.enterText(find.byType(TextField), 'Milk');
       await tester.pumpAndSettle();
@@ -376,8 +374,7 @@ void main() {
         'THEN category input view is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
 
-      answer(() => itemAutocompleteRepo.getAutocomplete('Unknown Item')).withValue([]);
-      answer(() => itemsRepo.addItemByName('Unknown Item')).withValue(const AddItemResult.categoryRequired());
+      answer(() => itemAutocompleteRepo.getAutocomplete('unknown item')).withValue([]);
 
       await tester.enterText(itemInputFinder, 'Unknown Item');
       await tester.pumpAndSettle();
@@ -395,8 +392,7 @@ void main() {
         'THEN category input view is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
 
-      answer(() => itemAutocompleteRepo.getAutocomplete('Unknown Item')).withValue([]);
-      answer(() => itemsRepo.addItemByName('Unknown Item')).withValue(const AddItemResult.categoryRequired());
+      answer(() => itemAutocompleteRepo.getAutocomplete('unknown item')).withValue([]);
 
       await tester.enterText(itemInputFinder, 'Unknown Item');
       await tester.pumpAndSettle();
@@ -413,8 +409,7 @@ void main() {
     Future<void> proceedToCategoryView(WidgetTester tester) async {
       await pumpScreen(tester);
 
-      answer(() => itemAutocompleteRepo.getAutocomplete('Unknown Item')).withValue([]);
-      answer(() => itemsRepo.addItemByName('Unknown Item')).withValue(const AddItemResult.categoryRequired());
+      answer(() => itemAutocompleteRepo.getAutocomplete('unknown item')).withValue([]);
 
       await tester.enterText(itemInputFinder, 'Unknown Item');
       await tester.pumpAndSettle();

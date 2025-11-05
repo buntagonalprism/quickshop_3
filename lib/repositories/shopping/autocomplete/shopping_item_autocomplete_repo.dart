@@ -83,19 +83,6 @@ class ShoppingItemAutocompleteRepo {
     return [...startMatches, ...middleMatches];
   }
 
-  /// Returns a suggestion if one exists with an exact product name match for the given item
-  Future<ShoppingItemAutocomplete?> getExactMatchSuggestionForItem(String item) async {
-    final parsedItem = _parser.parse(item);
-    final product = parsedItem.product.trim().toLowerCase();
-    final autocompleteOptions = await getAutocomplete(product);
-    for (var option in autocompleteOptions) {
-      if (option.product.toLowerCase() == product) {
-        return option;
-      }
-    }
-    return null;
-  }
-
   void removeSuggestion(ShoppingItemAutocomplete suggestion) async {
     // TODO
     throw UnimplementedError();
