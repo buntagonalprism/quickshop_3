@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 
 import '../../analytics/crash_reporter.dart';
 import '../../application/list_store.dart';
+import '../../application/user_store.dart';
 import '../../models/list_summary.dart';
-import '../../repositories/user_repo.dart';
 import '../../router.dart';
 import '../../widgets/center_scrollable_column.dart';
 import '../home/profile_icon.dart';
@@ -148,7 +148,7 @@ class ListSummaryTile extends ConsumerWidget {
   }
 
   String formatLastModified(WidgetRef ref) {
-    final user = ref.watch(userRepoProvider);
+    final user = ref.watch(userStoreProvider);
     final lastModifiedMs = listSummary.lastModified[user?.id];
     if (lastModifiedMs == null) {
       return '';

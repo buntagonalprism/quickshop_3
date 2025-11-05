@@ -4,13 +4,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../analytics/analytics.dart';
+import '../../application/user_store.dart';
 import '../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../models/shopping/shopping_item.dart';
 import '../../services/firestore.dart';
 import '../delay_provider_dispose.dart';
 import '../list_leave_in_progress_repo.dart';
 import '../list_repo.dart';
-import '../user_repo.dart';
 import 'autocomplete/shopping_item_autocomplete_repo.dart';
 
 part 'shopping_items_repo.freezed.dart';
@@ -59,7 +59,7 @@ class ShoppingListItemsRepo {
     required List<String> categories,
   }) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userRepoProvider);
+    final user = ref.read(userStoreProvider);
     final item = ShoppingItem(
       id: '',
       path: '',
@@ -129,7 +129,7 @@ class ShoppingListItemsRepo {
       _Fields.product: newName,
       _Fields.quantity: newQuantity,
       _Fields.categories: newCategories,
-      _Fields.lastModifiedByUserId: ref.read(userRepoProvider)!.id,
+      _Fields.lastModifiedByUserId: ref.read(userStoreProvider)!.id,
       _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
     });
     updateListModified(ref, batch, listId);
@@ -150,7 +150,7 @@ class ShoppingListItemsRepo {
 
   Future<int> _deleteItems(List<ShoppingItem> items) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userRepoProvider);
+    final user = ref.read(userStoreProvider);
     final batch = fs.batch();
 
     for (final item in items) {

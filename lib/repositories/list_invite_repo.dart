@@ -4,10 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../analytics/analytics.dart';
+import '../application/user_store.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../services/firestore.dart';
-import 'user_repo.dart';
 
 part 'list_invite_repo.g.dart';
 
@@ -23,7 +23,7 @@ class ListInviteRepo {
   final Ref ref;
 
   Future<void> createSharingLinkForList(ListSummary list) async {
-    final user = ref.read(userRepoProvider);
+    final user = ref.read(userStoreProvider);
     if (user == null) {
       throw Exception('User must be logged in to share a list');
     }
@@ -58,7 +58,7 @@ class ListInviteRepo {
 
   Stream<ListInvite?> userListInviteByListId(String listId) {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userRepoProvider);
+    final user = ref.read(userStoreProvider);
     if (user == null) {
       return const Stream.empty();
     }

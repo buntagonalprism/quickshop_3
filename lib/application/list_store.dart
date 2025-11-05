@@ -3,8 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../repositories/list_repo.dart';
-import '../repositories/user_repo.dart';
 import '../services/http_result.dart';
+import 'user_store.dart';
 
 part 'list_store.g.dart';
 
@@ -13,7 +13,7 @@ class ListStore extends _$ListStore {
   @override
   Stream<List<ListSummary>> build() {
     final repo = ref.watch(listRepoProvider);
-    final user = ref.watch(userRepoProvider);
+    final user = ref.watch(userStoreProvider);
     if (user == null) {
       return const Stream.empty();
     }

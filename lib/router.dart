@@ -6,6 +6,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'analytics/crash_reporter.dart';
 import 'analytics/logger.dart';
+import 'application/user_store.dart';
 import 'pages/favourites/favourites_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/lists/checklist/checklist_page.dart';
@@ -25,7 +26,6 @@ import 'pages/recipes/new_recipe_page.dart';
 import 'pages/recipes/recipe_detail_page.dart';
 import 'pages/recipes/recipes_page.dart';
 import 'pages/settings/settings_page.dart';
-import 'repositories/user_repo.dart';
 
 part 'router.g.dart';
 
@@ -300,8 +300,7 @@ class Routes {
         _RouteSegments.items,
         _RouteSegments.newItem,
       ]);
-  static RoutePath checklistEditItem(String listId, String itemId) =>
-      checklistDetail(listId).extend([
+  static RoutePath checklistEditItem(String listId, String itemId) => checklistDetail(listId).extend([
         _RouteSegments.items,
         itemId,
       ]);
@@ -315,8 +314,7 @@ class Routes {
         _RouteSegments.items,
         _RouteSegments.newItem,
       ]);
-  static RoutePath shoppingListEditItem(String listId, String itemId) =>
-      shoppingListDetail(listId).extend([
+  static RoutePath shoppingListEditItem(String listId, String itemId) => shoppingListDetail(listId).extend([
         _RouteSegments.items,
         itemId,
       ]);
@@ -332,8 +330,7 @@ class Routes {
 
 class RoutePath {
   RoutePath(this.segments) : path = '/${segments.join('/')}';
-  RoutePath.extend(RoutePath parent, List<String> segments)
-      : this([...parent.segments, ...segments]);
+  RoutePath.extend(RoutePath parent, List<String> segments) : this([...parent.segments, ...segments]);
 
   final List<String> segments;
   final String path;

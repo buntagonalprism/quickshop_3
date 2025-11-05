@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../analytics/analytics.dart';
-import '../../repositories/user_repo.dart';
+import '../../application/user_store.dart';
 import '../../router.dart';
 
 class HomeDrawer extends ConsumerWidget {
@@ -12,7 +12,7 @@ class HomeDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userRepoProvider);
+    final user = ref.read(userStoreProvider);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -57,7 +57,7 @@ class HomeDrawer extends ConsumerWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () {
-              ref.read(userRepoProvider.notifier).logout();
+              ref.read(userStoreProvider.notifier).logout();
               ref.read(analyticsProvider).logEvent(const AnalyticsEvent.logout());
             },
           ),

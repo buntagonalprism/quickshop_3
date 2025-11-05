@@ -8,22 +8,22 @@ import '../services/firebase_auth.dart';
 
 part 'user_repo.g.dart';
 
-@riverpod
-Stream<auth.User?> _authUserStream(Ref ref) {
-  return ref.read(firebaseAuthProvider).authStateChanges();
+@Riverpod(keepAlive: true)
+UserRepo userRepo(Ref ref) {
+  return UserRepo(ref);
 }
 
-@Riverpod(keepAlive: true)
-class UserRepo extends _$UserRepo {
-  @override
-  User? build() {
-    // Watch for changes on the auth user stream, but we can get the current user synchronously.
-    final _ = ref.watch(_authUserStreamProvider);
+class UserRepo {
+  final Ref ref;
+  UserRepo(this.ref);
+
+  User? get currentUser {
     final authUser = ref.read(firebaseAuthProvider).currentUser;
-    if (authUser != null) {
-      return _fromFirebase(authUser);
-    }
-    return null;
+    return authUser != null ? _fromFirebase(authUser) : null;
+  }
+
+  Stream<void> get userChanges {
+    return ref.read(firebaseAuthProvider).authStateChanges();
   }
 
   void logout() {
@@ -52,8 +52,6 @@ class UserRepo extends _$UserRepo {
     final user = ref.read(firebaseAuthProvider).currentUser;
     if (user != null) {
       user.updateDisplayName(name);
-      // Synchnronously update the local state with the new name
-      state = _fromFirebase(user).copyWith(name: name);
     }
   }
 
@@ -64,15 +62,4 @@ class UserRepo extends _$UserRepo {
       email: user.email ?? '',
     );
   }
-}
-
-@Riverpod(keepAlive: true)
-bool loggedIn(Ref ref) {
-  return ref.watch(userRepoProvider) != null;
-}
-
-@Riverpod(keepAlive: true)
-String? userId(Ref ref) {
-  final user = ref.watch(userRepoProvider);
-  return user?.id;
 }

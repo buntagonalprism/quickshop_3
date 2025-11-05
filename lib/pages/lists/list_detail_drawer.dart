@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/list_provider.dart';
 import '../../application/list_store.dart';
+import '../../application/user_store.dart';
 import '../../models/list_summary.dart';
-import '../../repositories/user_repo.dart';
 import '../../router.dart';
 import '../../widgets/http_request_confirmation_dialog.dart';
 
@@ -33,7 +33,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
   @override
   Widget build(BuildContext context) {
     final list = ref.watch(listProvider(widget.listId)).valueOrNull;
-    final user = ref.watch(userRepoProvider);
+    final user = ref.watch(userStoreProvider);
     final isOwner = list?.ownerId == user!.id;
     final isEditor = list?.editorIds.contains(user.id) ?? false;
     final listName = list?.name ?? 'List name';
