@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../application/shopping/shopping_items_store.dart';
 import '../../../models/list_summary.dart';
 import '../../../models/shopping/shopping_item.dart';
 import '../../../repositories/shopping/shopping_items_repo.dart';
@@ -65,7 +66,7 @@ class ShoppingListPage extends ConsumerWidget {
   }
 
   void onRemoveCheckedItems(BuildContext context, WidgetRef ref, String listId) async {
-    final deleteFuture = ref.read(shoppingListItemsRepoProvider(listId)).deleteCompletedItems();
+    final deleteFuture = ref.read(shoppingItemsStoreProvider(listId).notifier).deleteCompletedItems();
     Navigator.pop(context);
     final deletedCount = await deleteFuture;
     if (context.mounted) {

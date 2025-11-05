@@ -5,25 +5,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../analytics/analytics.dart';
 import '../../application/user_store.dart';
-import '../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../models/shopping/shopping_item.dart';
 import '../../services/firestore.dart';
 import '../delay_provider_dispose.dart';
 import '../list_leave_in_progress_repo.dart';
 import '../list_repo.dart';
-import 'autocomplete/shopping_item_autocomplete_repo.dart';
 
-part 'shopping_items_repo.freezed.dart';
 part 'shopping_items_repo.g.dart';
-
-@freezed
-class AddItemResult with _$AddItemResult {
-  const AddItemResult._();
-
-  const factory AddItemResult.success(ShoppingItem item) = _AddItemResultSuccess;
-  const factory AddItemResult.categoryRequired() = _AddItemResultCategoryRequired;
-  const factory AddItemResult.alreadyOnList(String productName) = _AddItemResultAlreadyOnList;
-}
 
 @riverpod
 Stream<List<ShoppingItem>> shoppingListItems(Ref ref, String listId) {
@@ -90,32 +78,6 @@ class ShoppingListItemsRepo {
     });
   }
 
-  Future<ShoppingItem> addAutocomplete(ShoppingItemAutocomplete autocomplete) {
-    return addItem(
-      productName: autocomplete.product,
-      quantity: autocomplete.quantity,
-      categories: autocomplete.categories,
-    );
-  }
-
-  Future<AddItemResult> addItemByName(String itemName) async {
-    final autocompleteRepo = ref.read(shoppingItemAutocompleteRepoProvider(listId));
-    final autocomplete = await autocompleteRepo.getExactMatchSuggestionForItem(itemName);
-    if (autocomplete == null) {
-      return const AddItemResult.categoryRequired();
-    }
-    if (autocomplete.source == ShoppingItemAutocompleteSource.list) {
-      return AddItemResult.alreadyOnList(autocomplete.product);
-    }
-    final item = await addAutocomplete(autocomplete);
-    return AddItemResult.success(item);
-  }
-
-  Future<void> deleteItem(ShoppingItem item) async {
-    await _deleteItems([item]);
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemDeleted());
-  }
-
   Future<void> updateItem({
     required ShoppingItem item,
     required String newName,
@@ -137,18 +99,7 @@ class ShoppingListItemsRepo {
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemUpdated());
   }
 
-  Future<int> deleteCompletedItems() async {
-    final items = ref.read(shoppingListItemsProvider(listId)).requireValue;
-    final deletedItems = items.where((item) => item.completed).toList();
-    if (items.isEmpty) {
-      return 0; // No items to delete
-    }
-    await _deleteItems(deletedItems);
-    ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemsBatchDeleted());
-    return deletedItems.length;
-  }
-
-  Future<int> _deleteItems(List<ShoppingItem> items) async {
+  Future<int> deleteItems(List<ShoppingItem> items) async {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userStoreProvider);
     final batch = fs.batch();

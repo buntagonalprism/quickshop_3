@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../application/shopping/shopping_items_store.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
-import '../../../../repositories/shopping/shopping_items_repo.dart';
 import '../../../../router.dart';
 import '../../../../widgets/padding.dart';
 import 'category_selector.dart';
@@ -126,7 +126,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   }
 
   void onAutocompleteSelected(ShoppingItemAutocomplete suggestion, bool addMore) async {
-    await ref.read(shoppingListItemsRepoProvider(widget.listId)).addAutocomplete(suggestion);
+    await ref.read(shoppingItemsStoreProvider(widget.listId).notifier).addAutocomplete(suggestion);
     onAddedItem(suggestion.displayName, addMore);
   }
 
@@ -140,7 +140,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   }
 
   void onDone({bool addMore = false}) async {
-    final itemRepo = ref.read(shoppingListItemsRepoProvider(widget.listId));
+    final itemStore = ref.read(shoppingItemsStoreProvider(widget.listId).notifier);
     ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
     final model = ref.read(shoppingItemCreateViewModelProvider);
 
@@ -149,7 +149,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
         setState(() => showErrorsOnTab = 0);
         return;
       }
-      final result = await itemRepo.addItemByName(model.filter);
+      final result = await itemStore.addItemByName(model.filter);
       result.when(
         categoryRequired: () => moveToTab(1),
         alreadyOnList: (product) {
@@ -167,7 +167,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
         setState(() => showErrorsOnTab = tabController.index);
         return;
       }
-      itemRepo.addItem(
+      itemStore.addItem(
         productName: model.data.product,
         quantity: model.data.quantity,
         categories: model.data.categories,
