@@ -14,11 +14,7 @@ class UserStore extends _$UserStore {
     // Watch for changes on the auth user stream, but we can get the current user synchronously.
     final _ = ref.watch(_authUserStreamProvider);
     final userRepo = ref.watch(userRepoProvider);
-    final user = userRepo.currentUser;
-    if (user == null) {
-      throw Exception('User not signed in');
-    }
-    return user;
+    return userRepo.currentUser;
   }
 
   void setUserName(String newName) {

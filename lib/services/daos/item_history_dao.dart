@@ -27,6 +27,7 @@ class ItemHistoryDao extends DatabaseAccessor<AppDatabase> with _$ItemHistoryDao
       idGetter: (row) => row.id,
       type: TokenType.itemHistory,
       queryString: queryString,
+      orderByDescColumn: itemHistoryTable.usageCount,
     );
   }
 }
