@@ -4,16 +4,16 @@ import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../repositories/list_repo.dart';
 import '../services/http_result.dart';
-import 'user_store.dart';
+import 'user_notifier.dart';
 
-part 'list_store.g.dart';
+part 'lists_notifier.g.dart';
 
 @Riverpod(keepAlive: true)
-class ListStore extends _$ListStore {
+class ListsNotifier extends _$ListsNotifier {
   @override
   Stream<List<ListSummary>> build() {
     final repo = ref.watch(listRepoProvider);
-    final user = ref.watch(userStoreProvider);
+    final user = ref.watch(userNotifierProvider);
     if (user == null) {
       return const Stream.empty();
     }

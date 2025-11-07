@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../application/shopping/shopping_items_store.dart';
+import '../../../../application/shopping/shopping_items_notifier.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import '../../../../router.dart';
@@ -126,7 +126,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   }
 
   void onAutocompleteSelected(ShoppingItemAutocomplete suggestion, bool addMore) async {
-    await ref.read(shoppingItemsStoreProvider(widget.listId).notifier).addAutocomplete(suggestion);
+    await ref.read(shoppingItemsNotifierProvider(widget.listId).notifier).addAutocomplete(suggestion);
     onAddedItem(suggestion.displayName, addMore);
   }
 
@@ -140,7 +140,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   }
 
   void onDone({bool addMore = false}) async {
-    final itemStore = ref.read(shoppingItemsStoreProvider(widget.listId).notifier);
+    final itemStore = ref.read(shoppingItemsNotifierProvider(widget.listId).notifier);
     ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
     final model = ref.read(shoppingItemCreateViewModelProvider);
 

@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'list_leave_in_progress_store.g.dart';
+part 'list_leave_in_progress_notifier.g.dart';
 
 typedef ListId = String;
 
@@ -9,7 +9,7 @@ typedef ListId = String;
 /// the permission-denied error that would otherwise occur once the user no longer has permission
 /// to read the list.
 @riverpod
-class ListLeaveInProgressStore extends _$ListLeaveInProgressStore {
+class ListLeaveInProgressNotifier extends _$ListLeaveInProgressNotifier {
   @override
   Set<ListId> build() {
     return {};

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'shopping_items_store.dart';
+part of 'shopping_items_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingItemsStoreHash() =>
-    r'85fab1173971d0157badf4de871020cf16b5a7a0';
+String _$shoppingItemsNotifierHash() =>
+    r'1512320da590a4e7fb0b6d2f3b0206c86407d446';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,7 +30,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$ShoppingItemsStore
+abstract class _$ShoppingItemsNotifier
     extends BuildlessAutoDisposeStreamNotifier<List<ShoppingItem>> {
   late final String listId;
 
@@ -39,27 +39,28 @@ abstract class _$ShoppingItemsStore
   );
 }
 
-/// See also [ShoppingItemsStore].
-@ProviderFor(ShoppingItemsStore)
-const shoppingItemsStoreProvider = ShoppingItemsStoreFamily();
+/// See also [ShoppingItemsNotifier].
+@ProviderFor(ShoppingItemsNotifier)
+const shoppingItemsNotifierProvider = ShoppingItemsNotifierFamily();
 
-/// See also [ShoppingItemsStore].
-class ShoppingItemsStoreFamily extends Family<AsyncValue<List<ShoppingItem>>> {
-  /// See also [ShoppingItemsStore].
-  const ShoppingItemsStoreFamily();
+/// See also [ShoppingItemsNotifier].
+class ShoppingItemsNotifierFamily
+    extends Family<AsyncValue<List<ShoppingItem>>> {
+  /// See also [ShoppingItemsNotifier].
+  const ShoppingItemsNotifierFamily();
 
-  /// See also [ShoppingItemsStore].
-  ShoppingItemsStoreProvider call(
+  /// See also [ShoppingItemsNotifier].
+  ShoppingItemsNotifierProvider call(
     String listId,
   ) {
-    return ShoppingItemsStoreProvider(
+    return ShoppingItemsNotifierProvider(
       listId,
     );
   }
 
   @override
-  ShoppingItemsStoreProvider getProviderOverride(
-    covariant ShoppingItemsStoreProvider provider,
+  ShoppingItemsNotifierProvider getProviderOverride(
+    covariant ShoppingItemsNotifierProvider provider,
   ) {
     return call(
       provider.listId,
@@ -78,30 +79,31 @@ class ShoppingItemsStoreFamily extends Family<AsyncValue<List<ShoppingItem>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'shoppingItemsStoreProvider';
+  String? get name => r'shoppingItemsNotifierProvider';
 }
 
-/// See also [ShoppingItemsStore].
-class ShoppingItemsStoreProvider extends AutoDisposeStreamNotifierProviderImpl<
-    ShoppingItemsStore, List<ShoppingItem>> {
-  /// See also [ShoppingItemsStore].
-  ShoppingItemsStoreProvider(
+/// See also [ShoppingItemsNotifier].
+class ShoppingItemsNotifierProvider
+    extends AutoDisposeStreamNotifierProviderImpl<ShoppingItemsNotifier,
+        List<ShoppingItem>> {
+  /// See also [ShoppingItemsNotifier].
+  ShoppingItemsNotifierProvider(
     String listId,
   ) : this._internal(
-          () => ShoppingItemsStore()..listId = listId,
-          from: shoppingItemsStoreProvider,
-          name: r'shoppingItemsStoreProvider',
+          () => ShoppingItemsNotifier()..listId = listId,
+          from: shoppingItemsNotifierProvider,
+          name: r'shoppingItemsNotifierProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$shoppingItemsStoreHash,
-          dependencies: ShoppingItemsStoreFamily._dependencies,
+                  : _$shoppingItemsNotifierHash,
+          dependencies: ShoppingItemsNotifierFamily._dependencies,
           allTransitiveDependencies:
-              ShoppingItemsStoreFamily._allTransitiveDependencies,
+              ShoppingItemsNotifierFamily._allTransitiveDependencies,
           listId: listId,
         );
 
-  ShoppingItemsStoreProvider._internal(
+  ShoppingItemsNotifierProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -115,7 +117,7 @@ class ShoppingItemsStoreProvider extends AutoDisposeStreamNotifierProviderImpl<
 
   @override
   Stream<List<ShoppingItem>> runNotifierBuild(
-    covariant ShoppingItemsStore notifier,
+    covariant ShoppingItemsNotifier notifier,
   ) {
     return notifier.build(
       listId,
@@ -123,10 +125,10 @@ class ShoppingItemsStoreProvider extends AutoDisposeStreamNotifierProviderImpl<
   }
 
   @override
-  Override overrideWith(ShoppingItemsStore Function() create) {
+  Override overrideWith(ShoppingItemsNotifier Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ShoppingItemsStoreProvider._internal(
+      override: ShoppingItemsNotifierProvider._internal(
         () => create()..listId = listId,
         from: from,
         name: null,
@@ -139,14 +141,14 @@ class ShoppingItemsStoreProvider extends AutoDisposeStreamNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeStreamNotifierProviderElement<ShoppingItemsStore,
+  AutoDisposeStreamNotifierProviderElement<ShoppingItemsNotifier,
       List<ShoppingItem>> createElement() {
-    return _ShoppingItemsStoreProviderElement(this);
+    return _ShoppingItemsNotifierProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ShoppingItemsStoreProvider && other.listId == listId;
+    return other is ShoppingItemsNotifierProvider && other.listId == listId;
   }
 
   @override
@@ -160,19 +162,19 @@ class ShoppingItemsStoreProvider extends AutoDisposeStreamNotifierProviderImpl<
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ShoppingItemsStoreRef
+mixin ShoppingItemsNotifierRef
     on AutoDisposeStreamNotifierProviderRef<List<ShoppingItem>> {
   /// The parameter `listId` of this provider.
   String get listId;
 }
 
-class _ShoppingItemsStoreProviderElement
-    extends AutoDisposeStreamNotifierProviderElement<ShoppingItemsStore,
-        List<ShoppingItem>> with ShoppingItemsStoreRef {
-  _ShoppingItemsStoreProviderElement(super.provider);
+class _ShoppingItemsNotifierProviderElement
+    extends AutoDisposeStreamNotifierProviderElement<ShoppingItemsNotifier,
+        List<ShoppingItem>> with ShoppingItemsNotifierRef {
+  _ShoppingItemsNotifierProviderElement(super.provider);
 
   @override
-  String get listId => (origin as ShoppingItemsStoreProvider).listId;
+  String get listId => (origin as ShoppingItemsNotifierProvider).listId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

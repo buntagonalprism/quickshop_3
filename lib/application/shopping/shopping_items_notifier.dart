@@ -8,10 +8,10 @@ import '../../repositories/delay_provider_dispose.dart';
 import '../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import '../../repositories/shopping/shopping_items_repo.dart';
 import '../../services/shopping_item_name_parser.dart';
-import '../list_leave_in_progress_store.dart';
+import '../list_leave_in_progress_notifier.dart';
 
-part 'shopping_items_store.freezed.dart';
-part 'shopping_items_store.g.dart';
+part 'shopping_items_notifier.freezed.dart';
+part 'shopping_items_notifier.g.dart';
 
 @freezed
 class AddItemResult with _$AddItemResult {
@@ -23,11 +23,11 @@ class AddItemResult with _$AddItemResult {
 }
 
 @riverpod
-class ShoppingItemsStore extends _$ShoppingItemsStore {
+class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
   @override
   Stream<List<ShoppingItem>> build(String listId) {
     // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
-    if (ref.watch(listLeaveInProgressStoreProvider).contains(listId)) {
+    if (ref.watch(listLeaveInProgressNotifierProvider).contains(listId)) {
       return const Stream.empty();
     }
     ref.delayDispose(const Duration(minutes: 15));

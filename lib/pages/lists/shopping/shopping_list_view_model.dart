@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
 import '../../../application/list_provider.dart';
-import '../../../application/shopping/shopping_items_store.dart';
+import '../../../application/shopping/shopping_items_notifier.dart';
 import '../../../models/list_summary.dart';
 import '../../../models/shopping/shopping_item.dart';
 
@@ -58,7 +58,7 @@ ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
         );
   }
 
-  final itemsAsyncValue = ref.watch(shoppingItemsStoreProvider(list.id));
+  final itemsAsyncValue = ref.watch(shoppingItemsNotifierProvider(list.id));
 
   if (itemsAsyncValue.isLoading) {
     return const ShoppingListViewModel.loading();

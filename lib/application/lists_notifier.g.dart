@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'crash_reporter.dart';
+part of 'lists_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$crashReporterHash() => r'aed06bf449e121da0072f6e568cbd9421671fdd7';
+String _$listsNotifierHash() => r'5ded08ca1d2d914a0e6d14abfe17ea9407eab07e';
 
-/// See also [crashReporter].
-@ProviderFor(crashReporter)
-final crashReporterProvider = AutoDisposeProvider<CrashReporter>.internal(
-  crashReporter,
-  name: r'crashReporterProvider',
+/// See also [ListsNotifier].
+@ProviderFor(ListsNotifier)
+final listsNotifierProvider =
+    StreamNotifierProvider<ListsNotifier, List<ListSummary>>.internal(
+  ListsNotifier.new,
+  name: r'listsNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$crashReporterHash,
+      : _$listsNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CrashReporterRef = AutoDisposeProviderRef<CrashReporter>;
+typedef _$ListsNotifier = StreamNotifier<List<ListSummary>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

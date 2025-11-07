@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import '../../analytics/crash_reporter.dart';
-import '../../application/list_store.dart';
-import '../../application/user_store.dart';
+import '../../application/lists_notifier.dart';
+import '../../application/user_notifier.dart';
 import '../../models/list_summary.dart';
 import '../../router.dart';
 import '../../widgets/center_scrollable_column.dart';
@@ -22,7 +22,7 @@ class ListsPage extends ConsumerWidget {
         leading: const ProfileIcon(),
       ),
       body: Builder(builder: (context) {
-        final listsValue = ref.watch(listStoreProvider);
+        final listsValue = ref.watch(listsNotifierProvider);
         if (listsValue.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -148,7 +148,7 @@ class ListSummaryTile extends ConsumerWidget {
   }
 
   String formatLastModified(WidgetRef ref) {
-    final user = ref.watch(userStoreProvider);
+    final user = ref.watch(userNotifierProvider);
     final lastModifiedMs = listSummary.lastModified[user?.id];
     if (lastModifiedMs == null) {
       return '';

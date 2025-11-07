@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
 
-import '../application/user_store.dart';
+import '../application/user_notifier.dart';
 
 extension DelayProviderDisposeExtension on Ref {
   /// Delay disposal of this provider for the specified [duration]. This means the provider state is
@@ -25,7 +25,7 @@ extension DelayProviderDisposeExtension on Ref {
     Timer? timer;
 
     // Disable the delay if the user is not logged in
-    final String? userId = watch(userStoreProvider.select((user) => user?.id));
+    final String? userId = watch(userNotifierProvider.select((user) => user?.id));
     if (userId == null) {
       return;
     }

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:quickshop/application/list_leave_in_progress_store.dart';
+import 'package:quickshop/application/list_leave_in_progress_notifier.dart';
 import 'package:quickshop/models/checklist_entry.dart';
 import 'package:quickshop/models/user_sortable.dart';
 import 'package:quickshop/repositories/checklist_entry_repo.dart';
@@ -197,7 +197,7 @@ void main() {
       expect(repo.isLoading, isFalse);
       expect(repo.requireValue, hasLength(1));
 
-      container.read(listLeaveInProgressStoreProvider.notifier).add(listId);
+      container.read(listLeaveInProgressNotifierProvider.notifier).add(listId);
       await pumpEventQueue();
       repo = repoSubscription.read();
       expect(repo.isLoading, isTrue);

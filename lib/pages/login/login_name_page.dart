@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/user_store.dart';
+import '../../application/user_notifier.dart';
 import '../../router.dart';
 
 class LoginNamePage extends StatefulWidget {
@@ -69,7 +69,7 @@ class _LoginNamePageState extends State<LoginNamePage> {
                         });
                         return;
                       }
-                      ref.read(userStoreProvider.notifier).setUserName(userName);
+                      ref.read(userNotifierProvider.notifier).setUserName(userName);
                       ref.read(routerProvider).go(Routes.postLogin);
                     },
                     child: const Text('Continue'),

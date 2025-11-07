@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../application/shopping/shopping_items_store.dart';
+import '../../../../application/shopping/shopping_items_notifier.dart';
 import '../../../../models/shopping/shopping_item.dart';
 import '../../../../repositories/shopping/shopping_items_repo.dart';
 import '../../../../router.dart';
@@ -141,7 +141,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
   }
 
   void _deleteItem(BuildContext context, WidgetRef ref, ShoppingItem item) {
-    ref.read(shoppingItemsStoreProvider(widget.listId).notifier).deleteItem(item);
+    ref.read(shoppingItemsNotifierProvider(widget.listId).notifier).deleteItem(item);
     ref.read(routerProvider).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Deleted item ${item.displayName}'),

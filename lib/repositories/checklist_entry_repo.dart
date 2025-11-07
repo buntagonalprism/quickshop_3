@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
-import '../application/list_leave_in_progress_store.dart';
+import '../application/list_leave_in_progress_notifier.dart';
 import '../models/checklist_entry.dart';
 import '../models/user_sortable.dart';
 import '../services/firestore.dart';
@@ -23,7 +23,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
   @override
   Stream<List<ChecklistEntry>> build(String listId) {
     // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
-    if (ref.watch(listLeaveInProgressStoreProvider).contains(listId)) {
+    if (ref.watch(listLeaveInProgressNotifierProvider).contains(listId)) {
       return const Stream.empty();
     }
     ref.delayDispose(const Duration(minutes: 15));

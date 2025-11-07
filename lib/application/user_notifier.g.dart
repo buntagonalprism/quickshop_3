@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_store.dart';
+part of 'user_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loggedInHash() => r'86b566fda11db01a0e99100bd0f5452e28b6d893';
+String _$loggedInHash() => r'671e0725c16aebc6011adc8b51c9927eb26c87f8';
 
 /// See also [loggedIn].
 @ProviderFor(loggedIn)
@@ -22,7 +22,7 @@ final loggedInProvider = Provider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LoggedInRef = ProviderRef<bool>;
-String _$userIdHash() => r'aa7be4bd7d01d3a5c33261b0e3890be0e66306be';
+String _$userIdHash() => r'480271b752b62f441199057436d0f9ce71262089';
 
 /// See also [userId].
 @ProviderFor(userId)
@@ -55,20 +55,20 @@ final _authUserStreamProvider = AutoDisposeStreamProvider<DateTime>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef _AuthUserStreamRef = AutoDisposeStreamProviderRef<DateTime>;
-String _$userStoreHash() => r'56702024c6c57fbb531818d1467ce56091fa6578';
+String _$userNotifierHash() => r'2a170c388cd1a8bf54f53c66d7edf1a08b8d54c9';
 
-/// See also [UserStore].
-@ProviderFor(UserStore)
-final userStoreProvider =
-    AutoDisposeNotifierProvider<UserStore, User?>.internal(
-  UserStore.new,
-  name: r'userStoreProvider',
+/// See also [UserNotifier].
+@ProviderFor(UserNotifier)
+final userNotifierProvider =
+    AutoDisposeNotifierProvider<UserNotifier, User?>.internal(
+  UserNotifier.new,
+  name: r'userNotifierProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userStoreHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$UserStore = AutoDisposeNotifier<User?>;
+typedef _$UserNotifier = AutoDisposeNotifier<User?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

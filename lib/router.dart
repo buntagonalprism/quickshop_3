@@ -6,7 +6,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'analytics/crash_reporter.dart';
 import 'analytics/logger.dart';
-import 'application/user_store.dart';
+import 'application/user_notifier.dart';
 import 'pages/favourites/favourites_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/lists/checklist/checklist_page.dart';

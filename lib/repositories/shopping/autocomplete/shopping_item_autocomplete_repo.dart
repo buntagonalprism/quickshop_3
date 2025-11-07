@@ -1,7 +1,7 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../application/shopping/shopping_items_store.dart';
+import '../../../application/shopping/shopping_items_notifier.dart';
 import '../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../models/shopping/shopping_item.dart';
 import '../../../services/shopping_item_name_parser.dart';
@@ -34,7 +34,7 @@ class ShoppingItemAutocompleteRepo {
     final middleMatches = <ShoppingItemAutocomplete>[];
 
     // Add items from the current shopping list as highest priority
-    final listItemsAsync = _ref.read(shoppingItemsStoreProvider(listId));
+    final listItemsAsync = _ref.read(shoppingItemsNotifierProvider(listId));
     if (listItemsAsync.hasValue) {
       final listItems = listItemsAsync.requireValue;
       for (var item in listItems) {

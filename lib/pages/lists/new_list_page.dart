@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../analytics/crash_reporter.dart';
-import '../../application/list_store.dart';
+import '../../application/lists_notifier.dart';
 import '../../models/list_summary.dart';
 import '../../router.dart';
 
@@ -168,7 +168,7 @@ class _InputListNameTabState extends ConsumerState<InputListNameTab> {
     }
     setState(() => createInProgress = true);
     try {
-      final listId = await ref.read(listStoreProvider.notifier).createList(name, widget.type);
+      final listId = await ref.read(listsNotifierProvider.notifier).createList(name, widget.type);
       switch (widget.type) {
         case ListType.shoppingList:
           ref.read(routerProvider).pushReplacement(Routes.shoppingListDetail(listId).path);

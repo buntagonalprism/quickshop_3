@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../application/user_store.dart';
+import '../application/user_notifier.dart';
 import '../models/user/user_history.dart';
 import '../services/firestore.dart';
 
@@ -11,7 +11,7 @@ part 'user_history_repo.g.dart';
 @riverpod
 Stream<UserHistory?> userHistory(Ref ref) {
   final fs = ref.read(firestoreProvider);
-  final user = ref.watch(userStoreProvider);
+  final user = ref.watch(userNotifierProvider);
   if (user == null) {
     return Stream.value(null);
   }

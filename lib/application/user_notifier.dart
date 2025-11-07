@@ -5,10 +5,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/user/user.dart';
 import '../repositories/user_repo.dart';
 
-part 'user_store.g.dart';
+part 'user_notifier.g.dart';
 
 @riverpod
-class UserStore extends _$UserStore {
+class UserNotifier extends _$UserNotifier {
   @override
   User? build() {
     // Watch for changes on the auth user stream, but we can get the current user synchronously.
@@ -34,12 +34,12 @@ class UserStore extends _$UserStore {
 
 @Riverpod(keepAlive: true)
 bool loggedIn(Ref ref) {
-  return ref.watch(userStoreProvider) != null;
+  return ref.watch(userNotifierProvider) != null;
 }
 
 @Riverpod(keepAlive: true)
 String? userId(Ref ref) {
-  final user = ref.watch(userStoreProvider);
+  final user = ref.watch(userNotifierProvider);
   return user?.id;
 }
 

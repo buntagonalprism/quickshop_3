@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/list_provider.dart';
-import '../../application/list_store.dart';
-import '../../application/user_store.dart';
+import '../../application/lists_notifier.dart';
+import '../../application/user_notifier.dart';
 import '../../models/list_summary.dart';
 import '../../router.dart';
 import '../../widgets/http_request_confirmation_dialog.dart';
@@ -33,7 +33,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
   @override
   Widget build(BuildContext context) {
     final list = ref.watch(listProvider(widget.listId)).valueOrNull;
-    final user = ref.watch(userStoreProvider);
+    final user = ref.watch(userNotifierProvider);
     final isOwner = list?.ownerId == user!.id;
     final isEditor = list?.editorIds.contains(user.id) ?? false;
     final listName = list?.name ?? 'List name';
@@ -136,7 +136,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             ),
             TextButton(
               onPressed: () {
-                ref.read(listStoreProvider.notifier).deleteList(list);
+                ref.read(listsNotifierProvider.notifier).deleteList(list);
                 Navigator.of(dialogContext).pop();
                 Scaffold.of(context).closeEndDrawer();
                 ref.read(routerProvider).pop();
@@ -165,7 +165,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               'Are you sure you want to leave this list? You will no longer be able to view or edit this list.',
           confirmationAction: 'Leave',
           requestInProgressMessage: 'Leaving list...',
-          onConfirm: () => ref.read(listStoreProvider.notifier).leaveList(list),
+          onConfirm: () => ref.read(listsNotifierProvider.notifier).leaveList(list),
           onSuccess: (_) {
             Navigator.of(dialogContext).pop();
             Scaffold.of(context).closeEndDrawer();

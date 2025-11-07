@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../application/user_store.dart';
+import '../application/user_notifier.dart';
 
 part 'crash_reporter.g.dart';
 
 @riverpod
 CrashReporter crashReporter(Ref ref) {
   ref.listen(
-    userStoreProvider,
+    userNotifierProvider,
     (_, user) {
       if (user != null) {
         Sentry.configureScope((scope) {

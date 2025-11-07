@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../application/list_store.dart';
+import '../../../application/lists_notifier.dart';
 import '../../../models/list_invite.dart';
 import '../../../models/list_summary.dart';
 import '../../../router.dart';
@@ -194,7 +194,7 @@ class _PendingInvitationViewState extends ConsumerState<_PendingInvitationView> 
 
   void _acceptListInvitation() async {
     setState(() => _acceptInProgress = true);
-    final result = await ref.read(listStoreProvider.notifier).acceptListInvite(widget.invite);
+    final result = await ref.read(listsNotifierProvider.notifier).acceptListInvite(widget.invite);
     if (mounted) {
       if (result is HttpResultError) {
         final error = result.error;
