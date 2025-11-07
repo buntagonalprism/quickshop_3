@@ -5,10 +5,10 @@ import '../../analytics/analytics.dart';
 import '../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../models/shopping/shopping_item.dart';
 import '../../repositories/delay_provider_dispose.dart';
-import '../../repositories/list_leave_in_progress_repo.dart';
 import '../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import '../../repositories/shopping/shopping_items_repo.dart';
 import '../../services/shopping_item_name_parser.dart';
+import '../list_leave_in_progress_store.dart';
 
 part 'shopping_items_store.freezed.dart';
 part 'shopping_items_store.g.dart';
@@ -27,7 +27,7 @@ class ShoppingItemsStore extends _$ShoppingItemsStore {
   @override
   Stream<List<ShoppingItem>> build(String listId) {
     // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
-    if (ref.watch(listLeaveInProgressRepoProvider).contains(listId)) {
+    if (ref.watch(listLeaveInProgressStoreProvider).contains(listId)) {
       return const Stream.empty();
     }
     ref.delayDispose(const Duration(minutes: 15));

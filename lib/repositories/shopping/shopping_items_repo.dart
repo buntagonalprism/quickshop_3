@@ -7,21 +7,9 @@ import '../../analytics/analytics.dart';
 import '../../application/user_store.dart';
 import '../../models/shopping/shopping_item.dart';
 import '../../services/firestore.dart';
-import '../delay_provider_dispose.dart';
-import '../list_leave_in_progress_repo.dart';
 import '../list_repo.dart';
 
 part 'shopping_items_repo.g.dart';
-
-@riverpod
-Stream<List<ShoppingItem>> shoppingListItems(Ref ref, String listId) {
-  // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
-  if (ref.watch(listLeaveInProgressRepoProvider).contains(listId)) {
-    return const Stream.empty();
-  }
-  ref.delayDispose(const Duration(minutes: 15));
-  return ref.watch(shoppingListItemsRepoProvider(listId)).itemsStream;
-}
 
 @riverpod
 ShoppingListItemsRepo shoppingListItemsRepo(Ref ref, String listId) {

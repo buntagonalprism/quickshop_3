@@ -4,8 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../analytics/crash_reporter.dart';
+import '../../../../application/shopping/shopping_items_store.dart';
 import '../../../../models/shopping/shopping_item.dart';
-import '../../../../repositories/shopping/shopping_items_repo.dart';
 
 part 'shopping_item_edit_view_model.freezed.dart';
 part 'shopping_item_edit_view_model.g.dart';
@@ -22,7 +22,7 @@ class ShoppingItemEditModel with _$ShoppingItemEditModel {
 
 @riverpod
 ShoppingItemEditModel shoppingItemEditViewModel(Ref ref, String listId, String itemId) {
-  final itemsValue = ref.watch(shoppingListItemsProvider(listId));
+  final itemsValue = ref.watch(shoppingItemsStoreProvider(listId));
   if (itemsValue.isLoading) {
     return const ShoppingItemEditModel.loading();
   }

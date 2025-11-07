@@ -7,7 +7,7 @@ part of 'shopping_item_edit_view_model.dart';
 // **************************************************************************
 
 String _$shoppingItemEditViewModelHash() =>
-    r'3309ef33bdb9b709721532ddbe1265eb5a0d7323';
+    r'03f4defb95c109a2814d90626b612d95c6129e66';
 
 /// Copied from Dart SDK
 class _SystemHash {

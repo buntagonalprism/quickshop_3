@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
+import '../application/list_leave_in_progress_store.dart';
 import '../application/user_store.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
@@ -10,7 +11,6 @@ import '../models/user/user.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
 import '../services/http_result.dart';
-import 'list_leave_in_progress_repo.dart';
 
 part 'list_repo.g.dart';
 
@@ -80,12 +80,12 @@ class ListRepo {
 
   Future<HttpResult> leaveList(ListSummary list) async {
     final client = ref.read(functionsHttpClientProvider);
-    ref.read(listLeaveInProgressRepoProvider.notifier).add(list.id);
+    ref.read(listLeaveInProgressStoreProvider.notifier).add(list.id);
     final result = await client.post('/leaveList', {'listId': list.id});
     if (result is HttpResultSuccess) {
       ref.read(analyticsProvider).logEvent(AnalyticsEvent.listLeft(list.listType));
     } else {
-      ref.read(listLeaveInProgressRepoProvider.notifier).remove(list.id);
+      ref.read(listLeaveInProgressStoreProvider.notifier).remove(list.id);
     }
     return result;
   }

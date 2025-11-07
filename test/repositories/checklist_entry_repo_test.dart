@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quickshop/application/list_leave_in_progress_store.dart';
 import 'package:quickshop/models/checklist_entry.dart';
 import 'package:quickshop/models/user_sortable.dart';
 import 'package:quickshop/repositories/checklist_entry_repo.dart';
-import 'package:quickshop/repositories/list_leave_in_progress_repo.dart';
 import 'package:quickshop/services/firestore.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -51,16 +51,13 @@ MockQuerySnapshot itemsSnapshot(List<UserSortKey> sortKeys) {
   return MockQuerySnapshot(sortKeys
       .asMap()
       .entries
-      .map((e) => itemSnapshot(
-          id: e.key.toString(), primary: e.value.primary, secondary: e.value.secondary))
+      .map((e) => itemSnapshot(id: e.key.toString(), primary: e.value.primary, secondary: e.value.secondary))
       .toList());
 }
 
-UserSortKey sortKey(int primary, String secondary) =>
-    UserSortKey(primary: primary, secondary: secondary);
+UserSortKey sortKey(int primary, String secondary) => UserSortKey(primary: primary, secondary: secondary);
 
-Map<String, dynamic> sortKeyJson(int primary, String secondary) =>
-    sortKey(primary, secondary).toJson();
+Map<String, dynamic> sortKeyJson(int primary, String secondary) => sortKey(primary, secondary).toJson();
 
 void main() {
   const listId = '1234';
@@ -200,7 +197,7 @@ void main() {
       expect(repo.isLoading, isFalse);
       expect(repo.requireValue, hasLength(1));
 
-      container.read(listLeaveInProgressRepoProvider.notifier).add(listId);
+      container.read(listLeaveInProgressStoreProvider.notifier).add(listId);
       await pumpEventQueue();
       repo = repoSubscription.read();
       expect(repo.isLoading, isTrue);
@@ -463,21 +460,18 @@ void main() {
           return ref;
         }).toList();
 
-    List<MockDocumentSnapshot> buildDuplicateSortKeyItems(
-            List<String> ids, int primary, String secondary) =>
+    List<MockDocumentSnapshot> buildDuplicateSortKeyItems(List<String> ids, int primary, String secondary) =>
         ids.map((id) => itemSnapshot(id: id, primary: primary, secondary: secondary)).toList();
 
     // A mocktail argument matcher that matches an object which has a 'sortKey' property, which has
     // a value of an object with the given primary and secondary values.
-    Map<String, dynamic> sortKeyJsonMatcher(int primary, String secondary) =>
-        any<Map<String, dynamic>>(
+    Map<String, dynamic> sortKeyJsonMatcher(int primary, String secondary) => any<Map<String, dynamic>>(
           that: containsPair('sortKey', {'primary': primary, 'secondary': secondary}),
         );
 
     test(
         'WHEN inserting an item between two entries with duplicate sort keys '
-        'THEN all entries should be given unique sort keys that preserve the existing sort order',
-        () async {
+        'THEN all entries should be given unique sort keys that preserve the existing sort order', () async {
       final docIds = buildDocIds(4);
       final docRefs = buildAndStubDocRefs(docIds);
       final items = MockQuerySnapshot(buildDuplicateSortKeyItems(docIds, 1, 'abcd'));
@@ -499,8 +493,7 @@ void main() {
 
     test(
         'WHEN inserting a heading between two entries with duplicate sort keys '
-        'THEN all entries should be given unique sort keys that preserve the existing sort order',
-        () async {
+        'THEN all entries should be given unique sort keys that preserve the existing sort order', () async {
       final docIds = buildDocIds(4);
       final docRefs = buildAndStubDocRefs(docIds);
       final items = MockQuerySnapshot(buildDuplicateSortKeyItems(docIds, -1, ''));
@@ -522,8 +515,7 @@ void main() {
 
     test(
         'WHEN moving an item between entries with duplicate sort keys '
-        'THEN all entries should be given unique sort keys that preserve the existing sort order',
-        () async {
+        'THEN all entries should be given unique sort keys that preserve the existing sort order', () async {
       final docIds = buildDocIds(4);
       final docRefs = buildAndStubDocRefs(docIds);
       const moveDocId = 'moveDoc';
@@ -556,8 +548,7 @@ void main() {
       when(() => mockFirestore.batch()).thenReturn(batch);
     });
 
-    List<MockDocumentReference> buildAndStubDocRefs(List<MockDocumentSnapshot> docs) =>
-        docs.map((doc) {
+    List<MockDocumentReference> buildAndStubDocRefs(List<MockDocumentSnapshot> docs) => docs.map((doc) {
           final ref = MockDocumentReference();
           final docId = doc.id;
           when(() => itemsCollection.doc(docId)).thenReturn(ref);

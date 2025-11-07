@@ -6,7 +6,8 @@ part of 'shopping_items_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingListItemsHash() => r'2ec81851f6e5bf1757a45b624c29c104c6f94d1e';
+String _$shoppingListItemsRepoHash() =>
+    r'4c5da7c94b6bcad2d0b190a1899def0f6e1a8f19';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -28,139 +29,6 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
-
-/// See also [shoppingListItems].
-@ProviderFor(shoppingListItems)
-const shoppingListItemsProvider = ShoppingListItemsFamily();
-
-/// See also [shoppingListItems].
-class ShoppingListItemsFamily extends Family<AsyncValue<List<ShoppingItem>>> {
-  /// See also [shoppingListItems].
-  const ShoppingListItemsFamily();
-
-  /// See also [shoppingListItems].
-  ShoppingListItemsProvider call(
-    String listId,
-  ) {
-    return ShoppingListItemsProvider(
-      listId,
-    );
-  }
-
-  @override
-  ShoppingListItemsProvider getProviderOverride(
-    covariant ShoppingListItemsProvider provider,
-  ) {
-    return call(
-      provider.listId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'shoppingListItemsProvider';
-}
-
-/// See also [shoppingListItems].
-class ShoppingListItemsProvider
-    extends AutoDisposeStreamProvider<List<ShoppingItem>> {
-  /// See also [shoppingListItems].
-  ShoppingListItemsProvider(
-    String listId,
-  ) : this._internal(
-          (ref) => shoppingListItems(
-            ref as ShoppingListItemsRef,
-            listId,
-          ),
-          from: shoppingListItemsProvider,
-          name: r'shoppingListItemsProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$shoppingListItemsHash,
-          dependencies: ShoppingListItemsFamily._dependencies,
-          allTransitiveDependencies:
-              ShoppingListItemsFamily._allTransitiveDependencies,
-          listId: listId,
-        );
-
-  ShoppingListItemsProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.listId,
-  }) : super.internal();
-
-  final String listId;
-
-  @override
-  Override overrideWith(
-    Stream<List<ShoppingItem>> Function(ShoppingListItemsRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ShoppingListItemsProvider._internal(
-        (ref) => create(ref as ShoppingListItemsRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        listId: listId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeStreamProviderElement<List<ShoppingItem>> createElement() {
-    return _ShoppingListItemsProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is ShoppingListItemsProvider && other.listId == listId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, listId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ShoppingListItemsRef on AutoDisposeStreamProviderRef<List<ShoppingItem>> {
-  /// The parameter `listId` of this provider.
-  String get listId;
-}
-
-class _ShoppingListItemsProviderElement
-    extends AutoDisposeStreamProviderElement<List<ShoppingItem>>
-    with ShoppingListItemsRef {
-  _ShoppingListItemsProviderElement(super.provider);
-
-  @override
-  String get listId => (origin as ShoppingListItemsProvider).listId;
-}
-
-String _$shoppingListItemsRepoHash() =>
-    r'4c5da7c94b6bcad2d0b190a1899def0f6e1a8f19';
 
 /// See also [shoppingListItemsRepo].
 @ProviderFor(shoppingListItemsRepo)

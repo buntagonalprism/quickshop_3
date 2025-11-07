@@ -55,7 +55,7 @@ final _authUserStreamProvider = AutoDisposeStreamProvider<DateTime>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef _AuthUserStreamRef = AutoDisposeStreamProviderRef<DateTime>;
-String _$userStoreHash() => r'f2eaaed1bd1605339b6b450f5184d3e70858280d';
+String _$userStoreHash() => r'56702024c6c57fbb531818d1467ce56091fa6578';
 
 /// See also [UserStore].
 @ProviderFor(UserStore)

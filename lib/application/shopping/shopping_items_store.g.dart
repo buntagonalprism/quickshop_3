@@ -7,7 +7,7 @@ part of 'shopping_items_store.dart';
 // **************************************************************************
 
 String _$shoppingItemsStoreHash() =>
-    r'c58116dd11bf26e494a0c4954b8e86e6ec667feb';
+    r'85fab1173971d0157badf4de871020cf16b5a7a0';
 
 /// Copied from Dart SDK
 class _SystemHash {
