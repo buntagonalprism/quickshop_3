@@ -47,8 +47,8 @@ app.*.map.json
 google-services.json
 settings/app_secrets*.json
 !settings/app_secrets_example.json
-lib/firebase/*.dart
-!lib/firebase/options.dart
+lib/services/firebase/*.dart
+!lib/services/firebase/options.dart
 
 # Local environment settings are specific to the developer's machine
 app_settings_local.json

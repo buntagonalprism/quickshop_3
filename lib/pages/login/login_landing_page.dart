@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../analytics/analytics.dart';
-import '../../firebase/options.dart';
 import '../../router.dart';
+import '../../services/firebase/options.dart';
 
 /// When selecting to sign in with google, if the user already had an account with the same
 /// email address and password, the password will be removed from their Firebase Authentication
@@ -115,14 +115,11 @@ class LoginLandingPage extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: AuthStateListener<OAuthController>(
                         child: OAuthProviderButton(
-                          provider:
-                              GoogleProvider(clientId: DefaultFirebaseOptions.googleSignInClientId),
+                          provider: GoogleProvider(clientId: DefaultFirebaseOptions.googleSignInClientId),
                         ),
                         listener: (oldState, newState, ctrl) {
                           if (newState is SignedIn || newState is UserCreated) {
-                            ref
-                                .read(analyticsProvider)
-                                .logEvent(const AnalyticsEvent.loginGoogle());
+                            ref.read(analyticsProvider).logEvent(const AnalyticsEvent.loginGoogle());
                             ref.read(routerProvider).go(Routes.postLogin);
                           }
                           return null;
@@ -149,8 +146,7 @@ class BackgroundAnimation extends StatefulWidget {
   State<BackgroundAnimation> createState() => _BackgroundAnimationState();
 }
 
-class _BackgroundAnimationState extends State<BackgroundAnimation>
-    with SingleTickerProviderStateMixin {
+class _BackgroundAnimationState extends State<BackgroundAnimation> with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     duration: const Duration(seconds: 4),
     vsync: this,
@@ -187,8 +183,7 @@ class _BackgroundAnimationState extends State<BackgroundAnimation>
       parent: _controller,
       curve: Curves.easeOut,
     ));
-    _controller.duration =
-        Duration(milliseconds: (1000 * animationPath.distance / animationSpeed).round());
+    _controller.duration = Duration(milliseconds: (1000 * animationPath.distance / animationSpeed).round());
     _controller.forward();
   }
 

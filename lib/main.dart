@@ -8,7 +8,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
-import 'firebase/options.dart';
+import 'services/firebase/options.dart';
 import 'services/shared_preferences.dart';
 
 Future<void> main() async {
