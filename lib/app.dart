@@ -3,8 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'analytics/crash_reporter.dart';
+import 'application/settings_notifier.dart';
 import 'localization/app_localizations.dart';
-import 'repositories/settings_repo.dart';
 import 'repositories/shopping/history/shopping_category_history_repo.dart';
 import 'repositories/shopping/history/shopping_item_history_repo.dart';
 import 'repositories/shopping/suggestions/shopping_category_suggestion_repo.dart';
@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
               border: OutlineInputBorder(),
             ),
           ),
-          themeMode: ref.watch(settingsRepoProvider).themeMode,
+          themeMode: ref.watch(settingsNotifierProvider).themeMode,
 
           routerConfig: ref.watch(routerProvider),
         ),

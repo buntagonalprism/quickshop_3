@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/settings.dart';
 import '../services/shared_preferences.dart';
 
 part 'settings_repo.g.dart';
 
-@riverpod
-class SettingsRepo extends _$SettingsRepo {
+@Riverpod(keepAlive: true)
+SettingsRepo settingsRepo(Ref ref) => SettingsRepo(ref.read(sharedPrefsProvider));
+
+class SettingsRepo {
+  final SharedPreferencesWithCache _prefs;
+  SettingsRepo(this._prefs);
+
   final String _themeModeKey = 'themeMode';
 
-  @override
-  Settings build() {
-    final prefs = ref.read(sharedPrefsProvider);
+  Settings getSettings() {
     return Settings(
-      themeMode: _parseThemeMode(prefs.getString(_themeModeKey)),
+      themeMode: _parseThemeMode(_prefs.getString(_themeModeKey)),
     );
   }
 
@@ -25,8 +30,7 @@ class SettingsRepo extends _$SettingsRepo {
     );
   }
 
-  void updateThemeMode(ThemeMode themeMode) {
-    state = Settings(themeMode: themeMode);
-    ref.read(sharedPrefsProvider).setString(_themeModeKey, themeMode.name);
+  Future<void> updateThemeMode(ThemeMode themeMode) {
+    return _prefs.setString(_themeModeKey, themeMode.name);
   }
 }
