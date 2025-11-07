@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../repositories/settings_repo.dart';
+import '../../application/settings_notifier.dart';
 import '../../services/package_info.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -13,7 +13,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsRepoProvider);
+    final settings = ref.watch(settingsNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -27,7 +27,7 @@ class SettingsPage extends ConsumerWidget {
               value: settings.themeMode,
               onChanged: (value) {
                 if (value != null) {
-                  ref.read(settingsRepoProvider.notifier).updateThemeMode(value);
+                  ref.read(settingsNotifierProvider.notifier).updateThemeMode(value);
                 }
               },
               items: const [
