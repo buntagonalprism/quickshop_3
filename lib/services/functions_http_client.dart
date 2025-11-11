@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -42,8 +41,7 @@ class FunctionsHttpClient {
     return _getResult(method: _Method.post, path: path, data: jsonEncode(data));
   }
 
-  Future<HttpResult> _getResult(
-      {required _Method method, required String path, dynamic data}) async {
+  Future<HttpResult> _getResult({required _Method method, required String path, dynamic data}) async {
     final uri = Uri.parse(host + path);
     final headers = await _buildHeaders();
     final client = _buildClient(uri);

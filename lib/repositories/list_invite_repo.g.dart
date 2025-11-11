@@ -6,22 +6,46 @@ part of 'list_invite_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listInviteRepoHash() => r'05576e133a43a8018739672e680b984c37c4542c';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [listInviteRepo].
 @ProviderFor(listInviteRepo)
-final listInviteRepoProvider = AutoDisposeProvider<ListInviteRepo>.internal(
-  listInviteRepo,
-  name: r'listInviteRepoProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$listInviteRepoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const listInviteRepoProvider = ListInviteRepoProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ListInviteRepoRef = AutoDisposeProviderRef<ListInviteRepo>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ListInviteRepoProvider
+    extends $FunctionalProvider<ListInviteRepo, ListInviteRepo, ListInviteRepo>
+    with $Provider<ListInviteRepo> {
+  const ListInviteRepoProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'listInviteRepoProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$listInviteRepoHash();
+
+  @$internal
+  @override
+  $ProviderElement<ListInviteRepo> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ListInviteRepo create(Ref ref) {
+    return listInviteRepo(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ListInviteRepo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ListInviteRepo>(value),
+    );
+  }
+}
+
+String _$listInviteRepoHash() => r'05576e133a43a8018739672e680b984c37c4542c';

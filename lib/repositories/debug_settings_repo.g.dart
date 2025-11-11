@@ -6,169 +6,98 @@ part of 'debug_settings_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$debugSettingsRepoHash() => r'02c32ad36db7e55d85be39d540505a54306ec52b';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$DebugSettingsRepo extends BuildlessNotifier<bool> {
-  late final DebugSetting type;
-
-  bool build(
-    DebugSetting type,
-  );
-}
-
-/// See also [DebugSettingsRepo].
 @ProviderFor(DebugSettingsRepo)
-const debugSettingsRepoProvider = DebugSettingsRepoFamily();
+const debugSettingsRepoProvider = DebugSettingsRepoFamily._();
 
-/// See also [DebugSettingsRepo].
-class DebugSettingsRepoFamily extends Family<bool> {
-  /// See also [DebugSettingsRepo].
-  const DebugSettingsRepoFamily();
-
-  /// See also [DebugSettingsRepo].
-  DebugSettingsRepoProvider call(
-    DebugSetting type,
-  ) {
-    return DebugSettingsRepoProvider(
-      type,
-    );
-  }
-
-  @override
-  DebugSettingsRepoProvider getProviderOverride(
-    covariant DebugSettingsRepoProvider provider,
-  ) {
-    return call(
-      provider.type,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'debugSettingsRepoProvider';
-}
-
-/// See also [DebugSettingsRepo].
-class DebugSettingsRepoProvider
-    extends NotifierProviderImpl<DebugSettingsRepo, bool> {
-  /// See also [DebugSettingsRepo].
-  DebugSettingsRepoProvider(
-    DebugSetting type,
-  ) : this._internal(
-          () => DebugSettingsRepo()..type = type,
-          from: debugSettingsRepoProvider,
+final class DebugSettingsRepoProvider
+    extends $NotifierProvider<DebugSettingsRepo, bool> {
+  const DebugSettingsRepoProvider._(
+      {required DebugSettingsRepoFamily super.from,
+      required DebugSetting super.argument})
+      : super(
+          retry: null,
           name: r'debugSettingsRepoProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$debugSettingsRepoHash,
-          dependencies: DebugSettingsRepoFamily._dependencies,
-          allTransitiveDependencies:
-              DebugSettingsRepoFamily._allTransitiveDependencies,
-          type: type,
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  DebugSettingsRepoProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.type,
-  }) : super.internal();
-
-  final DebugSetting type;
+  @override
+  String debugGetCreateSourceHash() => _$debugSettingsRepoHash();
 
   @override
-  bool runNotifierBuild(
-    covariant DebugSettingsRepo notifier,
-  ) {
-    return notifier.build(
-      type,
-    );
+  String toString() {
+    return r'debugSettingsRepoProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  Override overrideWith(DebugSettingsRepo Function() create) {
-    return ProviderOverride(
+  DebugSettingsRepo create() => DebugSettingsRepo();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
       origin: this,
-      override: DebugSettingsRepoProvider._internal(
-        () => create()..type = type,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        type: type,
-      ),
+      providerOverride: $SyncValueProvider<bool>(value),
     );
-  }
-
-  @override
-  NotifierProviderElement<DebugSettingsRepo, bool> createElement() {
-    return _DebugSettingsRepoProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is DebugSettingsRepoProvider && other.type == type;
+    return other is DebugSettingsRepoProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, type.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin DebugSettingsRepoRef on NotifierProviderRef<bool> {
-  /// The parameter `type` of this provider.
-  DebugSetting get type;
-}
+String _$debugSettingsRepoHash() => r'02c32ad36db7e55d85be39d540505a54306ec52b';
 
-class _DebugSettingsRepoProviderElement
-    extends NotifierProviderElement<DebugSettingsRepo, bool>
-    with DebugSettingsRepoRef {
-  _DebugSettingsRepoProviderElement(super.provider);
+final class DebugSettingsRepoFamily extends $Family
+    with
+        $ClassFamilyOverride<DebugSettingsRepo, bool, bool, bool,
+            DebugSetting> {
+  const DebugSettingsRepoFamily._()
+      : super(
+          retry: null,
+          name: r'debugSettingsRepoProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: false,
+        );
+
+  DebugSettingsRepoProvider call(
+    DebugSetting type,
+  ) =>
+      DebugSettingsRepoProvider._(argument: type, from: this);
 
   @override
-  DebugSetting get type => (origin as DebugSettingsRepoProvider).type;
+  String toString() => r'debugSettingsRepoProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+
+abstract class _$DebugSettingsRepo extends $Notifier<bool> {
+  late final _$args = ref.$arg as DebugSetting;
+  DebugSetting get type => _$args;
+
+  bool build(
+    DebugSetting type,
+  );
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(
+      _$args,
+    );
+    final ref = this.ref as $Ref<bool, bool>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    element.handleValue(ref, created);
+  }
+}

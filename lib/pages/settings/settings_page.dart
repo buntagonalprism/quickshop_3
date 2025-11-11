@@ -13,7 +13,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsNotifierProvider);
+    final settings = ref.watch(settingsProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -27,7 +27,7 @@ class SettingsPage extends ConsumerWidget {
               value: settings.themeMode,
               onChanged: (value) {
                 if (value != null) {
-                  ref.read(settingsNotifierProvider.notifier).updateThemeMode(value);
+                  ref.read(settingsProvider.notifier).updateThemeMode(value);
                 }
               },
               items: const [

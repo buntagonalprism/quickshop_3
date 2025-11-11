@@ -197,7 +197,7 @@ void main() {
       expect(repo.isLoading, isFalse);
       expect(repo.requireValue, hasLength(1));
 
-      container.read(listLeaveInProgressNotifierProvider.notifier).add(listId);
+      container.read(listLeaveInProgressProvider.notifier).add(listId);
       await pumpEventQueue();
       repo = repoSubscription.read();
       expect(repo.isLoading, isTrue);

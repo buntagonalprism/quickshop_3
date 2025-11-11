@@ -12,7 +12,7 @@ class HomeDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userNotifierProvider);
+    final user = ref.read(userProvider);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -57,7 +57,7 @@ class HomeDrawer extends ConsumerWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () {
-              ref.read(userNotifierProvider.notifier).logout();
+              ref.read(userProvider.notifier).logout();
               ref.read(analyticsProvider).logEvent(const AnalyticsEvent.logout());
             },
           ),

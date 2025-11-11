@@ -6,69 +6,166 @@ part of 'user_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loggedInHash() => r'671e0725c16aebc6011adc8b51c9927eb26c87f8';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [loggedIn].
-@ProviderFor(loggedIn)
-final loggedInProvider = Provider<bool>.internal(
-  loggedIn,
-  name: r'loggedInProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$loggedInHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(UserNotifier)
+const userProvider = UserNotifierProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef LoggedInRef = ProviderRef<bool>;
-String _$userIdHash() => r'480271b752b62f441199057436d0f9ce71262089';
+final class UserNotifierProvider
+    extends $NotifierProvider<UserNotifier, User?> {
+  const UserNotifierProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'userProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
 
-/// See also [userId].
-@ProviderFor(userId)
-final userIdProvider = Provider<String?>.internal(
-  userId,
-  name: r'userIdProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userIdHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+  @override
+  String debugGetCreateSourceHash() => _$userNotifierHash();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserIdRef = ProviderRef<String?>;
-String _$authUserStreamHash() => r'c3555eaac82d497b103fb6f1af3eee4781acd6ba';
+  @$internal
+  @override
+  UserNotifier create() => UserNotifier();
 
-/// See also [_authUserStream].
-@ProviderFor(_authUserStream)
-final _authUserStreamProvider = AutoDisposeStreamProvider<DateTime>.internal(
-  _authUserStream,
-  name: r'_authUserStreamProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authUserStreamHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(User? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<User?>(value),
+    );
+  }
+}
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef _AuthUserStreamRef = AutoDisposeStreamProviderRef<DateTime>;
 String _$userNotifierHash() => r'2a170c388cd1a8bf54f53c66d7edf1a08b8d54c9';
 
-/// See also [UserNotifier].
-@ProviderFor(UserNotifier)
-final userNotifierProvider =
-    AutoDisposeNotifierProvider<UserNotifier, User?>.internal(
-  UserNotifier.new,
-  name: r'userNotifierProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$UserNotifier extends $Notifier<User?> {
+  User? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<User?, User?>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<User?, User?>, User?, Object?, Object?>;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$UserNotifier = AutoDisposeNotifier<User?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+@ProviderFor(loggedIn)
+const loggedInProvider = LoggedInProvider._();
+
+final class LoggedInProvider extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  const LoggedInProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'loggedInProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$loggedInHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    return loggedIn(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$loggedInHash() => r'da7df248935733a32fda41976f63742172156f05';
+
+@ProviderFor(userId)
+const userIdProvider = UserIdProvider._();
+
+final class UserIdProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  const UserIdProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'userIdProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$userIdHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return userId(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$userIdHash() => r'822c2aefd00f815c2c3e2ff3b2e4d6d05813c7ec';
+
+@ProviderFor(_authUserStream)
+const _authUserStreamProvider = _AuthUserStreamProvider._();
+
+final class _AuthUserStreamProvider extends $FunctionalProvider<
+        AsyncValue<DateTime>, DateTime, Stream<DateTime>>
+    with $FutureModifier<DateTime>, $StreamProvider<DateTime> {
+  const _AuthUserStreamProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'_authUserStreamProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$_authUserStreamHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<DateTime> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<DateTime> create(Ref ref) {
+    return _authUserStream(ref);
+  }
+}
+
+String _$_authUserStreamHash() => r'c3555eaac82d497b103fb6f1af3eee4781acd6ba';

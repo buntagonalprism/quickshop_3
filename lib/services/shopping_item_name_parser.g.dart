@@ -6,25 +6,49 @@ part of 'shopping_item_name_parser.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(shoppingItemNameParser)
+const shoppingItemNameParserProvider = ShoppingItemNameParserProvider._();
+
+final class ShoppingItemNameParserProvider extends $FunctionalProvider<
+    ShoppingItemNameParser,
+    ShoppingItemNameParser,
+    ShoppingItemNameParser> with $Provider<ShoppingItemNameParser> {
+  const ShoppingItemNameParserProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'shoppingItemNameParserProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$shoppingItemNameParserHash();
+
+  @$internal
+  @override
+  $ProviderElement<ShoppingItemNameParser> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ShoppingItemNameParser create(Ref ref) {
+    return shoppingItemNameParser(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ShoppingItemNameParser value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ShoppingItemNameParser>(value),
+    );
+  }
+}
+
 String _$shoppingItemNameParserHash() =>
     r'7f0c5ae4fce460af93d084240b9684939d1eadf0';
-
-/// See also [shoppingItemNameParser].
-@ProviderFor(shoppingItemNameParser)
-final shoppingItemNameParserProvider =
-    AutoDisposeProvider<ShoppingItemNameParser>.internal(
-  shoppingItemNameParser,
-  name: r'shoppingItemNameParserProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$shoppingItemNameParserHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ShoppingItemNameParserRef
-    = AutoDisposeProviderRef<ShoppingItemNameParser>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

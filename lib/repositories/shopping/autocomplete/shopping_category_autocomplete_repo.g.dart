@@ -6,165 +6,93 @@ part of 'shopping_category_autocomplete_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingCategoryAutocompleteRepoHash() =>
-    r'82591ed13277c3be38c2266b273a36676322d59c';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [shoppingCategoryAutocompleteRepo].
 @ProviderFor(shoppingCategoryAutocompleteRepo)
 const shoppingCategoryAutocompleteRepoProvider =
-    ShoppingCategoryAutocompleteRepoFamily();
+    ShoppingCategoryAutocompleteRepoFamily._();
 
-/// See also [shoppingCategoryAutocompleteRepo].
-class ShoppingCategoryAutocompleteRepoFamily
-    extends Family<ShoppingCategoryAutocompleteRepo> {
-  /// See also [shoppingCategoryAutocompleteRepo].
-  const ShoppingCategoryAutocompleteRepoFamily();
-
-  /// See also [shoppingCategoryAutocompleteRepo].
-  ShoppingCategoryAutocompleteRepoProvider call(
-    String listId,
-  ) {
-    return ShoppingCategoryAutocompleteRepoProvider(
-      listId,
-    );
-  }
-
-  @override
-  ShoppingCategoryAutocompleteRepoProvider getProviderOverride(
-    covariant ShoppingCategoryAutocompleteRepoProvider provider,
-  ) {
-    return call(
-      provider.listId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'shoppingCategoryAutocompleteRepoProvider';
-}
-
-/// See also [shoppingCategoryAutocompleteRepo].
-class ShoppingCategoryAutocompleteRepoProvider
-    extends AutoDisposeProvider<ShoppingCategoryAutocompleteRepo> {
-  /// See also [shoppingCategoryAutocompleteRepo].
-  ShoppingCategoryAutocompleteRepoProvider(
-    String listId,
-  ) : this._internal(
-          (ref) => shoppingCategoryAutocompleteRepo(
-            ref as ShoppingCategoryAutocompleteRepoRef,
-            listId,
-          ),
-          from: shoppingCategoryAutocompleteRepoProvider,
+final class ShoppingCategoryAutocompleteRepoProvider
+    extends $FunctionalProvider<ShoppingCategoryAutocompleteRepo,
+        ShoppingCategoryAutocompleteRepo, ShoppingCategoryAutocompleteRepo>
+    with $Provider<ShoppingCategoryAutocompleteRepo> {
+  const ShoppingCategoryAutocompleteRepoProvider._(
+      {required ShoppingCategoryAutocompleteRepoFamily super.from,
+      required String super.argument})
+      : super(
+          retry: null,
           name: r'shoppingCategoryAutocompleteRepoProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$shoppingCategoryAutocompleteRepoHash,
-          dependencies: ShoppingCategoryAutocompleteRepoFamily._dependencies,
-          allTransitiveDependencies:
-              ShoppingCategoryAutocompleteRepoFamily._allTransitiveDependencies,
-          listId: listId,
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  ShoppingCategoryAutocompleteRepoProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.listId,
-  }) : super.internal();
-
-  final String listId;
+  @override
+  String debugGetCreateSourceHash() => _$shoppingCategoryAutocompleteRepoHash();
 
   @override
-  Override overrideWith(
-    ShoppingCategoryAutocompleteRepo Function(
-            ShoppingCategoryAutocompleteRepoRef provider)
-        create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ShoppingCategoryAutocompleteRepoProvider._internal(
-        (ref) => create(ref as ShoppingCategoryAutocompleteRepoRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        listId: listId,
-      ),
+  String toString() {
+    return r'shoppingCategoryAutocompleteRepoProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<ShoppingCategoryAutocompleteRepo> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ShoppingCategoryAutocompleteRepo create(Ref ref) {
+    final argument = this.argument as String;
+    return shoppingCategoryAutocompleteRepo(
+      ref,
+      argument,
     );
   }
 
-  @override
-  AutoDisposeProviderElement<ShoppingCategoryAutocompleteRepo> createElement() {
-    return _ShoppingCategoryAutocompleteRepoProviderElement(this);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ShoppingCategoryAutocompleteRepo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<ShoppingCategoryAutocompleteRepo>(value),
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return other is ShoppingCategoryAutocompleteRepoProvider &&
-        other.listId == listId;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, listId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ShoppingCategoryAutocompleteRepoRef
-    on AutoDisposeProviderRef<ShoppingCategoryAutocompleteRepo> {
-  /// The parameter `listId` of this provider.
-  String get listId;
-}
+String _$shoppingCategoryAutocompleteRepoHash() =>
+    r'82591ed13277c3be38c2266b273a36676322d59c';
 
-class _ShoppingCategoryAutocompleteRepoProviderElement
-    extends AutoDisposeProviderElement<ShoppingCategoryAutocompleteRepo>
-    with ShoppingCategoryAutocompleteRepoRef {
-  _ShoppingCategoryAutocompleteRepoProviderElement(super.provider);
+final class ShoppingCategoryAutocompleteRepoFamily extends $Family
+    with $FunctionalFamilyOverride<ShoppingCategoryAutocompleteRepo, String> {
+  const ShoppingCategoryAutocompleteRepoFamily._()
+      : super(
+          retry: null,
+          name: r'shoppingCategoryAutocompleteRepoProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
+        );
+
+  ShoppingCategoryAutocompleteRepoProvider call(
+    String listId,
+  ) =>
+      ShoppingCategoryAutocompleteRepoProvider._(argument: listId, from: this);
 
   @override
-  String get listId =>
-      (origin as ShoppingCategoryAutocompleteRepoProvider).listId;
+  String toString() => r'shoppingCategoryAutocompleteRepoProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

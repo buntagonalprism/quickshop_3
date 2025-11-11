@@ -6,21 +6,39 @@ part of 'user_history_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userHistoryHash() => r'91e1d6352f30b7c0f85b1ca5a58e0baf694fc5b2';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [userHistory].
 @ProviderFor(userHistory)
-final userHistoryProvider = AutoDisposeStreamProvider<UserHistory?>.internal(
-  userHistory,
-  name: r'userHistoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userHistoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const userHistoryProvider = UserHistoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserHistoryRef = AutoDisposeStreamProviderRef<UserHistory?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class UserHistoryProvider extends $FunctionalProvider<
+        AsyncValue<UserHistory?>, UserHistory?, Stream<UserHistory?>>
+    with $FutureModifier<UserHistory?>, $StreamProvider<UserHistory?> {
+  const UserHistoryProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'userHistoryProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$userHistoryHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<UserHistory?> $createElement(
+          $ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<UserHistory?> create(Ref ref) {
+    return userHistory(ref);
+  }
+}
+
+String _$userHistoryHash() => r'0b958856391f782df11cd508dafc78709ff1bf03';

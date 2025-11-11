@@ -6,156 +6,89 @@ part of 'list_invite_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listInviteStateHash() => r'dbd2fd0b7c5a14fafc11c3cd56b027a82462157e';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [listInviteState].
 @ProviderFor(listInviteState)
-const listInviteStateProvider = ListInviteStateFamily();
+const listInviteStateProvider = ListInviteStateFamily._();
 
-/// See also [listInviteState].
-class ListInviteStateFamily extends Family<ListInviteViewModel> {
-  /// See also [listInviteState].
-  const ListInviteStateFamily();
-
-  /// See also [listInviteState].
-  ListInviteStateProvider call(
-    String inviteId,
-  ) {
-    return ListInviteStateProvider(
-      inviteId,
-    );
-  }
-
-  @override
-  ListInviteStateProvider getProviderOverride(
-    covariant ListInviteStateProvider provider,
-  ) {
-    return call(
-      provider.inviteId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'listInviteStateProvider';
-}
-
-/// See also [listInviteState].
-class ListInviteStateProvider extends AutoDisposeProvider<ListInviteViewModel> {
-  /// See also [listInviteState].
-  ListInviteStateProvider(
-    String inviteId,
-  ) : this._internal(
-          (ref) => listInviteState(
-            ref as ListInviteStateRef,
-            inviteId,
-          ),
-          from: listInviteStateProvider,
+final class ListInviteStateProvider extends $FunctionalProvider<
+    ListInviteViewModel,
+    ListInviteViewModel,
+    ListInviteViewModel> with $Provider<ListInviteViewModel> {
+  const ListInviteStateProvider._(
+      {required ListInviteStateFamily super.from,
+      required String super.argument})
+      : super(
+          retry: null,
           name: r'listInviteStateProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$listInviteStateHash,
-          dependencies: ListInviteStateFamily._dependencies,
-          allTransitiveDependencies:
-              ListInviteStateFamily._allTransitiveDependencies,
-          inviteId: inviteId,
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  ListInviteStateProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.inviteId,
-  }) : super.internal();
-
-  final String inviteId;
+  @override
+  String debugGetCreateSourceHash() => _$listInviteStateHash();
 
   @override
-  Override overrideWith(
-    ListInviteViewModel Function(ListInviteStateRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ListInviteStateProvider._internal(
-        (ref) => create(ref as ListInviteStateRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        inviteId: inviteId,
-      ),
+  String toString() {
+    return r'listInviteStateProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<ListInviteViewModel> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ListInviteViewModel create(Ref ref) {
+    final argument = this.argument as String;
+    return listInviteState(
+      ref,
+      argument,
     );
   }
 
-  @override
-  AutoDisposeProviderElement<ListInviteViewModel> createElement() {
-    return _ListInviteStateProviderElement(this);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ListInviteViewModel value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ListInviteViewModel>(value),
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ListInviteStateProvider && other.inviteId == inviteId;
+    return other is ListInviteStateProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, inviteId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ListInviteStateRef on AutoDisposeProviderRef<ListInviteViewModel> {
-  /// The parameter `inviteId` of this provider.
-  String get inviteId;
-}
+String _$listInviteStateHash() => r'99ee351aca09378cd13a828f96d5e830c80a672e';
 
-class _ListInviteStateProviderElement
-    extends AutoDisposeProviderElement<ListInviteViewModel>
-    with ListInviteStateRef {
-  _ListInviteStateProviderElement(super.provider);
+final class ListInviteStateFamily extends $Family
+    with $FunctionalFamilyOverride<ListInviteViewModel, String> {
+  const ListInviteStateFamily._()
+      : super(
+          retry: null,
+          name: r'listInviteStateProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
+        );
+
+  ListInviteStateProvider call(
+    String inviteId,
+  ) =>
+      ListInviteStateProvider._(argument: inviteId, from: this);
 
   @override
-  String get inviteId => (origin as ListInviteStateProvider).inviteId;
+  String toString() => r'listInviteStateProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

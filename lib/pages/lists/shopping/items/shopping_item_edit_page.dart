@@ -141,7 +141,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
   }
 
   void _deleteItem(BuildContext context, WidgetRef ref, ShoppingItem item) {
-    ref.read(shoppingItemsNotifierProvider(widget.listId).notifier).deleteItem(item);
+    ref.read(shoppingItemsProvider(widget.listId).notifier).deleteItem(item);
     ref.read(routerProvider).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Deleted item ${item.displayName}'),

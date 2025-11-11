@@ -6,177 +6,109 @@ part of 'shopping_item_edit_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shoppingItemEditViewModelHash() =>
-    r'edaf1ee4f2bcf0bdaf4f8743d0f956e0ea4eacda';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [shoppingItemEditViewModel].
 @ProviderFor(shoppingItemEditViewModel)
-const shoppingItemEditViewModelProvider = ShoppingItemEditViewModelFamily();
+const shoppingItemEditViewModelProvider = ShoppingItemEditViewModelFamily._();
 
-/// See also [shoppingItemEditViewModel].
-class ShoppingItemEditViewModelFamily extends Family<ShoppingItemEditModel> {
-  /// See also [shoppingItemEditViewModel].
-  const ShoppingItemEditViewModelFamily();
-
-  /// See also [shoppingItemEditViewModel].
-  ShoppingItemEditViewModelProvider call(
-    String listId,
-    String itemId,
-  ) {
-    return ShoppingItemEditViewModelProvider(
-      listId,
-      itemId,
-    );
-  }
-
-  @override
-  ShoppingItemEditViewModelProvider getProviderOverride(
-    covariant ShoppingItemEditViewModelProvider provider,
-  ) {
-    return call(
-      provider.listId,
-      provider.itemId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'shoppingItemEditViewModelProvider';
-}
-
-/// See also [shoppingItemEditViewModel].
-class ShoppingItemEditViewModelProvider
-    extends AutoDisposeProvider<ShoppingItemEditModel> {
-  /// See also [shoppingItemEditViewModel].
-  ShoppingItemEditViewModelProvider(
-    String listId,
-    String itemId,
-  ) : this._internal(
-          (ref) => shoppingItemEditViewModel(
-            ref as ShoppingItemEditViewModelRef,
-            listId,
-            itemId,
-          ),
-          from: shoppingItemEditViewModelProvider,
+final class ShoppingItemEditViewModelProvider extends $FunctionalProvider<
+    ShoppingItemEditModel,
+    ShoppingItemEditModel,
+    ShoppingItemEditModel> with $Provider<ShoppingItemEditModel> {
+  const ShoppingItemEditViewModelProvider._(
+      {required ShoppingItemEditViewModelFamily super.from,
+      required (
+        String,
+        String,
+      )
+          super.argument})
+      : super(
+          retry: null,
           name: r'shoppingItemEditViewModelProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$shoppingItemEditViewModelHash,
-          dependencies: ShoppingItemEditViewModelFamily._dependencies,
-          allTransitiveDependencies:
-              ShoppingItemEditViewModelFamily._allTransitiveDependencies,
-          listId: listId,
-          itemId: itemId,
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  ShoppingItemEditViewModelProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.listId,
-    required this.itemId,
-  }) : super.internal();
-
-  final String listId;
-  final String itemId;
+  @override
+  String debugGetCreateSourceHash() => _$shoppingItemEditViewModelHash();
 
   @override
-  Override overrideWith(
-    ShoppingItemEditModel Function(ShoppingItemEditViewModelRef provider)
-        create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ShoppingItemEditViewModelProvider._internal(
-        (ref) => create(ref as ShoppingItemEditViewModelRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        listId: listId,
-        itemId: itemId,
-      ),
+  String toString() {
+    return r'shoppingItemEditViewModelProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<ShoppingItemEditModel> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ShoppingItemEditModel create(Ref ref) {
+    final argument = this.argument as (
+      String,
+      String,
+    );
+    return shoppingItemEditViewModel(
+      ref,
+      argument.$1,
+      argument.$2,
     );
   }
 
-  @override
-  AutoDisposeProviderElement<ShoppingItemEditModel> createElement() {
-    return _ShoppingItemEditViewModelProviderElement(this);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ShoppingItemEditModel value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ShoppingItemEditModel>(value),
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return other is ShoppingItemEditViewModelProvider &&
-        other.listId == listId &&
-        other.itemId == itemId;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, listId.hashCode);
-    hash = _SystemHash.combine(hash, itemId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ShoppingItemEditViewModelRef
-    on AutoDisposeProviderRef<ShoppingItemEditModel> {
-  /// The parameter `listId` of this provider.
-  String get listId;
+String _$shoppingItemEditViewModelHash() =>
+    r'199ab60cde7189b52bff64b2a515de061cf703f3';
 
-  /// The parameter `itemId` of this provider.
-  String get itemId;
-}
+final class ShoppingItemEditViewModelFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+            ShoppingItemEditModel,
+            (
+              String,
+              String,
+            )> {
+  const ShoppingItemEditViewModelFamily._()
+      : super(
+          retry: null,
+          name: r'shoppingItemEditViewModelProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
+        );
 
-class _ShoppingItemEditViewModelProviderElement
-    extends AutoDisposeProviderElement<ShoppingItemEditModel>
-    with ShoppingItemEditViewModelRef {
-  _ShoppingItemEditViewModelProviderElement(super.provider);
+  ShoppingItemEditViewModelProvider call(
+    String listId,
+    String itemId,
+  ) =>
+      ShoppingItemEditViewModelProvider._(argument: (
+        listId,
+        itemId,
+      ), from: this);
 
   @override
-  String get listId => (origin as ShoppingItemEditViewModelProvider).listId;
-  @override
-  String get itemId => (origin as ShoppingItemEditViewModelProvider).itemId;
+  String toString() => r'shoppingItemEditViewModelProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

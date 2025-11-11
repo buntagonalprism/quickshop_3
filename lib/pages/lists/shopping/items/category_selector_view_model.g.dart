@@ -6,178 +6,138 @@ part of 'category_selector_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$categorySelectorViewModelHash() =>
-    r'faa927d031b2c38669c76a7ce67c315afd7421dc';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
+@ProviderFor(CategoryFilter)
+const categoryFilterProvider = CategoryFilterProvider._();
 
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [categorySelectorViewModel].
-@ProviderFor(categorySelectorViewModel)
-const categorySelectorViewModelProvider = CategorySelectorViewModelFamily();
-
-/// See also [categorySelectorViewModel].
-class CategorySelectorViewModelFamily
-    extends Family<CategorySelectorViewModel> {
-  /// See also [categorySelectorViewModel].
-  const CategorySelectorViewModelFamily();
-
-  /// See also [categorySelectorViewModel].
-  CategorySelectorViewModelProvider call(
-    String listId,
-  ) {
-    return CategorySelectorViewModelProvider(
-      listId,
-    );
-  }
-
-  @override
-  CategorySelectorViewModelProvider getProviderOverride(
-    covariant CategorySelectorViewModelProvider provider,
-  ) {
-    return call(
-      provider.listId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'categorySelectorViewModelProvider';
-}
-
-/// See also [categorySelectorViewModel].
-class CategorySelectorViewModelProvider
-    extends AutoDisposeProvider<CategorySelectorViewModel> {
-  /// See also [categorySelectorViewModel].
-  CategorySelectorViewModelProvider(
-    String listId,
-  ) : this._internal(
-          (ref) => categorySelectorViewModel(
-            ref as CategorySelectorViewModelRef,
-            listId,
-          ),
-          from: categorySelectorViewModelProvider,
-          name: r'categorySelectorViewModelProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$categorySelectorViewModelHash,
-          dependencies: CategorySelectorViewModelFamily._dependencies,
-          allTransitiveDependencies:
-              CategorySelectorViewModelFamily._allTransitiveDependencies,
-          listId: listId,
+final class CategoryFilterProvider
+    extends $NotifierProvider<CategoryFilter, String> {
+  const CategoryFilterProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'categoryFilterProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  CategorySelectorViewModelProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.listId,
-  }) : super.internal();
-
-  final String listId;
-
   @override
-  Override overrideWith(
-    CategorySelectorViewModel Function(CategorySelectorViewModelRef provider)
-        create,
-  ) {
-    return ProviderOverride(
+  String debugGetCreateSourceHash() => _$categoryFilterHash();
+
+  @$internal
+  @override
+  CategoryFilter create() => CategoryFilter();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
       origin: this,
-      override: CategorySelectorViewModelProvider._internal(
-        (ref) => create(ref as CategorySelectorViewModelRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        listId: listId,
-      ),
+      providerOverride: $SyncValueProvider<String>(value),
     );
   }
-
-  @override
-  AutoDisposeProviderElement<CategorySelectorViewModel> createElement() {
-    return _CategorySelectorViewModelProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is CategorySelectorViewModelProvider && other.listId == listId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, listId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin CategorySelectorViewModelRef
-    on AutoDisposeProviderRef<CategorySelectorViewModel> {
-  /// The parameter `listId` of this provider.
-  String get listId;
-}
-
-class _CategorySelectorViewModelProviderElement
-    extends AutoDisposeProviderElement<CategorySelectorViewModel>
-    with CategorySelectorViewModelRef {
-  _CategorySelectorViewModelProviderElement(super.provider);
-
-  @override
-  String get listId => (origin as CategorySelectorViewModelProvider).listId;
 }
 
 String _$categoryFilterHash() => r'e1541cb38ecdbb07e72fb5f47157bd863db23d1a';
 
-/// See also [CategoryFilter].
-@ProviderFor(CategoryFilter)
-final categoryFilterProvider =
-    AutoDisposeNotifierProvider<CategoryFilter, String>.internal(
-  CategoryFilter.new,
-  name: r'categoryFilterProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$categoryFilterHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$CategoryFilter extends $Notifier<String> {
+  String build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<String, String>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<String, String>, String, Object?, Object?>;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$CategoryFilter = AutoDisposeNotifier<String>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+@ProviderFor(categorySelectorViewModel)
+const categorySelectorViewModelProvider = CategorySelectorViewModelFamily._();
+
+final class CategorySelectorViewModelProvider extends $FunctionalProvider<
+    CategorySelectorViewModel,
+    CategorySelectorViewModel,
+    CategorySelectorViewModel> with $Provider<CategorySelectorViewModel> {
+  const CategorySelectorViewModelProvider._(
+      {required CategorySelectorViewModelFamily super.from,
+      required String super.argument})
+      : super(
+          retry: null,
+          name: r'categorySelectorViewModelProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$categorySelectorViewModelHash();
+
+  @override
+  String toString() {
+    return r'categorySelectorViewModelProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<CategorySelectorViewModel> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  CategorySelectorViewModel create(Ref ref) {
+    final argument = this.argument as String;
+    return categorySelectorViewModel(
+      ref,
+      argument,
+    );
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CategorySelectorViewModel value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CategorySelectorViewModel>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CategorySelectorViewModelProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$categorySelectorViewModelHash() =>
+    r'faa927d031b2c38669c76a7ce67c315afd7421dc';
+
+final class CategorySelectorViewModelFamily extends $Family
+    with $FunctionalFamilyOverride<CategorySelectorViewModel, String> {
+  const CategorySelectorViewModelFamily._()
+      : super(
+          retry: null,
+          name: r'categorySelectorViewModelProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
+        );
+
+  CategorySelectorViewModelProvider call(
+    String listId,
+  ) =>
+      CategorySelectorViewModelProvider._(argument: listId, from: this);
+
+  @override
+  String toString() => r'categorySelectorViewModelProvider';
+}

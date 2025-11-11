@@ -6,158 +6,90 @@ part of 'checklist_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$checklistViewModelHash() =>
-    r'9d3dd0fd13257e4422d8560aa17b6827569211fa';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [checklistViewModel].
 @ProviderFor(checklistViewModel)
-const checklistViewModelProvider = ChecklistViewModelFamily();
+const checklistViewModelProvider = ChecklistViewModelFamily._();
 
-/// See also [checklistViewModel].
-class ChecklistViewModelFamily extends Family<ChecklistViewModel> {
-  /// See also [checklistViewModel].
-  const ChecklistViewModelFamily();
-
-  /// See also [checklistViewModel].
-  ChecklistViewModelProvider call(
-    String listId,
-  ) {
-    return ChecklistViewModelProvider(
-      listId,
-    );
-  }
-
-  @override
-  ChecklistViewModelProvider getProviderOverride(
-    covariant ChecklistViewModelProvider provider,
-  ) {
-    return call(
-      provider.listId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'checklistViewModelProvider';
-}
-
-/// See also [checklistViewModel].
-class ChecklistViewModelProvider
-    extends AutoDisposeProvider<ChecklistViewModel> {
-  /// See also [checklistViewModel].
-  ChecklistViewModelProvider(
-    String listId,
-  ) : this._internal(
-          (ref) => checklistViewModel(
-            ref as ChecklistViewModelRef,
-            listId,
-          ),
-          from: checklistViewModelProvider,
+final class ChecklistViewModelProvider extends $FunctionalProvider<
+    ChecklistViewModel,
+    ChecklistViewModel,
+    ChecklistViewModel> with $Provider<ChecklistViewModel> {
+  const ChecklistViewModelProvider._(
+      {required ChecklistViewModelFamily super.from,
+      required String super.argument})
+      : super(
+          retry: null,
           name: r'checklistViewModelProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$checklistViewModelHash,
-          dependencies: ChecklistViewModelFamily._dependencies,
-          allTransitiveDependencies:
-              ChecklistViewModelFamily._allTransitiveDependencies,
-          listId: listId,
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  ChecklistViewModelProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.listId,
-  }) : super.internal();
-
-  final String listId;
+  @override
+  String debugGetCreateSourceHash() => _$checklistViewModelHash();
 
   @override
-  Override overrideWith(
-    ChecklistViewModel Function(ChecklistViewModelRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ChecklistViewModelProvider._internal(
-        (ref) => create(ref as ChecklistViewModelRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        listId: listId,
-      ),
+  String toString() {
+    return r'checklistViewModelProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<ChecklistViewModel> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ChecklistViewModel create(Ref ref) {
+    final argument = this.argument as String;
+    return checklistViewModel(
+      ref,
+      argument,
     );
   }
 
-  @override
-  AutoDisposeProviderElement<ChecklistViewModel> createElement() {
-    return _ChecklistViewModelProviderElement(this);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ChecklistViewModel value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ChecklistViewModel>(value),
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ChecklistViewModelProvider && other.listId == listId;
+    return other is ChecklistViewModelProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, listId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ChecklistViewModelRef on AutoDisposeProviderRef<ChecklistViewModel> {
-  /// The parameter `listId` of this provider.
-  String get listId;
-}
+String _$checklistViewModelHash() =>
+    r'9d3dd0fd13257e4422d8560aa17b6827569211fa';
 
-class _ChecklistViewModelProviderElement
-    extends AutoDisposeProviderElement<ChecklistViewModel>
-    with ChecklistViewModelRef {
-  _ChecklistViewModelProviderElement(super.provider);
+final class ChecklistViewModelFamily extends $Family
+    with $FunctionalFamilyOverride<ChecklistViewModel, String> {
+  const ChecklistViewModelFamily._()
+      : super(
+          retry: null,
+          name: r'checklistViewModelProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
+        );
+
+  ChecklistViewModelProvider call(
+    String listId,
+  ) =>
+      ChecklistViewModelProvider._(argument: listId, from: this);
 
   @override
-  String get listId => (origin as ChecklistViewModelProvider).listId;
+  String toString() => r'checklistViewModelProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -32,8 +32,8 @@ class ListDetailDrawer extends ConsumerStatefulWidget {
 class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
   @override
   Widget build(BuildContext context) {
-    final list = ref.watch(listProvider(widget.listId)).valueOrNull;
-    final user = ref.watch(userNotifierProvider);
+    final list = ref.watch(listProvider(widget.listId)).value;
+    final user = ref.watch(userProvider);
     final isOwner = list?.ownerId == user!.id;
     final isEditor = list?.editorIds.contains(user.id) ?? false;
     final listName = list?.name ?? 'List name';
@@ -136,7 +136,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
             ),
             TextButton(
               onPressed: () {
-                ref.read(listsNotifierProvider.notifier).deleteList(list);
+                ref.read(listsProvider.notifier).deleteList(list);
                 Navigator.of(dialogContext).pop();
                 Scaffold.of(context).closeEndDrawer();
                 ref.read(routerProvider).pop();
@@ -165,7 +165,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
               'Are you sure you want to leave this list? You will no longer be able to view or edit this list.',
           confirmationAction: 'Leave',
           requestInProgressMessage: 'Leaving list...',
-          onConfirm: () => ref.read(listsNotifierProvider.notifier).leaveList(list),
+          onConfirm: () => ref.read(listsProvider.notifier).leaveList(list),
           onSuccess: (_) {
             Navigator.of(dialogContext).pop();
             Scaffold.of(context).closeEndDrawer();

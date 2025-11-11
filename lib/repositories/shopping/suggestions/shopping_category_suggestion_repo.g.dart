@@ -6,25 +6,52 @@ part of 'shopping_category_suggestion_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(shoppingCategorySuggestionRepo)
+const shoppingCategorySuggestionRepoProvider =
+    ShoppingCategorySuggestionRepoProvider._();
+
+final class ShoppingCategorySuggestionRepoProvider extends $FunctionalProvider<
+        ShoppingCategorySuggestionRepo,
+        ShoppingCategorySuggestionRepo,
+        ShoppingCategorySuggestionRepo>
+    with $Provider<ShoppingCategorySuggestionRepo> {
+  const ShoppingCategorySuggestionRepoProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'shoppingCategorySuggestionRepoProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$shoppingCategorySuggestionRepoHash();
+
+  @$internal
+  @override
+  $ProviderElement<ShoppingCategorySuggestionRepo> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ShoppingCategorySuggestionRepo create(Ref ref) {
+    return shoppingCategorySuggestionRepo(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ShoppingCategorySuggestionRepo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<ShoppingCategorySuggestionRepo>(value),
+    );
+  }
+}
+
 String _$shoppingCategorySuggestionRepoHash() =>
     r'2245182e4d104446e280b6e22b82030903aca753';
-
-/// See also [shoppingCategorySuggestionRepo].
-@ProviderFor(shoppingCategorySuggestionRepo)
-final shoppingCategorySuggestionRepoProvider =
-    AutoDisposeProvider<ShoppingCategorySuggestionRepo>.internal(
-  shoppingCategorySuggestionRepo,
-  name: r'shoppingCategorySuggestionRepoProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$shoppingCategorySuggestionRepoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ShoppingCategorySuggestionRepoRef
-    = AutoDisposeProviderRef<ShoppingCategorySuggestionRepo>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

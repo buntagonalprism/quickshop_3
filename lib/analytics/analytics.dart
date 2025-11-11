@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -55,14 +54,11 @@ class AnalyticsEvent {
 
   AnalyticsEvent.listDeleted(ListType type) : this._('list_deleted', {'type': type.name});
 
-  AnalyticsEvent.listInviteCreated(ListType type)
-      : this._('list_invite_created', {'type': type.name});
+  AnalyticsEvent.listInviteCreated(ListType type) : this._('list_invite_created', {'type': type.name});
 
-  AnalyticsEvent.listInviteAccepted(ListType type)
-      : this._('list_invite_accepted', {'type': type.name});
+  AnalyticsEvent.listInviteAccepted(ListType type) : this._('list_invite_accepted', {'type': type.name});
 
-  AnalyticsEvent.listInviteDeleted(ListType type)
-      : this._('list_invite_deleted', {'type': type.name});
+  AnalyticsEvent.listInviteDeleted(ListType type) : this._('list_invite_deleted', {'type': type.name});
 
   AnalyticsEvent.listLeft(ListType type) : this._('list_left', {'type': type.name});
 
@@ -72,8 +68,7 @@ class AnalyticsEvent {
 
   const AnalyticsEvent.shoppingItemDeleted() : this._('shopping_item_deleted', const {});
 
-  const AnalyticsEvent.shoppingItemsBatchDeleted()
-      : this._('shopping_items_batch_deleted', const {});
+  const AnalyticsEvent.shoppingItemsBatchDeleted() : this._('shopping_items_batch_deleted', const {});
 
   const AnalyticsEvent.checklistItemCreated() : this._('checklist_item_created', const {});
   const AnalyticsEvent.checklistItemUpdated() : this._('checklist_item_updated', const {});
@@ -85,10 +80,8 @@ class AnalyticsEvent {
 
   const AnalyticsEvent.checklistEntryMoved() : this._('checklist_entry_moved', const {});
 
-  const AnalyticsEvent.checklistItemsBatchDeleted()
-      : this._('checklist_items_batch_deleted', const {});
-  const AnalyticsEvent.checklistItemsBatchUnchecked()
-      : this._('checklist_items_batch_unchecked', const {});
+  const AnalyticsEvent.checklistItemsBatchDeleted() : this._('checklist_items_batch_deleted', const {});
+  const AnalyticsEvent.checklistItemsBatchUnchecked() : this._('checklist_items_batch_unchecked', const {});
   AnalyticsEvent.checklistDuplicateSortKeysDetected(int count)
       : this._('checklist_duplicate_sort_keys_detected', {'count': count});
 
@@ -98,8 +91,7 @@ class AnalyticsEvent {
           'reason': reason,
         });
 
-  AnalyticsEvent.httpConnectionError(
-      {required String uri, required int statusCode, required String errorMessage})
+  AnalyticsEvent.httpConnectionError({required String uri, required int statusCode, required String errorMessage})
       : this._('http_connection_error', {
           'uri': uri,
           'status_code': statusCode,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:riverpod/misc.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../application/user_notifier.dart';
@@ -25,7 +26,7 @@ extension DelayProviderDisposeExtension on Ref {
     Timer? timer;
 
     // Disable the delay if the user is not logged in
-    final String? userId = watch(userNotifierProvider.select((user) => user?.id));
+    final String? userId = watch(userProvider.select((user) => user?.id));
     if (userId == null) {
       return;
     }

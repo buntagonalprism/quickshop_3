@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,7 +21,7 @@ class ShoppingItemEditModel with _$ShoppingItemEditModel {
 
 @riverpod
 ShoppingItemEditModel shoppingItemEditViewModel(Ref ref, String listId, String itemId) {
-  final itemsValue = ref.watch(shoppingItemsNotifierProvider(listId));
+  final itemsValue = ref.watch(shoppingItemsProvider(listId));
   if (itemsValue.isLoading) {
     return const ShoppingItemEditModel.loading();
   }

@@ -6,21 +6,46 @@ part of 'list_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listRepoHash() => r'd2da06d7d40341f488228766b5db4f09b4e92c3e';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [listRepo].
 @ProviderFor(listRepo)
-final listRepoProvider = Provider<ListRepo>.internal(
-  listRepo,
-  name: r'listRepoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$listRepoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const listRepoProvider = ListRepoProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ListRepoRef = ProviderRef<ListRepo>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ListRepoProvider
+    extends $FunctionalProvider<ListRepo, ListRepo, ListRepo>
+    with $Provider<ListRepo> {
+  const ListRepoProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'listRepoProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$listRepoHash();
+
+  @$internal
+  @override
+  $ProviderElement<ListRepo> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ListRepo create(Ref ref) {
+    return listRepo(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ListRepo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ListRepo>(value),
+    );
+  }
+}
+
+String _$listRepoHash() => r'd2da06d7d40341f488228766b5db4f09b4e92c3e';

@@ -13,7 +13,7 @@ class ListsNotifier extends _$ListsNotifier {
   @override
   Stream<List<ListSummary>> build() {
     final repo = ref.watch(listRepoProvider);
-    final user = ref.watch(userNotifierProvider);
+    final user = ref.watch(userProvider);
     if (user == null) {
       return const Stream.empty();
     }

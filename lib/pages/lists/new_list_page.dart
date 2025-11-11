@@ -168,7 +168,7 @@ class _InputListNameTabState extends ConsumerState<InputListNameTab> {
     }
     setState(() => createInProgress = true);
     try {
-      final listId = await ref.read(listsNotifierProvider.notifier).createList(name, widget.type);
+      final listId = await ref.read(listsProvider.notifier).createList(name, widget.type);
       switch (widget.type) {
         case ListType.shoppingList:
           ref.read(routerProvider).pushReplacement(Routes.shoppingListDetail(listId).path);

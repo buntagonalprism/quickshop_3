@@ -6,21 +6,46 @@ part of 'analytics.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$analyticsHash() => r'4d687965b396d951bd0e56c2c56febfc0a8a8e8c';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [analytics].
 @ProviderFor(analytics)
-final analyticsProvider = AutoDisposeProvider<Analytics>.internal(
-  analytics,
-  name: r'analyticsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$analyticsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const analyticsProvider = AnalyticsProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AnalyticsRef = AutoDisposeProviderRef<Analytics>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class AnalyticsProvider
+    extends $FunctionalProvider<Analytics, Analytics, Analytics>
+    with $Provider<Analytics> {
+  const AnalyticsProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'analyticsProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$analyticsHash();
+
+  @$internal
+  @override
+  $ProviderElement<Analytics> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Analytics create(Ref ref) {
+    return analytics(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Analytics value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Analytics>(value),
+    );
+  }
+}
+
+String _$analyticsHash() => r'4d687965b396d951bd0e56c2c56febfc0a8a8e8c';

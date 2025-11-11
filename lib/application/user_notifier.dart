@@ -1,5 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/user/user.dart';
@@ -34,12 +32,12 @@ class UserNotifier extends _$UserNotifier {
 
 @Riverpod(keepAlive: true)
 bool loggedIn(Ref ref) {
-  return ref.watch(userNotifierProvider) != null;
+  return ref.watch(userProvider) != null;
 }
 
 @Riverpod(keepAlive: true)
 String? userId(Ref ref) {
-  final user = ref.watch(userNotifierProvider);
+  final user = ref.watch(userProvider);
   return user?.id;
 }
 

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quickshop/repositories/delay_provider_dispose.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../fakes/fake_firebase_auth.dart';
@@ -56,7 +55,7 @@ int delayDispose(Ref ref) {
   ref.onCancel(() {
     _cancelCount++;
   });
-  return ref.watch(upstreamProvider).valueOrNull ?? 0;
+  return ref.watch(upstreamProvider).value ?? 0;
 }
 
 void main() {

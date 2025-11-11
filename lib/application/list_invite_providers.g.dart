@@ -6,180 +6,165 @@ part of 'list_invite_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listInviteByIdHash() => r'c2abf08b6388e864c7d6a153a44981095218306c';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 /// Load a list invite by its id.
 ///
 /// Will return null if the invite does not exist.
-///
-/// Copied from [listInviteById].
+
 @ProviderFor(listInviteById)
-const listInviteByIdProvider = ListInviteByIdFamily();
+const listInviteByIdProvider = ListInviteByIdFamily._();
 
 /// Load a list invite by its id.
 ///
 /// Will return null if the invite does not exist.
-///
-/// Copied from [listInviteById].
-class ListInviteByIdFamily extends Family<AsyncValue<ListInvite?>> {
+
+final class ListInviteByIdProvider extends $FunctionalProvider<
+        AsyncValue<ListInvite?>, ListInvite?, Stream<ListInvite?>>
+    with $FutureModifier<ListInvite?>, $StreamProvider<ListInvite?> {
   /// Load a list invite by its id.
   ///
   /// Will return null if the invite does not exist.
-  ///
-  /// Copied from [listInviteById].
-  const ListInviteByIdFamily();
-
-  /// Load a list invite by its id.
-  ///
-  /// Will return null if the invite does not exist.
-  ///
-  /// Copied from [listInviteById].
-  ListInviteByIdProvider call(
-    String inviteId,
-  ) {
-    return ListInviteByIdProvider(
-      inviteId,
-    );
-  }
-
-  @override
-  ListInviteByIdProvider getProviderOverride(
-    covariant ListInviteByIdProvider provider,
-  ) {
-    return call(
-      provider.inviteId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'listInviteByIdProvider';
-}
-
-/// Load a list invite by its id.
-///
-/// Will return null if the invite does not exist.
-///
-/// Copied from [listInviteById].
-class ListInviteByIdProvider extends AutoDisposeStreamProvider<ListInvite?> {
-  /// Load a list invite by its id.
-  ///
-  /// Will return null if the invite does not exist.
-  ///
-  /// Copied from [listInviteById].
-  ListInviteByIdProvider(
-    String inviteId,
-  ) : this._internal(
-          (ref) => listInviteById(
-            ref as ListInviteByIdRef,
-            inviteId,
-          ),
-          from: listInviteByIdProvider,
+  const ListInviteByIdProvider._(
+      {required ListInviteByIdFamily super.from,
+      required String super.argument})
+      : super(
+          retry: null,
           name: r'listInviteByIdProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$listInviteByIdHash,
-          dependencies: ListInviteByIdFamily._dependencies,
-          allTransitiveDependencies:
-              ListInviteByIdFamily._allTransitiveDependencies,
-          inviteId: inviteId,
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  ListInviteByIdProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.inviteId,
-  }) : super.internal();
-
-  final String inviteId;
+  @override
+  String debugGetCreateSourceHash() => _$listInviteByIdHash();
 
   @override
-  Override overrideWith(
-    Stream<ListInvite?> Function(ListInviteByIdRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ListInviteByIdProvider._internal(
-        (ref) => create(ref as ListInviteByIdRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        inviteId: inviteId,
-      ),
-    );
+  String toString() {
+    return r'listInviteByIdProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  AutoDisposeStreamProviderElement<ListInvite?> createElement() {
-    return _ListInviteByIdProviderElement(this);
+  $StreamProviderElement<ListInvite?> $createElement(
+          $ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<ListInvite?> create(Ref ref) {
+    final argument = this.argument as String;
+    return listInviteById(
+      ref,
+      argument,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ListInviteByIdProvider && other.inviteId == inviteId;
+    return other is ListInviteByIdProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, inviteId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ListInviteByIdRef on AutoDisposeStreamProviderRef<ListInvite?> {
-  /// The parameter `inviteId` of this provider.
-  String get inviteId;
-}
+String _$listInviteByIdHash() => r'c2abf08b6388e864c7d6a153a44981095218306c';
 
-class _ListInviteByIdProviderElement
-    extends AutoDisposeStreamProviderElement<ListInvite?>
-    with ListInviteByIdRef {
-  _ListInviteByIdProviderElement(super.provider);
+/// Load a list invite by its id.
+///
+/// Will return null if the invite does not exist.
+
+final class ListInviteByIdFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<ListInvite?>, String> {
+  const ListInviteByIdFamily._()
+      : super(
+          retry: null,
+          name: r'listInviteByIdProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
+        );
+
+  /// Load a list invite by its id.
+  ///
+  /// Will return null if the invite does not exist.
+
+  ListInviteByIdProvider call(
+    String inviteId,
+  ) =>
+      ListInviteByIdProvider._(argument: inviteId, from: this);
 
   @override
-  String get inviteId => (origin as ListInviteByIdProvider).inviteId;
+  String toString() => r'listInviteByIdProvider';
+}
+
+/// Load the currently authenticated user's personal list invite for sharing a given list.
+///
+/// Will return null if the user has not created a sharing link for the list.
+
+@ProviderFor(userListInviteByListId)
+const userListInviteByListIdProvider = UserListInviteByListIdFamily._();
+
+/// Load the currently authenticated user's personal list invite for sharing a given list.
+///
+/// Will return null if the user has not created a sharing link for the list.
+
+final class UserListInviteByListIdProvider extends $FunctionalProvider<
+        AsyncValue<ListInvite?>, ListInvite?, Stream<ListInvite?>>
+    with $FutureModifier<ListInvite?>, $StreamProvider<ListInvite?> {
+  /// Load the currently authenticated user's personal list invite for sharing a given list.
+  ///
+  /// Will return null if the user has not created a sharing link for the list.
+  const UserListInviteByListIdProvider._(
+      {required UserListInviteByListIdFamily super.from,
+      required String super.argument})
+      : super(
+          retry: null,
+          name: r'userListInviteByListIdProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$userListInviteByListIdHash();
+
+  @override
+  String toString() {
+    return r'userListInviteByListIdProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<ListInvite?> $createElement(
+          $ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<ListInvite?> create(Ref ref) {
+    final argument = this.argument as String;
+    return userListInviteByListId(
+      ref,
+      argument,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserListInviteByListIdProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
 String _$userListInviteByListIdHash() =>
@@ -188,155 +173,27 @@ String _$userListInviteByListIdHash() =>
 /// Load the currently authenticated user's personal list invite for sharing a given list.
 ///
 /// Will return null if the user has not created a sharing link for the list.
-///
-/// Copied from [userListInviteByListId].
-@ProviderFor(userListInviteByListId)
-const userListInviteByListIdProvider = UserListInviteByListIdFamily();
 
-/// Load the currently authenticated user's personal list invite for sharing a given list.
-///
-/// Will return null if the user has not created a sharing link for the list.
-///
-/// Copied from [userListInviteByListId].
-class UserListInviteByListIdFamily extends Family<AsyncValue<ListInvite?>> {
-  /// Load the currently authenticated user's personal list invite for sharing a given list.
-  ///
-  /// Will return null if the user has not created a sharing link for the list.
-  ///
-  /// Copied from [userListInviteByListId].
-  const UserListInviteByListIdFamily();
-
-  /// Load the currently authenticated user's personal list invite for sharing a given list.
-  ///
-  /// Will return null if the user has not created a sharing link for the list.
-  ///
-  /// Copied from [userListInviteByListId].
-  UserListInviteByListIdProvider call(
-    String listId,
-  ) {
-    return UserListInviteByListIdProvider(
-      listId,
-    );
-  }
-
-  @override
-  UserListInviteByListIdProvider getProviderOverride(
-    covariant UserListInviteByListIdProvider provider,
-  ) {
-    return call(
-      provider.listId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'userListInviteByListIdProvider';
-}
-
-/// Load the currently authenticated user's personal list invite for sharing a given list.
-///
-/// Will return null if the user has not created a sharing link for the list.
-///
-/// Copied from [userListInviteByListId].
-class UserListInviteByListIdProvider
-    extends AutoDisposeStreamProvider<ListInvite?> {
-  /// Load the currently authenticated user's personal list invite for sharing a given list.
-  ///
-  /// Will return null if the user has not created a sharing link for the list.
-  ///
-  /// Copied from [userListInviteByListId].
-  UserListInviteByListIdProvider(
-    String listId,
-  ) : this._internal(
-          (ref) => userListInviteByListId(
-            ref as UserListInviteByListIdRef,
-            listId,
-          ),
-          from: userListInviteByListIdProvider,
+final class UserListInviteByListIdFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<ListInvite?>, String> {
+  const UserListInviteByListIdFamily._()
+      : super(
+          retry: null,
           name: r'userListInviteByListIdProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$userListInviteByListIdHash,
-          dependencies: UserListInviteByListIdFamily._dependencies,
-          allTransitiveDependencies:
-              UserListInviteByListIdFamily._allTransitiveDependencies,
-          listId: listId,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
         );
 
-  UserListInviteByListIdProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.listId,
-  }) : super.internal();
+  /// Load the currently authenticated user's personal list invite for sharing a given list.
+  ///
+  /// Will return null if the user has not created a sharing link for the list.
 
-  final String listId;
+  UserListInviteByListIdProvider call(
+    String listId,
+  ) =>
+      UserListInviteByListIdProvider._(argument: listId, from: this);
 
   @override
-  Override overrideWith(
-    Stream<ListInvite?> Function(UserListInviteByListIdRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: UserListInviteByListIdProvider._internal(
-        (ref) => create(ref as UserListInviteByListIdRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        listId: listId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeStreamProviderElement<ListInvite?> createElement() {
-    return _UserListInviteByListIdProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is UserListInviteByListIdProvider && other.listId == listId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, listId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
+  String toString() => r'userListInviteByListIdProvider';
 }
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin UserListInviteByListIdRef on AutoDisposeStreamProviderRef<ListInvite?> {
-  /// The parameter `listId` of this provider.
-  String get listId;
-}
-
-class _UserListInviteByListIdProviderElement
-    extends AutoDisposeStreamProviderElement<ListInvite?>
-    with UserListInviteByListIdRef {
-  _UserListInviteByListIdProviderElement(super.provider);
-
-  @override
-  String get listId => (origin as UserListInviteByListIdProvider).listId;
-}
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -27,7 +27,7 @@ class _ListSharingPageState extends ConsumerState<ListSharingPage> {
     final list = ref.watch(listProvider(widget.listId));
     return Scaffold(
       appBar: AppBar(
-        title: Text('Share ${list.valueOrNull?.name ?? ''}'),
+        title: Text('Share ${list.value?.name ?? ''}'),
       ),
       body: list.when(
         error: (error, trace) {
@@ -136,7 +136,7 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
             ),
             const SizedBox(height: 12),
             OutlinedButton(
-              onPressed: invite.valueOrNull != null ? () => _shareLink(invite.requireValue!) : null,
+              onPressed: invite.value != null ? () => _shareLink(invite.requireValue!) : null,
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -218,7 +218,7 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
   }
 
   void _deleteSharingLink(AsyncValue<ListInvite?> invite) {
-    final inviteValue = invite.valueOrNull;
+    final inviteValue = invite.value;
     if (inviteValue == null) {
       return;
     }

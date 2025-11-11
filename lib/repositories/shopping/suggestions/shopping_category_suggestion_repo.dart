@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,8 +49,8 @@ class ShoppingCategorySuggestionRepo {
   }
 
   void _watchSuggestions(String langCode) async {
-    final loadProgress = await _db.loadProgressDao.get(LoadProgressType.categorySuggestion) ??
-        DateTime.fromMillisecondsSinceEpoch(0);
+    final loadProgress =
+        await _db.loadProgressDao.get(LoadProgressType.categorySuggestion) ?? DateTime.fromMillisecondsSinceEpoch(0);
 
     _summarySub?.cancel();
     _summarySub = _fs.collection('suggestions').doc('categories').snapshots().listen((snapshot) {

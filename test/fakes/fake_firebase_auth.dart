@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:mocktail/mocktail.dart';
 import 'package:quickshop/models/user/user.dart';
 import 'package:quickshop/services/firebase_auth.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:riverpod/misc.dart';
 
 class _MockAuthUser extends Mock implements auth.User {}
 

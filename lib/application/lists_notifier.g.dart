@@ -6,21 +6,48 @@ part of 'lists_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listsNotifierHash() => r'5ded08ca1d2d914a0e6d14abfe17ea9407eab07e';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [ListsNotifier].
 @ProviderFor(ListsNotifier)
-final listsNotifierProvider =
-    StreamNotifierProvider<ListsNotifier, List<ListSummary>>.internal(
-  ListsNotifier.new,
-  name: r'listsNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$listsNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const listsProvider = ListsNotifierProvider._();
 
-typedef _$ListsNotifier = StreamNotifier<List<ListSummary>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ListsNotifierProvider
+    extends $StreamNotifierProvider<ListsNotifier, List<ListSummary>> {
+  const ListsNotifierProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'listsProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$listsNotifierHash();
+
+  @$internal
+  @override
+  ListsNotifier create() => ListsNotifier();
+}
+
+String _$listsNotifierHash() => r'93fa20e4250c90f641fb089d909e427ffe9579d0';
+
+abstract class _$ListsNotifier extends $StreamNotifier<List<ListSummary>> {
+  Stream<List<ListSummary>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<List<ListSummary>>, List<ListSummary>>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<AsyncValue<List<ListSummary>>, List<ListSummary>>,
+        AsyncValue<List<ListSummary>>,
+        Object?,
+        Object?>;
+    element.handleValue(ref, created);
+  }
+}

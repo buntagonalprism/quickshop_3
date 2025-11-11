@@ -194,7 +194,7 @@ class _PendingInvitationViewState extends ConsumerState<_PendingInvitationView> 
 
   void _acceptListInvitation() async {
     setState(() => _acceptInProgress = true);
-    final result = await ref.read(listsNotifierProvider.notifier).acceptListInvite(widget.invite);
+    final result = await ref.read(listsProvider.notifier).acceptListInvite(widget.invite);
     if (mounted) {
       if (result is HttpResultError) {
         final error = result.error;

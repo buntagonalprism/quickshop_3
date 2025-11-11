@@ -6,20 +6,52 @@ part of 'locale_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(LocaleService)
+const localeServiceProvider = LocaleServiceProvider._();
+
+final class LocaleServiceProvider
+    extends $NotifierProvider<LocaleService, Locale> {
+  const LocaleServiceProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'localeServiceProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$localeServiceHash();
+
+  @$internal
+  @override
+  LocaleService create() => LocaleService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Locale value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Locale>(value),
+    );
+  }
+}
+
 String _$localeServiceHash() => r'042f681ed183ef7cc40097e8276f36540af86091';
 
-/// See also [LocaleService].
-@ProviderFor(LocaleService)
-final localeServiceProvider = NotifierProvider<LocaleService, Locale>.internal(
-  LocaleService.new,
-  name: r'localeServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$localeServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$LocaleService = Notifier<Locale>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$LocaleService extends $Notifier<Locale> {
+  Locale build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<Locale, Locale>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<Locale, Locale>, Locale, Object?, Object?>;
+    element.handleValue(ref, created);
+  }
+}

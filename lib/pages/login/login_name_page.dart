@@ -69,7 +69,7 @@ class _LoginNamePageState extends State<LoginNamePage> {
                         });
                         return;
                       }
-                      ref.read(userNotifierProvider.notifier).setUserName(userName);
+                      ref.read(userProvider.notifier).setUserName(userName);
                       ref.read(routerProvider).go(Routes.postLogin);
                     },
                     child: const Text('Continue'),

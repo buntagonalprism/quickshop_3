@@ -126,7 +126,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   }
 
   void onAutocompleteSelected(ShoppingItemAutocomplete suggestion, bool addMore) async {
-    await ref.read(shoppingItemsNotifierProvider(widget.listId).notifier).addAutocomplete(suggestion);
+    await ref.read(shoppingItemsProvider(widget.listId).notifier).addAutocomplete(suggestion);
     onAddedItem(suggestion.displayName, addMore);
   }
 
@@ -140,7 +140,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   }
 
   void onDone({bool addMore = false}) async {
-    final itemStore = ref.read(shoppingItemsNotifierProvider(widget.listId).notifier);
+    final itemStore = ref.read(shoppingItemsProvider(widget.listId).notifier);
     ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
     final model = ref.read(shoppingItemCreateViewModelProvider);
 

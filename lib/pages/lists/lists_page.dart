@@ -22,7 +22,7 @@ class ListsPage extends ConsumerWidget {
         leading: const ProfileIcon(),
       ),
       body: Builder(builder: (context) {
-        final listsValue = ref.watch(listsNotifierProvider);
+        final listsValue = ref.watch(listsProvider);
         if (listsValue.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -148,7 +148,7 @@ class ListSummaryTile extends ConsumerWidget {
   }
 
   String formatLastModified(WidgetRef ref) {
-    final user = ref.watch(userNotifierProvider);
+    final user = ref.watch(userProvider);
     final lastModifiedMs = listSummary.lastModified[user?.id];
     if (lastModifiedMs == null) {
       return '';

@@ -6,22 +6,47 @@ part of 'user_token_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTokenServiceHash() => r'e33cef97861ae8a74e38a936dc03fe16f04026db';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [userTokenService].
 @ProviderFor(userTokenService)
-final userTokenServiceProvider = Provider<UserTokenService>.internal(
-  userTokenService,
-  name: r'userTokenServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userTokenServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const userTokenServiceProvider = UserTokenServiceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserTokenServiceRef = ProviderRef<UserTokenService>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class UserTokenServiceProvider extends $FunctionalProvider<
+    UserTokenService,
+    UserTokenService,
+    UserTokenService> with $Provider<UserTokenService> {
+  const UserTokenServiceProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'userTokenServiceProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$userTokenServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<UserTokenService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  UserTokenService create(Ref ref) {
+    return userTokenService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserTokenService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserTokenService>(value),
+    );
+  }
+}
+
+String _$userTokenServiceHash() => r'e33cef97861ae8a74e38a936dc03fe16f04026db';

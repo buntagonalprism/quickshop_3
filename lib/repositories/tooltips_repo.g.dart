@@ -6,169 +6,95 @@ part of 'tooltips_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tooltipsRepoHash() => r'1663a2fd7e3b4b26f937664ae26c09ad9765397e';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$TooltipsRepo extends BuildlessAutoDisposeNotifier<bool> {
-  late final TooltipType type;
-
-  bool build(
-    TooltipType type,
-  );
-}
-
-/// See also [TooltipsRepo].
 @ProviderFor(TooltipsRepo)
-const tooltipsRepoProvider = TooltipsRepoFamily();
+const tooltipsRepoProvider = TooltipsRepoFamily._();
 
-/// See also [TooltipsRepo].
-class TooltipsRepoFamily extends Family<bool> {
-  /// See also [TooltipsRepo].
-  const TooltipsRepoFamily();
-
-  /// See also [TooltipsRepo].
-  TooltipsRepoProvider call(
-    TooltipType type,
-  ) {
-    return TooltipsRepoProvider(
-      type,
-    );
-  }
-
-  @override
-  TooltipsRepoProvider getProviderOverride(
-    covariant TooltipsRepoProvider provider,
-  ) {
-    return call(
-      provider.type,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'tooltipsRepoProvider';
-}
-
-/// See also [TooltipsRepo].
-class TooltipsRepoProvider
-    extends AutoDisposeNotifierProviderImpl<TooltipsRepo, bool> {
-  /// See also [TooltipsRepo].
-  TooltipsRepoProvider(
-    TooltipType type,
-  ) : this._internal(
-          () => TooltipsRepo()..type = type,
-          from: tooltipsRepoProvider,
+final class TooltipsRepoProvider extends $NotifierProvider<TooltipsRepo, bool> {
+  const TooltipsRepoProvider._(
+      {required TooltipsRepoFamily super.from,
+      required TooltipType super.argument})
+      : super(
+          retry: null,
           name: r'tooltipsRepoProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$tooltipsRepoHash,
-          dependencies: TooltipsRepoFamily._dependencies,
-          allTransitiveDependencies:
-              TooltipsRepoFamily._allTransitiveDependencies,
-          type: type,
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  TooltipsRepoProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.type,
-  }) : super.internal();
-
-  final TooltipType type;
+  @override
+  String debugGetCreateSourceHash() => _$tooltipsRepoHash();
 
   @override
-  bool runNotifierBuild(
-    covariant TooltipsRepo notifier,
-  ) {
-    return notifier.build(
-      type,
-    );
+  String toString() {
+    return r'tooltipsRepoProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  Override overrideWith(TooltipsRepo Function() create) {
-    return ProviderOverride(
+  TooltipsRepo create() => TooltipsRepo();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
       origin: this,
-      override: TooltipsRepoProvider._internal(
-        () => create()..type = type,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        type: type,
-      ),
+      providerOverride: $SyncValueProvider<bool>(value),
     );
-  }
-
-  @override
-  AutoDisposeNotifierProviderElement<TooltipsRepo, bool> createElement() {
-    return _TooltipsRepoProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TooltipsRepoProvider && other.type == type;
+    return other is TooltipsRepoProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, type.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin TooltipsRepoRef on AutoDisposeNotifierProviderRef<bool> {
-  /// The parameter `type` of this provider.
-  TooltipType get type;
-}
+String _$tooltipsRepoHash() => r'1663a2fd7e3b4b26f937664ae26c09ad9765397e';
 
-class _TooltipsRepoProviderElement
-    extends AutoDisposeNotifierProviderElement<TooltipsRepo, bool>
-    with TooltipsRepoRef {
-  _TooltipsRepoProviderElement(super.provider);
+final class TooltipsRepoFamily extends $Family
+    with $ClassFamilyOverride<TooltipsRepo, bool, bool, bool, TooltipType> {
+  const TooltipsRepoFamily._()
+      : super(
+          retry: null,
+          name: r'tooltipsRepoProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: true,
+        );
+
+  TooltipsRepoProvider call(
+    TooltipType type,
+  ) =>
+      TooltipsRepoProvider._(argument: type, from: this);
 
   @override
-  TooltipType get type => (origin as TooltipsRepoProvider).type;
+  String toString() => r'tooltipsRepoProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+
+abstract class _$TooltipsRepo extends $Notifier<bool> {
+  late final _$args = ref.$arg as TooltipType;
+  TooltipType get type => _$args;
+
+  bool build(
+    TooltipType type,
+  );
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(
+      _$args,
+    );
+    final ref = this.ref as $Ref<bool, bool>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    element.handleValue(ref, created);
+  }
+}

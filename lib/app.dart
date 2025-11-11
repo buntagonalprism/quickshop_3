@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
               border: OutlineInputBorder(),
             ),
           ),
-          themeMode: ref.watch(settingsNotifierProvider).themeMode,
+          themeMode: ref.watch(settingsProvider).themeMode,
 
           routerConfig: ref.watch(routerProvider),
         ),

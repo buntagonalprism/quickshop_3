@@ -66,7 +66,7 @@ class ShoppingListPage extends ConsumerWidget {
   }
 
   void onRemoveCheckedItems(BuildContext context, WidgetRef ref, String listId) async {
-    final deleteFuture = ref.read(shoppingItemsNotifierProvider(listId).notifier).deleteCompletedItems();
+    final deleteFuture = ref.read(shoppingItemsProvider(listId).notifier).deleteCompletedItems();
     Navigator.pop(context);
     final deletedCount = await deleteFuture;
     if (context.mounted) {
