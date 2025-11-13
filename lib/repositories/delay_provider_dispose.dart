@@ -37,6 +37,7 @@ extension DelayProviderDisposeExtension on Ref {
     // If a new listener is added then removed again before the original duration elapses, the
     // original keep alive link is closed and a new one is created while restarting the timer.
     onCancel(() {
+      timer?.cancel();
       timer = Timer(duration, () {
         link.close();
       });

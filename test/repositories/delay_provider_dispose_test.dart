@@ -221,7 +221,7 @@ void main() {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
-      container.listen(userProvider, (_, __) {});
+      container.listen(upstreamProvider, (_, __) {});
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
       expect(_rebuildCount, 1);
