@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
-import '../../../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import '../../../../services/shopping_item_name_parser.dart';
 import 'models/shopping_item_errors.dart';
 import 'models/shopping_item_raw_data.dart';
@@ -13,7 +13,7 @@ part 'shopping_item_create_view_model.g.dart';
 @riverpod
 Future<List<ShoppingItemAutocomplete>> itemAutocomplete(Ref ref, String listId) {
   final filter = ref.watch(shoppingItemCreateViewModelProvider).filter.trim().toLowerCase();
-  final repo = ref.read(shoppingItemAutocompleteRepoProvider(listId));
+  final repo = ref.read(shoppingItemAutocompleteUseCaseProvider(listId));
   return repo.getAutocomplete(filter);
 }
 

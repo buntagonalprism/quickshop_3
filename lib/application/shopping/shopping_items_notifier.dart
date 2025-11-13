@@ -5,10 +5,10 @@ import '../../analytics/analytics.dart';
 import '../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../models/shopping/shopping_item.dart';
 import '../../repositories/delay_provider_dispose.dart';
-import '../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import '../../repositories/shopping/shopping_items_repo.dart';
 import '../../services/shopping_item_name_parser.dart';
 import '../list_leave_in_progress_notifier.dart';
+import 'autcomplete/shopping_item_autocomplete_use_case.dart';
 
 part 'shopping_items_notifier.freezed.dart';
 part 'shopping_items_notifier.g.dart';
@@ -94,7 +94,7 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     final parser = ref.read(shoppingItemNameParserProvider);
     final parsedItem = parser.parse(itemName);
     final product = parsedItem.product.trim().toLowerCase();
-    final autocompleteRepo = ref.read(shoppingItemAutocompleteRepoProvider(listId));
+    final autocompleteRepo = ref.read(shoppingItemAutocompleteUseCaseProvider(listId));
     final autocompleteOptions = await autocompleteRepo.getAutocomplete(product);
     ShoppingItemAutocomplete? autocomplete;
     for (var option in autocompleteOptions) {

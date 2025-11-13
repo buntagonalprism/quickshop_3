@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quickshop/application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
+import 'package:quickshop/application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
 import 'package:quickshop/models/shopping/autocomplete/shopping_category_autocomplete.dart';
 import 'package:quickshop/models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import 'package:quickshop/models/shopping/shopping_item.dart';
@@ -11,8 +13,6 @@ import 'package:quickshop/pages/lists/shopping/items/models/shopping_item_errors
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
-import 'package:quickshop/repositories/shopping/autocomplete/shopping_category_autocomplete_repo.dart';
-import 'package:quickshop/repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
@@ -22,9 +22,9 @@ import '../../../fakes/fake_firebase_auth.dart';
 import '../../../fakes/fake_shared_preferences.dart';
 import '../../../utilities/answerer.dart';
 
-class MockItemAutocompleteRepo extends Mock implements ShoppingItemAutocompleteRepo {}
+class MockItemAutocompleteRepo extends Mock implements ShoppingItemAutocompleteUseCase {}
 
-class MockCategoryAutocompleteRepo extends Mock implements ShoppingCategoryAutocompleteRepo {}
+class MockCategoryAutocompleteRepo extends Mock implements ShoppingCategoryAutocompleteUseCase {}
 
 class MockShoppingListItemsRepo extends Mock implements ShoppingListItemsRepo {}
 
@@ -62,8 +62,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: ProviderScope(
         overrides: [
-          shoppingItemAutocompleteRepoProvider(listId).overrideWithValue(itemAutocompleteRepo),
-          shoppingCategoryAutocompleteRepoProvider(listId).overrideWithValue(categoryAutocompleteRepo),
+          shoppingItemAutocompleteUseCaseProvider(listId).overrideWithValue(itemAutocompleteRepo),
+          shoppingCategoryAutocompleteUseCaseProvider(listId).overrideWithValue(categoryAutocompleteRepo),
           shoppingListItemsRepoProvider(listId).overrideWithValue(itemsRepo),
           routerProvider.overrideWithValue(router),
           sharedPrefsProvider.overrideWithValue(prefs),

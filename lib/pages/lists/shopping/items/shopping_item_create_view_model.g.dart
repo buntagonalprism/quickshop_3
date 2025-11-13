@@ -66,7 +66,7 @@ final class ItemAutocompleteProvider extends $FunctionalProvider<
   }
 }
 
-String _$itemAutocompleteHash() => r'cebfbf2689dadb0d9c9e7ecabfed623f377e63b2';
+String _$itemAutocompleteHash() => r'b998e68ec71e3f30958e9804524840d52f6f4055';
 
 final class ItemAutocompleteFamily extends $Family
     with

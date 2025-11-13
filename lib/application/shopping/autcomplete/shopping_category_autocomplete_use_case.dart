@@ -1,24 +1,24 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../application/shopping/shopping_items_notifier.dart';
 import '../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
-import '../history/shopping_category_history_repo.dart';
-import '../suggestions/shopping_category_suggestion_repo.dart';
+import '../../../repositories/shopping/history/shopping_category_history_repo.dart';
+import '../../../repositories/shopping/suggestions/shopping_category_suggestion_repo.dart';
+import '../shopping_items_notifier.dart';
 
-part 'shopping_category_autocomplete_repo.g.dart';
+part 'shopping_category_autocomplete_use_case.g.dart';
 
 @riverpod
-ShoppingCategoryAutocompleteRepo shoppingCategoryAutocompleteRepo(Ref ref, String listId) {
-  return ShoppingCategoryAutocompleteRepo(ref, listId);
+ShoppingCategoryAutocompleteUseCase shoppingCategoryAutocompleteUseCase(Ref ref, String listId) {
+  return ShoppingCategoryAutocompleteUseCase(ref, listId);
 }
 
-class ShoppingCategoryAutocompleteRepo {
+class ShoppingCategoryAutocompleteUseCase {
   final String listId;
   final Ref _ref;
   ShoppingCategorySuggestionRepo get _suggestionRepo => _ref.read(shoppingCategorySuggestionRepoProvider);
   ShoppingCategoryHistoryRepo get _historyRepo => _ref.read(shoppingCategoryHistoryRepoProvider);
 
-  ShoppingCategoryAutocompleteRepo(this._ref, this.listId);
+  ShoppingCategoryAutocompleteUseCase(this._ref, this.listId);
 
   Future<List<ShoppingCategoryAutocomplete>> getAutocomplete(String filter) async {
     final query = filter.trim().toLowerCase();
@@ -51,8 +51,13 @@ class ShoppingCategoryAutocompleteRepo {
       }
     }
 
-    // Then add categories from the user's history
-    final history = await _historyRepo.searchHistory(query);
+    // Fetch history and suggestions in parallel
+    final (history, suggestions) = await (
+      _historyRepo.searchHistory(query),
+      _suggestionRepo.searchSuggestions(query),
+    ).wait;
+
+    // Append categories from the user's history to the results
     for (var historyCategory in history) {
       final autocomplete = ShoppingCategoryAutocomplete(
         name: historyCategory.name,
@@ -62,8 +67,7 @@ class ShoppingCategoryAutocompleteRepo {
       addIfNotAlreadyIncluded(autocomplete);
     }
 
-    // Finally, add common suggestions
-    final suggestions = await _suggestionRepo.searchSuggestions(query);
+    // Finally, append common suggestions
     for (var suggestion in suggestions) {
       final autocomplete = ShoppingCategoryAutocomplete(
         name: suggestion.name,

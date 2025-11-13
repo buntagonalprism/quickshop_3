@@ -1,29 +1,29 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../application/shopping/shopping_items_notifier.dart';
 import '../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../models/shopping/shopping_item.dart';
+import '../../../repositories/delay_provider_dispose.dart';
+import '../../../repositories/shopping/history/shopping_item_history_repo.dart';
+import '../../../repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
 import '../../../services/shopping_item_name_parser.dart';
-import '../../delay_provider_dispose.dart';
-import '../history/shopping_item_history_repo.dart';
-import '../suggestions/shopping_item_suggestion_repo.dart';
+import '../shopping_items_notifier.dart';
 
-part 'shopping_item_autocomplete_repo.g.dart';
+part 'shopping_item_autocomplete_use_case.g.dart';
 
 @riverpod
-ShoppingItemAutocompleteRepo shoppingItemAutocompleteRepo(Ref ref, String listId) {
+ShoppingItemAutocompleteUseCase shoppingItemAutocompleteUseCase(Ref ref, String listId) {
   ref.delayDispose(const Duration(minutes: 15));
-  return ShoppingItemAutocompleteRepo._(ref, listId);
+  return ShoppingItemAutocompleteUseCase._(ref, listId);
 }
 
-class ShoppingItemAutocompleteRepo {
+class ShoppingItemAutocompleteUseCase {
   final String listId;
   final Ref _ref;
   ShoppingItemNameParser get _parser => _ref.read(shoppingItemNameParserProvider);
   ShoppingItemSuggestionRepo get _suggestionRepo => _ref.read(shoppingItemSuggestionRepoProvider);
   ShoppingItemHistoryRepo get _historyRepo => _ref.read(shoppingItemHistoryRepoProvider);
 
-  ShoppingItemAutocompleteRepo._(this._ref, this.listId);
+  ShoppingItemAutocompleteUseCase._(this._ref, this.listId);
 
   /// Returns a list of suggestions that match the given filter
   Future<List<ShoppingItemAutocomplete>> getAutocomplete(String filter) async {
@@ -45,8 +45,13 @@ class ShoppingItemAutocompleteRepo {
       }
     }
 
-    // Then add items from the user's history
-    final history = await _historyRepo.searchHistory(product);
+    // Next, fetch history and suggestions in parallel
+    final (history, suggestions) = await (
+      _historyRepo.searchHistory(product),
+      _suggestionRepo.searchSuggestions(product),
+    ).wait;
+
+    // Append items from the user's history
     for (var item in history) {
       final autocomplete = ShoppingItemAutocomplete(
         product: item.name,
@@ -62,8 +67,7 @@ class ShoppingItemAutocompleteRepo {
       }
     }
 
-    // Finally, add common suggestions
-    final suggestions = await _suggestionRepo.searchSuggestions(product);
+    // Finally, append common suggestions
     for (var suggestion in suggestions) {
       final autocomplete = ShoppingItemAutocomplete(
         product: suggestion.name,

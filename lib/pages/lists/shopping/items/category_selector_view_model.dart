@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
 import '../../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
-import '../../../../repositories/shopping/autocomplete/shopping_category_autocomplete_repo.dart';
 
 part 'category_selector_view_model.freezed.dart';
 part 'category_selector_view_model.g.dart';
@@ -40,7 +40,7 @@ class CategorySelectorViewModel {
   CategorySelectorViewModel._(this._ref, this.listId);
 
   Future<List<CategorySelectorItem>> getItems(String filter) async {
-    final autocompleteRepo = _ref.read(shoppingCategoryAutocompleteRepoProvider(listId));
+    final autocompleteRepo = _ref.read(shoppingCategoryAutocompleteUseCaseProvider(listId));
     final autocompletes = await autocompleteRepo.getAutocomplete(filter);
     final items = autocompletes.map((autocomplete) {
       return switch (autocomplete.source) {

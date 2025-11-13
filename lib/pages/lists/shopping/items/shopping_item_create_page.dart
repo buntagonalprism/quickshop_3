@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
 import '../../../../application/shopping/shopping_items_notifier.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
-import '../../../../repositories/shopping/autocomplete/shopping_item_autocomplete_repo.dart';
 import '../../../../router.dart';
 import '../../../../widgets/padding.dart';
 import 'category_selector.dart';
@@ -368,8 +368,9 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
           menuChildren: [
             MenuItemButton(
               child: const Text('Remove'),
-              onPressed: () =>
-                  ref.read(shoppingItemAutocompleteRepoProvider(widget.listId)).removeSuggestion(widget.autocomplete),
+              onPressed: () => ref
+                  .read(shoppingItemAutocompleteUseCaseProvider(widget.listId))
+                  .removeSuggestion(widget.autocomplete),
             ),
             MenuItemButton(
               child: const Text('Edit'),
