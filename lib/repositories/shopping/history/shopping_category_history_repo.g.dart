@@ -52,4 +52,4 @@ final class ShoppingCategoryHistoryRepoProvider extends $FunctionalProvider<
 }
 
 String _$shoppingCategoryHistoryRepoHash() =>
-    r'3f84a7a587f68234a31760e22eee7aca75a97da6';
+    r'dec74a8c5d07a0a62de9aaafeb35f2dd52ef1a90';

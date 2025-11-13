@@ -7,7 +7,6 @@ import '../../../services/app_database.dart';
 import '../../../services/app_database_provider.dart';
 import '../../../services/firestore.dart';
 import '../../../services/tables/load_progress_table.dart';
-import '../../user_history_repo.dart';
 
 part 'shopping_item_history_repo.g.dart';
 
@@ -22,26 +21,21 @@ class ShoppingItemHistoryRepo {
   Logger get _log => _ref.read(loggerProvider);
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
 
-  DateTime _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(0);
+  static final _zeroTime = DateTime.fromMillisecondsSinceEpoch(0);
+  DateTime _retrievedUntil = _zeroTime;
 
-  ShoppingItemHistoryRepo._(this._ref) {
-    _init();
-  }
+  ShoppingItemHistoryRepo._(this._ref);
 
-  void _init() async {
-    final progress = await _db.loadProgressDao.get(LoadProgressType.itemHistory);
-    if (progress != null) {
-      _retrievedUntil = progress;
-    }
-
-    _ref.listen(userHistoryProvider, (_, historySnap) {
-      final userHistory = historySnap.value;
-      if (userHistory != null) {
-        if (_retrievedUntil.isBefore(userHistory.lastHistoryUpdate)) {
-          _fetchHistory(userHistory.userId, _retrievedUntil);
-        }
+  void onUserHistoryUpdated(String userId, DateTime lastHistoryUpdate) async {
+    if (_retrievedUntil == _zeroTime) {
+      final progress = await _db.loadProgressDao.get(LoadProgressType.categoryHistory);
+      if (progress != null) {
+        _retrievedUntil = progress;
       }
-    }, fireImmediately: true);
+    }
+    if (_retrievedUntil.isBefore(lastHistoryUpdate)) {
+      _fetchHistory(userId, _retrievedUntil);
+    }
   }
 
   Future<List<ShoppingItemHistory>> searchHistory(String query) async {

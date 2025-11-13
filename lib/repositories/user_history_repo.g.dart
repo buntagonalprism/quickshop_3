@@ -9,36 +9,42 @@ part of 'user_history_repo.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(userHistory)
-const userHistoryProvider = UserHistoryProvider._();
+@ProviderFor(userHistoryRepo)
+const userHistoryRepoProvider = UserHistoryRepoProvider._();
 
-final class UserHistoryProvider extends $FunctionalProvider<
-        AsyncValue<UserHistory?>, UserHistory?, Stream<UserHistory?>>
-    with $FutureModifier<UserHistory?>, $StreamProvider<UserHistory?> {
-  const UserHistoryProvider._()
+final class UserHistoryRepoProvider extends $FunctionalProvider<UserHistoryRepo,
+    UserHistoryRepo, UserHistoryRepo> with $Provider<UserHistoryRepo> {
+  const UserHistoryRepoProvider._()
       : super(
           from: null,
           argument: null,
           retry: null,
-          name: r'userHistoryProvider',
+          name: r'userHistoryRepoProvider',
           isAutoDispose: true,
           dependencies: null,
           $allTransitiveDependencies: null,
         );
 
   @override
-  String debugGetCreateSourceHash() => _$userHistoryHash();
+  String debugGetCreateSourceHash() => _$userHistoryRepoHash();
 
   @$internal
   @override
-  $StreamProviderElement<UserHistory?> $createElement(
-          $ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
+  $ProviderElement<UserHistoryRepo> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Stream<UserHistory?> create(Ref ref) {
-    return userHistory(ref);
+  UserHistoryRepo create(Ref ref) {
+    return userHistoryRepo(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserHistoryRepo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserHistoryRepo>(value),
+    );
   }
 }
 
-String _$userHistoryHash() => r'0b958856391f782df11cd508dafc78709ff1bf03';
+String _$userHistoryRepoHash() => r'6231d52b83986b5dcd3c0e48033472cbe3bd3cbf';
