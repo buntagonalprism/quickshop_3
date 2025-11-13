@@ -20,6 +20,13 @@ part of 'delay_provider_dispose_test.dart';
 /// being lost when there are no listeners. In our application code, keeping alive too many data
 /// sources could lead to memory leaks, so it is important to use this feature judiciously.
 ///
+/// Note that when using a Provider of a Stream, in Riverpod 3.0 and later, if the provider is paused
+/// (i.e. has no listeners) the underlying Stream subscription is also paused to save resources. This
+/// is problematic in our tests because it means updates emitted on the stream while there are no
+/// listeners are lost entirely, so some tests require an additional listener on this upstream provider
+/// to keep it active. Again, with Firestore this is not an issue, because it re-emits the latest data
+/// when a stream subscription is unpaused.
+///
 /// Each test is still able to access an independent value of this provider, thanks to the use of a
 /// [ProviderContainer] which scopes all providers to the test.
 
@@ -38,6 +45,13 @@ const upstreamProvider = UpstreamProvider._();
 /// being lost when there are no listeners. In our application code, keeping alive too many data
 /// sources could lead to memory leaks, so it is important to use this feature judiciously.
 ///
+/// Note that when using a Provider of a Stream, in Riverpod 3.0 and later, if the provider is paused
+/// (i.e. has no listeners) the underlying Stream subscription is also paused to save resources. This
+/// is problematic in our tests because it means updates emitted on the stream while there are no
+/// listeners are lost entirely, so some tests require an additional listener on this upstream provider
+/// to keep it active. Again, with Firestore this is not an issue, because it re-emits the latest data
+/// when a stream subscription is unpaused.
+///
 /// Each test is still able to access an independent value of this provider, thanks to the use of a
 /// [ProviderContainer] which scopes all providers to the test.
 
@@ -55,6 +69,13 @@ final class UpstreamProvider
   /// cache. To avoid implementing such behaviour in these tests we use keepAlive to prevent the state
   /// being lost when there are no listeners. In our application code, keeping alive too many data
   /// sources could lead to memory leaks, so it is important to use this feature judiciously.
+  ///
+  /// Note that when using a Provider of a Stream, in Riverpod 3.0 and later, if the provider is paused
+  /// (i.e. has no listeners) the underlying Stream subscription is also paused to save resources. This
+  /// is problematic in our tests because it means updates emitted on the stream while there are no
+  /// listeners are lost entirely, so some tests require an additional listener on this upstream provider
+  /// to keep it active. Again, with Firestore this is not an issue, because it re-emits the latest data
+  /// when a stream subscription is unpaused.
   ///
   /// Each test is still able to access an independent value of this provider, thanks to the use of a
   /// [ProviderContainer] which scopes all providers to the test.

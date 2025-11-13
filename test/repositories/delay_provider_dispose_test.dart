@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:quickshop/application/user_notifier.dart';
 import 'package:quickshop/repositories/delay_provider_dispose.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -31,6 +32,13 @@ final _upstreamController = StreamController<int>.broadcast();
 /// cache. To avoid implementing such behaviour in these tests we use keepAlive to prevent the state
 /// being lost when there are no listeners. In our application code, keeping alive too many data
 /// sources could lead to memory leaks, so it is important to use this feature judiciously.
+///
+/// Note that when using a Provider of a Stream, in Riverpod 3.0 and later, if the provider is paused
+/// (i.e. has no listeners) the underlying Stream subscription is also paused to save resources. This
+/// is problematic in our tests because it means updates emitted on the stream while there are no
+/// listeners are lost entirely, so some tests require an additional listener on this upstream provider
+/// to keep it active. Again, with Firestore this is not an issue, because it re-emits the latest data
+/// when a stream subscription is unpaused.
 ///
 /// Each test is still able to access an independent value of this provider, thanks to the use of a
 /// [ProviderContainer] which scopes all providers to the test.
@@ -133,6 +141,7 @@ void main() {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
+      container.listen(userProvider, (_, __) {});
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
       expect(_rebuildCount, 1);
@@ -185,6 +194,7 @@ void main() {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
+      container.listen(upstreamProvider, (_, __) {});
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
       expect(_rebuildCount, 1);
@@ -211,6 +221,7 @@ void main() {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
+      container.listen(userProvider, (_, __) {});
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
       expect(_rebuildCount, 1);
@@ -283,12 +294,15 @@ void main() {
   test(
       'GIVEN an auto dispose provider with delay dispose '
       'AND the provider is in a delayed dispose state '
-      'WHEN upstream data changes '
-      'AND a new listener is subsequently attached '
+      'WHEN upstream data changes while the upstream is listened to '
+      'AND a new downstream listener is subsequently attached '
       'THEN it should immediately rebuild the provider with the upstream data', () {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
+      // The upstream provider must be listened to; otherwise it pauses its internal Stream
+      // subscription and does not receive updates emitted on the Stream.
+      container.listen(upstreamProvider, (_, __) {});
       int emittedValue = 0;
       final subscription = container.listen(delayDisposeProvider, (_, newState) {
         emittedValue = newState;

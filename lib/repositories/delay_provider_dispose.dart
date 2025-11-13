@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:riverpod/misc.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../application/user_notifier.dart';
@@ -22,7 +21,6 @@ extension DelayProviderDisposeExtension on Ref {
   /// connected again. If using Firestore as an upstream data source, this means the query snapshot
   /// listener stays active until the data changes, then the snapshot listener is released.
   void delayDispose(Duration duration) {
-    KeepAliveLink? link;
     Timer? timer;
 
     // Disable the delay if the user is not logged in
@@ -31,19 +29,16 @@ extension DelayProviderDisposeExtension on Ref {
       return;
     }
 
+    final link = keepAlive();
+
     // When the provider is paused the keep alive link is created to maintain the provider state
     // until the duration elapses. Once the keep alive link is closed, if there are no new listeners
     // the provider will be fully disposed of (i.e. state will be removed from memory).
     // If a new listener is added then removed again before the original duration elapses, the
     // original keep alive link is closed and a new one is created while restarting the timer.
     onCancel(() {
-      link?.close();
-      timer?.cancel();
-      link = keepAlive();
       timer = Timer(duration, () {
-        link?.close();
-        link = null;
-        timer = null;
+        link.close();
       });
     });
 
@@ -52,10 +47,8 @@ extension DelayProviderDisposeExtension on Ref {
     // If the provider is being fully disposed of when there are no current listeners and the
     // keepAlive timer has already expired, then the link and timer will already be null.
     onDispose(() {
-      link?.close();
+      link.close();
       timer?.cancel();
-      link = null;
-      timer = null;
     });
   }
 }
