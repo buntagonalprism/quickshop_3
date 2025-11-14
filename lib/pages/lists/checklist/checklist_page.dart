@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../application/checklists/checklist_entry_notifier.dart';
 import '../../../application/debug_settings_notifier.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
-import '../../../repositories/checklist_entry_repo.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
 import 'checklist_editing_view.dart';
@@ -91,12 +91,12 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
   }
 
   void onUncheckAllItems() async {
-    ref.read(checklistEntryRepoProvider(widget.listId).notifier).uncheckAll();
+    ref.read(checklistEntryProvider(widget.listId).notifier).uncheckAll();
     Navigator.pop(context);
   }
 
   void onRemoveCheckedItems() async {
-    ref.read(checklistEntryRepoProvider(widget.listId).notifier).removeCheckedItems();
+    ref.read(checklistEntryProvider(widget.listId).notifier).removeCheckedItems();
     Navigator.pop(context);
   }
 }
@@ -227,7 +227,7 @@ class ChecklistItemTile extends ConsumerWidget {
   }
 
   void toggleItemCompleted(WidgetRef ref) {
-    ref.read(checklistEntryRepoProvider(listId).notifier).toggleItem(item);
+    ref.read(checklistEntryProvider(listId).notifier).toggleItem(item);
   }
 }
 

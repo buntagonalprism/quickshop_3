@@ -3,11 +3,9 @@ import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
-import '../application/list_leave_in_progress_notifier.dart';
 import '../models/checklist_entry.dart';
 import '../models/user_sortable.dart';
 import '../services/firestore.dart';
-import 'delay_provider_dispose.dart';
 import 'list_repo.dart';
 
 part 'checklist_entry_repo.g.dart';
@@ -18,31 +16,38 @@ enum ChecklistAddPosition {
   end,
 }
 
-@riverpod
-class ChecklistEntryRepo extends _$ChecklistEntryRepo {
-  @override
-  Stream<List<ChecklistEntry>> build(String listId) {
-    // Stop listening to Firestore when the user leaves the list to avoid permission-denied errors
-    if (ref.watch(listLeaveInProgressProvider).contains(listId)) {
-      return const Stream.empty();
-    }
-    ref.delayDispose(const Duration(minutes: 15));
+@Riverpod(keepAlive: true)
+ChecklistEntryRepo checklistEntryRepo(Ref ref, String listId) {
+  return ChecklistEntryRepo(ref, listId);
+}
+
+class ChecklistEntryRepo {
+  final Ref ref;
+  final String listId;
+
+  ChecklistEntryRepo(this.ref, this.listId);
+
+  final _listEntries = <String, List<ChecklistEntry>>{};
+
+  Stream<List<ChecklistEntry>> entriesStream() {
     final fs = ref.watch(firestoreProvider);
-    return fs.collection('lists/$listId/items').snapshots().map((snapshot) {
+    final stream = fs.collection('lists/$listId/items').snapshots();
+    return stream.map((snapshot) {
       final entries = snapshot.docs.map(_fromFirestore);
-      return entries.toList()..userSort();
+      _listEntries[listId] = entries.toList()..userSort();
+      return _listEntries[listId]!;
     });
   }
 
   Future<void> addItem(String itemName, ChecklistAddPosition position) async {
     return switch (position) {
       ChecklistAddPosition.start => _addItemAtIndex(itemName, 0),
-      ChecklistAddPosition.end => _addItemAtIndex(itemName, state.requireValue.length),
+      ChecklistAddPosition.end => _addItemAtIndex(itemName, _listEntries[listId]!.length),
     };
   }
 
   Future<void> addItemAfter(String itemName, ChecklistEntry afterEntry) async {
-    final entries = state.requireValue;
+    final entries = _listEntries[listId]!;
     final index = entries.indexOf(afterEntry);
     return _addItemAtIndex(itemName, index + 1);
   }
@@ -50,7 +55,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
   Future<void> _addItemAtIndex(String itemName, int index) async {
     final fs = ref.read(firestoreProvider);
 
-    final entries = state.requireValue;
+    final entries = _listEntries[listId]!;
     final insertUpdates = _KeyInsertUpdates(entries, index);
 
     final newItem = ChecklistItem(
@@ -73,20 +78,20 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
   Future<void> addHeading(String headingName, ChecklistAddPosition position) async {
     return switch (position) {
       ChecklistAddPosition.start => _addHeadingAtIndex(headingName, 0),
-      ChecklistAddPosition.end => _addHeadingAtIndex(headingName, state.requireValue.length),
+      ChecklistAddPosition.end => _addHeadingAtIndex(headingName, _listEntries[listId]!.length),
     };
   }
 
-  Future<void> addHeadingAfter(String itemName, ChecklistEntry afterEntry) async {
-    final entries = state.requireValue;
+  Future<void> addHeadingAfter(String headingName, ChecklistEntry afterEntry) async {
+    final entries = _listEntries[listId]!;
     final index = entries.indexOf(afterEntry);
-    return _addHeadingAtIndex(itemName, index + 1);
+    return _addHeadingAtIndex(headingName, index + 1);
   }
 
   Future<void> _addHeadingAtIndex(String headingName, int index) async {
     final fs = ref.read(firestoreProvider);
 
-    final entries = state.requireValue;
+    final entries = _listEntries[listId]!;
     final insertUpdates = _KeyInsertUpdates(entries, index);
 
     final newHeading = ChecklistHeading(
@@ -134,16 +139,10 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
   Future<void> moveEntry(ChecklistEntry entry, int newIndex) async {
     final fs = ref.read(firestoreProvider);
 
-    // Remove the item from its current position and get the sort key to insert it at the new index
-    final entries = state.requireValue.toList();
+    final entries = _listEntries[listId]!.toList();
     final currentIndex = entries.indexOf(entry);
     entries.removeAt(currentIndex);
-
     final insertUpdates = _KeyInsertUpdates(entries, newIndex);
-
-    // Make the change immediately in memory
-    entries.insert(newIndex, entry);
-    state = AsyncValue.data(entries);
 
     final entryDoc = fs.doc('lists/$listId/items/${entry.id}');
     final batch = fs.batch();
@@ -191,12 +190,9 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
   }
 
   Future<void> uncheckAll() async {
-    if (!state.hasValue) {
-      throw StateError('Cannot uncheck items from a list that has not been loaded');
-    }
     final fs = ref.read(firestoreProvider);
     final batch = fs.batch();
-    final entries = state.requireValue;
+    final entries = _listEntries[listId]!;
     for (var entry in entries) {
       entry.maybeWhen(
         item: (item) {
@@ -216,7 +212,7 @@ class ChecklistEntryRepo extends _$ChecklistEntryRepo {
 
   Future<void> removeCheckedItems() async {
     final fs = ref.read(firestoreProvider);
-    final entries = state.requireValue;
+    final entries = _listEntries[listId]!;
     final batch = fs.batch();
     int itemsRemoved = 0;
     entries.forEachIndexed((index, entry) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../application/checklists/checklist_entry_notifier.dart';
 import '../../../application/debug_settings_notifier.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
@@ -36,7 +37,7 @@ class _ChecklistEditingViewState extends ConsumerState<ChecklistEditingView> {
           newIndex -= 1;
         }
         ref
-            .read(checklistEntryRepoProvider(widget.list.id).notifier)
+            .read(checklistEntryProvider(widget.list.id).notifier)
             .moveEntry(widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
       },
       itemCount: widget.items.length + 2,
@@ -95,7 +96,7 @@ class ChecklistItemTileEditing extends ConsumerWidget {
         IconButton(
           visualDensity: VisualDensity.compact,
           icon: const Icon(Icons.close, size: 20, color: Colors.redAccent),
-          onPressed: () => ref.read(checklistEntryRepoProvider(listId).notifier).removeItem(item),
+          onPressed: () => ref.read(checklistEntryProvider(listId).notifier).removeItem(item),
         ),
         Expanded(
           child: InkWell(
@@ -106,7 +107,7 @@ class ChecklistItemTileEditing extends ConsumerWidget {
                 initialValue: item.name,
                 onComplete: (value) {
                   if (value.trim() != item.name) {
-                    ref.read(checklistEntryRepoProvider(listId).notifier).editItem(item, value);
+                    ref.read(checklistEntryProvider(listId).notifier).editItem(item, value);
                   }
                 },
               ),
@@ -192,7 +193,7 @@ class ChecklistAddAfterButton extends ConsumerWidget {
   }
 
   void _addItemAfter(BuildContext context, WidgetRef ref) {
-    final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
+    final repo = ref.read(checklistEntryProvider(listId).notifier);
     showDialog(
       context: context,
       builder: (ctx) => ChecklistTextEditDialog(
@@ -207,7 +208,7 @@ class ChecklistAddAfterButton extends ConsumerWidget {
   }
 
   void _addHeadingAfter(BuildContext context, WidgetRef ref) {
-    final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
+    final repo = ref.read(checklistEntryProvider(listId).notifier);
     showDialog(
       context: context,
       builder: (ctx) => ChecklistTextEditDialog(
@@ -237,7 +238,7 @@ class ChecklistHeadingTileEditing extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final showSortKeys = ref.watch(debugSettingsProvider(DebugSetting.showSortKeys));
 
-    final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
+    final repo = ref.read(checklistEntryProvider(listId).notifier);
     return Row(
       children: [
         IconButton(
@@ -288,7 +289,7 @@ class ChecklistAddActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final repo = ref.watch(checklistEntryRepoProvider(listId).notifier);
+    final repo = ref.watch(checklistEntryProvider(listId).notifier);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
       child: Row(

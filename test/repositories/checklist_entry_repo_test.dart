@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quickshop/application/checklists/checklist_entry_notifier.dart';
 import 'package:quickshop/application/list_leave_in_progress_notifier.dart';
 import 'package:quickshop/models/checklist_entry.dart';
 import 'package:quickshop/models/user_sortable.dart';
@@ -61,7 +62,7 @@ Map<String, dynamic> sortKeyJson(int primary, String secondary) => sortKey(prima
 
 void main() {
   const listId = '1234';
-  final provider = checklistEntryRepoProvider('1234');
+  final provider = checklistEntryProvider('1234');
 
   late FakeFirebaseAuth fakeAuth;
   late MockFirebaseFirestore mockFirestore;
@@ -83,7 +84,7 @@ void main() {
     ]);
     itemsCollection = MockCollectionReference();
     when(() => mockFirestore.collection('lists/$listId/items')).thenReturn(itemsCollection);
-    itemsController = StreamController();
+    itemsController = StreamController.broadcast();
     when(() => itemsCollection.snapshots()).thenAnswer((_) => itemsController.stream);
     listDoc = MockDocumentReference();
     when(() => mockFirestore.doc('lists/$listId')).thenReturn(listDoc);

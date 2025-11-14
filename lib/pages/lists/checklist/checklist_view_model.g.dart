@@ -72,7 +72,7 @@ final class ChecklistViewModelProvider extends $FunctionalProvider<
 }
 
 String _$checklistViewModelHash() =>
-    r'9d3dd0fd13257e4422d8560aa17b6827569211fa';
+    r'1779e113ec6caee33bc4f591c133ba5e2c4d8343';
 
 final class ChecklistViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ChecklistViewModel, String> {

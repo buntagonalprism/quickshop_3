@@ -2,10 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
+import '../../../application/checklists/checklist_entry_notifier.dart';
 import '../../../application/list_provider.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
-import '../../../repositories/checklist_entry_repo.dart';
 
 part 'checklist_view_model.freezed.dart';
 part 'checklist_view_model.g.dart';
@@ -48,7 +48,7 @@ ChecklistViewModel checklistViewModel(Ref ref, String listId) {
     return const ChecklistViewModel.notFound();
   }
 
-  final entriesAsyncValue = ref.watch(checklistEntryRepoProvider(list.id));
+  final entriesAsyncValue = ref.watch(checklistEntryProvider(list.id));
   if (entriesAsyncValue.isLoading) {
     return const ChecklistViewModel.loading();
   }

@@ -9,18 +9,20 @@ part of 'checklist_entry_repo.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(ChecklistEntryRepo)
+@ProviderFor(checklistEntryRepo)
 const checklistEntryRepoProvider = ChecklistEntryRepoFamily._();
 
-final class ChecklistEntryRepoProvider
-    extends $StreamNotifierProvider<ChecklistEntryRepo, List<ChecklistEntry>> {
+final class ChecklistEntryRepoProvider extends $FunctionalProvider<
+    ChecklistEntryRepo,
+    ChecklistEntryRepo,
+    ChecklistEntryRepo> with $Provider<ChecklistEntryRepo> {
   const ChecklistEntryRepoProvider._(
       {required ChecklistEntryRepoFamily super.from,
       required String super.argument})
       : super(
           retry: null,
           name: r'checklistEntryRepoProvider',
-          isAutoDispose: true,
+          isAutoDispose: false,
           dependencies: null,
           $allTransitiveDependencies: null,
         );
@@ -37,7 +39,26 @@ final class ChecklistEntryRepoProvider
 
   @$internal
   @override
-  ChecklistEntryRepo create() => ChecklistEntryRepo();
+  $ProviderElement<ChecklistEntryRepo> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ChecklistEntryRepo create(Ref ref) {
+    final argument = this.argument as String;
+    return checklistEntryRepo(
+      ref,
+      argument,
+    );
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ChecklistEntryRepo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ChecklistEntryRepo>(value),
+    );
+  }
 
   @override
   bool operator ==(Object other) {
@@ -51,23 +72,17 @@ final class ChecklistEntryRepoProvider
 }
 
 String _$checklistEntryRepoHash() =>
-    r'8472dd5864e6b525fea508e5f64872233d5af7ea';
+    r'259e9726985c28679a07cf19818d10a2b486f272';
 
 final class ChecklistEntryRepoFamily extends $Family
-    with
-        $ClassFamilyOverride<
-            ChecklistEntryRepo,
-            AsyncValue<List<ChecklistEntry>>,
-            List<ChecklistEntry>,
-            Stream<List<ChecklistEntry>>,
-            String> {
+    with $FunctionalFamilyOverride<ChecklistEntryRepo, String> {
   const ChecklistEntryRepoFamily._()
       : super(
           retry: null,
           name: r'checklistEntryRepoProvider',
           dependencies: null,
           $allTransitiveDependencies: null,
-          isAutoDispose: true,
+          isAutoDispose: false,
         );
 
   ChecklistEntryRepoProvider call(
@@ -77,29 +92,4 @@ final class ChecklistEntryRepoFamily extends $Family
 
   @override
   String toString() => r'checklistEntryRepoProvider';
-}
-
-abstract class _$ChecklistEntryRepo
-    extends $StreamNotifier<List<ChecklistEntry>> {
-  late final _$args = ref.$arg as String;
-  String get listId => _$args;
-
-  Stream<List<ChecklistEntry>> build(
-    String listId,
-  );
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build(
-      _$args,
-    );
-    final ref = this.ref
-        as $Ref<AsyncValue<List<ChecklistEntry>>, List<ChecklistEntry>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<ChecklistEntry>>, List<ChecklistEntry>>,
-        AsyncValue<List<ChecklistEntry>>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
-  }
 }
