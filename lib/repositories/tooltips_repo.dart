@@ -1,27 +1,24 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/tooltip_type.dart';
 import '../services/shared_preferences.dart';
 
 part 'tooltips_repo.g.dart';
 
-enum TooltipType {
-  shoppingItemQuantity,
-  shoppingItemName,
-  shoppingItemCategories,
-}
-
 @riverpod
-class TooltipsRepo extends _$TooltipsRepo {
-  @override
-  bool build(TooltipType type) {
-    final prefs = ref.watch(sharedPrefsProvider);
-    return prefs.getBool(type.keyName) ?? true;
+TooltipsRepo tooltipsRepo(Ref ref) => TooltipsRepo(ref.read(sharedPrefsProvider));
+
+class TooltipsRepo {
+  final SharedPreferencesWithCache _prefs;
+  TooltipsRepo(this._prefs);
+
+  bool get(TooltipType type) {
+    return _prefs.getBool(type.keyName) ?? true;
   }
 
-  void setDisplayTooltip(bool value) {
-    final prefs = ref.read(sharedPrefsProvider);
-    prefs.setBool(type.keyName, value);
-    state = value;
+  Future<void> setDisplayTooltip(TooltipType type, bool value) {
+    return _prefs.setBool(type.keyName, value);
   }
 }
 

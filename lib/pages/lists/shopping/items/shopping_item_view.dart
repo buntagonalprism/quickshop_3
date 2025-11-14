@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../application/tooltips_notifier.dart';
 import '../../../../models/shopping/shopping_item.dart';
-import '../../../../repositories/tooltips_repo.dart';
+import '../../../../models/tooltip_type.dart';
 import '../../../../widgets/padding.dart';
 import '../../../../widgets/tooltip_button.dart';
 import 'category_selector.dart';
@@ -194,17 +195,17 @@ class ShoppingItemTooltipAction extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showNameTooltip = ref.watch(tooltipsRepoProvider(TooltipType.shoppingItemName));
-    final showQuantityTooltip = ref.watch(tooltipsRepoProvider(TooltipType.shoppingItemQuantity));
-    final showCategoriesTooltip = ref.watch(tooltipsRepoProvider(TooltipType.shoppingItemCategories));
+    final showNameTooltip = ref.watch(tooltipsProvider(TooltipType.shoppingItemName));
+    final showQuantityTooltip = ref.watch(tooltipsProvider(TooltipType.shoppingItemQuantity));
+    final showCategoriesTooltip = ref.watch(tooltipsProvider(TooltipType.shoppingItemCategories));
 
     if ([showNameTooltip, showQuantityTooltip, showCategoriesTooltip].any((e) => !e)) {
       return IconButton(
         icon: const Icon(Icons.help_outline),
         onPressed: () {
-          ref.read(tooltipsRepoProvider(TooltipType.shoppingItemName).notifier).setDisplayTooltip(true);
-          ref.read(tooltipsRepoProvider(TooltipType.shoppingItemQuantity).notifier).setDisplayTooltip(true);
-          ref.read(tooltipsRepoProvider(TooltipType.shoppingItemCategories).notifier).setDisplayTooltip(true);
+          ref.read(tooltipsProvider(TooltipType.shoppingItemName).notifier).set(true);
+          ref.read(tooltipsProvider(TooltipType.shoppingItemQuantity).notifier).set(true);
+          ref.read(tooltipsProvider(TooltipType.shoppingItemCategories).notifier).set(true);
         },
       );
     }
