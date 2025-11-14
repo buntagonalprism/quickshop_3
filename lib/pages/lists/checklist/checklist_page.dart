@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../application/debug_settings_notifier.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
-import '../../../repositories/debug_settings_repo.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
 import 'checklist_editing_view.dart';
@@ -74,9 +74,7 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
               ListAction(
                 name: 'Debug: Show sort keys',
                 icon: const Icon(Icons.sort),
-                onTap: () => ref
-                    .read(debugSettingsRepoProvider(DebugSetting.showSortKeys).notifier)
-                    .toggle(),
+                onTap: () => ref.read(debugSettingsProvider(DebugSetting.showSortKeys).notifier).toggle(),
               ),
           ],
         ),

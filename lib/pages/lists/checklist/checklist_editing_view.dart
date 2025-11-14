@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../application/debug_settings_notifier.dart';
 import '../../../models/checklist_entry.dart';
 import '../../../models/list_summary.dart';
 import '../../../repositories/checklist_entry_repo.dart';
-import '../../../repositories/debug_settings_repo.dart';
 import 'checklist_text_edit_dialog.dart';
 
 class ChecklistEditingView extends ConsumerStatefulWidget {
@@ -35,8 +35,9 @@ class _ChecklistEditingViewState extends ConsumerState<ChecklistEditingView> {
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        ref.read(checklistEntryRepoProvider(widget.list.id).notifier).moveEntry(
-            widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
+        ref
+            .read(checklistEntryRepoProvider(widget.list.id).notifier)
+            .moveEntry(widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
       },
       itemCount: widget.items.length + 2,
       itemBuilder: (context, index) {
@@ -87,7 +88,7 @@ class ChecklistItemTileEditing extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showSortKeys = ref.watch(debugSettingsRepoProvider(DebugSetting.showSortKeys));
+    final showSortKeys = ref.watch(debugSettingsProvider(DebugSetting.showSortKeys));
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -113,9 +114,7 @@ class ChecklistItemTileEditing extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                showSortKeys
-                    ? '${item.name}: ${item.sortKey.primary}, ${item.sortKey.secondary}'
-                    : item.name,
+                showSortKeys ? '${item.name}: ${item.sortKey.primary}, ${item.sortKey.secondary}' : item.name,
                 style: item.completed
                     ? const TextStyle(decoration: TextDecoration.lineThrough)
                     : Theme.of(context).textTheme.bodyLarge,
@@ -236,7 +235,7 @@ class ChecklistHeadingTileEditing extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showSortKeys = ref.watch(debugSettingsRepoProvider(DebugSetting.showSortKeys));
+    final showSortKeys = ref.watch(debugSettingsProvider(DebugSetting.showSortKeys));
 
     final repo = ref.read(checklistEntryRepoProvider(listId).notifier);
     return Row(

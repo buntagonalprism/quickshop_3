@@ -1,13 +1,13 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'debug_settings_repo.g.dart';
+part 'debug_settings_notifier.g.dart';
 
 enum DebugSetting {
   showSortKeys,
 }
 
 @Riverpod(keepAlive: true)
-class DebugSettingsRepo extends _$DebugSettingsRepo {
+class DebugSettingsNotifier extends _$DebugSettingsNotifier {
   @override
   bool build(DebugSetting type) {
     return false;
