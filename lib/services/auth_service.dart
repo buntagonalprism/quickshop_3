@@ -1,33 +1,54 @@
-import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/user/user.dart';
-import '../services/firebase_auth.dart';
+import '../models/user/user.dart' as model;
+import 'firebase_auth.dart';
 
-part 'user_repo.g.dart';
+part 'auth_service.g.dart';
+
+// Code-gen is currently broken when there are multiple imports declaring
+// a type with the same name, so we have declare the provider manually
+// See: https://github.com/rrousselGit/riverpod/issues/4372
+final authUserProvider = Provider<model.User?>((ref) {
+  // Watch for changes on the auth user stream, but we can get the current user synchronously.
+  final _ = ref.watch(_authUserStreamProvider);
+  final authService = ref.watch(authServiceProvider);
+  return authService.currentUser;
+});
 
 @Riverpod(keepAlive: true)
-UserRepo userRepo(Ref ref) {
-  return UserRepo(ref);
+bool loggedIn(Ref ref) {
+  return ref.watch(authUserProvider) != null;
 }
 
-class UserRepo {
-  final Ref ref;
-  UserRepo(this.ref);
+@Riverpod(keepAlive: true)
+String? userId(Ref ref) {
+  final user = ref.watch(authUserProvider);
+  return user?.id;
+}
 
-  User? get currentUser {
-    final authUser = ref.read(firebaseAuthProvider).currentUser;
+@Riverpod(keepAlive: true)
+AuthService authService(Ref ref) {
+  return AuthService(ref.read(firebaseAuthProvider));
+}
+
+class AuthService {
+  final FirebaseAuth _auth;
+  AuthService(this._auth);
+
+  model.User? get currentUser {
+    final authUser = _auth.currentUser;
     return authUser != null ? _fromFirebase(authUser) : null;
   }
 
   Stream<void> get userChanges {
-    return ref.read(firebaseAuthProvider).authStateChanges();
+    return _auth.authStateChanges();
   }
 
   void logout() {
-    ref.read(firebaseAuthProvider).signOut();
-
+    FirebaseAuth.instance.signOut();
     // In the Flutter Firebase Authentication package for mobile clients, the first time a user
     // signs in with google they are always shown an account selection screen (even if they only
     // have one account). Once the user has logged in with google once, if they then sign out and
@@ -48,17 +69,22 @@ class UserRepo {
   }
 
   void setUserName(String name) {
-    final user = ref.read(firebaseAuthProvider).currentUser;
+    final user = _auth.currentUser;
     if (user != null) {
       user.updateDisplayName(name);
     }
   }
 
-  User _fromFirebase(auth.User user) {
-    return User(
+  model.User _fromFirebase(User user) {
+    return model.User(
       id: user.uid,
       name: user.displayName ?? '',
       email: user.email ?? '',
     );
   }
+}
+
+@Riverpod(keepAlive: true)
+Stream<DateTime> _authUserStream(Ref ref) {
+  return ref.read(authServiceProvider).userChanges.map((_) => DateTime.now());
 }

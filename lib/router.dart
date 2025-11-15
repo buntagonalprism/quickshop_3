@@ -5,7 +5,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'analytics/crash_reporter.dart';
 import 'analytics/logger.dart';
-import 'application/user_notifier.dart';
 import 'pages/favourites/favourites_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/lists/checklist/checklist_page.dart';
@@ -25,6 +24,7 @@ import 'pages/recipes/new_recipe_page.dart';
 import 'pages/recipes/recipe_detail_page.dart';
 import 'pages/recipes/recipes_page.dart';
 import 'pages/settings/settings_page.dart';
+import 'services/auth_service.dart';
 
 part 'router.g.dart';
 

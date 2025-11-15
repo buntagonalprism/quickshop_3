@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/user/user.dart';
-import '../repositories/user_repo.dart';
+import '../services/auth_service.dart';
 
 part 'user_notifier.g.dart';
 
@@ -9,10 +9,7 @@ part 'user_notifier.g.dart';
 class UserNotifier extends _$UserNotifier {
   @override
   User? build() {
-    // Watch for changes on the auth user stream, but we can get the current user synchronously.
-    final _ = ref.watch(_authUserStreamProvider);
-    final userRepo = ref.watch(userRepoProvider);
-    return userRepo.currentUser;
+    return ref.watch(authUserProvider);
   }
 
   void setUserName(String newName) {
@@ -21,27 +18,11 @@ class UserNotifier extends _$UserNotifier {
     if (state != null) {
       state = user?.copyWith(name: newName);
     }
-    ref.read(userRepoProvider).setUserName(newName);
+    ref.read(authServiceProvider).setUserName(newName);
   }
 
   void logout() {
-    ref.read(userRepoProvider).logout();
+    ref.read(authServiceProvider).logout();
     state = null;
   }
-}
-
-@Riverpod(keepAlive: true)
-bool loggedIn(Ref ref) {
-  return ref.watch(userProvider) != null;
-}
-
-@Riverpod(keepAlive: true)
-String? userId(Ref ref) {
-  final user = ref.watch(userProvider);
-  return user?.id;
-}
-
-@riverpod
-Stream<DateTime> _authUserStream(Ref ref) {
-  return ref.read(userRepoProvider).userChanges.map((_) => DateTime.now());
 }

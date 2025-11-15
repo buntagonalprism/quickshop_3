@@ -5,13 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'analytics/crash_reporter.dart';
 import 'application/settings_notifier.dart';
 import 'application/user_history_loader_use_case.dart';
-import 'application/user_notifier.dart';
 import 'localization/app_localizations.dart';
 import 'repositories/shopping/suggestions/shopping_category_suggestion_repo.dart';
 import 'repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
-import 'repositories/user_repo.dart';
 import 'router.dart';
 import 'services/app_database_provider.dart';
+import 'services/auth_service.dart';
 import 'services/locale_service.dart';
 
 class MyApp extends StatelessWidget {
@@ -91,7 +90,7 @@ class _EagerInitProviders extends ConsumerWidget {
     // By using "watch", the provider will stay alive and not be disposed.
     ref.watch(crashReporterProvider);
     ref.watch(appDatabaseProvider);
-    ref.watch(userRepoProvider);
+    ref.watch(authUserProvider);
     ref.watch(userHistoryLoaderUseCaseProvider);
     ref.watch(shoppingCategorySuggestionRepoProvider);
     ref.watch(shoppingItemSuggestionRepoProvider);
@@ -102,7 +101,7 @@ class _EagerInitProviders extends ConsumerWidget {
     // the underlying stream to save resources. Since the userProvider internally
     // depends on the auth user stream from Firebase, if we didn't watch this
     // provider, it may not update itself when the user logs out.
-    ref.watch(userProvider);
+    ref.watch(userIdProvider);
     return child;
   }
 }

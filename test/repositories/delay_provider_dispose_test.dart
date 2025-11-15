@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:quickshop/application/user_notifier.dart';
 import 'package:quickshop/repositories/delay_provider_dispose.dart';
+import 'package:quickshop/services/auth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../fakes/fake_firebase_auth.dart';
@@ -141,7 +141,7 @@ void main() {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
-      container.listen(userProvider, (_, __) {});
+      container.listen(userIdProvider, (_, __) {});
       final subscription = container.listen(delayDisposeProvider, (_, __) {});
 
       expect(_rebuildCount, 1);

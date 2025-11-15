@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../analytics/analytics.dart';
-import '../../application/user_notifier.dart';
 import '../../models/shopping/shopping_item.dart';
+import '../../services/auth_service.dart';
 import '../../services/firestore.dart';
 import '../list_repo.dart';
 
@@ -33,7 +33,7 @@ class ShoppingListItemsRepo {
     required List<String> categories,
   }) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userProvider);
+    final user = ref.read(authUserProvider);
     final item = ShoppingItem(
       id: '',
       path: '',
@@ -77,7 +77,7 @@ class ShoppingListItemsRepo {
       _Fields.product: newName,
       _Fields.quantity: newQuantity,
       _Fields.categories: newCategories,
-      _Fields.lastModifiedByUserId: ref.read(userProvider)!.id,
+      _Fields.lastModifiedByUserId: ref.read(authUserProvider)!.id,
       _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
     });
     updateListModified(ref, batch, listId);
@@ -87,7 +87,7 @@ class ShoppingListItemsRepo {
 
   Future<int> deleteItems(List<ShoppingItem> items) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userProvider);
+    final user = ref.read(authUserProvider);
     final batch = fs.batch();
 
     for (final item in items) {

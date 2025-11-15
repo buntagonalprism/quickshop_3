@@ -3,10 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../analytics/analytics.dart';
 import '../application/list_leave_in_progress_notifier.dart';
-import '../application/user_notifier.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../models/user/user.dart';
+import '../services/auth_service.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
 import '../services/http_result.dart';
@@ -24,7 +24,7 @@ class ListRepo {
 
   Stream<List<ListSummary>> getAllLists() {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userProvider);
+    final user = ref.read(authUserProvider);
     if (user == null) {
       throw Exception('User not signed in');
     }
@@ -38,7 +38,7 @@ class ListRepo {
 
   /// Creates a new list and returns the list id
   Future<String> createList(String name, ListType listType) async {
-    final user = ref.read(userProvider);
+    final user = ref.read(authUserProvider);
     if (user == null) {
       throw Exception('User not signed in');
     }
@@ -60,7 +60,7 @@ class ListRepo {
 
   Future<void> updateListName(ListSummary list, String name) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(userProvider);
+    final user = ref.read(authUserProvider);
     await fs.collection('lists').doc(list.id).update({
       _Fields.name: name,
       '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
@@ -103,7 +103,7 @@ enum AcceptInviteResult {
 }
 
 void updateListModified(Ref ref, WriteBatch batch, String listId) {
-  final user = ref.watch(userProvider);
+  final user = ref.watch(authUserProvider);
   final fs = ref.read(firestoreProvider);
   final listDoc = fs.doc('lists/$listId');
   batch.update(listDoc, {
@@ -112,7 +112,7 @@ void updateListModified(Ref ref, WriteBatch batch, String listId) {
 }
 
 void incrementListItemCount(Ref ref, WriteBatch batch, String listId, int delta) {
-  final user = ref.watch(userProvider);
+  final user = ref.watch(authUserProvider);
   final fs = ref.read(firestoreProvider);
   final listDoc = fs.doc('lists/$listId');
   batch.update(listDoc, {
