@@ -10,6 +10,7 @@ import '../services/auth_service.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
 import '../services/http_result.dart';
+import 'list_items_transaction.dart';
 
 part 'list_repo.g.dart';
 
@@ -93,6 +94,25 @@ class ListRepo {
     final fs = ref.read(firestoreProvider);
     await fs.collection('lists').doc(list.id).delete();
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listDeleted(list.listType));
+  }
+
+  void updateListModified(ListItemsTransaction tx, String listId, DateTime modifiedAt) {
+    final user = ref.read(authUserProvider);
+    final fs = ref.read(firestoreProvider);
+    final listDoc = fs.doc('lists/$listId');
+    tx.batch.update(listDoc, {
+      '${_Fields.lastModified}.${user!.id}': modifiedAt.millisecondsSinceEpoch,
+    });
+  }
+
+  void incrementListItemCount(ListItemsTransaction tx, String listId, int delta, DateTime modifiedAt) {
+    final user = ref.read(authUserProvider);
+    final fs = ref.read(firestoreProvider);
+    final listDoc = fs.doc('lists/$listId');
+    tx.batch.update(listDoc, {
+      '${_Fields.lastModified}.${user!.id}': modifiedAt.millisecondsSinceEpoch,
+      _Fields.itemCount: FieldValue.increment(delta),
+    });
   }
 }
 

@@ -1,9 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../has_id.dart';
+
 part 'shopping_item.freezed.dart';
 
 @freezed
-abstract class ShoppingItem with _$ShoppingItem {
+abstract class ShoppingItem with _$ShoppingItem implements HasId {
   const ShoppingItem._();
 
   const factory ShoppingItem({

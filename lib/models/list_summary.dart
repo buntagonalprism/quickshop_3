@@ -1,11 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'has_id.dart';
 import 'user/user.dart';
 
 part 'list_summary.freezed.dart';
 
 @freezed
-abstract class ListSummary with _$ListSummary {
+abstract class ListSummary with _$ListSummary implements HasId {
   const ListSummary._();
 
   const factory ListSummary({

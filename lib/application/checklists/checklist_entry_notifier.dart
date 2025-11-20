@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../models/checklist_entry.dart';
 import '../../repositories/checklist_entry_repo.dart';
 import '../../repositories/delay_provider_dispose.dart';
+import '../../utilities/replace_by_id.dart';
 import '../list_leave_in_progress_notifier.dart';
 
 part 'checklist_entry_notifier.g.dart';
@@ -40,14 +41,14 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
   Future<void> editHeading(ChecklistHeading heading, String newName) {
     final entries = state.requireValue;
     final updatedHeading = heading.copyWith(name: newName);
-    state = AsyncValue.data(replaceById(entries, ChecklistEntry.heading(updatedHeading), (e) => e.id == heading.id));
+    state = AsyncValue.data(replaceById(entries, heading.id, (e) => ChecklistEntry.heading(updatedHeading)));
     return _repo.editHeading(heading, newName);
   }
 
   Future<void> editItem(ChecklistItem item, String newName) {
     final entries = state.requireValue;
     final updatedItem = item.copyWith(name: newName);
-    state = AsyncValue.data(replaceById(entries, ChecklistEntry.item(updatedItem), (e) => e.id == item.id));
+    state = AsyncValue.data(replaceById(entries, item.id, (e) => ChecklistEntry.item(updatedItem)));
     return _repo.editItem(item, newName);
   }
 
@@ -86,7 +87,7 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
     final entries = state.requireValue;
     final updatedItem = item.copyWith(completed: !item.completed);
     state = AsyncValue.data(
-      replaceById(entries, ChecklistEntry.item(updatedItem), (e) => e.id == item.id),
+      replaceById(entries, item.id, (e) => ChecklistEntry.item(updatedItem)),
     );
     return _repo.toggleItem(updatedItem);
   }
@@ -100,14 +101,4 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
     state = AsyncValue.data(updatedEntries.toList());
     return _repo.uncheckAll();
   }
-}
-
-List<T> replaceById<T>(List<T> list, T newItem, bool Function(T) idMatcher) {
-  final index = list.indexWhere(idMatcher);
-  if (index >= 0) {
-    final updatedList = List<T>.from(list);
-    updatedList[index] = newItem;
-    return updatedList;
-  }
-  return list;
 }

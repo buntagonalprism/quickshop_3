@@ -1,11 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'has_id.dart';
 import 'user_sortable.dart';
 
 part 'checklist_entry.freezed.dart';
 
 @freezed
-sealed class ChecklistEntry with _$ChecklistEntry implements UserSortable {
+sealed class ChecklistEntry with _$ChecklistEntry implements UserSortable, HasId {
   const ChecklistEntry._();
 
   const factory ChecklistEntry.item(ChecklistItem item) = _ChecklistEntryItem;
@@ -27,6 +28,7 @@ sealed class ChecklistEntry with _$ChecklistEntry implements UserSortable {
     );
   }
 
+  @override
   String get id {
     return when(
       item: (item) => item.id,

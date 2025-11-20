@@ -3,10 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../application/shopping/shopping_items_notifier.dart';
 import '../../../../models/shopping/shopping_item.dart';
-import '../../../../repositories/shopping/shopping_items_repo.dart';
+import '../../../../models/shopping/shopping_item_raw_data.dart';
 import '../../../../router.dart';
 import 'models/shopping_item_errors.dart';
-import 'models/shopping_item_raw_data.dart';
 import 'shopping_item_edit_view_model.dart';
 import 'shopping_item_view.dart';
 
@@ -99,7 +98,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
       return;
     }
 
-    ref.read(shoppingListItemsRepoProvider(widget.listId)).updateItem(
+    ref.read(shoppingItemsProvider(widget.listId).notifier).updateItem(
           item: originalItem,
           newName: data.product,
           newQuantity: data.quantity,

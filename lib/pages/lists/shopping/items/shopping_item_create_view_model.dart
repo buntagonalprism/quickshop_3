@@ -3,9 +3,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
+import '../../../../models/shopping/shopping_item_raw_data.dart';
 import '../../../../services/shopping_item_name_parser.dart';
 import 'models/shopping_item_errors.dart';
-import 'models/shopping_item_raw_data.dart';
 
 part 'shopping_item_create_view_model.freezed.dart';
 part 'shopping_item_create_view_model.g.dart';

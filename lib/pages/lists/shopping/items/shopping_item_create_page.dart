@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
 import '../../../../application/shopping/shopping_items_notifier.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
+import '../../../../models/shopping/shopping_item_raw_data.dart';
 import '../../../../router.dart';
 import '../../../../widgets/padding.dart';
 import 'category_selector.dart';
-import 'models/shopping_item_raw_data.dart';
 import 'shopping_item_create_view_model.dart';
 import 'shopping_item_view.dart';
 
@@ -167,11 +167,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
         setState(() => showErrorsOnTab = tabController.index);
         return;
       }
-      itemStore.addItem(
-        productName: model.data.product,
-        quantity: model.data.quantity,
-        categories: model.data.categories,
-      );
+      itemStore.addItem(model.data);
       onAddedItem(model.data.displayName, addMore);
     }
   }

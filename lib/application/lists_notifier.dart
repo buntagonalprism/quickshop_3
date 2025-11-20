@@ -2,8 +2,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
+import '../repositories/list_items_transaction.dart';
 import '../repositories/list_repo.dart';
 import '../services/http_result.dart';
+import '../utilities/replace_by_id.dart';
 import 'user_notifier.dart';
 
 part 'lists_notifier.g.dart';
@@ -54,5 +56,36 @@ class ListsNotifier extends _$ListsNotifier {
       );
     }
     return ref.read(listRepoProvider).deleteList(list);
+  }
+
+  void updateListModified(ListItemsTransaction tx, String listId) {
+    final lists = state.requireValue;
+    final now = DateTime.now();
+    state = AsyncData(replaceById(
+      lists,
+      listId,
+      (list) => list.copyWith(lastModified: {
+        ...list.lastModified,
+        ref.read(userProvider)!.id: now.millisecondsSinceEpoch,
+      }),
+    ));
+    return ref.read(listRepoProvider).updateListModified(tx, listId, now);
+  }
+
+  void incrementListItemCount(ListItemsTransaction tx, String listId, int delta) {
+    final lists = state.requireValue;
+    final now = DateTime.now();
+    state = AsyncData(replaceById(
+      lists,
+      listId,
+      (list) => list.copyWith(
+        itemCount: list.itemCount + delta,
+        lastModified: {
+          ...list.lastModified,
+          ref.read(userProvider)!.id: now.millisecondsSinceEpoch,
+        },
+      ),
+    ));
+    return ref.read(listRepoProvider).incrementListItemCount(tx, listId, delta, now);
   }
 }

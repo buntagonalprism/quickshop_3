@@ -3,22 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quickshop/application/lists_notifier.dart';
 import 'package:quickshop/application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
 import 'package:quickshop/application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
+import 'package:quickshop/models/list_summary.dart';
 import 'package:quickshop/models/shopping/autocomplete/shopping_category_autocomplete.dart';
 import 'package:quickshop/models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import 'package:quickshop/models/shopping/shopping_item.dart';
+import 'package:quickshop/models/shopping/shopping_item_raw_data.dart';
 import 'package:quickshop/pages/lists/shopping/items/category_selector.dart';
 import 'package:quickshop/pages/lists/shopping/items/models/shopping_item_errors.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
+import 'package:quickshop/repositories/list_items_transaction.dart';
+import 'package:quickshop/repositories/list_repo.dart';
 import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/shared_preferences.dart';
 
 import '../../../fakes/fake_firebase_auth.dart';
+import '../../../fakes/fake_list_items_transaction.dart';
 import '../../../fakes/fake_shared_preferences.dart';
 import '../../../utilities/answerer.dart';
 
@@ -28,18 +34,33 @@ class MockCategoryAutocompleteRepo extends Mock implements ShoppingCategoryAutoc
 
 class MockShoppingListItemsRepo extends Mock implements ShoppingListItemsRepo {}
 
+class MockListRepo extends Mock implements ListRepo {}
+
 class MockRouter extends Mock implements GoRouter {}
 
 typedef _Keys = ShoppingItemCreatePageKeys;
 typedef _Strings = ShoppingItemCreatePageStrings;
 
 void main() {
+  registerFallbackValue(FakeListItemsTransaction());
+  registerFallbackValue(buildItemRawData(p: '', q: '', c: []));
+
   final listId = 'test-list-id';
+  final list = ListSummary(
+    id: listId,
+    name: 'TestList',
+    ownerId: 'user123',
+    editorIds: [],
+    editors: [],
+    itemCount: 0,
+    lastModified: {'user123': DateTime.now().millisecondsSinceEpoch},
+    listType: ListType.shoppingList,
+  );
 
   late MockItemAutocompleteRepo itemAutocompleteRepo;
   late MockCategoryAutocompleteRepo categoryAutocompleteRepo;
-
   late MockShoppingListItemsRepo itemsRepo;
+  late MockListRepo listRepo;
   late MockRouter router;
   late FakeSharedPreferences prefs;
   late FakeFirebaseAuth auth;
@@ -48,6 +69,9 @@ void main() {
     itemAutocompleteRepo = MockItemAutocompleteRepo();
     categoryAutocompleteRepo = MockCategoryAutocompleteRepo();
     itemsRepo = MockShoppingListItemsRepo();
+    when(() => itemsRepo.itemsStream).thenAnswer((_) => const Stream.empty());
+    listRepo = MockListRepo();
+    when(() => listRepo.getAllLists()).thenAnswer((_) => Stream.value([list]));
     router = MockRouter();
     prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
@@ -65,11 +89,21 @@ void main() {
           shoppingItemAutocompleteUseCaseProvider(listId).overrideWithValue(itemAutocompleteRepo),
           shoppingCategoryAutocompleteUseCaseProvider(listId).overrideWithValue(categoryAutocompleteRepo),
           shoppingListItemsRepoProvider(listId).overrideWithValue(itemsRepo),
+          listRepoProvider.overrideWithValue(listRepo),
           routerProvider.overrideWithValue(router),
           sharedPrefsProvider.overrideWithValue(prefs),
           firebaseAuthProvider.overrideWithValue(auth),
+          listItemsTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
         ],
-        child: ShoppingItemCreatePage(listId: listId),
+        child: Consumer(
+          builder: (context, ref, _) {
+            // Adding a shopping item triggers a side effect of updating the list item
+            // count via the lists notifier. We need to ensure the lists notifier is in a
+            // valid state (i.e. has loaded the lists) to avoid state errors.
+            ref.watch(listsProvider);
+            return ShoppingItemCreatePage(listId: listId);
+          },
+        ),
       ),
     ));
   }
@@ -220,7 +254,7 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      addFn() => itemsRepo.addItem(productName: 'Milk', quantity: '', categories: ['Dairy']);
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: ['Dairy']));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
@@ -242,7 +276,7 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      addFn() => itemsRepo.addItem(productName: 'Milk', quantity: '', categories: ['Dairy']);
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: ['Dairy']));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
@@ -269,7 +303,7 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      addFn() => itemsRepo.addItem(productName: 'Milk', quantity: '', categories: ['Dairy']);
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: ['Dairy']));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
@@ -295,7 +329,7 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      addFn() => itemsRepo.addItem(productName: exactMatch.displayName, quantity: '', categories: ['Dairy']);
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: exactMatch.displayName, q: '', c: ['Dairy']));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
@@ -471,7 +505,7 @@ void main() {
     final itemName = 'Unknown Item';
     final categoryName = 'My new category';
 
-    addItemFn() => itemsRepo.addItem(productName: itemName, quantity: '', categories: [categoryName]);
+    addItemFn() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName]));
 
     testWidgets(
         'GIVEN category has been input in category view '
@@ -527,20 +561,13 @@ void main() {
 
     void verifyItemNotAdded() {
       verifyNever(() => router.pop());
-      verifyNever(() => itemsRepo.addItem(
-            quantity: any(named: 'quantity'),
-            productName: any(named: 'productName'),
-            categories: any(named: 'categories'),
-          ));
+      verifyNever(() => itemsRepo.addItem(any(), any()));
       expect(find.byType(ShoppingItemSearchView), findsNothing);
     }
 
     void setupAddItemAnswer() {
-      answer(() => itemsRepo.addItem(
-            productName: itemName,
-            quantity: '',
-            categories: [categoryName],
-          )).withValue(buildShoppingItem(itemName, categoryName));
+      answer(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName])))
+          .withValue(buildShoppingItem(itemName, categoryName));
     }
 
     testWidgets(
@@ -610,11 +637,7 @@ void main() {
       await tester.tap(doneButtonFinder);
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addItem(
-            productName: itemName,
-            quantity: '',
-            categories: [categoryName],
-          )).called(1);
+      verify(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName]))).called(1);
       verify(() => router.pop()).called(1);
       expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
     });
@@ -631,11 +654,7 @@ void main() {
       await tester.tap(addMoreButtonFinder);
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addItem(
-            productName: itemName,
-            quantity: '',
-            categories: [categoryName],
-          )).called(1);
+      verify(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName]))).called(1);
       verifyNever(() => router.pop());
       expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
       expect(find.byType(ShoppingItemSearchView), findsOneWidget);
@@ -678,6 +697,14 @@ extension _FinderExtensions on CommonFinders {
       matching: find.byIcon(Icons.cancel),
     );
   }
+}
+
+ShoppingItemRawData buildItemRawData({required String p, String q = '', List<String> c = const []}) {
+  return ShoppingItemRawData(
+    product: p,
+    quantity: q,
+    categories: c,
+  );
 }
 
 ShoppingItemAutocomplete buildItemAutocomplete(

@@ -4,10 +4,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../analytics/analytics.dart';
 import '../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../models/shopping/shopping_item.dart';
+import '../../models/shopping/shopping_item_raw_data.dart';
 import '../../repositories/delay_provider_dispose.dart';
+import '../../repositories/list_items_transaction.dart';
 import '../../repositories/shopping/shopping_items_repo.dart';
 import '../../services/shopping_item_name_parser.dart';
+import '../../utilities/replace_by_id.dart';
 import '../list_leave_in_progress_notifier.dart';
+import '../lists_notifier.dart';
 import 'autcomplete/shopping_item_autocomplete_use_case.dart';
 
 part 'shopping_items_notifier.freezed.dart';
@@ -34,28 +38,13 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     return ref.watch(shoppingListItemsRepoProvider(listId)).itemsStream;
   }
 
-  Future<ShoppingItem> addItem({
-    required String productName,
-    required String quantity,
-    required List<String> categories,
-  }) {
-    return ref.read(shoppingListItemsRepoProvider(listId)).addItem(
-          productName: productName,
-          quantity: quantity,
-          categories: categories,
-        );
+  Future<ShoppingItem> addItem(ShoppingItemRawData itemData) {
+    return _addItem(itemData);
   }
 
   Future<void> toggleItem(ShoppingItem item) async {
-    final itemIdx = state.value?.indexWhere((l) => l.id == item.id);
-    if (itemIdx != null && itemIdx >= 0) {
-      final currentItem = state.value![itemIdx];
-      final updatedItem = currentItem.copyWith(completed: !currentItem.completed);
-      state = AsyncValue.data([
-        updatedItem,
-        ...state.value!.where((l) => l.id != item.id),
-      ]);
-    }
+    final items = state.requireValue;
+    state = AsyncValue.data(replaceById(items, item.id, (i) => i.copyWith(completed: !i.completed)));
     return ref.read(shoppingListItemsRepoProvider(listId)).toggleItem(item);
   }
 
@@ -64,7 +53,11 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     state = AsyncValue.data(
       items.where((i) => i.id != item.id).toList(),
     );
-    await ref.read(shoppingListItemsRepoProvider(listId)).deleteItems([item]);
+
+    final tx = ref.read(listItemsTransactionProvider)();
+    ref.read(shoppingListItemsRepoProvider(listId)).deleteItems(tx, [item]);
+    ref.read(listsProvider.notifier).incrementListItemCount(tx, listId, -1);
+    await tx.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemDeleted());
   }
 
@@ -77,17 +70,28 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     state = AsyncValue.data(
       items.where((item) => !item.completed).toList(),
     );
-    await ref.read(shoppingListItemsRepoProvider(listId)).deleteItems(deletedItems);
+    final tx = ref.read(listItemsTransactionProvider)();
+    ref.read(shoppingListItemsRepoProvider(listId)).deleteItems(tx, deletedItems);
+    ref.read(listsProvider.notifier).incrementListItemCount(tx, listId, -deletedItems.length);
+    await tx.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemsBatchDeleted());
     return deletedItems.length;
   }
 
   Future<ShoppingItem> addAutocomplete(ShoppingItemAutocomplete autocomplete) {
-    return ref.read(shoppingListItemsRepoProvider(listId)).addItem(
-          productName: autocomplete.product,
-          quantity: autocomplete.quantity,
-          categories: autocomplete.categories,
-        );
+    return _addItem(ShoppingItemRawData(
+      product: autocomplete.product,
+      quantity: autocomplete.quantity,
+      categories: autocomplete.categories,
+    ));
+  }
+
+  Future<ShoppingItem> _addItem(ShoppingItemRawData data) async {
+    final tx = ref.read(listItemsTransactionProvider)();
+    final item = await ref.read(shoppingListItemsRepoProvider(listId)).addItem(tx, data);
+    ref.read(listsProvider.notifier).incrementListItemCount(tx, listId, 1);
+    await tx.commit();
+    return item;
   }
 
   Future<AddItemResult> addItemByName(String itemName) async {
@@ -111,5 +115,29 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     }
     final item = await addAutocomplete(autocomplete);
     return AddItemResult.success(item);
+  }
+
+  Future<void> updateItem({
+    required ShoppingItem item,
+    required String newName,
+    required String newQuantity,
+    required List<String> newCategories,
+  }) async {
+    final tx = ref.read(listItemsTransactionProvider)();
+    final data = ShoppingItemRawData(
+      product: newName,
+      quantity: newQuantity,
+      categories: newCategories,
+    );
+    final updatedItem = item.copyWith(
+      product: newName,
+      quantity: newQuantity,
+      categories: newCategories,
+    );
+    final items = state.requireValue;
+    state = AsyncValue.data(replaceById(items, item.id, (i) => updatedItem));
+    ref.read(shoppingListItemsRepoProvider(listId)).updateItem(tx, item, data);
+    ref.read(listsProvider.notifier).updateListModified(tx, listId);
+    await tx.commit();
   }
 }

@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../application/tooltips_notifier.dart';
 import '../../../../models/shopping/shopping_item.dart';
+import '../../../../models/shopping/shopping_item_raw_data.dart';
 import '../../../../models/tooltip_type.dart';
 import '../../../../widgets/padding.dart';
 import '../../../../widgets/tooltip_button.dart';
 import 'category_selector.dart';
 import 'models/shopping_item_errors.dart';
-import 'models/shopping_item_raw_data.dart';
 
 sealed class ShoppingItemViewData {}
 
