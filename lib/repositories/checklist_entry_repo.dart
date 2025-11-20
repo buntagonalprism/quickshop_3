@@ -6,7 +6,7 @@ import '../analytics/analytics.dart';
 import '../models/checklist_entry.dart';
 import '../models/user_sortable.dart';
 import '../services/firestore.dart';
-import 'list_repo.dart';
+import 'list_items_transaction.dart';
 
 part 'checklist_entry_repo.g.dart';
 
@@ -39,20 +39,20 @@ class ChecklistEntryRepo {
     });
   }
 
-  Future<void> addItem(String itemName, ChecklistAddPosition position) async {
+  Future<void> addItem(ListItemsTransaction tx, String itemName, ChecklistAddPosition position) async {
     return switch (position) {
-      ChecklistAddPosition.start => _addItemAtIndex(itemName, 0),
-      ChecklistAddPosition.end => _addItemAtIndex(itemName, _listEntries[listId]!.length),
+      ChecklistAddPosition.start => _addItemAtIndex(tx, itemName, 0),
+      ChecklistAddPosition.end => _addItemAtIndex(tx, itemName, _listEntries[listId]!.length),
     };
   }
 
-  Future<void> addItemAfter(String itemName, ChecklistEntry afterEntry) async {
+  Future<void> addItemAfter(ListItemsTransaction tx, String itemName, ChecklistEntry afterEntry) async {
     final entries = _listEntries[listId]!;
     final index = entries.indexOf(afterEntry);
-    return _addItemAtIndex(itemName, index + 1);
+    return _addItemAtIndex(tx, itemName, index + 1);
   }
 
-  Future<void> _addItemAtIndex(String itemName, int index) async {
+  Future<void> _addItemAtIndex(ListItemsTransaction tx, String itemName, int index) async {
     final fs = ref.read(firestoreProvider);
 
     final entries = _listEntries[listId]!;
@@ -66,29 +66,26 @@ class ChecklistEntryRepo {
     );
 
     final itemDoc = fs.collection('lists/$listId/items').doc();
-    final batch = fs.batch();
-    batch.set(itemDoc, _itemToFirestore(newItem));
-    _makeDuplicateUpdates(fs, batch, insertUpdates);
-    incrementListItemCount(ref, batch, listId, 1);
-    await batch.commit();
+    tx.batch.set(itemDoc, _itemToFirestore(newItem));
+    _makeDuplicateUpdates(fs, tx.batch, insertUpdates);
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemCreated());
     _logIfDuplicateKeysFound(insertUpdates);
   }
 
-  Future<void> addHeading(String headingName, ChecklistAddPosition position) async {
+  Future<void> addHeading(ListItemsTransaction tx, String headingName, ChecklistAddPosition position) async {
     return switch (position) {
-      ChecklistAddPosition.start => _addHeadingAtIndex(headingName, 0),
-      ChecklistAddPosition.end => _addHeadingAtIndex(headingName, _listEntries[listId]!.length),
+      ChecklistAddPosition.start => _addHeadingAtIndex(tx, headingName, 0),
+      ChecklistAddPosition.end => _addHeadingAtIndex(tx, headingName, _listEntries[listId]!.length),
     };
   }
 
-  Future<void> addHeadingAfter(String headingName, ChecklistEntry afterEntry) async {
+  Future<void> addHeadingAfter(ListItemsTransaction tx, String headingName, ChecklistEntry afterEntry) async {
     final entries = _listEntries[listId]!;
     final index = entries.indexOf(afterEntry);
-    return _addHeadingAtIndex(headingName, index + 1);
+    return _addHeadingAtIndex(tx, headingName, index + 1);
   }
 
-  Future<void> _addHeadingAtIndex(String headingName, int index) async {
+  Future<void> _addHeadingAtIndex(ListItemsTransaction tx, String headingName, int index) async {
     final fs = ref.read(firestoreProvider);
 
     final entries = _listEntries[listId]!;
@@ -100,11 +97,8 @@ class ChecklistEntryRepo {
       sortKey: insertUpdates.insertKey,
     );
     final headingDoc = fs.collection('lists/$listId/items').doc();
-    final batch = fs.batch();
-    batch.set(headingDoc, _headingToFirestore(newHeading));
-    _makeDuplicateUpdates(fs, batch, insertUpdates);
-    updateListModified(ref, batch, listId);
-    await batch.commit();
+    tx.batch.set(headingDoc, _headingToFirestore(newHeading));
+    _makeDuplicateUpdates(fs, tx.batch, insertUpdates);
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingCreated());
     _logIfDuplicateKeysFound(insertUpdates);
   }
@@ -116,27 +110,21 @@ class ChecklistEntryRepo {
     });
   }
 
-  Future<void> removeItem(ChecklistItem item) async {
+  void removeItem(ListItemsTransaction tx, ChecklistItem item) {
     final fs = ref.read(firestoreProvider);
     final itemDoc = fs.doc('lists/$listId/items/${item.id}');
-    final batch = fs.batch();
-    batch.delete(itemDoc);
-    incrementListItemCount(ref, batch, listId, -1);
-    await batch.commit();
+    tx.batch.delete(itemDoc);
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemDeleted());
   }
 
-  Future<void> removeHeading(ChecklistHeading heading) async {
+  void removeHeading(ListItemsTransaction tx, ChecklistHeading heading) {
     final fs = ref.read(firestoreProvider);
     final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
-    final batch = fs.batch();
-    batch.delete(headingDoc);
-    updateListModified(ref, batch, listId);
-    await batch.commit();
+    tx.batch.delete(headingDoc);
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingDeleted());
   }
 
-  Future<void> moveEntry(ChecklistEntry entry, int newIndex) async {
+  void moveEntry(ListItemsTransaction tx, ChecklistEntry entry, int newIndex) {
     final fs = ref.read(firestoreProvider);
 
     final entries = _listEntries[listId]!.toList();
@@ -145,13 +133,10 @@ class ChecklistEntryRepo {
     final insertUpdates = _KeyInsertUpdates(entries, newIndex);
 
     final entryDoc = fs.doc('lists/$listId/items/${entry.id}');
-    final batch = fs.batch();
-    batch.update(entryDoc, {
+    tx.batch.update(entryDoc, {
       _Fields.sortKey: insertUpdates.insertKey.toJson(),
     });
-    _makeDuplicateUpdates(fs, batch, insertUpdates);
-    updateListModified(ref, batch, listId);
-    await batch.commit();
+    _makeDuplicateUpdates(fs, tx.batch, insertUpdates);
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistEntryMoved());
     _logIfDuplicateKeysFound(insertUpdates);
   }
@@ -165,31 +150,25 @@ class ChecklistEntryRepo {
     }
   }
 
-  Future<void> editItem(ChecklistItem item, String newName) async {
+  void editItem(ListItemsTransaction tx, ChecklistItem item, String newName) {
     final fs = ref.read(firestoreProvider);
     final itemDoc = fs.doc('lists/$listId/items/${item.id}');
-    final batch = fs.batch();
-    batch.update(itemDoc, {
+    tx.batch.update(itemDoc, {
       _Fields.name: newName.trim(),
     });
-    updateListModified(ref, batch, listId);
-    await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemUpdated());
   }
 
-  Future<void> editHeading(ChecklistHeading heading, String newName) async {
+  void editHeading(ListItemsTransaction tx, ChecklistHeading heading, String newName) {
     final fs = ref.read(firestoreProvider);
     final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
-    final batch = fs.batch();
-    batch.update(headingDoc, {
+    tx.batch.update(headingDoc, {
       _Fields.name: newName.trim(),
     });
-    updateListModified(ref, batch, listId);
-    await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingUpdated());
   }
 
-  Future<void> uncheckAll() async {
+  void uncheckAll(ListItemsTransaction tx) {
     final fs = ref.read(firestoreProvider);
     final batch = fs.batch();
     final entries = _listEntries[listId]!;
@@ -205,22 +184,19 @@ class ChecklistEntryRepo {
         orElse: () {},
       );
     }
-    updateListModified(ref, batch, listId);
-    await batch.commit();
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemsBatchUnchecked());
   }
 
-  Future<void> removeCheckedItems() async {
+  void removeCheckedItems(ListItemsTransaction tx) async {
     final fs = ref.read(firestoreProvider);
     final entries = _listEntries[listId]!;
-    final batch = fs.batch();
     int itemsRemoved = 0;
     entries.forEachIndexed((index, entry) {
       entry.when(
         item: (item) {
           if (item.completed) {
             final itemDoc = fs.doc('lists/$listId/items/${item.id}');
-            batch.delete(itemDoc);
+            tx.batch.delete(itemDoc);
             itemsRemoved++;
           }
         },
@@ -228,14 +204,12 @@ class ChecklistEntryRepo {
           final hasUncompletedItem = _headingHasUncompletedItem(entries, heading);
           if (!hasUncompletedItem) {
             final headingDoc = fs.doc('lists/$listId/items/${heading.id}');
-            batch.delete(headingDoc);
+            tx.batch.delete(headingDoc);
           }
         },
       );
     });
     if (itemsRemoved > 0) {
-      incrementListItemCount(ref, batch, listId, -itemsRemoved);
-      await batch.commit();
       ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemsBatchDeleted());
     }
   }

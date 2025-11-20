@@ -122,25 +122,6 @@ enum AcceptInviteResult {
   unknownError,
 }
 
-void updateListModified(Ref ref, WriteBatch batch, String listId) {
-  final user = ref.watch(authUserProvider);
-  final fs = ref.read(firestoreProvider);
-  final listDoc = fs.doc('lists/$listId');
-  batch.update(listDoc, {
-    '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
-  });
-}
-
-void incrementListItemCount(Ref ref, WriteBatch batch, String listId, int delta) {
-  final user = ref.watch(authUserProvider);
-  final fs = ref.read(firestoreProvider);
-  final listDoc = fs.doc('lists/$listId');
-  batch.update(listDoc, {
-    '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
-    _Fields.itemCount: FieldValue.increment(delta),
-  });
-}
-
 ListSummary _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
   return _fromJson(doc.data()!, doc.id);
 }

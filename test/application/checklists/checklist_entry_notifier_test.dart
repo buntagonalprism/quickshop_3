@@ -4,15 +4,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:quickshop/application/checklists/checklist_entry_notifier.dart';
 import 'package:quickshop/application/list_leave_in_progress_notifier.dart';
+import 'package:quickshop/application/lists_notifier.dart';
 import 'package:quickshop/models/checklist_entry.dart';
+import 'package:quickshop/models/list_summary.dart';
 import 'package:quickshop/models/user_sortable.dart';
 import 'package:quickshop/repositories/checklist_entry_repo.dart';
+import 'package:quickshop/repositories/list_repo.dart';
 import 'package:quickshop/services/firestore.dart';
 import 'package:riverpod/riverpod.dart';
 
-import '../fakes/fake_firebase_auth.dart';
-import '../mocks/mock_firestore.dart';
-import '../utilities/create_provider_container.dart';
+import '../../fakes/fake_firebase_auth.dart';
+import '../../mocks/mock_firestore.dart';
+import '../../utilities/create_provider_container.dart';
+
+class MockListRepo extends Mock implements ListRepo {}
 
 extension StreamControllerPumpExtension on StreamController {
   /// Add an item to the stream and pump the event queue so that all listeners are notified.
@@ -62,6 +67,16 @@ Map<String, dynamic> sortKeyJson(int primary, String secondary) => sortKey(prima
 
 void main() {
   const listId = '1234';
+  final list = ListSummary(
+    id: listId,
+    name: 'TestList',
+    ownerId: 'user123',
+    editorIds: [],
+    editors: [],
+    itemCount: 0,
+    lastModified: {'user123': DateTime.now().millisecondsSinceEpoch},
+    listType: ListType.checklist,
+  );
   final provider = checklistEntryProvider('1234');
 
   late FakeFirebaseAuth fakeAuth;
@@ -70,6 +85,7 @@ void main() {
   late MockCollectionReference itemsCollection;
   late StreamController<MockQuerySnapshot> itemsController;
   late MockDocumentReference listDoc;
+  late MockListRepo listRepo;
 
   setUpAll(() {
     registerFallbackValue(MockDocumentReference());
@@ -81,13 +97,21 @@ void main() {
     container = createContainer(overrides: [
       fakeAuth.providerOverride,
       firestoreProvider.overrideWith((ref) => mockFirestore),
+      listRepoProvider.overrideWith((ref) => listRepo),
     ]);
+
     itemsCollection = MockCollectionReference();
     when(() => mockFirestore.collection('lists/$listId/items')).thenReturn(itemsCollection);
     itemsController = StreamController.broadcast();
     when(() => itemsCollection.snapshots()).thenAnswer((_) => itemsController.stream);
     listDoc = MockDocumentReference();
     when(() => mockFirestore.doc('lists/$listId')).thenReturn(listDoc);
+
+    // Set up the lists repo to support the side effects where list item count and last modified
+    // time are updated whenever checklist entries are modified
+    listRepo = MockListRepo();
+    when(() => listRepo.getAllLists()).thenAnswer((_) => Stream.value([list]));
+    container.listen(listsProvider, (_, __) {});
   });
 
   tearDown(() {
@@ -96,29 +120,29 @@ void main() {
 
   group('Loading entries ', () {
     test(
-        'WHEN repository is first created '
+        'WHEN notifier is first created '
         'THEN it should load the entries from Firestore', () {
-      final repo = container.read(provider);
+      final entries = container.read(provider);
 
       verify(() => itemsCollection.snapshots()).called(1);
-      expect(repo.isLoading, isTrue);
+      expect(entries.isLoading, isTrue);
     });
 
     test(
         'WHEN the items collection is empty '
-        'THEN the repo should return an empty list', () async {
-      final repoSubscription = container.testListen(provider);
+        'THEN the notifier should return an empty list', () async {
+      final entriesSubscription = container.testListen(provider);
 
       await itemsController.addAndPump(MockQuerySnapshot([]));
-      final repo = repoSubscription.read();
-      expect(repo.hasValue, isTrue);
-      expect(repo.requireValue, isEmpty);
+      final entries = entriesSubscription.read();
+      expect(entries.hasValue, isTrue);
+      expect(entries.requireValue, isEmpty);
     });
 
     test(
         'WHEN the items collection has entries '
-        'THEN the repo should return the entries', () async {
-      final repoSubscription = container.testListen(provider);
+        'THEN the notifier should return the entries', () async {
+      final entriesSubscription = container.testListen(provider);
 
       final data = <MockDocumentSnapshot>[
         MockDocumentSnapshot('1', {
@@ -141,9 +165,9 @@ void main() {
       ];
 
       await itemsController.addAndPump(MockQuerySnapshot(data));
-      final repo = repoSubscription.read();
-      expect(repo.hasValue, isTrue);
-      expect(repo.requireValue, [
+      final entries = entriesSubscription.read();
+      expect(entries.hasValue, isTrue);
+      expect(entries.requireValue, [
         const ChecklistItem(
           id: '1',
           name: 'Item 1',
@@ -166,23 +190,23 @@ void main() {
 
     test(
         'WHEN the items collection has an error'
-        'THEN the repo should return an error', () async {
-      final repoSubscription = container.testListen(provider);
+        'THEN the notifier should return an error', () async {
+      final entriesSubscription = container.testListen(provider);
 
       await itemsController.addAndPump(MockQuerySnapshot([]));
-      var repo = repoSubscription.read();
-      expect(repo.hasError, isFalse);
+      var entries = entriesSubscription.read();
+      expect(entries.hasError, isFalse);
 
       itemsController.addError(Exception('Test error'));
       await pumpEventQueue();
-      repo = repoSubscription.read();
-      expect(repo.hasError, isTrue);
+      entries = entriesSubscription.read();
+      expect(entries.hasError, isTrue);
     });
 
     test(
         'WHEN the user has just left the list '
-        'THEN the repo should enter a loading state', () async {
-      final repoSubscription = container.testListen(provider);
+        'THEN the notifier should enter a loading state', () async {
+      final entriesSubscription = container.testListen(provider);
 
       final data = [
         MockDocumentSnapshot('1', {
@@ -193,15 +217,15 @@ void main() {
         })
       ];
       await itemsController.addAndPump(MockQuerySnapshot(data));
-      var repo = repoSubscription.read();
-      expect(repo.hasValue, isTrue);
-      expect(repo.isLoading, isFalse);
-      expect(repo.requireValue, hasLength(1));
+      var entries = entriesSubscription.read();
+      expect(entries.hasValue, isTrue);
+      expect(entries.isLoading, isFalse);
+      expect(entries.requireValue, hasLength(1));
 
       container.read(listLeaveInProgressProvider.notifier).add(listId);
       await pumpEventQueue();
-      repo = repoSubscription.read();
-      expect(repo.isLoading, isTrue);
+      entries = entriesSubscription.read();
+      expect(entries.isLoading, isTrue);
     });
   });
 
