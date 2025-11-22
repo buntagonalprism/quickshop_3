@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'analytics/crash_reporter.dart';
 import 'application/settings_notifier.dart';
-import 'application/user_history_loader_use_case.dart';
+import 'application/user_autocomplete_loader_use_case.dart';
 import 'localization/app_localizations.dart';
 import 'repositories/shopping/suggestions/shopping_category_suggestion_repo.dart';
 import 'repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
@@ -91,7 +91,7 @@ class _EagerInitProviders extends ConsumerWidget {
     ref.watch(crashReporterProvider);
     ref.watch(appDatabaseProvider);
     ref.watch(authUserProvider);
-    ref.watch(userHistoryLoaderUseCaseProvider);
+    ref.watch(userAutcompleteLoaderUseCaseProvider);
     ref.watch(shoppingCategorySuggestionRepoProvider);
     ref.watch(shoppingItemSuggestionRepoProvider);
 

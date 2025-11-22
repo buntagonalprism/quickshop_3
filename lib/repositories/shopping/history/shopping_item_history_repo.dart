@@ -5,6 +5,7 @@ import '../../../analytics/logger.dart';
 import '../../../models/shopping/history/shopping_item_history.dart';
 import '../../../services/app_database.dart';
 import '../../../services/app_database_provider.dart';
+import '../../../services/auth_service.dart';
 import '../../../services/firestore.dart';
 import '../../../services/tables/load_progress_table.dart';
 
@@ -20,13 +21,14 @@ class ShoppingItemHistoryRepo {
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider);
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
+  String get _userId => _ref.read(authUserProvider)!.id;
 
   static final _zeroTime = DateTime.fromMillisecondsSinceEpoch(0);
   DateTime _retrievedUntil = _zeroTime;
 
   ShoppingItemHistoryRepo._(this._ref);
 
-  void onUserHistoryUpdated(String userId, DateTime lastHistoryUpdate) async {
+  void onUserHistoryUpdated(DateTime lastHistoryUpdate) async {
     if (_retrievedUntil == _zeroTime) {
       final progress = await _db.loadProgressDao.get(LoadProgressType.categoryHistory);
       if (progress != null) {
@@ -34,8 +36,14 @@ class ShoppingItemHistoryRepo {
       }
     }
     if (_retrievedUntil.isBefore(lastHistoryUpdate)) {
-      _fetchHistory(userId, _retrievedUntil);
+      _fetchHistory(_userId, _retrievedUntil);
     }
+  }
+
+  Future<void> deleteHistoryEntry(String itemId) async {
+    await _db.itemHistoryDao.deleteById(itemId);
+    final docRef = _fs.collection('userHistory').doc(_userId).collection('items').doc(itemId);
+    await docRef.delete();
   }
 
   Future<List<ShoppingItemHistory>> searchHistory(String query) async {

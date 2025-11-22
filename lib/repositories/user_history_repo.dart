@@ -16,33 +16,72 @@ class UserHistoryRepo {
   final Ref _ref;
   UserHistoryRepo(this._ref);
 
+  late UserHistory _cachedUserHistory;
+  static const _collectionName = 'userHistory';
+
   Stream<UserHistory?> userHistory() {
     final fs = _ref.read(firestoreProvider);
     final user = _ref.watch(authUserProvider);
     if (user == null) {
       return Stream.value(null);
     }
-    return fs.collection('userHistory').doc(user.id).snapshots().map((snapshot) {
+    return fs.collection(_collectionName).doc(user.id).snapshots().map((snapshot) {
       if (!snapshot.exists) {
-        return UserHistory(
+        _cachedUserHistory = UserHistory(
           userId: user.id,
           lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(0),
           hiddenSuggestions: const HiddenSuggestions(items: [], categories: []),
         );
+      } else {
+        _cachedUserHistory = _fromFirestore(user.id, snapshot);
       }
-      return _fromFirestore(user.id, snapshot);
+      return _cachedUserHistory;
     });
+  }
+
+  Future<void> hideItemSuggestion(String suggestionId) async {
+    final user = _ref.read(authUserProvider);
+    if (user == null) {
+      throw Exception('User not signed in');
+    }
+    final fs = _ref.read(firestoreProvider);
+    final userHistoryRef = fs.collection(_collectionName).doc(user.id);
+
+    final hiddenItems = _cachedUserHistory.hiddenSuggestions.items.toSet();
+    if (hiddenItems.add(suggestionId)) {
+      final updatedHistory = _cachedUserHistory.copyWith.hiddenSuggestions(
+        items: hiddenItems.toList()..sort(),
+      );
+      await userHistoryRef.set(_toFirestore(updatedHistory));
+    }
   }
 
   UserHistory _fromFirestore(String userId, DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data()!;
     return UserHistory(
       userId: userId,
-      lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(data['lastHistoryUpdate']),
+      lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastHistoryUpdate]),
       hiddenSuggestions: HiddenSuggestions(
-        items: (data['hiddenSuggestions']['items'] ?? []).cast<String>(),
-        categories: (data['hiddenSuggestions']['categories'] ?? []).cast<String>(),
+        items: (data[_Fields.hiddenSuggestions][_Fields.items] ?? []).cast<String>(),
+        categories: (data[_Fields.hiddenSuggestions][_Fields.categories] ?? []).cast<String>(),
       ),
     );
   }
+
+  Map<String, dynamic> _toFirestore(UserHistory userHistory) {
+    return {
+      _Fields.lastHistoryUpdate: userHistory.lastHistoryUpdate.millisecondsSinceEpoch,
+      _Fields.hiddenSuggestions: {
+        _Fields.items: userHistory.hiddenSuggestions.items,
+        _Fields.categories: userHistory.hiddenSuggestions.categories,
+      },
+    };
+  }
+}
+
+class _Fields {
+  static const lastHistoryUpdate = 'lastHistoryUpdate';
+  static const hiddenSuggestions = 'hiddenSuggestions';
+  static const items = 'items';
+  static const categories = 'categories';
 }

@@ -6,6 +6,7 @@ import '../../../../application/shopping/shopping_items_notifier.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../../models/shopping/shopping_item_raw_data.dart';
 import '../../../../router.dart';
+import '../../../../widgets/confirmation_dialog.dart';
 import '../../../../widgets/padding.dart';
 import 'category_selector.dart';
 import 'shopping_item_create_view_model.dart';
@@ -340,6 +341,9 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
             tileColor: highlighted ? Colors.grey.shade200 : null,
             title: Text(widget.autocomplete.displayName),
             subtitle: Text(widget.autocomplete.categories.join(', ')),
+            leading: Icon(
+              widget.autocomplete.source == ShoppingItemAutocompleteSource.history ? Icons.history : null,
+            ),
             onLongPress: () {
               controller.open();
               setState(() => highlighted = true);
@@ -361,22 +365,28 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
             alignment: Alignment.center,
           ),
           alignmentOffset: const Offset(-36, 0),
-          menuChildren: [
-            MenuItemButton(
-              child: const Text('Remove'),
-              onPressed: () => ref
-                  .read(shoppingItemAutocompleteUseCaseProvider(widget.listId))
-                  .removeSuggestion(widget.autocomplete),
-            ),
-            MenuItemButton(
-              child: const Text('Edit'),
-              onPressed: () => _onEditSuggestion(ref, widget.autocomplete),
-            ),
-          ],
+          menuChildren: widget.autocomplete.source == ShoppingItemAutocompleteSource.suggested
+              ? [
+                  MenuItemButton(
+                    child: const Text('Hide'),
+                    onPressed: () => _onHideSuggestion(widget.autocomplete),
+                  )
+                ]
+              : [
+                  MenuItemButton(
+                    child: const Text('Edit'),
+                    onPressed: () => _onEditHistoryEntry(widget.autocomplete),
+                  ),
+                  MenuItemButton(
+                    child: const Text('Remove from history'),
+                    onPressed: () => _onRemoveHistoryEntry(widget.autocomplete),
+                  ),
+                ],
         ),
       ShoppingItemAutocompleteSource.list => ListTile(
           visualDensity: VisualDensity.compact,
           contentPadding: const EdgeInsets.only(left: 16, right: 4),
+          leading: const Icon(Icons.list),
           title: Text(
             widget.autocomplete.displayName,
             style: const TextStyle(fontStyle: FontStyle.italic),
@@ -386,7 +396,7 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
           trailing: TextButton.icon(
-            onPressed: () => _onEditListItem(ref, widget.autocomplete),
+            onPressed: () => _onEditListItem(widget.autocomplete),
             label: const Text('Edit'),
             icon: const Icon(Icons.edit),
           ),
@@ -394,13 +404,41 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
     };
   }
 
-  void _onEditListItem(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
+  void _onEditListItem(ShoppingItemAutocomplete suggestion) {
     ref.read(routerProvider).go(Routes.shoppingListEditItem(widget.listId, suggestion.sourceId).path);
   }
 
-  void _onEditSuggestion(WidgetRef ref, ShoppingItemAutocomplete suggestion) {
-    // TODO: Show a suggestion edit page
-    print('On edit: $suggestion');
+  void _onRemoveHistoryEntry(ShoppingItemAutocomplete historyEntry) async {
+    final didConfirm = await ConfirmationDialog.show(
+      context,
+      ConfirmationDialogContent(
+        title: 'Remove from history',
+        message: 'Do you want to remove this item from your history?',
+        confirmationAction: 'Remove',
+      ),
+    );
+    if (didConfirm) {
+      await ref.read(shoppingItemAutocompleteUseCaseProvider(widget.listId)).removeHistoryEntry(historyEntry);
+    }
+  }
+
+  void _onHideSuggestion(ShoppingItemAutocomplete suggestion) async {
+    final didConfirm = await ConfirmationDialog.show(
+      context,
+      ConfirmationDialogContent(
+        title: 'Hide suggestion',
+        message: 'Do you want to hide this suggestion?',
+        confirmationAction: 'Hide',
+      ),
+    );
+    if (didConfirm) {
+      await ref.read(shoppingItemAutocompleteUseCaseProvider(widget.listId)).hideSuggestion(suggestion);
+    }
+  }
+
+  void _onEditHistoryEntry(ShoppingItemAutocomplete history) {
+    // TODO: Show a history edit page
+    print('On edit: $history');
   }
 }
 

@@ -5,6 +5,7 @@ import '../../../models/shopping/shopping_item.dart';
 import '../../../repositories/delay_provider_dispose.dart';
 import '../../../repositories/shopping/history/shopping_item_history_repo.dart';
 import '../../../repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
+import '../../../repositories/user_history_repo.dart';
 import '../../../services/shopping_item_name_parser.dart';
 import '../shopping_items_notifier.dart';
 
@@ -86,9 +87,20 @@ class ShoppingItemAutocompleteUseCase {
     return [...startMatches, ...middleMatches];
   }
 
-  void removeSuggestion(ShoppingItemAutocomplete suggestion) async {
-    // TODO
-    throw UnimplementedError();
+  Future<void> hideSuggestion(ShoppingItemAutocomplete suggestion) async {
+    assert(suggestion.source == ShoppingItemAutocompleteSource.suggested, 'Only suggestions can be hidden');
+
+    // Hide the suggestion locally
+    await _suggestionRepo.hideSuggestion(suggestion.sourceId);
+
+    // Save the hidden suggestion to the user's profile to sync across devices
+    await _ref.read(userHistoryRepoProvider).hideItemSuggestion(suggestion.sourceId);
+  }
+
+  Future<void> removeHistoryEntry(ShoppingItemAutocomplete historyEntry) async {
+    assert(historyEntry.source == ShoppingItemAutocompleteSource.history, 'Only history entries can be removed');
+
+    return _historyRepo.deleteHistoryEntry(historyEntry.sourceId);
   }
 
   ShoppingItemAutocomplete _listItemToAutcomplete(ShoppingItem item) {

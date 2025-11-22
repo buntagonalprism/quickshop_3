@@ -18,6 +18,24 @@ class ItemSuggestionDao extends DatabaseAccessor<AppDatabase> with _$ItemSuggest
     });
   }
 
+  Future<void> deleteByIds(List<String> ids) async {
+    // Batch the list into groups of 50 to avoid queries that are too large
+    for (var i = 0; i < ids.length; i += 50) {
+      final batchIds = ids.sublist(i, i + 50 > ids.length ? ids.length : i + 50);
+      await batch((batch) {
+        batch.deleteWhere(itemSuggestionsTable, (tbl) => tbl.id.isIn(batchIds));
+        db.deleteTokens(batch, TokenType.itemSuggestion, batchIds);
+      });
+    }
+  }
+
+  Future<void> deleteById(String id) async {
+    await batch((batch) {
+      batch.deleteWhere(itemSuggestionsTable, (tbl) => tbl.id.equals(id));
+      db.deleteTokens(batch, TokenType.itemSuggestion, [id]);
+    });
+  }
+
   Future<List<ItemSuggestionsRow>> query(String queryString) async {
     return db.queryByTokens<ItemSuggestionsRow, ItemSuggestionsTable>(
       table: itemSuggestionsTable,

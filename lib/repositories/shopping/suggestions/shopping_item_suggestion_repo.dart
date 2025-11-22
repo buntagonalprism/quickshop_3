@@ -29,10 +29,14 @@ class ShoppingItemSuggestionRepo {
 
   String? _currentLangCode;
   static const _suggestionsLangCodeKey = 'itemSuggestionsLangCode';
+  static const _hiddenSuggestionsKey = 'hiddenItemSuggestions';
   StreamSubscription? _summarySub;
+
+  late Set<String> _hiddenSuggestionIds;
 
   ShoppingItemSuggestionRepo(this._ref) {
     _currentLangCode = _prefs.getString(_suggestionsLangCodeKey);
+    _hiddenSuggestionIds = _prefs.getStringList(_hiddenSuggestionsKey)?.toSet() ?? <String>{};
     _ref.listen(
       localeServiceProvider,
       (_, locale) async {
@@ -65,6 +69,19 @@ class ShoppingItemSuggestionRepo {
         }
       }
     });
+  }
+
+  void onHiddenSuggestionsUpdated(List<String> hiddenSuggestionIds) async {
+    // Check to see if any new suggestions have been hidden
+    final newHiddenIds = hiddenSuggestionIds.toSet().difference(_hiddenSuggestionIds);
+    if (newHiddenIds.isNotEmpty) {
+      // Remove the hidden suggestions from the local database
+      await _db.itemSuggestionDao.deleteByIds(newHiddenIds.toList());
+
+      // Update prefs to confirm they have been deleted locally
+      _hiddenSuggestionIds.addAll(newHiddenIds);
+      await _prefs.setStringList(_hiddenSuggestionsKey, _hiddenSuggestionIds.toList()..sort());
+    }
   }
 
   Future<List<ShoppingItemSuggestion>> searchSuggestions(String query) async {
@@ -110,7 +127,7 @@ class ShoppingItemSuggestionRepo {
 
     if (_currentLangCode == langCode) {
       await _db.itemSuggestionDao.insert(
-        allDocs.map((doc) {
+        allDocs.where((doc) => !_hiddenSuggestionIds.contains(doc.id)).map((doc) {
           final data = doc.data()!;
           return ItemSuggestionsRow(
             id: doc.id,
@@ -124,6 +141,16 @@ class ShoppingItemSuggestionRepo {
 
       await _prefs.setString(_suggestionsLangCodeKey, langCode);
       await _db.loadProgressDao.save(LoadProgressType.itemSuggestion, lastUpdated);
+    }
+  }
+
+  Future<void> hideSuggestion(String suggestionId) async {
+    // Delete the suggestion from the local database so it won't appear in future searches
+    await _db.itemSuggestionDao.deleteById(suggestionId);
+
+    // Mark the suggestion as hidden in shared preferences, confirming it has been deleted locally
+    if (_hiddenSuggestionIds.add(suggestionId)) {
+      await _prefs.setStringList(_hiddenSuggestionsKey, _hiddenSuggestionIds.toList()..sort());
     }
   }
 }

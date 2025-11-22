@@ -18,6 +18,13 @@ class ItemHistoryDao extends DatabaseAccessor<AppDatabase> with _$ItemHistoryDao
     });
   }
 
+  Future<void> deleteById(String id) async {
+    await batch((batch) {
+      batch.deleteWhere(itemHistoryTable, (tbl) => tbl.id.equals(id));
+      db.deleteTokens(batch, TokenType.itemHistory, [id]);
+    });
+  }
+
   Future<List<ItemHistoryRow>> query(String queryString) async {
     return db.queryByTokens<ItemHistoryRow, ItemHistoryTable>(
       table: itemHistoryTable,
