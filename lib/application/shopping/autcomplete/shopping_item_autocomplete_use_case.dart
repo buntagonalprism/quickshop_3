@@ -6,6 +6,7 @@ import '../../../repositories/delay_provider_dispose.dart';
 import '../../../repositories/shopping/history/shopping_item_history_repo.dart';
 import '../../../repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
 import '../../../repositories/user_profile_repo.dart';
+import '../../../repositories/user_profile_transaction.dart';
 import '../../../services/shopping_item_name_parser.dart';
 import '../shopping_items_notifier.dart';
 
@@ -23,6 +24,7 @@ class ShoppingItemAutocompleteUseCase {
   ShoppingItemNameParser get _parser => _ref.read(shoppingItemNameParserProvider);
   ShoppingItemSuggestionRepo get _suggestionRepo => _ref.read(shoppingItemSuggestionRepoProvider);
   ShoppingItemHistoryRepo get _historyRepo => _ref.read(shoppingItemHistoryRepoProvider);
+  UserProfileRepo get _userProfileRepo => _ref.read(userProfileRepoProvider);
 
   ShoppingItemAutocompleteUseCase._(this._ref, this.listId);
 
@@ -100,7 +102,11 @@ class ShoppingItemAutocompleteUseCase {
   Future<void> removeHistoryEntry(ShoppingItemAutocomplete historyEntry) async {
     assert(historyEntry.source == ShoppingItemAutocompleteSource.history, 'Only history entries can be removed');
 
-    return _historyRepo.deleteHistoryEntry(historyEntry.sourceId);
+    final tx = _ref.read(userProfileTransactionProvider)();
+    final now = DateTime.now();
+    _historyRepo.deleteHistoryEntry(tx, historyEntry.sourceId, now);
+    _userProfileRepo.setLastHistoryUpdate(tx, now);
+    await tx.commit();
   }
 
   ShoppingItemAutocomplete _listItemToAutcomplete(ShoppingItem item) {

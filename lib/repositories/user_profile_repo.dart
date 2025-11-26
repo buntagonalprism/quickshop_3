@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/user/user_profile.dart';
 import '../services/auth_service.dart';
 import '../services/firestore.dart';
+import 'user_profile_transaction.dart';
 
 part 'user_profile_repo.g.dart';
 
@@ -17,7 +18,7 @@ class UserProfileRepo {
   UserProfileRepo(this._ref);
 
   late UserProfile _cachedUserHistory;
-  static const _collectionName = 'userProfiles';
+  static const collectionName = 'users';
 
   Stream<UserProfile?> getProfile() {
     final fs = _ref.read(firestoreProvider);
@@ -25,7 +26,7 @@ class UserProfileRepo {
     if (user == null) {
       return Stream.value(null);
     }
-    return fs.collection(_collectionName).doc(user.id).snapshots().map((snapshot) {
+    return fs.collection(collectionName).doc(user.id).snapshots().map((snapshot) {
       if (!snapshot.exists) {
         _cachedUserHistory = UserProfile(
           userId: user.id,
@@ -45,15 +46,23 @@ class UserProfileRepo {
       throw Exception('User not signed in');
     }
     final fs = _ref.read(firestoreProvider);
-    final userHistoryRef = fs.collection(_collectionName).doc(user.id);
+    final userRef = fs.collection(collectionName).doc(user.id);
 
     final hiddenItems = _cachedUserHistory.hiddenSuggestions.items.toSet();
     if (hiddenItems.add(suggestionId)) {
       final updatedHistory = _cachedUserHistory.copyWith.hiddenSuggestions(
         items: hiddenItems.toList()..sort(),
       );
-      await userHistoryRef.set(_toFirestore(updatedHistory));
+      await userRef.set(_toFirestore(updatedHistory));
     }
+  }
+
+  void setLastHistoryUpdate(UserProfileTransaction tx, DateTime newUpdateTime) {
+    final fs = _ref.read(firestoreProvider);
+    final userRef = fs.collection(collectionName).doc(_cachedUserHistory.userId);
+    tx.batch.update(userRef, {
+      _Fields.lastHistoryUpdate: newUpdateTime.millisecondsSinceEpoch,
+    });
   }
 
   UserProfile _fromFirestore(String userId, DocumentSnapshot<Map<String, dynamic>> snapshot) {
