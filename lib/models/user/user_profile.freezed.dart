@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'user_history.dart';
+part of 'user_profile.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,23 +13,23 @@ part of 'user_history.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$UserHistory {
+mixin _$UserProfile {
   String get userId;
   DateTime get lastHistoryUpdate;
   HiddenSuggestions get hiddenSuggestions;
 
-  /// Create a copy of UserHistory
+  /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $UserHistoryCopyWith<UserHistory> get copyWith =>
-      _$UserHistoryCopyWithImpl<UserHistory>(this as UserHistory, _$identity);
+  $UserProfileCopyWith<UserProfile> get copyWith =>
+      _$UserProfileCopyWithImpl<UserProfile>(this as UserProfile, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is UserHistory &&
+            other is UserProfile &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.lastHistoryUpdate, lastHistoryUpdate) ||
                 other.lastHistoryUpdate == lastHistoryUpdate) &&
@@ -43,15 +43,15 @@ mixin _$UserHistory {
 
   @override
   String toString() {
-    return 'UserHistory(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestions: $hiddenSuggestions)';
+    return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestions: $hiddenSuggestions)';
   }
 }
 
 /// @nodoc
-abstract mixin class $UserHistoryCopyWith<$Res> {
-  factory $UserHistoryCopyWith(
-          UserHistory value, $Res Function(UserHistory) _then) =
-      _$UserHistoryCopyWithImpl;
+abstract mixin class $UserProfileCopyWith<$Res> {
+  factory $UserProfileCopyWith(
+          UserProfile value, $Res Function(UserProfile) _then) =
+      _$UserProfileCopyWithImpl;
   @useResult
   $Res call(
       {String userId,
@@ -62,13 +62,13 @@ abstract mixin class $UserHistoryCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserHistoryCopyWithImpl<$Res> implements $UserHistoryCopyWith<$Res> {
-  _$UserHistoryCopyWithImpl(this._self, this._then);
+class _$UserProfileCopyWithImpl<$Res> implements $UserProfileCopyWith<$Res> {
+  _$UserProfileCopyWithImpl(this._self, this._then);
 
-  final UserHistory _self;
-  final $Res Function(UserHistory) _then;
+  final UserProfile _self;
+  final $Res Function(UserProfile) _then;
 
-  /// Create a copy of UserHistory
+  /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -93,7 +93,7 @@ class _$UserHistoryCopyWithImpl<$Res> implements $UserHistoryCopyWith<$Res> {
     ));
   }
 
-  /// Create a copy of UserHistory
+  /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -104,8 +104,8 @@ class _$UserHistoryCopyWithImpl<$Res> implements $UserHistoryCopyWith<$Res> {
   }
 }
 
-/// Adds pattern-matching-related methods to [UserHistory].
-extension UserHistoryPatterns on UserHistory {
+/// Adds pattern-matching-related methods to [UserProfile].
+extension UserProfilePatterns on UserProfile {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -272,7 +272,7 @@ extension UserHistoryPatterns on UserHistory {
 
 /// @nodoc
 
-class _UserHistory extends UserHistory {
+class _UserHistory extends UserProfile {
   const _UserHistory(
       {required this.userId,
       required this.lastHistoryUpdate,
@@ -286,7 +286,7 @@ class _UserHistory extends UserHistory {
   @override
   final HiddenSuggestions hiddenSuggestions;
 
-  /// Create a copy of UserHistory
+  /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -312,13 +312,13 @@ class _UserHistory extends UserHistory {
 
   @override
   String toString() {
-    return 'UserHistory(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestions: $hiddenSuggestions)';
+    return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestions: $hiddenSuggestions)';
   }
 }
 
 /// @nodoc
 abstract mixin class _$UserHistoryCopyWith<$Res>
-    implements $UserHistoryCopyWith<$Res> {
+    implements $UserProfileCopyWith<$Res> {
   factory _$UserHistoryCopyWith(
           _UserHistory value, $Res Function(_UserHistory) _then) =
       __$UserHistoryCopyWithImpl;
@@ -340,7 +340,7 @@ class __$UserHistoryCopyWithImpl<$Res> implements _$UserHistoryCopyWith<$Res> {
   final _UserHistory _self;
   final $Res Function(_UserHistory) _then;
 
-  /// Create a copy of UserHistory
+  /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -365,7 +365,7 @@ class __$UserHistoryCopyWithImpl<$Res> implements _$UserHistoryCopyWith<$Res> {
     ));
   }
 
-  /// Create a copy of UserHistory
+  /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')

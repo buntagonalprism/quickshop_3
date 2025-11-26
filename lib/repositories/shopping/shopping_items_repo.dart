@@ -30,7 +30,7 @@ class ShoppingListItemsRepo {
 
   Future<ShoppingItem> addItem(ListItemsTransaction tx, ShoppingItemRawData data) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     final item = ShoppingItem(
       id: '',
       path: '',
@@ -65,7 +65,7 @@ class ShoppingListItemsRepo {
       _Fields.product: updatedData.product,
       _Fields.quantity: updatedData.quantity,
       _Fields.categories: updatedData.categories,
-      _Fields.lastModifiedByUserId: ref.read(authUserProvider)!.id,
+      _Fields.lastModifiedByUserId: ref.read(userAuthProvider)!.id,
       _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
     });
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemUpdated());
@@ -73,7 +73,7 @@ class ShoppingListItemsRepo {
 
   void deleteItems(ListItemsTransaction tx, List<ShoppingItem> items) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
 
     for (final item in items) {
       tx.batch.delete(fs.doc(item.path));

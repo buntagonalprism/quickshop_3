@@ -48,4 +48,4 @@ final class CrashReporterProvider
   }
 }
 
-String _$crashReporterHash() => r'89e71cd1b3814a9f7318d9c0cb983edfe9739f48';
+String _$crashReporterHash() => r'1af6dd1eb36380d0d1f3d5766cdc0c50b30c7b31';

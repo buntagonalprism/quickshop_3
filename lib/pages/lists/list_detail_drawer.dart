@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/list_provider.dart';
 import '../../application/lists_notifier.dart';
-import '../../application/user_notifier.dart';
 import '../../models/list_summary.dart';
 import '../../router.dart';
+import '../../services/auth_service.dart';
 import '../../widgets/http_request_confirmation_dialog.dart';
 
 class ListAction {
@@ -33,7 +33,7 @@ class _ListDetailDrawerState extends ConsumerState<ListDetailDrawer> {
   @override
   Widget build(BuildContext context) {
     final list = ref.watch(listProvider(widget.listId)).value;
-    final user = ref.watch(userProvider);
+    final user = ref.watch(userAuthProvider);
     final isOwner = list?.ownerId == user!.id;
     final isEditor = list?.editorIds.contains(user.id) ?? false;
     final listName = list?.name ?? 'List name';

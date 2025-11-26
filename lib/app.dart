@@ -90,15 +90,15 @@ class _EagerInitProviders extends ConsumerWidget {
     // By using "watch", the provider will stay alive and not be disposed.
     ref.watch(crashReporterProvider);
     ref.watch(appDatabaseProvider);
-    ref.watch(authUserProvider);
+    ref.watch(userAuthProvider);
     ref.watch(userAutcompleteLoaderUseCaseProvider);
     ref.watch(shoppingCategorySuggestionRepoProvider);
     ref.watch(shoppingItemSuggestionRepoProvider);
 
-    // The user provider in particular needs to be watched because it is used by
+    // The userIdProvider in particular needs to be watched because it is used by
     // delayDispose to force providers to rebuild on logout. In Riverpod 3, if a
     // if a provider of a stream has no listeners, it pauses the subscription to
-    // the underlying stream to save resources. Since the userProvider internally
+    // the underlying stream to save resources. Since the userIdProvider internally
     // depends on the auth user stream from Firebase, if we didn't watch this
     // provider, it may not update itself when the user logs out.
     ref.watch(userIdProvider);

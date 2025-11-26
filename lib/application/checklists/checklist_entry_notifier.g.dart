@@ -52,7 +52,7 @@ final class ChecklistEntryNotifierProvider extends $StreamNotifierProvider<
 }
 
 String _$checklistEntryNotifierHash() =>
-    r'316f02109fc4f6b6dbcf105a72086de748cb11c5';
+    r'5a414fc9584097262a7f8ed1a75d88edf8af3689';
 
 final class ChecklistEntryNotifierFamily extends $Family
     with

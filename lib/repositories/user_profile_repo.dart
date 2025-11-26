@@ -1,33 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/user/user_history.dart';
+import '../models/user/user_profile.dart';
 import '../services/auth_service.dart';
 import '../services/firestore.dart';
 
-part 'user_history_repo.g.dart';
+part 'user_profile_repo.g.dart';
 
 @riverpod
-UserHistoryRepo userHistoryRepo(Ref ref) {
-  return UserHistoryRepo(ref);
+UserProfileRepo userProfileRepo(Ref ref) {
+  return UserProfileRepo(ref);
 }
 
-class UserHistoryRepo {
+class UserProfileRepo {
   final Ref _ref;
-  UserHistoryRepo(this._ref);
+  UserProfileRepo(this._ref);
 
-  late UserHistory _cachedUserHistory;
-  static const _collectionName = 'userHistory';
+  late UserProfile _cachedUserHistory;
+  static const _collectionName = 'userProfiles';
 
-  Stream<UserHistory?> userHistory() {
+  Stream<UserProfile?> getProfile() {
     final fs = _ref.read(firestoreProvider);
-    final user = _ref.watch(authUserProvider);
+    final user = _ref.watch(userAuthProvider);
     if (user == null) {
       return Stream.value(null);
     }
     return fs.collection(_collectionName).doc(user.id).snapshots().map((snapshot) {
       if (!snapshot.exists) {
-        _cachedUserHistory = UserHistory(
+        _cachedUserHistory = UserProfile(
           userId: user.id,
           lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(0),
           hiddenSuggestions: const HiddenSuggestions(items: [], categories: []),
@@ -40,7 +40,7 @@ class UserHistoryRepo {
   }
 
   Future<void> hideItemSuggestion(String suggestionId) async {
-    final user = _ref.read(authUserProvider);
+    final user = _ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User not signed in');
     }
@@ -56,9 +56,9 @@ class UserHistoryRepo {
     }
   }
 
-  UserHistory _fromFirestore(String userId, DocumentSnapshot<Map<String, dynamic>> snapshot) {
+  UserProfile _fromFirestore(String userId, DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data()!;
-    return UserHistory(
+    return UserProfile(
       userId: userId,
       lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastHistoryUpdate]),
       hiddenSuggestions: HiddenSuggestions(
@@ -68,7 +68,7 @@ class UserHistoryRepo {
     );
   }
 
-  Map<String, dynamic> _toFirestore(UserHistory userHistory) {
+  Map<String, dynamic> _toFirestore(UserProfile userHistory) {
     return {
       _Fields.lastHistoryUpdate: userHistory.lastHistoryUpdate.millisecondsSinceEpoch,
       _Fields.hiddenSuggestions: {

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'user.dart';
+part of 'user_auth.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,22 +13,22 @@ part of 'user.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$User implements DiagnosticableTreeMixin {
+mixin _$UserAuth implements DiagnosticableTreeMixin {
   String get id;
   String get name;
   String get email;
 
-  /// Create a copy of User
+  /// Create a copy of UserAuth
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $UserCopyWith<User> get copyWith =>
-      _$UserCopyWithImpl<User>(this as User, _$identity);
+  $UserAuthCopyWith<UserAuth> get copyWith =>
+      _$UserAuthCopyWithImpl<UserAuth>(this as UserAuth, _$identity);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(DiagnosticsProperty('type', 'User'))
+      ..add(DiagnosticsProperty('type', 'UserAuth'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('email', email));
@@ -38,7 +38,7 @@ mixin _$User implements DiagnosticableTreeMixin {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is User &&
+            other is UserAuth &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email));
@@ -49,26 +49,26 @@ mixin _$User implements DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, name: $name, email: $email)';
+    return 'UserAuth(id: $id, name: $name, email: $email)';
   }
 }
 
 /// @nodoc
-abstract mixin class $UserCopyWith<$Res> {
-  factory $UserCopyWith(User value, $Res Function(User) _then) =
-      _$UserCopyWithImpl;
+abstract mixin class $UserAuthCopyWith<$Res> {
+  factory $UserAuthCopyWith(UserAuth value, $Res Function(UserAuth) _then) =
+      _$UserAuthCopyWithImpl;
   @useResult
   $Res call({String id, String name, String email});
 }
 
 /// @nodoc
-class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
-  _$UserCopyWithImpl(this._self, this._then);
+class _$UserAuthCopyWithImpl<$Res> implements $UserAuthCopyWith<$Res> {
+  _$UserAuthCopyWithImpl(this._self, this._then);
 
-  final User _self;
-  final $Res Function(User) _then;
+  final UserAuth _self;
+  final $Res Function(UserAuth) _then;
 
-  /// Create a copy of User
+  /// Create a copy of UserAuth
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -94,8 +94,8 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
   }
 }
 
-/// Adds pattern-matching-related methods to [User].
-extension UserPatterns on User {
+/// Adds pattern-matching-related methods to [UserAuth].
+extension UserAuthPatterns on UserAuth {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -110,12 +110,12 @@ extension UserPatterns on User {
 
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_User value)? $default, {
+    TResult Function(_UserAuth value)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _User() when $default != null:
+      case _UserAuth() when $default != null:
         return $default(_that);
       case _:
         return orElse();
@@ -137,11 +137,11 @@ extension UserPatterns on User {
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_User value) $default,
+    TResult Function(_UserAuth value) $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _User():
+      case _UserAuth():
         return $default(_that);
       case _:
         throw StateError('Unexpected subclass');
@@ -162,11 +162,11 @@ extension UserPatterns on User {
 
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_User value)? $default,
+    TResult? Function(_UserAuth value)? $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _User() when $default != null:
+      case _UserAuth() when $default != null:
         return $default(_that);
       case _:
         return null;
@@ -192,7 +192,7 @@ extension UserPatterns on User {
   }) {
     final _that = this;
     switch (_that) {
-      case _User() when $default != null:
+      case _UserAuth() when $default != null:
         return $default(_that.id, _that.name, _that.email);
       case _:
         return orElse();
@@ -218,7 +218,7 @@ extension UserPatterns on User {
   ) {
     final _that = this;
     switch (_that) {
-      case _User():
+      case _UserAuth():
         return $default(_that.id, _that.name, _that.email);
       case _:
         throw StateError('Unexpected subclass');
@@ -243,7 +243,7 @@ extension UserPatterns on User {
   ) {
     final _that = this;
     switch (_that) {
-      case _User() when $default != null:
+      case _UserAuth() when $default != null:
         return $default(_that.id, _that.name, _that.email);
       case _:
         return null;
@@ -253,8 +253,8 @@ extension UserPatterns on User {
 
 /// @nodoc
 
-class _User with DiagnosticableTreeMixin implements User {
-  const _User({required this.id, required this.name, required this.email});
+class _UserAuth with DiagnosticableTreeMixin implements UserAuth {
+  const _UserAuth({required this.id, required this.name, required this.email});
 
   @override
   final String id;
@@ -263,18 +263,18 @@ class _User with DiagnosticableTreeMixin implements User {
   @override
   final String email;
 
-  /// Create a copy of User
+  /// Create a copy of UserAuth
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$UserCopyWith<_User> get copyWith =>
-      __$UserCopyWithImpl<_User>(this, _$identity);
+  _$UserAuthCopyWith<_UserAuth> get copyWith =>
+      __$UserAuthCopyWithImpl<_UserAuth>(this, _$identity);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(DiagnosticsProperty('type', 'User'))
+      ..add(DiagnosticsProperty('type', 'UserAuth'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('email', email));
@@ -284,7 +284,7 @@ class _User with DiagnosticableTreeMixin implements User {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _User &&
+            other is _UserAuth &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email));
@@ -295,27 +295,28 @@ class _User with DiagnosticableTreeMixin implements User {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, name: $name, email: $email)';
+    return 'UserAuth(id: $id, name: $name, email: $email)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$UserCopyWith(_User value, $Res Function(_User) _then) =
-      __$UserCopyWithImpl;
+abstract mixin class _$UserAuthCopyWith<$Res>
+    implements $UserAuthCopyWith<$Res> {
+  factory _$UserAuthCopyWith(_UserAuth value, $Res Function(_UserAuth) _then) =
+      __$UserAuthCopyWithImpl;
   @override
   @useResult
   $Res call({String id, String name, String email});
 }
 
 /// @nodoc
-class __$UserCopyWithImpl<$Res> implements _$UserCopyWith<$Res> {
-  __$UserCopyWithImpl(this._self, this._then);
+class __$UserAuthCopyWithImpl<$Res> implements _$UserAuthCopyWith<$Res> {
+  __$UserAuthCopyWithImpl(this._self, this._then);
 
-  final _User _self;
-  final $Res Function(_User) _then;
+  final _UserAuth _self;
+  final $Res Function(_UserAuth) _then;
 
-  /// Create a copy of User
+  /// Create a copy of UserAuth
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -324,7 +325,7 @@ class __$UserCopyWithImpl<$Res> implements _$UserCopyWith<$Res> {
     Object? name = null,
     Object? email = null,
   }) {
-    return _then(_User(
+    return _then(_UserAuth(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable

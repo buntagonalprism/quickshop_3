@@ -5,7 +5,7 @@ import '../analytics/analytics.dart';
 import '../application/list_leave_in_progress_notifier.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
-import '../models/user/user.dart';
+import '../models/user/user_auth.dart';
 import '../services/auth_service.dart';
 import '../services/firestore.dart';
 import '../services/functions_http_client.dart';
@@ -25,7 +25,7 @@ class ListRepo {
 
   Stream<List<ListSummary>> getAllLists() {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User not signed in');
     }
@@ -39,7 +39,7 @@ class ListRepo {
 
   /// Creates a new list and returns the list id
   Future<String> createList(String name, ListType listType) async {
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User not signed in');
     }
@@ -61,7 +61,7 @@ class ListRepo {
 
   Future<void> updateListName(ListSummary list, String name) async {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     await fs.collection('lists').doc(list.id).update({
       _Fields.name: name,
       '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
@@ -97,7 +97,7 @@ class ListRepo {
   }
 
   void updateListModified(ListItemsTransaction tx, String listId, DateTime modifiedAt) {
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     final fs = ref.read(firestoreProvider);
     final listDoc = fs.doc('lists/$listId');
     tx.batch.update(listDoc, {
@@ -106,7 +106,7 @@ class ListRepo {
   }
 
   void incrementListItemCount(ListItemsTransaction tx, String listId, int delta, DateTime modifiedAt) {
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     final fs = ref.read(firestoreProvider);
     final listDoc = fs.doc('lists/$listId');
     tx.batch.update(listDoc, {
@@ -132,7 +132,7 @@ ListSummary _fromJson(Map<String, dynamic> json, String listId) {
     name: json[_Fields.name],
     ownerId: json['ownerId'],
     editorIds: List<String>.from(json[_Fields.editorIds]),
-    editors: List<User>.from(List<Map<String, dynamic>>.from(json['editors']).map(User.fromJson)),
+    editors: List<UserAuth>.from(List<Map<String, dynamic>>.from(json['editors']).map(UserAuth.fromJson)),
     itemCount: json[_Fields.itemCount],
     lastModified: Map<String, int>.from(json[_Fields.lastModified]),
     listType: parseListType(json['listType']),

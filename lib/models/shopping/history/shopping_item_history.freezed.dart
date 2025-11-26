@@ -20,6 +20,7 @@ mixin _$ShoppingItemHistory {
   List<String> get categories;
   DateTime get lastUsed;
   int get usageCount;
+  bool get deleted;
 
   /// Create a copy of ShoppingItemHistory
   /// with the given fields replaced by the non-null parameter values.
@@ -43,16 +44,24 @@ mixin _$ShoppingItemHistory {
             (identical(other.lastUsed, lastUsed) ||
                 other.lastUsed == lastUsed) &&
             (identical(other.usageCount, usageCount) ||
-                other.usageCount == usageCount));
+                other.usageCount == usageCount) &&
+            (identical(other.deleted, deleted) || other.deleted == deleted));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, nameLower,
-      const DeepCollectionEquality().hash(categories), lastUsed, usageCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      nameLower,
+      const DeepCollectionEquality().hash(categories),
+      lastUsed,
+      usageCount,
+      deleted);
 
   @override
   String toString() {
-    return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount)';
+    return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
   }
 }
 
@@ -68,7 +77,8 @@ abstract mixin class $ShoppingItemHistoryCopyWith<$Res> {
       String nameLower,
       List<String> categories,
       DateTime lastUsed,
-      int usageCount});
+      int usageCount,
+      bool deleted});
 }
 
 /// @nodoc
@@ -90,6 +100,7 @@ class _$ShoppingItemHistoryCopyWithImpl<$Res>
     Object? categories = null,
     Object? lastUsed = null,
     Object? usageCount = null,
+    Object? deleted = null,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -116,6 +127,10 @@ class _$ShoppingItemHistoryCopyWithImpl<$Res>
           ? _self.usageCount
           : usageCount // ignore: cast_nullable_to_non_nullable
               as int,
+      deleted: null == deleted
+          ? _self.deleted
+          : deleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -213,8 +228,14 @@ extension ShoppingItemHistoryPatterns on ShoppingItemHistory {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String name, String nameLower,
-            List<String> categories, DateTime lastUsed, int usageCount)?
+    TResult Function(
+            String id,
+            String name,
+            String nameLower,
+            List<String> categories,
+            DateTime lastUsed,
+            int usageCount,
+            bool deleted)?
         $default, {
     required TResult orElse(),
   }) {
@@ -222,7 +243,7 @@ extension ShoppingItemHistoryPatterns on ShoppingItemHistory {
     switch (_that) {
       case _ShoppingItemHistory() when $default != null:
         return $default(_that.id, _that.name, _that.nameLower, _that.categories,
-            _that.lastUsed, _that.usageCount);
+            _that.lastUsed, _that.usageCount, _that.deleted);
       case _:
         return orElse();
     }
@@ -243,15 +264,21 @@ extension ShoppingItemHistoryPatterns on ShoppingItemHistory {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, String name, String nameLower,
-            List<String> categories, DateTime lastUsed, int usageCount)
+    TResult Function(
+            String id,
+            String name,
+            String nameLower,
+            List<String> categories,
+            DateTime lastUsed,
+            int usageCount,
+            bool deleted)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ShoppingItemHistory():
         return $default(_that.id, _that.name, _that.nameLower, _that.categories,
-            _that.lastUsed, _that.usageCount);
+            _that.lastUsed, _that.usageCount, _that.deleted);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -271,15 +298,21 @@ extension ShoppingItemHistoryPatterns on ShoppingItemHistory {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String name, String nameLower,
-            List<String> categories, DateTime lastUsed, int usageCount)?
+    TResult? Function(
+            String id,
+            String name,
+            String nameLower,
+            List<String> categories,
+            DateTime lastUsed,
+            int usageCount,
+            bool deleted)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ShoppingItemHistory() when $default != null:
         return $default(_that.id, _that.name, _that.nameLower, _that.categories,
-            _that.lastUsed, _that.usageCount);
+            _that.lastUsed, _that.usageCount, _that.deleted);
       case _:
         return null;
     }
@@ -295,7 +328,8 @@ class _ShoppingItemHistory extends ShoppingItemHistory {
       required this.nameLower,
       required final List<String> categories,
       required this.lastUsed,
-      required this.usageCount})
+      required this.usageCount,
+      required this.deleted})
       : _categories = categories,
         super._();
 
@@ -317,6 +351,8 @@ class _ShoppingItemHistory extends ShoppingItemHistory {
   final DateTime lastUsed;
   @override
   final int usageCount;
+  @override
+  final bool deleted;
 
   /// Create a copy of ShoppingItemHistory
   /// with the given fields replaced by the non-null parameter values.
@@ -341,16 +377,24 @@ class _ShoppingItemHistory extends ShoppingItemHistory {
             (identical(other.lastUsed, lastUsed) ||
                 other.lastUsed == lastUsed) &&
             (identical(other.usageCount, usageCount) ||
-                other.usageCount == usageCount));
+                other.usageCount == usageCount) &&
+            (identical(other.deleted, deleted) || other.deleted == deleted));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, nameLower,
-      const DeepCollectionEquality().hash(_categories), lastUsed, usageCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      nameLower,
+      const DeepCollectionEquality().hash(_categories),
+      lastUsed,
+      usageCount,
+      deleted);
 
   @override
   String toString() {
-    return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount)';
+    return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
   }
 }
 
@@ -368,7 +412,8 @@ abstract mixin class _$ShoppingItemHistoryCopyWith<$Res>
       String nameLower,
       List<String> categories,
       DateTime lastUsed,
-      int usageCount});
+      int usageCount,
+      bool deleted});
 }
 
 /// @nodoc
@@ -390,6 +435,7 @@ class __$ShoppingItemHistoryCopyWithImpl<$Res>
     Object? categories = null,
     Object? lastUsed = null,
     Object? usageCount = null,
+    Object? deleted = null,
   }) {
     return _then(_ShoppingItemHistory(
       id: null == id
@@ -416,6 +462,10 @@ class __$ShoppingItemHistoryCopyWithImpl<$Res>
           ? _self.usageCount
           : usageCount // ignore: cast_nullable_to_non_nullable
               as int,
+      deleted: null == deleted
+          ? _self.deleted
+          : deleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }

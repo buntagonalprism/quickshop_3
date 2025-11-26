@@ -22,7 +22,7 @@ class ListInviteRepo {
   final Ref ref;
 
   Future<void> createSharingLinkForList(ListSummary list) async {
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User must be logged in to share a list');
     }
@@ -57,7 +57,7 @@ class ListInviteRepo {
 
   Stream<ListInvite?> userListInviteByListId(String listId) {
     final fs = ref.read(firestoreProvider);
-    final user = ref.read(authUserProvider);
+    final user = ref.read(userAuthProvider);
     if (user == null) {
       return const Stream.empty();
     }

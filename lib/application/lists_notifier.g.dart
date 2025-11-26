@@ -33,7 +33,7 @@ final class ListsNotifierProvider
   ListsNotifier create() => ListsNotifier();
 }
 
-String _$listsNotifierHash() => r'c4ac6606e81132c045e1b1bbeff54bb495525721';
+String _$listsNotifierHash() => r'3e95179d862a32c85eeb77eccdffd63c5da9949a';
 
 abstract class _$ListsNotifier extends $StreamNotifier<List<ListSummary>> {
   Stream<List<ListSummary>> build();

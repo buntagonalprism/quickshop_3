@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'has_id.dart';
-import 'user/user.dart';
+import 'user/user_auth.dart';
 
 part 'list_summary.freezed.dart';
 
@@ -20,7 +20,7 @@ abstract class ListSummary with _$ListSummary implements HasId {
     required List<String> editorIds,
 
     /// List of user details of users who can edit the list, including the owner
-    required List<User> editors,
+    required List<UserAuth> editors,
 
     /// Number of items in the list
     required int itemCount,

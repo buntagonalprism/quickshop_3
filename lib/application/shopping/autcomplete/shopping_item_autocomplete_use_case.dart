@@ -5,7 +5,7 @@ import '../../../models/shopping/shopping_item.dart';
 import '../../../repositories/delay_provider_dispose.dart';
 import '../../../repositories/shopping/history/shopping_item_history_repo.dart';
 import '../../../repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
-import '../../../repositories/user_history_repo.dart';
+import '../../../repositories/user_profile_repo.dart';
 import '../../../services/shopping_item_name_parser.dart';
 import '../shopping_items_notifier.dart';
 
@@ -94,7 +94,7 @@ class ShoppingItemAutocompleteUseCase {
     await _suggestionRepo.hideSuggestion(suggestion.sourceId);
 
     // Save the hidden suggestion to the user's profile to sync across devices
-    await _ref.read(userHistoryRepoProvider).hideItemSuggestion(suggestion.sourceId);
+    await _ref.read(userProfileRepoProvider).hideItemSuggestion(suggestion.sourceId);
   }
 
   Future<void> removeHistoryEntry(ShoppingItemAutocomplete historyEntry) async {

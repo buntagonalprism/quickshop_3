@@ -150,6 +150,13 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
+  void deleteTokens(Batch batch, TokenType type, List<String> stringIds) {
+    batch.deleteWhere(
+      tokenTable,
+      (c) => c.stringId.isIn(stringIds) & c.type.equals(type.value),
+    );
+  }
+
   Future<void> clearAllSuggestions() {
     final suggestionProgressTypes = [
       LoadProgressType.categorySuggestion.value,

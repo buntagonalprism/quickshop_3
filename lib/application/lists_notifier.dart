@@ -4,9 +4,9 @@ import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../repositories/list_items_transaction.dart';
 import '../repositories/list_repo.dart';
+import '../services/auth_service.dart';
 import '../services/http_result.dart';
 import '../utilities/replace_by_id.dart';
-import 'user_notifier.dart';
 
 part 'lists_notifier.g.dart';
 
@@ -15,7 +15,7 @@ class ListsNotifier extends _$ListsNotifier {
   @override
   Stream<List<ListSummary>> build() {
     final repo = ref.watch(listRepoProvider);
-    final user = ref.watch(userProvider);
+    final user = ref.watch(userAuthProvider);
     if (user == null) {
       return const Stream.empty();
     }
@@ -66,7 +66,7 @@ class ListsNotifier extends _$ListsNotifier {
       listId,
       (list) => list.copyWith(lastModified: {
         ...list.lastModified,
-        ref.read(userProvider)!.id: now.millisecondsSinceEpoch,
+        ref.read(userAuthProvider)!.id: now.millisecondsSinceEpoch,
       }),
     ));
     return ref.read(listRepoProvider).updateListModified(tx, listId, now);
@@ -82,7 +82,7 @@ class ListsNotifier extends _$ListsNotifier {
         itemCount: list.itemCount + delta,
         lastModified: {
           ...list.lastModified,
-          ref.read(userProvider)!.id: now.millisecondsSinceEpoch,
+          ref.read(userAuthProvider)!.id: now.millisecondsSinceEpoch,
         },
       ),
     ));

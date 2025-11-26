@@ -4,8 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../analytics/crash_reporter.dart';
 import '../../../application/list_invite_providers.dart';
 import '../../../application/lists_notifier.dart';
-import '../../../application/user_notifier.dart';
 import '../../../models/list_invite.dart';
+import '../../../services/auth_service.dart';
 
 part 'list_invite_view_model.freezed.dart';
 part 'list_invite_view_model.g.dart';
@@ -26,7 +26,7 @@ class ListInviteViewModel with _$ListInviteViewModel {
 ListInviteViewModel listInviteState(Ref ref, String inviteId) {
   final inviteAsyncValue = ref.watch(listInviteByIdProvider(inviteId));
   final listsAsyncValue = ref.watch(listsProvider);
-  final user = ref.watch(userProvider);
+  final user = ref.watch(userAuthProvider);
 
   if (inviteAsyncValue.isLoading || listsAsyncValue.isLoading) {
     return const ListInviteViewModel.loading();

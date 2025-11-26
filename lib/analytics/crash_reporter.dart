@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../application/user_notifier.dart';
+import '../services/auth_service.dart';
 
 part 'crash_reporter.g.dart';
 
 @riverpod
 CrashReporter crashReporter(Ref ref) {
   ref.listen(
-    userProvider,
+    userAuthProvider,
     (_, user) {
       if (user != null) {
         Sentry.configureScope((scope) {

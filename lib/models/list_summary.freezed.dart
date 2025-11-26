@@ -24,7 +24,7 @@ mixin _$ListSummary {
   List<String> get editorIds;
 
   /// List of user details of users who can edit the list, including the owner
-  List<User> get editors;
+  List<UserAuth> get editors;
 
   /// Number of items in the list
   int get itemCount;
@@ -87,7 +87,7 @@ abstract mixin class $ListSummaryCopyWith<$Res> {
       String name,
       String ownerId,
       List<String> editorIds,
-      List<User> editors,
+      List<UserAuth> editors,
       int itemCount,
       Map<String, int> lastModified,
       ListType listType});
@@ -134,7 +134,7 @@ class _$ListSummaryCopyWithImpl<$Res> implements $ListSummaryCopyWith<$Res> {
       editors: null == editors
           ? _self.editors
           : editors // ignore: cast_nullable_to_non_nullable
-              as List<User>,
+              as List<UserAuth>,
       itemCount: null == itemCount
           ? _self.itemCount
           : itemCount // ignore: cast_nullable_to_non_nullable
@@ -249,7 +249,7 @@ extension ListSummaryPatterns on ListSummary {
             String name,
             String ownerId,
             List<String> editorIds,
-            List<User> editors,
+            List<UserAuth> editors,
             int itemCount,
             Map<String, int> lastModified,
             ListType listType)?
@@ -286,7 +286,7 @@ extension ListSummaryPatterns on ListSummary {
             String name,
             String ownerId,
             List<String> editorIds,
-            List<User> editors,
+            List<UserAuth> editors,
             int itemCount,
             Map<String, int> lastModified,
             ListType listType)
@@ -321,7 +321,7 @@ extension ListSummaryPatterns on ListSummary {
             String name,
             String ownerId,
             List<String> editorIds,
-            List<User> editors,
+            List<UserAuth> editors,
             int itemCount,
             Map<String, int> lastModified,
             ListType listType)?
@@ -346,7 +346,7 @@ class _ListSummary extends ListSummary {
       required this.name,
       required this.ownerId,
       required final List<String> editorIds,
-      required final List<User> editors,
+      required final List<UserAuth> editors,
       required this.itemCount,
       required final Map<String, int> lastModified,
       required this.listType})
@@ -376,11 +376,11 @@ class _ListSummary extends ListSummary {
   }
 
   /// List of user details of users who can edit the list, including the owner
-  final List<User> _editors;
+  final List<UserAuth> _editors;
 
   /// List of user details of users who can edit the list, including the owner
   @override
-  List<User> get editors {
+  List<UserAuth> get editors {
     if (_editors is EqualUnmodifiableListView) return _editors;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_editors);
@@ -462,7 +462,7 @@ abstract mixin class _$ListSummaryCopyWith<$Res>
       String name,
       String ownerId,
       List<String> editorIds,
-      List<User> editors,
+      List<UserAuth> editors,
       int itemCount,
       Map<String, int> lastModified,
       ListType listType});
@@ -509,7 +509,7 @@ class __$ListSummaryCopyWithImpl<$Res> implements _$ListSummaryCopyWith<$Res> {
       editors: null == editors
           ? _self._editors
           : editors // ignore: cast_nullable_to_non_nullable
-              as List<User>,
+              as List<UserAuth>,
       itemCount: null == itemCount
           ? _self.itemCount
           : itemCount // ignore: cast_nullable_to_non_nullable

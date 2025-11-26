@@ -21,7 +21,7 @@ class ShoppingCategoryHistoryRepo {
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider);
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
-  String get _userId => _ref.read(authUserProvider)!.id;
+  String get _userId => _ref.read(userAuthProvider)!.id;
 
   static final _zeroTime = DateTime.fromMillisecondsSinceEpoch(0);
   DateTime _retrievedUntil = _zeroTime;

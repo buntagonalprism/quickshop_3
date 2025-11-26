@@ -13,5 +13,6 @@ abstract class ShoppingItemHistory with _$ShoppingItemHistory {
     required List<String> categories,
     required DateTime lastUsed,
     required int usageCount,
+    required bool deleted,
   }) = _ShoppingItemHistory;
 }

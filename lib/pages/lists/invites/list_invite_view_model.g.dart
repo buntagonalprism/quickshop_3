@@ -71,7 +71,7 @@ final class ListInviteStateProvider extends $FunctionalProvider<
   }
 }
 
-String _$listInviteStateHash() => r'99ee351aca09378cd13a828f96d5e830c80a672e';
+String _$listInviteStateHash() => r'288905b47e8d1afaef2dfdc57b81467701ecb77c';
 
 final class ListInviteStateFamily extends $Family
     with $FunctionalFamilyOverride<ListInviteViewModel, String> {

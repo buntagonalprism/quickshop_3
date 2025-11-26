@@ -9,6 +9,47 @@ part of 'auth_service.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(userAuth)
+const userAuthProvider = UserAuthProvider._();
+
+final class UserAuthProvider
+    extends $FunctionalProvider<UserAuth?, UserAuth?, UserAuth?>
+    with $Provider<UserAuth?> {
+  const UserAuthProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'userAuthProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$userAuthHash();
+
+  @$internal
+  @override
+  $ProviderElement<UserAuth?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  UserAuth? create(Ref ref) {
+    return userAuth(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserAuth? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserAuth?>(value),
+    );
+  }
+}
+
+String _$userAuthHash() => r'd82bd1ca3531dcb8007f8fc5603921a4ef29f122';
+
 @ProviderFor(loggedIn)
 const loggedInProvider = LoggedInProvider._();
 
@@ -47,7 +88,7 @@ final class LoggedInProvider extends $FunctionalProvider<bool, bool, bool>
   }
 }
 
-String _$loggedInHash() => r'9b22318a238096d5c49eced6843f0e2098b1eea9';
+String _$loggedInHash() => r'efc49d11dafa9d39a67f2def5288cb699afc283b';
 
 @ProviderFor(userId)
 const userIdProvider = UserIdProvider._();
@@ -88,7 +129,7 @@ final class UserIdProvider
   }
 }
 
-String _$userIdHash() => r'cf90573ef6c6dde40233a46a5e224142a26b3483';
+String _$userIdHash() => r'1e21e394c541b58f830ae26963cd59f6b9feab1d';
 
 @ProviderFor(authService)
 const authServiceProvider = AuthServiceProvider._();

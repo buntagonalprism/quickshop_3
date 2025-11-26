@@ -10,11 +10,15 @@ part of 'user_autocomplete_loader_use_case.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userAutcompleteLoaderUseCase)
-const userAutcompleteLoaderUseCaseProvider = UserHistoryLoaderUseCaseProvider._();
+const userAutcompleteLoaderUseCaseProvider =
+    UserAutcompleteLoaderUseCaseProvider._();
 
-final class UserHistoryLoaderUseCaseProvider extends $FunctionalProvider<UserAutocompleteLoaderUserCase,
-    UserAutocompleteLoaderUserCase, UserAutocompleteLoaderUserCase> with $Provider<UserAutocompleteLoaderUserCase> {
-  const UserHistoryLoaderUseCaseProvider._()
+final class UserAutcompleteLoaderUseCaseProvider extends $FunctionalProvider<
+        UserAutocompleteLoaderUserCase,
+        UserAutocompleteLoaderUserCase,
+        UserAutocompleteLoaderUserCase>
+    with $Provider<UserAutocompleteLoaderUserCase> {
+  const UserAutcompleteLoaderUseCaseProvider._()
       : super(
           from: null,
           argument: null,
@@ -30,7 +34,8 @@ final class UserHistoryLoaderUseCaseProvider extends $FunctionalProvider<UserAut
 
   @$internal
   @override
-  $ProviderElement<UserAutocompleteLoaderUserCase> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<UserAutocompleteLoaderUserCase> $createElement(
+          $ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
@@ -42,9 +47,11 @@ final class UserHistoryLoaderUseCaseProvider extends $FunctionalProvider<UserAut
   Override overrideWithValue(UserAutocompleteLoaderUserCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<UserAutocompleteLoaderUserCase>(value),
+      providerOverride:
+          $SyncValueProvider<UserAutocompleteLoaderUserCase>(value),
     );
   }
 }
 
-String _$userAutcompleteLoaderUseCaseHash() => r'1d958bd847c907afe42edbc26c8bbe09a8fc30d7';
+String _$userAutcompleteLoaderUseCaseHash() =>
+    r'535df509f936ac56cfdf2fa6cc2077010e1d0992';

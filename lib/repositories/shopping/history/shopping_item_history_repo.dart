@@ -21,7 +21,7 @@ class ShoppingItemHistoryRepo {
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider);
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
-  String get _userId => _ref.read(authUserProvider)!.id;
+  String get _userId => _ref.read(userAuthProvider)!.id;
 
   static final _zeroTime = DateTime.fromMillisecondsSinceEpoch(0);
   DateTime _retrievedUntil = _zeroTime;
@@ -43,7 +43,7 @@ class ShoppingItemHistoryRepo {
   Future<void> deleteHistoryEntry(String itemId) async {
     await _db.itemHistoryDao.deleteById(itemId);
     final docRef = _fs.collection('userHistory').doc(_userId).collection('items').doc(itemId);
-    await docRef.delete();
+    await docRef.update({'deleted': true});
   }
 
   Future<List<ShoppingItemHistory>> searchHistory(String query) async {
@@ -58,6 +58,7 @@ class ShoppingItemHistoryRepo {
         usageCount: entry.usageCount,
         lastUsed: DateTime.fromMillisecondsSinceEpoch(entry.lastUsed),
         categories: entry.categories.split('|'),
+        deleted: false,
       );
     }).toList();
   }

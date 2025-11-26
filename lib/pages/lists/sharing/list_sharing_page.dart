@@ -8,7 +8,7 @@ import '../../../application/list_invite_providers.dart';
 import '../../../application/list_provider.dart';
 import '../../../models/list_invite.dart';
 import '../../../models/list_summary.dart';
-import '../../../models/user/user.dart';
+import '../../../models/user/user_auth.dart';
 import '../../../repositories/list_invite_repo.dart';
 
 class ListSharingPage extends ConsumerStatefulWidget {
@@ -69,7 +69,7 @@ class _ListSharingPageState extends ConsumerState<ListSharingPage> {
 
 class ListUserTile extends StatelessWidget {
   const ListUserTile({required this.user, required this.isOwner, super.key});
-  final User user;
+  final UserAuth user;
   final bool isOwner;
 
   @override

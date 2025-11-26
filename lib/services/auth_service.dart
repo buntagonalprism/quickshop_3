@@ -1,31 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/user/user.dart' as model;
+import '../models/user/user_auth.dart';
 import 'firebase_auth.dart';
 
 part 'auth_service.g.dart';
 
-// Code-gen is currently broken when there are multiple imports declaring
-// a type with the same name, so we have declare the provider manually
-// See: https://github.com/rrousselGit/riverpod/issues/4372
-final authUserProvider = Provider<model.User?>((ref) {
+@Riverpod(keepAlive: true)
+UserAuth? userAuth(Ref ref) {
   // Watch for changes on the auth user stream, but we can get the current user synchronously.
   final _ = ref.watch(_authUserStreamProvider);
   final authService = ref.watch(authServiceProvider);
   return authService.currentUser;
-});
+}
 
 @Riverpod(keepAlive: true)
 bool loggedIn(Ref ref) {
-  return ref.watch(authUserProvider) != null;
+  return ref.watch(userAuthProvider) != null;
 }
 
 @Riverpod(keepAlive: true)
 String? userId(Ref ref) {
-  final user = ref.watch(authUserProvider);
+  final user = ref.watch(userAuthProvider);
   return user?.id;
 }
 
@@ -38,7 +35,7 @@ class AuthService {
   final FirebaseAuth _auth;
   AuthService(this._auth);
 
-  model.User? get currentUser {
+  UserAuth? get currentUser {
     final authUser = _auth.currentUser;
     return authUser != null ? _fromFirebase(authUser) : null;
   }
@@ -75,8 +72,8 @@ class AuthService {
     }
   }
 
-  model.User _fromFirebase(User user) {
-    return model.User(
+  UserAuth _fromFirebase(User user) {
+    return UserAuth(
       id: user.uid,
       name: user.displayName ?? '',
       email: user.email ?? '',
