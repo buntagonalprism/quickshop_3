@@ -9,16 +9,6 @@ abstract class UserProfile with _$UserProfile {
   const factory UserProfile({
     required String userId,
     required DateTime lastHistoryUpdate,
-    required HiddenSuggestions hiddenSuggestions,
+    required int lastHiddenSuggestionsVersion,
   }) = _UserHistory;
-}
-
-@freezed
-abstract class HiddenSuggestions with _$HiddenSuggestions {
-  const HiddenSuggestions._();
-
-  const factory HiddenSuggestions({
-    required List<String> items,
-    required List<String> categories,
-  }) = _HiddenSuggestions;
 }

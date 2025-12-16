@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_autocomplete_loader_use_case.dart';
+part of 'user_history_loader_use_case.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -14,10 +14,9 @@ const userAutcompleteLoaderUseCaseProvider =
     UserAutcompleteLoaderUseCaseProvider._();
 
 final class UserAutcompleteLoaderUseCaseProvider extends $FunctionalProvider<
-        UserAutocompleteLoaderUserCase,
-        UserAutocompleteLoaderUserCase,
-        UserAutocompleteLoaderUserCase>
-    with $Provider<UserAutocompleteLoaderUserCase> {
+    UserHistoryLoaderUseCase,
+    UserHistoryLoaderUseCase,
+    UserHistoryLoaderUseCase> with $Provider<UserHistoryLoaderUseCase> {
   const UserAutcompleteLoaderUseCaseProvider._()
       : super(
           from: null,
@@ -34,24 +33,23 @@ final class UserAutcompleteLoaderUseCaseProvider extends $FunctionalProvider<
 
   @$internal
   @override
-  $ProviderElement<UserAutocompleteLoaderUserCase> $createElement(
+  $ProviderElement<UserHistoryLoaderUseCase> $createElement(
           $ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  UserAutocompleteLoaderUserCase create(Ref ref) {
+  UserHistoryLoaderUseCase create(Ref ref) {
     return userAutcompleteLoaderUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UserAutocompleteLoaderUserCase value) {
+  Override overrideWithValue(UserHistoryLoaderUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<UserAutocompleteLoaderUserCase>(value),
+      providerOverride: $SyncValueProvider<UserHistoryLoaderUseCase>(value),
     );
   }
 }
 
 String _$userAutcompleteLoaderUseCaseHash() =>
-    r'535df509f936ac56cfdf2fa6cc2077010e1d0992';
+    r'0aab69bf4a547faec20094376bfd2c81c1299689';

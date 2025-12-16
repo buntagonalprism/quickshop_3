@@ -89,16 +89,6 @@ class ShoppingItemAutocompleteUseCase {
     return [...startMatches, ...middleMatches];
   }
 
-  Future<void> hideSuggestion(ShoppingItemAutocomplete suggestion) async {
-    assert(suggestion.source == ShoppingItemAutocompleteSource.suggested, 'Only suggestions can be hidden');
-
-    // Hide the suggestion locally
-    await _suggestionRepo.hideSuggestion(suggestion.sourceId);
-
-    // Save the hidden suggestion to the user's profile to sync across devices
-    await _ref.read(userProfileRepoProvider).hideItemSuggestion(suggestion.sourceId);
-  }
-
   Future<void> removeHistoryEntry(ShoppingItemAutocomplete historyEntry) async {
     assert(historyEntry.source == ShoppingItemAutocompleteSource.history, 'Only history entries can be removed');
 

@@ -31,7 +31,7 @@ class UserProfileRepo {
         _cachedUserHistory = UserProfile(
           userId: user.id,
           lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(0),
-          hiddenSuggestions: const HiddenSuggestions(items: [], categories: []),
+          lastHiddenSuggestionsVersion: 0,
         );
       } else {
         _cachedUserHistory = _fromFirestore(user.id, snapshot);
@@ -40,7 +40,7 @@ class UserProfileRepo {
     });
   }
 
-  Future<void> hideItemSuggestion(String suggestionId) async {
+  void incrementHiddenSuggestionsVersion(UserProfileTransaction tx) async {
     final user = _ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User not signed in');
@@ -48,13 +48,9 @@ class UserProfileRepo {
     final fs = _ref.read(firestoreProvider);
     final userRef = fs.collection(collectionName).doc(user.id);
 
-    final hiddenItems = _cachedUserHistory.hiddenSuggestions.items.toSet();
-    if (hiddenItems.add(suggestionId)) {
-      final updatedHistory = _cachedUserHistory.copyWith.hiddenSuggestions(
-        items: hiddenItems.toList()..sort(),
-      );
-      await userRef.set(_toFirestore(updatedHistory));
-    }
+    tx.batch.update(userRef, {
+      _Fields.lastHiddenSuggestionsVersion: FieldValue.increment(1),
+    });
   }
 
   void setLastHistoryUpdate(UserProfileTransaction tx, DateTime newUpdateTime) {
@@ -70,27 +66,12 @@ class UserProfileRepo {
     return UserProfile(
       userId: userId,
       lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastHistoryUpdate]),
-      hiddenSuggestions: HiddenSuggestions(
-        items: (data[_Fields.hiddenSuggestions][_Fields.items] ?? []).cast<String>(),
-        categories: (data[_Fields.hiddenSuggestions][_Fields.categories] ?? []).cast<String>(),
-      ),
+      lastHiddenSuggestionsVersion: data[_Fields.lastHiddenSuggestionsVersion],
     );
-  }
-
-  Map<String, dynamic> _toFirestore(UserProfile userHistory) {
-    return {
-      _Fields.lastHistoryUpdate: userHistory.lastHistoryUpdate.millisecondsSinceEpoch,
-      _Fields.hiddenSuggestions: {
-        _Fields.items: userHistory.hiddenSuggestions.items,
-        _Fields.categories: userHistory.hiddenSuggestions.categories,
-      },
-    };
   }
 }
 
 class _Fields {
   static const lastHistoryUpdate = 'lastHistoryUpdate';
-  static const hiddenSuggestions = 'hiddenSuggestions';
-  static const items = 'items';
-  static const categories = 'categories';
+  static const lastHiddenSuggestionsVersion = 'lastHiddenSuggestionsVersion';
 }
