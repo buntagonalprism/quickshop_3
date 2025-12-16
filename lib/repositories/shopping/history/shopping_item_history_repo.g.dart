@@ -22,7 +22,7 @@ final class ShoppingItemHistoryRepoProvider extends $FunctionalProvider<
           argument: null,
           retry: null,
           name: r'shoppingItemHistoryRepoProvider',
-          isAutoDispose: true,
+          isAutoDispose: false,
           dependencies: null,
           $allTransitiveDependencies: null,
         );
@@ -51,4 +51,4 @@ final class ShoppingItemHistoryRepoProvider extends $FunctionalProvider<
 }
 
 String _$shoppingItemHistoryRepoHash() =>
-    r'da407bd48ba7e0d8b74820aecbe99dd97140e1da';
+    r'09ce8c04217b99b2559fc2150dd3065d72de7d56';

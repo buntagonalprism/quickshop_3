@@ -369,13 +369,13 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
           menuChildren: widget.autocomplete.source == ShoppingItemAutocompleteSource.suggested
               ? [
                   MenuItemButton(
-                    child: const Text('Hide'),
+                    child: const Text('Hide suggestion'),
                     onPressed: () => _onHideSuggestion(widget.autocomplete),
                   )
                 ]
               : [
                   MenuItemButton(
-                    child: const Text('Edit'),
+                    child: const Text('Edit history entry'),
                     onPressed: () => _onEditHistoryEntry(widget.autocomplete),
                   ),
                   MenuItemButton(
@@ -434,6 +434,7 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
     );
     if (didConfirm) {
       await ref.read(hiddenSuggestionsUseCaseProvider).hideItemSuggestion(suggestion);
+      ref.invalidate(itemAutocompleteProvider(widget.listId));
     }
   }
 

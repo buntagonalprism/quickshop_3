@@ -23,7 +23,7 @@ final class ShoppingCategoryHistoryRepoProvider extends $FunctionalProvider<
           argument: null,
           retry: null,
           name: r'shoppingCategoryHistoryRepoProvider',
-          isAutoDispose: true,
+          isAutoDispose: false,
           dependencies: null,
           $allTransitiveDependencies: null,
         );
@@ -52,4 +52,4 @@ final class ShoppingCategoryHistoryRepoProvider extends $FunctionalProvider<
 }
 
 String _$shoppingCategoryHistoryRepoHash() =>
-    r'dec74a8c5d07a0a62de9aaafeb35f2dd52ef1a90';
+    r'64fa24b494e71bde42362ff3fc34255ccf2936a7';

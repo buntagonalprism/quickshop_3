@@ -12,7 +12,7 @@ import '../../user_profile_repo.dart';
 
 part 'shopping_category_history_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ShoppingCategoryHistoryRepo shoppingCategoryHistoryRepo(Ref ref) {
   return ShoppingCategoryHistoryRepo._(ref);
 }

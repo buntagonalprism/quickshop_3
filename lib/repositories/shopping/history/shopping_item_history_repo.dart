@@ -13,7 +13,7 @@ import '../../user_profile_transaction.dart';
 
 part 'shopping_item_history_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ShoppingItemHistoryRepo shoppingItemHistoryRepo(Ref ref) {
   return ShoppingItemHistoryRepo._(ref);
 }
