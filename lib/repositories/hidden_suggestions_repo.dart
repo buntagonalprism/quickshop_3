@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/user/hidden_suggestions.dart';
@@ -101,10 +102,47 @@ class HiddenSuggestionsRepo {
     final localeHiddenSuggestionsDoc =
         fs.collection(UserProfileRepo.collectionName).doc(user.id).collection(collectionName).doc(locale.languageCode);
 
-    tx.batch.update(localeHiddenSuggestionsDoc, {
-      _Fields.items: FieldValue.arrayUnion([itemId]),
+    tx.batch.set(
+      localeHiddenSuggestionsDoc,
+      _hiddenSuggestionsUpdates(locale, items: [itemId]),
+      SetOptions(merge: true),
+    );
+  }
+
+  void hideCategory(UserProfileTransaction tx, String categoryId) {
+    final user = _ref.read(userAuthProvider);
+    if (user == null) {
+      throw Exception('User not authenticated');
+    }
+    final locale = _ref.read(localeServiceProvider);
+    final fs = _ref.read(firestoreProvider);
+    final localeHiddenSuggestionsDoc =
+        fs.collection(UserProfileRepo.collectionName).doc(user.id).collection(collectionName).doc(locale.languageCode);
+
+    tx.batch.set(
+      localeHiddenSuggestionsDoc,
+      _hiddenSuggestionsUpdates(locale, categories: [categoryId]),
+      SetOptions(merge: true),
+    );
+  }
+
+  Map<String, dynamic> _hiddenSuggestionsUpdates(
+    Locale locale, {
+    List<String>? items,
+    List<String>? categories,
+  }) {
+    final updates = <String, dynamic>{
+      _Fields.locale: locale.languageCode,
+      _Fields.version: FieldValue.increment(1),
       _Fields.lastUpdated: DateTime.now().millisecondsSinceEpoch,
-    });
+    };
+    if (items != null) {
+      updates[_Fields.items] = FieldValue.arrayUnion(items);
+    }
+    if (categories != null) {
+      updates[_Fields.categories] = FieldValue.arrayUnion(categories);
+    }
+    return updates;
   }
 }
 
