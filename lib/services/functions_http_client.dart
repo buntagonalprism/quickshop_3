@@ -41,6 +41,10 @@ class FunctionsHttpClient {
     return _getResult(method: _Method.post, path: path, data: jsonEncode(data));
   }
 
+  Future<HttpResult> put(String path, [Map<String, dynamic>? data]) async {
+    return _getResult(method: _Method.put, path: path, data: data != null ? jsonEncode(data) : null);
+  }
+
   Future<HttpResult> _getResult({required _Method method, required String path, dynamic data}) async {
     final uri = Uri.parse(host + path);
     final headers = await _buildHeaders();
@@ -48,6 +52,7 @@ class FunctionsHttpClient {
     try {
       final request = switch (method) {
         _Method.post => client.post(uri, body: data, headers: headers),
+        _Method.put => client.put(uri, body: data, headers: headers),
         _Method.get => client.get(uri, headers: headers),
       };
       final response = await request.timeout(timeout);
@@ -186,5 +191,6 @@ class FunctionsHttpClient {
 
 enum _Method {
   post,
+  put,
   get,
 }

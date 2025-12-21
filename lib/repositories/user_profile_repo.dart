@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/user/user_profile.dart';
 import '../services/auth_service.dart';
 import '../services/firestore.dart';
+import '../services/functions_http_client.dart';
 import 'user_profile_transaction.dart';
 
 part 'user_profile_repo.g.dart';
@@ -28,6 +29,7 @@ class UserProfileRepo {
     }
     return fs.collection(collectionName).doc(user.id).snapshots().map((snapshot) {
       if (!snapshot.exists) {
+        _ref.read(functionsHttpClientProvider).put('/createUser');
         _cachedUserHistory = UserProfile(
           userId: user.id,
           lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(0),
