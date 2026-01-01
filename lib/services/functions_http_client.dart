@@ -28,7 +28,10 @@ class FunctionsHttpClient {
   FunctionsHttpClient(this.ref) {
     final settings = ref.read(settingsServiceProvider);
     if (settings.localBackendEnabled) {
-      basePath = 'http://${settings.localBackendHost}:$_defaultFunctionsEmulatorPort';
+      final emulator = _functionsEmulatorSettings;
+      // The Firebase emulator includes the Firebase project ID and region in the URL path:
+      // https://firebase.google.com/docs/functions/local-emulator#instrument_your_app_for_https_functions_emulation
+      basePath = 'http://${settings.localBackendHost}:${emulator.port}/${emulator.project}/${emulator.region}';
     } else {
       basePath = const String.fromEnvironment('QUICKSHOP_FUNCTIONS_URL');
     }
@@ -67,21 +70,14 @@ class FunctionsHttpClient {
 
       // Return success results
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        return HttpResult.success(
-          uri: uri.toString(),
-          response: response.body,
-          statusCode: response.statusCode,
-        );
+        return HttpResult.success(uri: uri.toString(), response: response.body, statusCode: response.statusCode);
       }
 
       // Log retryable errors to analytics
       if (const {429, 503}.contains(response.statusCode)) {
         return HttpResult.error(
           uri: uri.toString(),
-          error: HttpError.retryLater(
-            statusCode: response.statusCode,
-            response: response.body,
-          ),
+          error: HttpError.retryLater(statusCode: response.statusCode, response: response.body),
         );
       }
 
@@ -101,10 +97,7 @@ class FunctionsHttpClient {
 
       return HttpResult.error(
         uri: uri.toString(),
-        error: HttpError.unknownError(
-          statusCode: response.statusCode,
-          response: response.body,
-        ),
+        error: HttpError.unknownError(statusCode: response.statusCode, response: response.body),
       );
     }
     // Log timeouts to analytics
@@ -115,10 +108,7 @@ class FunctionsHttpClient {
         errorMessage: 'Request not completed within $timeout timeout out after $retries retries',
       );
       analytics.logEvent(event);
-      return HttpResult.error(
-        uri: uri.toString(),
-        error: const HttpError.timeout(),
-      );
+      return HttpResult.error(uri: uri.toString(), error: const HttpError.timeout());
     }
     // Log connection failures to analytics
     on SocketException catch (e) {
@@ -130,9 +120,7 @@ class FunctionsHttpClient {
       analytics.logEvent(event);
       return HttpResult.error(
         uri: uri.toString(),
-        error: HttpError.connectionFailed(
-          errorMessage: e.message,
-        ),
+        error: HttpError.connectionFailed(errorMessage: e.message),
       );
     }
     // Log other unexpected errors to analytics and to Sentry for debugging
@@ -146,10 +134,7 @@ class FunctionsHttpClient {
       analytics.logEvent(event);
       return HttpResult.error(
         uri: uri.toString(),
-        error: HttpError.unknownError(
-          statusCode: connectionErrorStatusCode,
-          response: e.toString(),
-        ),
+        error: HttpError.unknownError(statusCode: connectionErrorStatusCode, response: e.toString()),
       );
     }
   }
@@ -160,31 +145,26 @@ class FunctionsHttpClient {
       retries: retries,
       when: (response) {
         if (const {429, 503}.contains(response.statusCode)) {
-          analytics.logEvent(AnalyticsEvent.httpRetry(
-            uri: uri.toString(),
-            reason: '${response.statusCode} response from functions',
-          ));
+          _logHttpRetry(uri, '${response.statusCode} response from functions');
           return true;
         }
         return false;
       },
       whenError: (error, _) {
         if (error is SocketException) {
-          analytics.logEvent(AnalyticsEvent.httpRetry(
-            uri: uri.toString(),
-            reason: 'SocketException: ${error.message}',
-          ));
+          _logHttpRetry(uri, 'SocketException: ${error.message}');
           return true;
         } else if (error is TimeoutException) {
-          analytics.logEvent(AnalyticsEvent.httpRetry(
-            uri: uri.toString(),
-            reason: 'TimeoutException: ${error.message}',
-          ));
+          _logHttpRetry(uri, 'TimeoutException: ${error.message}');
           return true;
         }
         return false;
       },
     );
+  }
+
+  void _logHttpRetry(Uri uri, String reason) {
+    return analytics.logEvent(AnalyticsEvent.httpRetry(uri: uri.toString(), reason: reason));
   }
 
   Future<Map<String, String>> _buildHeaders() async {
@@ -203,4 +183,4 @@ enum _Method {
   get,
 }
 
-const _defaultFunctionsEmulatorPort = 5001;
+const _functionsEmulatorSettings = (port: 5001, project: 'quickshop-dev', region: 'australia-southeast1');
