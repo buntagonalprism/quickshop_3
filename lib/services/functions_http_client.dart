@@ -9,6 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../analytics/analytics.dart';
 import '../analytics/crash_reporter.dart';
 import 'http_result.dart';
+import 'settings_service.dart';
 import 'user_token_service.dart';
 
 part 'functions_http_client.g.dart';
@@ -24,13 +25,20 @@ FunctionsHttpClient functionsHttpClient(Ref ref) {
 ///   network errors that may be retried. These are logged to analytics for monitoring.
 /// - [HttpResultStatus.unknownError] represents an unexpected error that is reported to Sentry.
 class FunctionsHttpClient {
-  FunctionsHttpClient(this.ref);
+  FunctionsHttpClient(this.ref) {
+    final settings = ref.read(settingsServiceProvider);
+    if (settings.localBackendEnabled) {
+      basePath = 'http://${settings.localBackendHost}:$_defaultFunctionsEmulatorPort';
+    } else {
+      basePath = const String.fromEnvironment('QUICKSHOP_FUNCTIONS_URL');
+    }
+  }
 
   final Ref ref;
   Analytics get analytics => ref.read(analyticsProvider);
   CrashReporter get crashReporter => ref.read(crashReporterProvider);
 
-  final host = const String.fromEnvironment('QUICKSHOP_FUNCTIONS_HOST');
+  late final String basePath;
 
   final Duration timeout = const Duration(seconds: 5);
 
@@ -46,7 +54,7 @@ class FunctionsHttpClient {
   }
 
   Future<HttpResult> _getResult({required _Method method, required String path, dynamic data}) async {
-    final uri = Uri.parse(host + path);
+    final uri = Uri.parse(basePath + path);
     final headers = await _buildHeaders();
     final client = _buildClient(uri);
     try {
@@ -194,3 +202,5 @@ enum _Method {
   put,
   get,
 }
+
+const _defaultFunctionsEmulatorPort = 5001;

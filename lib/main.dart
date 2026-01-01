@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'services/firebase/options.dart';
+import 'services/settings_service.dart';
 import 'services/shared_preferences.dart';
 
 Future<void> main() async {
@@ -34,9 +35,10 @@ Future<void> main() async {
 }
 
 Future<void> _main() async {
-  final prefs = await SharedPreferencesWithCache.create(
-    cacheOptions: const SharedPreferencesWithCacheOptions(),
-  );
+  final (prefs, settings) = await (
+    SharedPreferencesWithCache.create(cacheOptions: const SharedPreferencesWithCacheOptions()),
+    SettingsService.init(),
+  ).wait;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -49,6 +51,7 @@ Future<void> _main() async {
   runApp(ProviderScope(
     overrides: [
       sharedPrefsProvider.overrideWithValue(prefs),
+      settingsServiceProvider.overrideWithValue(settings),
     ],
     child: const MyApp(),
   ));

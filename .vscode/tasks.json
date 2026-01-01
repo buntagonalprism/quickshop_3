@@ -16,6 +16,19 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Setup Local Settings",
+            "type": "shell",
+            "command": "dart",
+            "args": [
+                "run",
+                "tool/setup_local_settings.dart"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent"
+            }
         }
     ]
 }

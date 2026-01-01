@@ -8,6 +8,7 @@
             "name": "Local (debug)",
             "request": "launch",    
             "type": "dart",
+            "preLaunchTask": "Setup Local Settings",
             "args": [
                 "--flavor",
                 "dev",

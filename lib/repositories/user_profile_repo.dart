@@ -9,7 +9,7 @@ import 'user_profile_transaction.dart';
 
 part 'user_profile_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 UserProfileRepo userProfileRepo(Ref ref) {
   return UserProfileRepo(ref);
 }
@@ -23,13 +23,14 @@ class UserProfileRepo {
 
   Stream<UserProfile?> getProfile() {
     final fs = _ref.read(firestoreProvider);
-    final user = _ref.watch(userAuthProvider);
+    final user = _ref.read(userAuthProvider);
+    final httpClient = _ref.read(functionsHttpClientProvider);
     if (user == null) {
       return Stream.value(null);
     }
     return fs.collection(collectionName).doc(user.id).snapshots().map((snapshot) {
       if (!snapshot.exists) {
-        _ref.read(functionsHttpClientProvider).put('/createUser');
+        httpClient.put('/createUser');
         _cachedUserHistory = UserProfile(
           userId: user.id,
           lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(0),
@@ -50,17 +51,13 @@ class UserProfileRepo {
     final fs = _ref.read(firestoreProvider);
     final userRef = fs.collection(collectionName).doc(user.id);
 
-    tx.batch.update(userRef, {
-      _Fields.lastHiddenSuggestionsVersion: FieldValue.increment(1),
-    });
+    tx.batch.update(userRef, {_Fields.lastHiddenSuggestionsVersion: FieldValue.increment(1)});
   }
 
   void setLastHistoryUpdate(UserProfileTransaction tx, DateTime newUpdateTime) {
     final fs = _ref.read(firestoreProvider);
     final userRef = fs.collection(collectionName).doc(_cachedUserHistory.userId);
-    tx.batch.update(userRef, {
-      _Fields.lastHistoryUpdate: newUpdateTime.millisecondsSinceEpoch,
-    });
+    tx.batch.update(userRef, {_Fields.lastHistoryUpdate: newUpdateTime.millisecondsSinceEpoch});
   }
 
   UserProfile _fromFirestore(String userId, DocumentSnapshot<Map<String, dynamic>> snapshot) {

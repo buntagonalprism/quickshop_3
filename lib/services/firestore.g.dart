@@ -48,4 +48,4 @@ final class FirestoreProvider extends $FunctionalProvider<FirebaseFirestore,
   }
 }
 
-String _$firestoreHash() => r'117761dc82f4ff64fcadf5d342eab6aedc45171e';
+String _$firestoreHash() => r'2eecd5544b9c86db45995b92e5e5d48821af75b9';
