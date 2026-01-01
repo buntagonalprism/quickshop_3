@@ -26,8 +26,7 @@ void main() {
     _cancelCount = 0;
   });
 
-  test(
-      'GIVEN an auto dispose provider '
+  test('GIVEN an auto dispose provider '
       'WHEN a listener is attached '
       'THEN it is built for the first time', () {
     fakeAsync((fakeAsync) {
@@ -41,22 +40,21 @@ void main() {
       expect(_rebuildCount, 0);
 
       // Attaching a listener should initialise the provider
-      final subscription = container.listen(testProvider, (_, __) {});
+      final subscription = container.listen(testProvider, (_, _) {});
       expect(_rebuildCount, 1);
 
       subscription.close();
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider '
+  test('GIVEN an auto dispose provider '
       'WHEN the last listener is detached '
       'THEN it disposes itself', () {
     fakeAsync((async) {
       final container = createContainer();
 
       // Create the subscription on the provider, triggering its build
-      final subscription = container.listen(testProvider, (_, __) {});
+      final subscription = container.listen(testProvider, (_, _) {});
       expect(_rebuildCount, 1);
       expect(_disposeCount, 0);
       expect(_cancelCount, 0);

@@ -73,8 +73,7 @@ void main() {
     _cancelCount = 0;
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'WHEN the last listener is detached '
       'THEN it is only disposed after the delay has elapsed', () {
     fakeAsync((fakeAsync) {
@@ -82,7 +81,7 @@ void main() {
       final container = createContainer(overrides: [auth.providerOverride]);
 
       // Create the subscription on the provider, triggering its build
-      final subscription = container.listen(delayDisposeProvider, (_, __) {});
+      final subscription = container.listen(delayDisposeProvider, (_, _) {});
       expect(_disposeCount, 0);
       expect(_cancelCount, 0);
 
@@ -105,14 +104,13 @@ void main() {
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'WHEN the user logs out while the provider has an active listener '
       'THEN the provider is rebuilt immediately', () {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
-      final subscription = container.listen(delayDisposeProvider, (_, __) {});
+      final subscription = container.listen(delayDisposeProvider, (_, _) {});
 
       expect(_rebuildCount, 1);
       expect(_disposeCount, 0);
@@ -134,15 +132,14 @@ void main() {
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'WHEN the user logs out while the provider is in a delayed dispose state '
       'THEN the provider is disposed immediately and not rebuilt', () {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
-      container.listen(userIdProvider, (_, __) {});
-      final subscription = container.listen(delayDisposeProvider, (_, __) {});
+      container.listen(userIdProvider, (_, _) {});
+      final subscription = container.listen(delayDisposeProvider, (_, _) {});
 
       expect(_rebuildCount, 1);
       expect(_disposeCount, 0);
@@ -162,14 +159,13 @@ void main() {
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'WHEN upstream data changes while the provider has an active listener '
       'THEN the provider is rebuilt immediately', () {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
-      final subscription = container.listen(delayDisposeProvider, (_, __) {});
+      final subscription = container.listen(delayDisposeProvider, (_, _) {});
 
       expect(_rebuildCount, 1);
       expect(_disposeCount, 0);
@@ -187,15 +183,14 @@ void main() {
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'WHEN upstream data changes while the provider is in a delayed dispose state '
       'THEN the provider is disposed immediately and not rebuilt', () {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
-      container.listen(upstreamProvider, (_, __) {});
-      final subscription = container.listen(delayDisposeProvider, (_, __) {});
+      container.listen(upstreamProvider, (_, _) {});
+      final subscription = container.listen(delayDisposeProvider, (_, _) {});
 
       expect(_rebuildCount, 1);
 
@@ -214,15 +209,14 @@ void main() {
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'WHEN there are multiple upstream data changes while the provider is in a delayed dispose state '
       'THEN the provider is disposed only once and not rebuilt', () {
     fakeAsync((fakeAsync) {
       final auth = FakeFirebaseAuth(user: buildUser());
       final container = createContainer(overrides: [auth.providerOverride]);
-      container.listen(upstreamProvider, (_, __) {});
-      final subscription = container.listen(delayDisposeProvider, (_, __) {});
+      container.listen(upstreamProvider, (_, _) {});
+      final subscription = container.listen(delayDisposeProvider, (_, _) {});
 
       expect(_rebuildCount, 1);
 
@@ -245,8 +239,7 @@ void main() {
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'WHEN a new listener attaches while the provider is in a delayed dispose state '
       'THEN it should immediately receive the cached value without rebuilding the provider', () {
     fakeAsync((fakeAsync) {
@@ -276,13 +269,9 @@ void main() {
       // When a new listener is added it should immediately receive the cached value without needing
       // to rebuild the provider
       int nextListenerEmittedValue = 0;
-      final nextSubscription = container.listen(
-        delayDisposeProvider,
-        (_, newState) {
-          nextListenerEmittedValue = newState;
-        },
-        fireImmediately: true,
-      );
+      final nextSubscription = container.listen(delayDisposeProvider, (_, newState) {
+        nextListenerEmittedValue = newState;
+      }, fireImmediately: true);
       expect(nextListenerEmittedValue, 42);
       expect(_rebuildCount, 2);
 
@@ -291,8 +280,7 @@ void main() {
     });
   });
 
-  test(
-      'GIVEN an auto dispose provider with delay dispose '
+  test('GIVEN an auto dispose provider with delay dispose '
       'AND the provider is in a delayed dispose state '
       'WHEN upstream data changes while the upstream is listened to '
       'AND a new downstream listener is subsequently attached '
@@ -302,7 +290,7 @@ void main() {
       final container = createContainer(overrides: [auth.providerOverride]);
       // The upstream provider must be listened to; otherwise it pauses its internal Stream
       // subscription and does not receive updates emitted on the Stream.
-      container.listen(upstreamProvider, (_, __) {});
+      container.listen(upstreamProvider, (_, _) {});
       int emittedValue = 0;
       final subscription = container.listen(delayDisposeProvider, (_, newState) {
         emittedValue = newState;
@@ -333,13 +321,9 @@ void main() {
 
       // When a new listener is added the provider should be rebuilt with the new upstream data
       int nextListenerEmittedValue = 0;
-      final nextSubscription = container.listen(
-        delayDisposeProvider,
-        (_, newState) {
-          nextListenerEmittedValue = newState;
-        },
-        fireImmediately: true,
-      );
+      final nextSubscription = container.listen(delayDisposeProvider, (_, newState) {
+        nextListenerEmittedValue = newState;
+      }, fireImmediately: true);
       fakeAsync.elapse(_oneEventLoop);
       expect(nextListenerEmittedValue, 43);
       expect(_rebuildCount, 3);

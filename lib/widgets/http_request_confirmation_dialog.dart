@@ -48,10 +48,7 @@ class _LeaveListConfirmationDialogState extends ConsumerState<HttpRequestConfirm
             },
             child: Text(widget.cancelAction),
           ),
-          TextButton(
-            onPressed: onConfirm,
-            child: Text(widget.confirmationAction),
-          ),
+          TextButton(onPressed: onConfirm, child: Text(widget.confirmationAction)),
         ],
       );
     }
@@ -60,12 +57,7 @@ class _LeaveListConfirmationDialogState extends ConsumerState<HttpRequestConfirm
         children: [
           const SizedBox(height: 20, width: 20, child: CircularProgressIndicator()),
           const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              widget.requestInProgressMessage,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
+          Expanded(child: Text(widget.requestInProgressMessage, style: Theme.of(context).textTheme.bodyLarge)),
         ],
       ),
     );
@@ -78,7 +70,7 @@ class _LeaveListConfirmationDialogState extends ConsumerState<HttpRequestConfirm
     final result = await widget.onConfirm();
 
     result.when(
-      success: (_, __, ___) {
+      success: (_, _, _) {
         widget.onSuccess(result as HttpResultSuccess);
       },
       error: (_, e) {

@@ -41,8 +41,8 @@ String _errorTitle(HttpError error) {
   return error.when(
     timeout: () => 'Request timed out',
     connectionFailed: (_) => 'Connection failed',
-    retryLater: (_, __) => 'Server unavailable',
-    unknownError: (_, __) => 'Request failed',
+    retryLater: (_, _) => 'Server unavailable',
+    unknownError: (_, _) => 'Request failed',
   );
 }
 
@@ -51,8 +51,7 @@ String _errorMessage(HttpError error) {
     timeout: () =>
         'The request did not complete in the expected time. Please check your network connection and try again.',
     connectionFailed: (_) => 'Please check your network connection and try again.',
-    retryLater: (_, __) =>
-        'The server cannot currently handle the request at this time. Please try again later.',
-    unknownError: (_, __) => 'An unexpected error occured and the request could not be completed.',
+    retryLater: (_, _) => 'The server cannot currently handle the request at this time. Please try again later.',
+    unknownError: (_, _) => 'An unexpected error occured and the request could not be completed.',
   );
 }

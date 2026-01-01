@@ -37,28 +37,26 @@ MockDocumentSnapshot itemSnapshot({
     'type': 'item',
     'name': 'Item $id',
     'completed': completed,
-    'sortKey': {'primary': primary, 'secondary': secondary}
+    'sortKey': {'primary': primary, 'secondary': secondary},
   });
 }
 
-MockDocumentSnapshot headingSnapshot({
-  required String id,
-  int primary = 0,
-  String secondary = '',
-}) {
+MockDocumentSnapshot headingSnapshot({required String id, int primary = 0, String secondary = ''}) {
   return MockDocumentSnapshot(id, {
     'type': 'heading',
     'name': 'Heading $id',
-    'sortKey': {'primary': primary, 'secondary': secondary}
+    'sortKey': {'primary': primary, 'secondary': secondary},
   });
 }
 
 MockQuerySnapshot itemsSnapshot(List<UserSortKey> sortKeys) {
-  return MockQuerySnapshot(sortKeys
-      .asMap()
-      .entries
-      .map((e) => itemSnapshot(id: e.key.toString(), primary: e.value.primary, secondary: e.value.secondary))
-      .toList());
+  return MockQuerySnapshot(
+    sortKeys
+        .asMap()
+        .entries
+        .map((e) => itemSnapshot(id: e.key.toString(), primary: e.value.primary, secondary: e.value.secondary))
+        .toList(),
+  );
 }
 
 UserSortKey sortKey(int primary, String secondary) => UserSortKey(primary: primary, secondary: secondary);
@@ -94,11 +92,13 @@ void main() {
   setUp(() {
     fakeAuth = FakeFirebaseAuth(user: buildUser());
     mockFirestore = MockFirebaseFirestore();
-    container = createContainer(overrides: [
-      fakeAuth.providerOverride,
-      firestoreProvider.overrideWith((ref) => mockFirestore),
-      listRepoProvider.overrideWith((ref) => listRepo),
-    ]);
+    container = createContainer(
+      overrides: [
+        fakeAuth.providerOverride,
+        firestoreProvider.overrideWith((ref) => mockFirestore),
+        listRepoProvider.overrideWith((ref) => listRepo),
+      ],
+    );
 
     itemsCollection = MockCollectionReference();
     when(() => mockFirestore.collection('lists/$listId/items')).thenReturn(itemsCollection);
@@ -111,7 +111,7 @@ void main() {
     // time are updated whenever checklist entries are modified
     listRepo = MockListRepo();
     when(() => listRepo.getAllLists()).thenAnswer((_) => Stream.value([list]));
-    container.listen(listsProvider, (_, __) {});
+    container.listen(listsProvider, (_, _) {});
   });
 
   tearDown(() {
@@ -119,8 +119,7 @@ void main() {
   });
 
   group('Loading entries ', () {
-    test(
-        'WHEN notifier is first created '
+    test('WHEN notifier is first created '
         'THEN it should load the entries from Firestore', () {
       final entries = container.read(provider);
 
@@ -128,8 +127,7 @@ void main() {
       expect(entries.isLoading, isTrue);
     });
 
-    test(
-        'WHEN the items collection is empty '
+    test('WHEN the items collection is empty '
         'THEN the notifier should return an empty list', () async {
       final entriesSubscription = container.testListen(provider);
 
@@ -139,8 +137,7 @@ void main() {
       expect(entries.requireValue, isEmpty);
     });
 
-    test(
-        'WHEN the items collection has entries '
+    test('WHEN the items collection has entries '
         'THEN the notifier should return the entries', () async {
       final entriesSubscription = container.testListen(provider);
 
@@ -149,18 +146,18 @@ void main() {
           'type': 'item',
           'name': 'Item 1',
           'completed': false,
-          'sortKey': {'primary': 0, 'secondary': ''}
+          'sortKey': {'primary': 0, 'secondary': ''},
         }),
         MockDocumentSnapshot('2', {
           'type': 'item',
           'name': 'Item 2',
           'completed': true,
-          'sortKey': {'primary': 1, 'secondary': 'abcd'}
+          'sortKey': {'primary': 1, 'secondary': 'abcd'},
         }),
         MockDocumentSnapshot('3', {
           'type': 'heading',
           'name': 'Heading 1',
-          'sortKey': {'primary': 2, 'secondary': '1234'}
+          'sortKey': {'primary': 2, 'secondary': '1234'},
         }),
       ];
 
@@ -188,8 +185,7 @@ void main() {
       ]);
     });
 
-    test(
-        'WHEN the items collection has an error'
+    test('WHEN the items collection has an error'
         'THEN the notifier should return an error', () async {
       final entriesSubscription = container.testListen(provider);
 
@@ -203,8 +199,7 @@ void main() {
       expect(entries.hasError, isTrue);
     });
 
-    test(
-        'WHEN the user has just left the list '
+    test('WHEN the user has just left the list '
         'THEN the notifier should enter a loading state', () async {
       final entriesSubscription = container.testListen(provider);
 
@@ -213,8 +208,8 @@ void main() {
           'type': 'item',
           'name': 'Item 1',
           'completed': false,
-          'sortKey': {'primary': 0, 'secondary': ''}
-        })
+          'sortKey': {'primary': 0, 'secondary': ''},
+        }),
       ];
       await itemsController.addAndPump(MockQuerySnapshot(data));
       var entries = entriesSubscription.read();
@@ -235,18 +230,18 @@ void main() {
 
     // Helper function to create the expected data for a new item
     Map<String, dynamic> newItemJson(int primary, String secondary) => {
-          'type': 'item',
-          'name': itemName,
-          'completed': false,
-          'sortKey': {'primary': primary, 'secondary': secondary}
-        };
+      'type': 'item',
+      'name': itemName,
+      'completed': false,
+      'sortKey': {'primary': primary, 'secondary': secondary},
+    };
 
     // Helper function to create the expected data for a new heading
     Map<String, dynamic> newHeaderJson(int primary, String secondary) => {
-          'type': 'heading',
-          'name': headingName,
-          'sortKey': {'primary': primary, 'secondary': secondary}
-        };
+      'type': 'heading',
+      'name': headingName,
+      'sortKey': {'primary': primary, 'secondary': secondary},
+    };
 
     late MockBatch batch;
     late MockDocumentReference newEntryDoc;
@@ -258,8 +253,7 @@ void main() {
       when(() => itemsCollection.doc()).thenReturn(newEntryDoc);
     });
 
-    test(
-        'WHEN inserting an item into an empty list '
+    test('WHEN inserting an item into an empty list '
         'THEN it should have primary sort index of 0', () async {
       container.testListen(provider);
       await itemsController.addAndPump(MockQuerySnapshot([]));
@@ -269,8 +263,7 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-        'WHEN inserting a heading into an empty list '
+    test('WHEN inserting a heading into an empty list '
         'THEN it should have primary sort index of 0', () async {
       container.testListen(provider);
       await itemsController.addAndPump(MockQuerySnapshot([]));
@@ -280,8 +273,7 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-        'WHEN inserting items at beginning of list '
+    test('WHEN inserting items at beginning of list '
         'THEN they should have a primary sort index one less than the first item', () async {
       final items = itemsSnapshot([sortKey(-4, 'abcd'), sortKey(-3, 'efgh')]);
       container.testListen(provider);
@@ -292,8 +284,7 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-        'WHEN inserting headings at beginning of list '
+    test('WHEN inserting headings at beginning of list '
         'THEN they should have a primary sort index one less than the first item', () async {
       final items = itemsSnapshot([sortKey(-4, 'abcd'), sortKey(-3, 'efgh')]);
       container.testListen(provider);
@@ -304,8 +295,7 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-        'WHEN inserting items at end of list '
+    test('WHEN inserting items at end of list '
         'THEN they should have a primary sort index one greater than the last item', () async {
       final items = itemsSnapshot([sortKey(4, 'abcd'), sortKey(5, 'efgh')]);
       container.testListen(provider);
@@ -316,8 +306,7 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-        'WHEN inserting headings at end of list '
+    test('WHEN inserting headings at end of list '
         'THEN they should have a primary sort index one greater than the last item', () async {
       final items = itemsSnapshot([sortKey(4, 'abcd'), sortKey(5, 'efgh')]);
       container.testListen(provider);
@@ -328,8 +317,7 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-        'WHEN inserting items after another entry '
+    test('WHEN inserting items after another entry '
         'AND there is a primary sort key gap of two or more '
         'THEN inserted item should have a primary sort key between the two items', () async {
       final items = itemsSnapshot([sortKey(2, 'abcd'), sortKey(4, 'efgh')]);
@@ -342,24 +330,20 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-      'WHEN inserting headings after another entry '
-      'AND there is a primary sort key gap of two or more '
-      'THEN inserted heading should have a primary sort key between the two items',
-      () async {
-        final items = itemsSnapshot([sortKey(2, 'abcd'), sortKey(4, 'efgh')]);
-        container.testListen(provider);
-        await itemsController.addAndPump(items);
-        final entries = container.read(provider).requireValue;
-        container.read(provider.notifier).addHeadingAfter(headingName, entries[0]);
+    test('WHEN inserting headings after another entry '
+        'AND there is a primary sort key gap of two or more '
+        'THEN inserted heading should have a primary sort key between the two items', () async {
+      final items = itemsSnapshot([sortKey(2, 'abcd'), sortKey(4, 'efgh')]);
+      container.testListen(provider);
+      await itemsController.addAndPump(items);
+      final entries = container.read(provider).requireValue;
+      container.read(provider.notifier).addHeadingAfter(headingName, entries[0]);
 
-        verify(() => batch.set(newEntryDoc, newHeaderJson(3, ''))).called(1);
-        verify(() => batch.commit()).called(1);
-      },
-    );
+      verify(() => batch.set(newEntryDoc, newHeaderJson(3, ''))).called(1);
+      verify(() => batch.commit()).called(1);
+    });
 
-    test(
-        'WHEN inserting items after another entry '
+    test('WHEN inserting items after another entry '
         'AND there is no primary sort key gap '
         'THEN the inserted item should have the median secondary sort key', () async {
       final items = itemsSnapshot([sortKey(2, '1111'), sortKey(2, '3333')]);
@@ -372,8 +356,7 @@ void main() {
       verify(() => batch.commit()).called(1);
     });
 
-    test(
-        'WHEN inserting headings after another entry '
+    test('WHEN inserting headings after another entry '
         'AND there is no primary sort key gap '
         'THEN the inserted heading should have the median secondary sort key', () async {
       final items = itemsSnapshot([sortKey(2, '1111'), sortKey(2, '3333')]);
@@ -397,8 +380,7 @@ void main() {
       entryDoc = MockDocumentReference();
     });
 
-    test(
-        'WHEN moving an entry to the start of the list '
+    test('WHEN moving an entry to the start of the list '
         'THEN it is given a primary sort key one less than the first item', () async {
       final items = itemsSnapshot([sortKey(-3, ''), sortKey(-2, ''), sortKey(0, '')]);
       container.testListen(provider);
@@ -412,8 +394,7 @@ void main() {
       verify(() => batch.update(entryDoc, {'sortKey': sortKeyJson(-4, '')})).called(1);
     });
 
-    test(
-        'WHEN moving an entry to the end of the list '
+    test('WHEN moving an entry to the end of the list '
         'THEN it is given a primary sort key one greater than the last item', () async {
       final items = itemsSnapshot([sortKey(-3, ''), sortKey(-2, ''), sortKey(0, '')]);
       container.testListen(provider);
@@ -427,15 +408,10 @@ void main() {
       verify(() => batch.update(entryDoc, {'sortKey': sortKeyJson(1, '')})).called(1);
     });
 
-    test(
-        'WHEN moving an entry between other entries '
+    test('WHEN moving an entry between other entries '
         'AND there is a primary gap '
         'THEN it is given primary sort key between the other entries', () async {
-      final items = itemsSnapshot([
-        sortKey(1, '1111'),
-        sortKey(3, '3333'),
-        sortKey(5, ''),
-      ]);
+      final items = itemsSnapshot([sortKey(1, '1111'), sortKey(3, '3333'), sortKey(5, '')]);
       container.testListen(provider);
       await itemsController.addAndPump(items);
       final entries = container.read(provider).requireValue;
@@ -447,15 +423,10 @@ void main() {
       verify(() => batch.update(entryDoc, {'sortKey': sortKeyJson(2, '')})).called(1);
     });
 
-    test(
-        'WHEN moving an entry between other entries '
+    test('WHEN moving an entry between other entries '
         'AND there is no primary gap '
         'THEN it is given secondary sort key between the other entries', () async {
-      final items = itemsSnapshot([
-        sortKey(4, '1111'),
-        sortKey(4, '3333'),
-        sortKey(5, ''),
-      ]);
+      final items = itemsSnapshot([sortKey(4, '1111'), sortKey(4, '3333'), sortKey(5, '')]);
       container.testListen(provider);
       await itemsController.addAndPump(items);
       final entries = container.read(provider).requireValue;
@@ -479,23 +450,21 @@ void main() {
     List<String> buildDocIds(int count) => List.generate(count, (index) => 'doc$index');
 
     List<MockDocumentReference> buildAndStubDocRefs(List<String> ids) => ids.map((id) {
-          final ref = MockDocumentReference();
-          when(() => itemsCollection.doc(id)).thenReturn(ref);
-          when(() => mockFirestore.doc('lists/$listId/items/$id')).thenReturn(ref);
-          return ref;
-        }).toList();
+      final ref = MockDocumentReference();
+      when(() => itemsCollection.doc(id)).thenReturn(ref);
+      when(() => mockFirestore.doc('lists/$listId/items/$id')).thenReturn(ref);
+      return ref;
+    }).toList();
 
     List<MockDocumentSnapshot> buildDuplicateSortKeyItems(List<String> ids, int primary, String secondary) =>
         ids.map((id) => itemSnapshot(id: id, primary: primary, secondary: secondary)).toList();
 
     // A mocktail argument matcher that matches an object which has a 'sortKey' property, which has
     // a value of an object with the given primary and secondary values.
-    Map<String, dynamic> sortKeyJsonMatcher(int primary, String secondary) => any<Map<String, dynamic>>(
-          that: containsPair('sortKey', {'primary': primary, 'secondary': secondary}),
-        );
+    Map<String, dynamic> sortKeyJsonMatcher(int primary, String secondary) =>
+        any<Map<String, dynamic>>(that: containsPair('sortKey', {'primary': primary, 'secondary': secondary}));
 
-    test(
-        'WHEN inserting an item between two entries with duplicate sort keys '
+    test('WHEN inserting an item between two entries with duplicate sort keys '
         'THEN all entries should be given unique sort keys that preserve the existing sort order', () async {
       final docIds = buildDocIds(4);
       final docRefs = buildAndStubDocRefs(docIds);
@@ -516,8 +485,7 @@ void main() {
       verify(() => batch.update(docRefs[3], {'sortKey': sortKeyJson(1, 'abcd-tzzv')}));
     });
 
-    test(
-        'WHEN inserting a heading between two entries with duplicate sort keys '
+    test('WHEN inserting a heading between two entries with duplicate sort keys '
         'THEN all entries should be given unique sort keys that preserve the existing sort order', () async {
       final docIds = buildDocIds(4);
       final docRefs = buildAndStubDocRefs(docIds);
@@ -538,8 +506,7 @@ void main() {
       verify(() => batch.update(docRefs[3], {'sortKey': sortKeyJson(-1, 'tzzv')}));
     });
 
-    test(
-        'WHEN moving an item between entries with duplicate sort keys '
+    test('WHEN moving an item between entries with duplicate sort keys '
         'THEN all entries should be given unique sort keys that preserve the existing sort order', () async {
       final docIds = buildDocIds(4);
       final docRefs = buildAndStubDocRefs(docIds);
@@ -574,15 +541,14 @@ void main() {
     });
 
     List<MockDocumentReference> buildAndStubDocRefs(List<MockDocumentSnapshot> docs) => docs.map((doc) {
-          final ref = MockDocumentReference();
-          final docId = doc.id;
-          when(() => itemsCollection.doc(docId)).thenReturn(ref);
-          when(() => mockFirestore.doc('lists/$listId/items/$docId')).thenReturn(ref);
-          return ref;
-        }).toList();
+      final ref = MockDocumentReference();
+      final docId = doc.id;
+      when(() => itemsCollection.doc(docId)).thenReturn(ref);
+      when(() => mockFirestore.doc('lists/$listId/items/$docId')).thenReturn(ref);
+      return ref;
+    }).toList();
 
-    test(
-        'WHEN unchecking all items '
+    test('WHEN unchecking all items '
         'THEN all checked items should be unchecked', () async {
       final entries = [
         itemSnapshot(id: '1', primary: 1, completed: true),
@@ -607,8 +573,7 @@ void main() {
       verifyNever(() => batch.update(docRefs[4], any()));
     });
 
-    test(
-        'WHEN removing all checked items '
+    test('WHEN removing all checked items '
         'THEN checked items should be removed '
         'AND headings with no unchecked items should be removed', () async {
       final entries = [

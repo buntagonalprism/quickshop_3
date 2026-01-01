@@ -10,11 +10,7 @@ ProviderContainer createContainer({
   List<ProviderObserver>? observers,
 }) {
   // Create a ProviderContainer, and optionally allow specifying parameters.
-  final container = ProviderContainer(
-    parent: parent,
-    overrides: overrides,
-    observers: observers,
-  );
+  final container = ProviderContainer(parent: parent, overrides: overrides, observers: observers);
 
   // When the test ends, dispose the container.
   addTearDown(container.dispose);
@@ -26,6 +22,6 @@ extension TestListenExtension on ProviderContainer {
   /// A slightly nicer syntax for listening to a provider in unit tests, where we don't want to
   /// supply a listener function but simply want to keep the provider alive during the test.
   ProviderSubscription<T> testListen<T>(ProviderListenable<T> provider) {
-    return listen(provider, (_, __) {});
+    return listen(provider, (_, _) {});
   }
 }
