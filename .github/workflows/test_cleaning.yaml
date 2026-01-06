@@ -1,0 +1,14 @@
+name: Test Image Cleaning
+on:
+  workflow_dispatch:
+
+jobs:
+  test_cleaning:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run cleanup
+        uses: ./.github/actions/clean-runner

@@ -1,0 +1,37 @@
+name: 'Clean Github Actions Runner'
+description: 'Remove unneeded packages and clean up disk space on the Github Actions runner'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get current disk usage
+      shell: bash
+      run: |
+        echo "Getting disk free space"
+        df -h
+
+        echo "Getting /usr/share disk usage"
+        du -d 1 -sh /usr/share/*
+
+        echo "Getting /usr/local/share disk usage"
+        du -d 1 -sh /usr/local/share/*
+
+        echo "Getting /usr/local/lib disk usage"
+        du -d 1 -sh /usr/local/lib/*
+
+        echo "Getting tool cache disk usage"
+        du -d 1 -sh "$AGENT_TOOLSDIRECTORY"
+
+    - name: Clean unneeded packages
+      shell: bash
+      run: |
+        echo "Removing unneeded packages"
+        sudo rm -rf /usr/share/dotnet/
+        sudo rm -rf /usr/local/share/powershell
+        sudo rm -rf /usr/local/share/chromium
+
+    - name: Print final disk usage
+      shell: bash
+      run: |
+        echo "Getting final disk free space"
+        df -h
