@@ -1,16 +1,29 @@
 name: 'Clean Github Actions Runner'
 description: 'Remove unneeded packages and clean up disk space on the Github Actions runner'
+inputs:
+  inspect:
+    description: 'Whether to inspect disk usage in key folders before cleaning. This is helpful for debugging this action, but adds 30-60s to the run time.'
+    required: false
+    default: 'false'
 
 runs:
   using: 'composite'
   steps:
-    - name: Get current disk usage
+    - name: Get current disk free space
       shell: bash
       run: |
         start_time=$SECONDS
 
         echo "Getting disk free space"
         df -h
+
+        echo "Disk usage check took $(($SECONDS - $start_time)) seconds"
+
+    - name: Inspect disk usage
+      shell: bash
+      if: ${{ inputs.inspect == 'true' }}
+      run: |
+        start_time=$SECONDS
 
         echo "Getting /usr/share disk usage"
         du -shc /usr/share/* | sort -hr | head -n 10
@@ -35,14 +48,14 @@ runs:
         sudo rm -rf /usr/share/dotnet/
         sudo rm -rf /usr/local/share/powershell
         sudo rm -rf /usr/local/share/chromium
-        sudo rm "$AGENT_TOOLSDIRECTORY"/Python
-        sudo rm "$AGENT_TOOLSDIRECTORY"/CodeQL
-        sudo rm "$AGENT_TOOLSDIRECTORY"/go
-        sudo rm "$AGENT_TOOLSDIRECTORY"/PyPy
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"/Python
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"/CodeQL
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"/go
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"/PyPy
 
         echo "Package removal took $(($SECONDS - $start_time)) seconds"
 
-    - name: Print final disk usage
+    - name: Print final disk free space
       shell: bash
       run: |
         start_time=$SECONDS

@@ -12,3 +12,5 @@ jobs:
 
       - name: Run cleanup
         uses: ./.github/actions/clean-runner
+        with:
+          inspect: 'true'
