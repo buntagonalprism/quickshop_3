@@ -7,6 +7,8 @@ runs:
     - name: Get current disk usage
       shell: bash
       run: |
+        start_time=$SECONDS
+
         echo "Getting disk free space"
         df -h
 
@@ -22,16 +24,30 @@ runs:
         echo "Getting tool cache disk usage"
         du -shc "$AGENT_TOOLSDIRECTORY"/* | sort -hr | head -n 10
 
+        echo "Disk usage check took $(($SECONDS - $start_time)) seconds"
+
     - name: Clean unneeded packages
       shell: bash
       run: |
+        start_time=$SECONDS
+
         echo "Removing unneeded packages"
         sudo rm -rf /usr/share/dotnet/
         sudo rm -rf /usr/local/share/powershell
         sudo rm -rf /usr/local/share/chromium
+        sudo rm "$AGENT_TOOLSDIRECTORY"/Python
+        sudo rm "$AGENT_TOOLSDIRECTORY"/CodeQL
+        sudo rm "$AGENT_TOOLSDIRECTORY"/go
+        sudo rm "$AGENT_TOOLSDIRECTORY"/PyPy
+
+        echo "Package removal took $(($SECONDS - $start_time)) seconds"
 
     - name: Print final disk usage
       shell: bash
       run: |
+        start_time=$SECONDS
+
         echo "Getting final disk free space"
         df -h
+
+        echo "Final disk usage check took $(($SECONDS - $start_time)) seconds"
