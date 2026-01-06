@@ -11,16 +11,16 @@ runs:
         df -h
 
         echo "Getting /usr/share disk usage"
-        du -shc /usr/share/*
+        du -shc /usr/share/* | sort -hr | head -n 10
 
         echo "Getting /usr/local/share disk usage"
-        du -shc /usr/local/share/*
+        du -shc /usr/local/share/* | sort -hr | head -n 10
 
         echo "Getting /usr/local/lib disk usage"
-        du -shc /usr/local/lib/*
+        du -shc /usr/local/lib/* | sort -hr | head -n 10
 
         echo "Getting tool cache disk usage"
-        du -shc "$AGENT_TOOLSDIRECTORY"
+        du -shc "$AGENT_TOOLSDIRECTORY"/* | sort -hr | head -n 10
 
     - name: Clean unneeded packages
       shell: bash
