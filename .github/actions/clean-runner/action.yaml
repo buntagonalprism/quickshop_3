@@ -17,7 +17,7 @@ runs:
         echo "Getting disk free space"
         df -h
 
-        echo "Disk usage check took $(($SECONDS - $start_time)) seconds"
+        echo "Disk free space check took $(($SECONDS - $start_time)) seconds"
 
     - name: Inspect disk usage
       shell: bash
@@ -37,7 +37,7 @@ runs:
         echo "Getting tool cache disk usage"
         du -shc "$AGENT_TOOLSDIRECTORY"/* | sort -hr | head -n 10
 
-        echo "Disk usage check took $(($SECONDS - $start_time)) seconds"
+        echo "Disk usage inspection took $(($SECONDS - $start_time)) seconds"
 
     - name: Clean unneeded packages
       shell: bash
@@ -63,4 +63,4 @@ runs:
         echo "Getting final disk free space"
         df -h
 
-        echo "Final disk usage check took $(($SECONDS - $start_time)) seconds"
+        echo "Final disk free space check took $(($SECONDS - $start_time)) seconds"

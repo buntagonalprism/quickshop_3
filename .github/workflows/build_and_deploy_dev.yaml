@@ -65,6 +65,9 @@ jobs:
               sha: context.sha
             })
 
+      - name: Inspect Gradle Cache Before Build
+        run: du -shc ~/.gradle/caches/  | sort -hr
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -73,8 +76,11 @@ jobs:
           cache: gradle
 
       - name: Build dev android apk
-        run: flutter build apk --release --flavor=dev --dart-define-from-file=settings/app_settings_dev.json --dart-define-from-file=settings/app_secrets_dev.json --build-number=${{ github.run_number }}
+        run: flutter build apk --verbose --release --flavor=dev --dart-define-from-file=settings/app_settings_dev.json --dart-define-from-file=settings/app_secrets_dev.json --build-number=${{ github.run_number }}
         
+      - name: Inspect Gradle Cache After Build
+        run: du -shc ~/.gradle/caches/  | sort -hr
+
       - name: Rename dev apk
         run: |
           apk_name="quickshop-dev-$pubspec_version.${{ github.run_number }}.apk"
