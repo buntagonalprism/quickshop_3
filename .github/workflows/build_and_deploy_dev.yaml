@@ -75,6 +75,13 @@ jobs:
           java-version: '21'
           cache: gradle
 
+      - uses: actions/cache@v5
+        name: Gradle Cache
+        with:
+          path: |
+            ~/.gradle/caches
+          key: ${{ runner.os }}
+
       - name: Build dev android apk
         run: flutter build apk --verbose --release --flavor=dev --dart-define-from-file=settings/app_settings_dev.json --dart-define-from-file=settings/app_secrets_dev.json --build-number=${{ github.run_number }}
         
