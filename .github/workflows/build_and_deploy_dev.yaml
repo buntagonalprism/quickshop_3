@@ -80,7 +80,7 @@ jobs:
         with:
           path: |
             ~/.gradle/caches
-          key: ${{ runner.os }}
+          key: ${{ runner.os }}-${{ hashFiles('android/build.gradle', 'android/settings.gradle', 'android/gradle.properties', 'android/gradle/gradle-wrapper.properties', 'android/app/build.gradle', 'pubspec.lock', '.fvmrc') }}
 
       - name: Build dev android apk
         run: flutter build apk --verbose --release --flavor=dev --dart-define-from-file=settings/app_settings_dev.json --dart-define-from-file=settings/app_secrets_dev.json --build-number=${{ github.run_number }}
