@@ -12,18 +12,20 @@ part of 'settings_service.dart';
 @ProviderFor(settingsService)
 const settingsServiceProvider = SettingsServiceProvider._();
 
-final class SettingsServiceProvider extends $FunctionalProvider<SettingsService,
-    SettingsService, SettingsService> with $Provider<SettingsService> {
+final class SettingsServiceProvider
+    extends
+        $FunctionalProvider<SettingsService, SettingsService, SettingsService>
+    with $Provider<SettingsService> {
   const SettingsServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'settingsServiceProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'settingsServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$settingsServiceHash();

@@ -16,15 +16,15 @@ final class ListInviteRepoProvider
     extends $FunctionalProvider<ListInviteRepo, ListInviteRepo, ListInviteRepo>
     with $Provider<ListInviteRepo> {
   const ListInviteRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'listInviteRepoProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'listInviteRepoProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$listInviteRepoHash();

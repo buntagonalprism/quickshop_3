@@ -15,15 +15,15 @@ const localeServiceProvider = LocaleServiceProvider._();
 final class LocaleServiceProvider
     extends $NotifierProvider<LocaleService, Locale> {
   const LocaleServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'localeServiceProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'localeServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$localeServiceHash();
@@ -50,8 +50,14 @@ abstract class _$LocaleService extends $Notifier<Locale> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<Locale, Locale>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<Locale, Locale>, Locale, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Locale, Locale>,
+              Locale,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

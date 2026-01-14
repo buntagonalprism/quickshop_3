@@ -15,15 +15,15 @@ const settingsProvider = SettingsNotifierProvider._();
 final class SettingsNotifierProvider
     extends $NotifierProvider<SettingsNotifier, Settings> {
   const SettingsNotifierProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'settingsProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'settingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$settingsNotifierHash();
@@ -50,8 +50,14 @@ abstract class _$SettingsNotifier extends $Notifier<Settings> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<Settings, Settings>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<Settings, Settings>, Settings, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Settings, Settings>,
+              Settings,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

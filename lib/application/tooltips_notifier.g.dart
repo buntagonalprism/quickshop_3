@@ -14,16 +14,16 @@ const tooltipsProvider = TooltipsNotifierFamily._();
 
 final class TooltipsNotifierProvider
     extends $NotifierProvider<TooltipsNotifier, bool> {
-  const TooltipsNotifierProvider._(
-      {required TooltipsNotifierFamily super.from,
-      required TooltipType super.argument})
-      : super(
-          retry: null,
-          name: r'tooltipsProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const TooltipsNotifierProvider._({
+    required TooltipsNotifierFamily super.from,
+    required TooltipType super.argument,
+  }) : super(
+         retry: null,
+         name: r'tooltipsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$tooltipsNotifierHash();
@@ -63,17 +63,15 @@ String _$tooltipsNotifierHash() => r'c55eabee712fe4436d22d0c43c351d779efc5c68';
 final class TooltipsNotifierFamily extends $Family
     with $ClassFamilyOverride<TooltipsNotifier, bool, bool, bool, TooltipType> {
   const TooltipsNotifierFamily._()
-      : super(
-          retry: null,
-          name: r'tooltipsProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'tooltipsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  TooltipsNotifierProvider call(
-    TooltipType type,
-  ) =>
+  TooltipsNotifierProvider call(TooltipType type) =>
       TooltipsNotifierProvider._(argument: type, from: this);
 
   @override
@@ -84,18 +82,20 @@ abstract class _$TooltipsNotifier extends $Notifier<bool> {
   late final _$args = ref.$arg as TooltipType;
   TooltipType get type => _$args;
 
-  bool build(
-    TooltipType type,
-  );
+  bool build(TooltipType type);
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(
-      _$args,
-    );
+    final created = build(_$args);
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

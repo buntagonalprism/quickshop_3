@@ -12,23 +12,26 @@ part of 'shopping_item_create_view_model.dart';
 @ProviderFor(itemAutocomplete)
 const itemAutocompleteProvider = ItemAutocompleteFamily._();
 
-final class ItemAutocompleteProvider extends $FunctionalProvider<
-        AsyncValue<List<ShoppingItemAutocomplete>>,
-        List<ShoppingItemAutocomplete>,
-        FutureOr<List<ShoppingItemAutocomplete>>>
+final class ItemAutocompleteProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ShoppingItemAutocomplete>>,
+          List<ShoppingItemAutocomplete>,
+          FutureOr<List<ShoppingItemAutocomplete>>
+        >
     with
         $FutureModifier<List<ShoppingItemAutocomplete>>,
         $FutureProvider<List<ShoppingItemAutocomplete>> {
-  const ItemAutocompleteProvider._(
-      {required ItemAutocompleteFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'itemAutocompleteProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const ItemAutocompleteProvider._({
+    required ItemAutocompleteFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'itemAutocompleteProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$itemAutocompleteHash();
@@ -43,16 +46,13 @@ final class ItemAutocompleteProvider extends $FunctionalProvider<
   @$internal
   @override
   $FutureProviderElement<List<ShoppingItemAutocomplete>> $createElement(
-          $ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<List<ShoppingItemAutocomplete>> create(Ref ref) {
     final argument = this.argument as String;
-    return itemAutocomplete(
-      ref,
-      argument,
-    );
+    return itemAutocomplete(ref, argument);
   }
 
   @override
@@ -70,20 +70,20 @@ String _$itemAutocompleteHash() => r'b998e68ec71e3f30958e9804524840d52f6f4055';
 
 final class ItemAutocompleteFamily extends $Family
     with
-        $FunctionalFamilyOverride<FutureOr<List<ShoppingItemAutocomplete>>,
-            String> {
+        $FunctionalFamilyOverride<
+          FutureOr<List<ShoppingItemAutocomplete>>,
+          String
+        > {
   const ItemAutocompleteFamily._()
-      : super(
-          retry: null,
-          name: r'itemAutocompleteProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'itemAutocompleteProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ItemAutocompleteProvider call(
-    String listId,
-  ) =>
+  ItemAutocompleteProvider call(String listId) =>
       ItemAutocompleteProvider._(argument: listId, from: this);
 
   @override
@@ -94,18 +94,22 @@ final class ItemAutocompleteFamily extends $Family
 const shoppingItemCreateViewModelProvider =
     ShoppingItemCreateViewModelProvider._();
 
-final class ShoppingItemCreateViewModelProvider extends $NotifierProvider<
-    ShoppingItemCreateViewModel, ShoppingItemCreateModel> {
+final class ShoppingItemCreateViewModelProvider
+    extends
+        $NotifierProvider<
+          ShoppingItemCreateViewModel,
+          ShoppingItemCreateModel
+        > {
   const ShoppingItemCreateViewModelProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'shoppingItemCreateViewModelProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'shoppingItemCreateViewModelProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingItemCreateViewModelHash();
@@ -135,11 +139,14 @@ abstract class _$ShoppingItemCreateViewModel
     final created = build();
     final ref =
         this.ref as $Ref<ShoppingItemCreateModel, ShoppingItemCreateModel>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<ShoppingItemCreateModel, ShoppingItemCreateModel>,
-        ShoppingItemCreateModel,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ShoppingItemCreateModel, ShoppingItemCreateModel>,
+              ShoppingItemCreateModel,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

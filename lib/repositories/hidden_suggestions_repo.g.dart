@@ -12,20 +12,24 @@ part of 'hidden_suggestions_repo.dart';
 @ProviderFor(hiddenSuggestionsRepo)
 const hiddenSuggestionsRepoProvider = HiddenSuggestionsRepoProvider._();
 
-final class HiddenSuggestionsRepoProvider extends $FunctionalProvider<
-    HiddenSuggestionsRepo,
-    HiddenSuggestionsRepo,
-    HiddenSuggestionsRepo> with $Provider<HiddenSuggestionsRepo> {
+final class HiddenSuggestionsRepoProvider
+    extends
+        $FunctionalProvider<
+          HiddenSuggestionsRepo,
+          HiddenSuggestionsRepo,
+          HiddenSuggestionsRepo
+        >
+    with $Provider<HiddenSuggestionsRepo> {
   const HiddenSuggestionsRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'hiddenSuggestionsRepoProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hiddenSuggestionsRepoProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$hiddenSuggestionsRepoHash();
@@ -33,8 +37,8 @@ final class HiddenSuggestionsRepoProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<HiddenSuggestionsRepo> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   HiddenSuggestionsRepo create(Ref ref) {

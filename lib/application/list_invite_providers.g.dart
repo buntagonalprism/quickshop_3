@@ -19,22 +19,27 @@ const listInviteByIdProvider = ListInviteByIdFamily._();
 ///
 /// Will return null if the invite does not exist.
 
-final class ListInviteByIdProvider extends $FunctionalProvider<
-        AsyncValue<ListInvite?>, ListInvite?, Stream<ListInvite?>>
+final class ListInviteByIdProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ListInvite?>,
+          ListInvite?,
+          Stream<ListInvite?>
+        >
     with $FutureModifier<ListInvite?>, $StreamProvider<ListInvite?> {
   /// Load a list invite by its id.
   ///
   /// Will return null if the invite does not exist.
-  const ListInviteByIdProvider._(
-      {required ListInviteByIdFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'listInviteByIdProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const ListInviteByIdProvider._({
+    required ListInviteByIdFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'listInviteByIdProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$listInviteByIdHash();
@@ -49,16 +54,13 @@ final class ListInviteByIdProvider extends $FunctionalProvider<
   @$internal
   @override
   $StreamProviderElement<ListInvite?> $createElement(
-          $ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
 
   @override
   Stream<ListInvite?> create(Ref ref) {
     final argument = this.argument as String;
-    return listInviteById(
-      ref,
-      argument,
-    );
+    return listInviteById(ref, argument);
   }
 
   @override
@@ -81,21 +83,19 @@ String _$listInviteByIdHash() => r'c2abf08b6388e864c7d6a153a44981095218306c';
 final class ListInviteByIdFamily extends $Family
     with $FunctionalFamilyOverride<Stream<ListInvite?>, String> {
   const ListInviteByIdFamily._()
-      : super(
-          retry: null,
-          name: r'listInviteByIdProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'listInviteByIdProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
   /// Load a list invite by its id.
   ///
   /// Will return null if the invite does not exist.
 
-  ListInviteByIdProvider call(
-    String inviteId,
-  ) =>
+  ListInviteByIdProvider call(String inviteId) =>
       ListInviteByIdProvider._(argument: inviteId, from: this);
 
   @override
@@ -113,22 +113,27 @@ const userListInviteByListIdProvider = UserListInviteByListIdFamily._();
 ///
 /// Will return null if the user has not created a sharing link for the list.
 
-final class UserListInviteByListIdProvider extends $FunctionalProvider<
-        AsyncValue<ListInvite?>, ListInvite?, Stream<ListInvite?>>
+final class UserListInviteByListIdProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ListInvite?>,
+          ListInvite?,
+          Stream<ListInvite?>
+        >
     with $FutureModifier<ListInvite?>, $StreamProvider<ListInvite?> {
   /// Load the currently authenticated user's personal list invite for sharing a given list.
   ///
   /// Will return null if the user has not created a sharing link for the list.
-  const UserListInviteByListIdProvider._(
-      {required UserListInviteByListIdFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'userListInviteByListIdProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const UserListInviteByListIdProvider._({
+    required UserListInviteByListIdFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'userListInviteByListIdProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$userListInviteByListIdHash();
@@ -143,16 +148,13 @@ final class UserListInviteByListIdProvider extends $FunctionalProvider<
   @$internal
   @override
   $StreamProviderElement<ListInvite?> $createElement(
-          $ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
 
   @override
   Stream<ListInvite?> create(Ref ref) {
     final argument = this.argument as String;
-    return userListInviteByListId(
-      ref,
-      argument,
-    );
+    return userListInviteByListId(ref, argument);
   }
 
   @override
@@ -177,21 +179,19 @@ String _$userListInviteByListIdHash() =>
 final class UserListInviteByListIdFamily extends $Family
     with $FunctionalFamilyOverride<Stream<ListInvite?>, String> {
   const UserListInviteByListIdFamily._()
-      : super(
-          retry: null,
-          name: r'userListInviteByListIdProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'userListInviteByListIdProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
   /// Load the currently authenticated user's personal list invite for sharing a given list.
   ///
   /// Will return null if the user has not created a sharing link for the list.
 
-  UserListInviteByListIdProvider call(
-    String listId,
-  ) =>
+  UserListInviteByListIdProvider call(String listId) =>
       UserListInviteByListIdProvider._(argument: listId, from: this);
 
   @override

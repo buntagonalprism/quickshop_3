@@ -15,15 +15,15 @@ const loggerProvider = LoggerProvider._();
 final class LoggerProvider extends $FunctionalProvider<Logger, Logger, Logger>
     with $Provider<Logger> {
   const LoggerProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'loggerProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'loggerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$loggerHash();

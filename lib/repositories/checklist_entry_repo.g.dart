@@ -12,20 +12,24 @@ part of 'checklist_entry_repo.dart';
 @ProviderFor(checklistEntryRepo)
 const checklistEntryRepoProvider = ChecklistEntryRepoFamily._();
 
-final class ChecklistEntryRepoProvider extends $FunctionalProvider<
-    ChecklistEntryRepo,
-    ChecklistEntryRepo,
-    ChecklistEntryRepo> with $Provider<ChecklistEntryRepo> {
-  const ChecklistEntryRepoProvider._(
-      {required ChecklistEntryRepoFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'checklistEntryRepoProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ChecklistEntryRepoProvider
+    extends
+        $FunctionalProvider<
+          ChecklistEntryRepo,
+          ChecklistEntryRepo,
+          ChecklistEntryRepo
+        >
+    with $Provider<ChecklistEntryRepo> {
+  const ChecklistEntryRepoProvider._({
+    required ChecklistEntryRepoFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'checklistEntryRepoProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$checklistEntryRepoHash();
@@ -40,16 +44,13 @@ final class ChecklistEntryRepoProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ChecklistEntryRepo> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ChecklistEntryRepo create(Ref ref) {
     final argument = this.argument as String;
-    return checklistEntryRepo(
-      ref,
-      argument,
-    );
+    return checklistEntryRepo(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -77,17 +78,15 @@ String _$checklistEntryRepoHash() =>
 final class ChecklistEntryRepoFamily extends $Family
     with $FunctionalFamilyOverride<ChecklistEntryRepo, String> {
   const ChecklistEntryRepoFamily._()
-      : super(
-          retry: null,
-          name: r'checklistEntryRepoProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: false,
-        );
+    : super(
+        retry: null,
+        name: r'checklistEntryRepoProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
 
-  ChecklistEntryRepoProvider call(
-    String listId,
-  ) =>
+  ChecklistEntryRepoProvider call(String listId) =>
       ChecklistEntryRepoProvider._(argument: listId, from: this);
 
   @override

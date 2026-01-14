@@ -12,20 +12,24 @@ part of 'user_token_service.dart';
 @ProviderFor(userTokenService)
 const userTokenServiceProvider = UserTokenServiceProvider._();
 
-final class UserTokenServiceProvider extends $FunctionalProvider<
-    UserTokenService,
-    UserTokenService,
-    UserTokenService> with $Provider<UserTokenService> {
+final class UserTokenServiceProvider
+    extends
+        $FunctionalProvider<
+          UserTokenService,
+          UserTokenService,
+          UserTokenService
+        >
+    with $Provider<UserTokenService> {
   const UserTokenServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'userTokenServiceProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userTokenServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$userTokenServiceHash();

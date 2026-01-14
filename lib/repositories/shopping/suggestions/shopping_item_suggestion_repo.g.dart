@@ -13,20 +13,24 @@ part of 'shopping_item_suggestion_repo.dart';
 const shoppingItemSuggestionRepoProvider =
     ShoppingItemSuggestionRepoProvider._();
 
-final class ShoppingItemSuggestionRepoProvider extends $FunctionalProvider<
-    ShoppingItemSuggestionRepo,
-    ShoppingItemSuggestionRepo,
-    ShoppingItemSuggestionRepo> with $Provider<ShoppingItemSuggestionRepo> {
+final class ShoppingItemSuggestionRepoProvider
+    extends
+        $FunctionalProvider<
+          ShoppingItemSuggestionRepo,
+          ShoppingItemSuggestionRepo,
+          ShoppingItemSuggestionRepo
+        >
+    with $Provider<ShoppingItemSuggestionRepo> {
   const ShoppingItemSuggestionRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'shoppingItemSuggestionRepoProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'shoppingItemSuggestionRepoProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingItemSuggestionRepoHash();
@@ -34,8 +38,8 @@ final class ShoppingItemSuggestionRepoProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ShoppingItemSuggestionRepo> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingItemSuggestionRepo create(Ref ref) {

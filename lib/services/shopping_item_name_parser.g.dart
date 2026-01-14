@@ -12,20 +12,24 @@ part of 'shopping_item_name_parser.dart';
 @ProviderFor(shoppingItemNameParser)
 const shoppingItemNameParserProvider = ShoppingItemNameParserProvider._();
 
-final class ShoppingItemNameParserProvider extends $FunctionalProvider<
-    ShoppingItemNameParser,
-    ShoppingItemNameParser,
-    ShoppingItemNameParser> with $Provider<ShoppingItemNameParser> {
+final class ShoppingItemNameParserProvider
+    extends
+        $FunctionalProvider<
+          ShoppingItemNameParser,
+          ShoppingItemNameParser,
+          ShoppingItemNameParser
+        >
+    with $Provider<ShoppingItemNameParser> {
   const ShoppingItemNameParserProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'shoppingItemNameParserProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'shoppingItemNameParserProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingItemNameParserHash();
@@ -33,8 +37,8 @@ final class ShoppingItemNameParserProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ShoppingItemNameParser> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingItemNameParser create(Ref ref) {

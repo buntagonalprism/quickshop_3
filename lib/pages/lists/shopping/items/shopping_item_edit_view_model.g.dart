@@ -12,24 +12,24 @@ part of 'shopping_item_edit_view_model.dart';
 @ProviderFor(shoppingItemEditViewModel)
 const shoppingItemEditViewModelProvider = ShoppingItemEditViewModelFamily._();
 
-final class ShoppingItemEditViewModelProvider extends $FunctionalProvider<
-    ShoppingItemEditModel,
-    ShoppingItemEditModel,
-    ShoppingItemEditModel> with $Provider<ShoppingItemEditModel> {
-  const ShoppingItemEditViewModelProvider._(
-      {required ShoppingItemEditViewModelFamily super.from,
-      required (
-        String,
-        String,
-      )
-          super.argument})
-      : super(
-          retry: null,
-          name: r'shoppingItemEditViewModelProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ShoppingItemEditViewModelProvider
+    extends
+        $FunctionalProvider<
+          ShoppingItemEditModel,
+          ShoppingItemEditModel,
+          ShoppingItemEditModel
+        >
+    with $Provider<ShoppingItemEditModel> {
+  const ShoppingItemEditViewModelProvider._({
+    required ShoppingItemEditViewModelFamily super.from,
+    required (String, String) super.argument,
+  }) : super(
+         retry: null,
+         name: r'shoppingItemEditViewModelProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingItemEditViewModelHash();
@@ -44,20 +44,13 @@ final class ShoppingItemEditViewModelProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ShoppingItemEditModel> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingItemEditModel create(Ref ref) {
-    final argument = this.argument as (
-      String,
-      String,
-    );
-    return shoppingItemEditViewModel(
-      ref,
-      argument.$1,
-      argument.$2,
-    );
+    final argument = this.argument as (String, String);
+    return shoppingItemEditViewModel(ref, argument.$1, argument.$2);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -84,30 +77,21 @@ String _$shoppingItemEditViewModelHash() =>
     r'199ab60cde7189b52bff64b2a515de061cf703f3';
 
 final class ShoppingItemEditViewModelFamily extends $Family
-    with
-        $FunctionalFamilyOverride<
-            ShoppingItemEditModel,
-            (
-              String,
-              String,
-            )> {
+    with $FunctionalFamilyOverride<ShoppingItemEditModel, (String, String)> {
   const ShoppingItemEditViewModelFamily._()
-      : super(
-          retry: null,
-          name: r'shoppingItemEditViewModelProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'shoppingItemEditViewModelProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ShoppingItemEditViewModelProvider call(
-    String listId,
-    String itemId,
-  ) =>
-      ShoppingItemEditViewModelProvider._(argument: (
-        listId,
-        itemId,
-      ), from: this);
+  ShoppingItemEditViewModelProvider call(String listId, String itemId) =>
+      ShoppingItemEditViewModelProvider._(
+        argument: (listId, itemId),
+        from: this,
+      );
 
   @override
   String toString() => r'shoppingItemEditViewModelProvider';

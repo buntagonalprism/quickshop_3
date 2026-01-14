@@ -12,18 +12,24 @@ part of 'firestore.dart';
 @ProviderFor(firestore)
 const firestoreProvider = FirestoreProvider._();
 
-final class FirestoreProvider extends $FunctionalProvider<FirebaseFirestore,
-    FirebaseFirestore, FirebaseFirestore> with $Provider<FirebaseFirestore> {
+final class FirestoreProvider
+    extends
+        $FunctionalProvider<
+          FirebaseFirestore,
+          FirebaseFirestore,
+          FirebaseFirestore
+        >
+    with $Provider<FirebaseFirestore> {
   const FirestoreProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'firestoreProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'firestoreProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$firestoreHash();
@@ -31,8 +37,8 @@ final class FirestoreProvider extends $FunctionalProvider<FirebaseFirestore,
   @$internal
   @override
   $ProviderElement<FirebaseFirestore> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   FirebaseFirestore create(Ref ref) {

@@ -13,20 +13,24 @@ part of 'user_history_loader_use_case.dart';
 const userAutcompleteLoaderUseCaseProvider =
     UserAutcompleteLoaderUseCaseProvider._();
 
-final class UserAutcompleteLoaderUseCaseProvider extends $FunctionalProvider<
-    UserHistoryLoaderUseCase,
-    UserHistoryLoaderUseCase,
-    UserHistoryLoaderUseCase> with $Provider<UserHistoryLoaderUseCase> {
+final class UserAutcompleteLoaderUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UserHistoryLoaderUseCase,
+          UserHistoryLoaderUseCase,
+          UserHistoryLoaderUseCase
+        >
+    with $Provider<UserHistoryLoaderUseCase> {
   const UserAutcompleteLoaderUseCaseProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'userAutcompleteLoaderUseCaseProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userAutcompleteLoaderUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$userAutcompleteLoaderUseCaseHash();
@@ -34,8 +38,8 @@ final class UserAutcompleteLoaderUseCaseProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<UserHistoryLoaderUseCase> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   UserHistoryLoaderUseCase create(Ref ref) {

@@ -14,21 +14,23 @@ const shoppingCategoryAutocompleteUseCaseProvider =
     ShoppingCategoryAutocompleteUseCaseFamily._();
 
 final class ShoppingCategoryAutocompleteUseCaseProvider
-    extends $FunctionalProvider<
-        ShoppingCategoryAutocompleteUseCase,
-        ShoppingCategoryAutocompleteUseCase,
-        ShoppingCategoryAutocompleteUseCase>
+    extends
+        $FunctionalProvider<
+          ShoppingCategoryAutocompleteUseCase,
+          ShoppingCategoryAutocompleteUseCase,
+          ShoppingCategoryAutocompleteUseCase
+        >
     with $Provider<ShoppingCategoryAutocompleteUseCase> {
-  const ShoppingCategoryAutocompleteUseCaseProvider._(
-      {required ShoppingCategoryAutocompleteUseCaseFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'shoppingCategoryAutocompleteUseCaseProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const ShoppingCategoryAutocompleteUseCaseProvider._({
+    required ShoppingCategoryAutocompleteUseCaseFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'shoppingCategoryAutocompleteUseCaseProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() =>
@@ -44,24 +46,22 @@ final class ShoppingCategoryAutocompleteUseCaseProvider
   @$internal
   @override
   $ProviderElement<ShoppingCategoryAutocompleteUseCase> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingCategoryAutocompleteUseCase create(Ref ref) {
     final argument = this.argument as String;
-    return shoppingCategoryAutocompleteUseCase(
-      ref,
-      argument,
-    );
+    return shoppingCategoryAutocompleteUseCase(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(ShoppingCategoryAutocompleteUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<ShoppingCategoryAutocompleteUseCase>(value),
+      providerOverride: $SyncValueProvider<ShoppingCategoryAutocompleteUseCase>(
+        value,
+      ),
     );
   }
 
@@ -84,19 +84,19 @@ final class ShoppingCategoryAutocompleteUseCaseFamily extends $Family
     with
         $FunctionalFamilyOverride<ShoppingCategoryAutocompleteUseCase, String> {
   const ShoppingCategoryAutocompleteUseCaseFamily._()
-      : super(
-          retry: null,
-          name: r'shoppingCategoryAutocompleteUseCaseProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'shoppingCategoryAutocompleteUseCaseProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ShoppingCategoryAutocompleteUseCaseProvider call(
-    String listId,
-  ) =>
+  ShoppingCategoryAutocompleteUseCaseProvider call(String listId) =>
       ShoppingCategoryAutocompleteUseCaseProvider._(
-          argument: listId, from: this);
+        argument: listId,
+        from: this,
+      );
 
   @override
   String toString() => r'shoppingCategoryAutocompleteUseCaseProvider';

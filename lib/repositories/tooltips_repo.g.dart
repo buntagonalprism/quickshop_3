@@ -16,15 +16,15 @@ final class TooltipsRepoProvider
     extends $FunctionalProvider<TooltipsRepo, TooltipsRepo, TooltipsRepo>
     with $Provider<TooltipsRepo> {
   const TooltipsRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'tooltipsRepoProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'tooltipsRepoProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$tooltipsRepoHash();

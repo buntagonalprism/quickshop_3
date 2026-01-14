@@ -9,7 +9,6 @@ abstract class HiddenSuggestions with _$HiddenSuggestions {
 
   const factory HiddenSuggestions({
     required String locale,
-    required int version,
     required DateTime lastUpdated,
     required List<String> items,
     required List<String> categories,
@@ -20,7 +19,6 @@ abstract class HiddenSuggestions with _$HiddenSuggestions {
   static HiddenSuggestions empty(String locale) {
     return HiddenSuggestions(
       locale: locale,
-      version: 0,
       lastUpdated: DateTime.fromMillisecondsSinceEpoch(0),
       items: [],
       categories: [],

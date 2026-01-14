@@ -12,20 +12,24 @@ part of 'shopping_items_repo.dart';
 @ProviderFor(shoppingListItemsRepo)
 const shoppingListItemsRepoProvider = ShoppingListItemsRepoFamily._();
 
-final class ShoppingListItemsRepoProvider extends $FunctionalProvider<
-    ShoppingListItemsRepo,
-    ShoppingListItemsRepo,
-    ShoppingListItemsRepo> with $Provider<ShoppingListItemsRepo> {
-  const ShoppingListItemsRepoProvider._(
-      {required ShoppingListItemsRepoFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'shoppingListItemsRepoProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ShoppingListItemsRepoProvider
+    extends
+        $FunctionalProvider<
+          ShoppingListItemsRepo,
+          ShoppingListItemsRepo,
+          ShoppingListItemsRepo
+        >
+    with $Provider<ShoppingListItemsRepo> {
+  const ShoppingListItemsRepoProvider._({
+    required ShoppingListItemsRepoFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'shoppingListItemsRepoProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingListItemsRepoHash();
@@ -40,16 +44,13 @@ final class ShoppingListItemsRepoProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ShoppingListItemsRepo> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingListItemsRepo create(Ref ref) {
     final argument = this.argument as String;
-    return shoppingListItemsRepo(
-      ref,
-      argument,
-    );
+    return shoppingListItemsRepo(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -77,17 +78,15 @@ String _$shoppingListItemsRepoHash() =>
 final class ShoppingListItemsRepoFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingListItemsRepo, String> {
   const ShoppingListItemsRepoFamily._()
-      : super(
-          retry: null,
-          name: r'shoppingListItemsRepoProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'shoppingListItemsRepoProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ShoppingListItemsRepoProvider call(
-    String listId,
-  ) =>
+  ShoppingListItemsRepoProvider call(String listId) =>
       ShoppingListItemsRepoProvider._(argument: listId, from: this);
 
   @override

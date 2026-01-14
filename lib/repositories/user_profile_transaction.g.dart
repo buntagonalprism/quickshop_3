@@ -12,21 +12,24 @@ part of 'user_profile_transaction.dart';
 @ProviderFor(userProfileTransaction)
 const userProfileTransactionProvider = UserProfileTransactionProvider._();
 
-final class UserProfileTransactionProvider extends $FunctionalProvider<
-        UserProfileTransaction Function(),
-        UserProfileTransaction Function(),
-        UserProfileTransaction Function()>
+final class UserProfileTransactionProvider
+    extends
+        $FunctionalProvider<
+          UserProfileTransaction Function(),
+          UserProfileTransaction Function(),
+          UserProfileTransaction Function()
+        >
     with $Provider<UserProfileTransaction Function()> {
   const UserProfileTransactionProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'userProfileTransactionProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userProfileTransactionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$userProfileTransactionHash();
@@ -34,8 +37,8 @@ final class UserProfileTransactionProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<UserProfileTransaction Function()> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   UserProfileTransaction Function() create(Ref ref) {
@@ -46,8 +49,9 @@ final class UserProfileTransactionProvider extends $FunctionalProvider<
   Override overrideWithValue(UserProfileTransaction Function() value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<UserProfileTransaction Function()>(value),
+      providerOverride: $SyncValueProvider<UserProfileTransaction Function()>(
+        value,
+      ),
     );
   }
 }

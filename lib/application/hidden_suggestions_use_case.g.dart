@@ -12,20 +12,24 @@ part of 'hidden_suggestions_use_case.dart';
 @ProviderFor(hiddenSuggestionsUseCase)
 const hiddenSuggestionsUseCaseProvider = HiddenSuggestionsUseCaseProvider._();
 
-final class HiddenSuggestionsUseCaseProvider extends $FunctionalProvider<
-    HiddenSuggestionsUseCase,
-    HiddenSuggestionsUseCase,
-    HiddenSuggestionsUseCase> with $Provider<HiddenSuggestionsUseCase> {
+final class HiddenSuggestionsUseCaseProvider
+    extends
+        $FunctionalProvider<
+          HiddenSuggestionsUseCase,
+          HiddenSuggestionsUseCase,
+          HiddenSuggestionsUseCase
+        >
+    with $Provider<HiddenSuggestionsUseCase> {
   const HiddenSuggestionsUseCaseProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'hiddenSuggestionsUseCaseProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hiddenSuggestionsUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$hiddenSuggestionsUseCaseHash();
@@ -33,8 +37,8 @@ final class HiddenSuggestionsUseCaseProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<HiddenSuggestionsUseCase> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   HiddenSuggestionsUseCase create(Ref ref) {

@@ -12,18 +12,19 @@ part of 'checklist_entry_notifier.dart';
 @ProviderFor(ChecklistEntryNotifier)
 const checklistEntryProvider = ChecklistEntryNotifierFamily._();
 
-final class ChecklistEntryNotifierProvider extends $StreamNotifierProvider<
-    ChecklistEntryNotifier, List<ChecklistEntry>> {
-  const ChecklistEntryNotifierProvider._(
-      {required ChecklistEntryNotifierFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'checklistEntryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ChecklistEntryNotifierProvider
+    extends
+        $StreamNotifierProvider<ChecklistEntryNotifier, List<ChecklistEntry>> {
+  const ChecklistEntryNotifierProvider._({
+    required ChecklistEntryNotifierFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'checklistEntryProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$checklistEntryNotifierHash();
@@ -57,23 +58,22 @@ String _$checklistEntryNotifierHash() =>
 final class ChecklistEntryNotifierFamily extends $Family
     with
         $ClassFamilyOverride<
-            ChecklistEntryNotifier,
-            AsyncValue<List<ChecklistEntry>>,
-            List<ChecklistEntry>,
-            Stream<List<ChecklistEntry>>,
-            String> {
+          ChecklistEntryNotifier,
+          AsyncValue<List<ChecklistEntry>>,
+          List<ChecklistEntry>,
+          Stream<List<ChecklistEntry>>,
+          String
+        > {
   const ChecklistEntryNotifierFamily._()
-      : super(
-          retry: null,
-          name: r'checklistEntryProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'checklistEntryProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ChecklistEntryNotifierProvider call(
-    String listId,
-  ) =>
+  ChecklistEntryNotifierProvider call(String listId) =>
       ChecklistEntryNotifierProvider._(argument: listId, from: this);
 
   @override
@@ -85,22 +85,25 @@ abstract class _$ChecklistEntryNotifier
   late final _$args = ref.$arg as String;
   String get listId => _$args;
 
-  Stream<List<ChecklistEntry>> build(
-    String listId,
-  );
+  Stream<List<ChecklistEntry>> build(String listId);
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(
-      _$args,
-    );
-    final ref = this.ref
-        as $Ref<AsyncValue<List<ChecklistEntry>>, List<ChecklistEntry>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<ChecklistEntry>>, List<ChecklistEntry>>,
-        AsyncValue<List<ChecklistEntry>>,
-        Object?,
-        Object?>;
+    final created = build(_$args);
+    final ref =
+        this.ref
+            as $Ref<AsyncValue<List<ChecklistEntry>>, List<ChecklistEntry>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<ChecklistEntry>>,
+                List<ChecklistEntry>
+              >,
+              AsyncValue<List<ChecklistEntry>>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

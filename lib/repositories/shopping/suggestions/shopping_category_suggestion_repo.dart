@@ -115,6 +115,7 @@ class ShoppingCategorySuggestionRepo {
             name: data['name'],
             nameLower: (data['name'] as String).toLowerCase(),
             popularity: data['popularity'] ?? 0,
+            hidden: false,
           );
         }).toList(),
       );

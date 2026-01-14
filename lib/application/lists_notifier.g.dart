@@ -15,15 +15,15 @@ const listsProvider = ListsNotifierProvider._();
 final class ListsNotifierProvider
     extends $StreamNotifierProvider<ListsNotifier, List<ListSummary>> {
   const ListsNotifierProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'listsProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'listsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$listsNotifierHash();
@@ -43,11 +43,14 @@ abstract class _$ListsNotifier extends $StreamNotifier<List<ListSummary>> {
     final created = build();
     final ref =
         this.ref as $Ref<AsyncValue<List<ListSummary>>, List<ListSummary>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<ListSummary>>, List<ListSummary>>,
-        AsyncValue<List<ListSummary>>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<ListSummary>>, List<ListSummary>>,
+              AsyncValue<List<ListSummary>>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

@@ -12,21 +12,24 @@ part of 'list_items_transaction.dart';
 @ProviderFor(listItemsTransaction)
 const listItemsTransactionProvider = ListItemsTransactionProvider._();
 
-final class ListItemsTransactionProvider extends $FunctionalProvider<
-        ListItemsTransaction Function(),
-        ListItemsTransaction Function(),
-        ListItemsTransaction Function()>
+final class ListItemsTransactionProvider
+    extends
+        $FunctionalProvider<
+          ListItemsTransaction Function(),
+          ListItemsTransaction Function(),
+          ListItemsTransaction Function()
+        >
     with $Provider<ListItemsTransaction Function()> {
   const ListItemsTransactionProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'listItemsTransactionProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'listItemsTransactionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$listItemsTransactionHash();
@@ -34,8 +37,8 @@ final class ListItemsTransactionProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ListItemsTransaction Function()> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ListItemsTransaction Function() create(Ref ref) {
@@ -46,8 +49,9 @@ final class ListItemsTransactionProvider extends $FunctionalProvider<
   Override overrideWithValue(ListItemsTransaction Function() value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<ListItemsTransaction Function()>(value),
+      providerOverride: $SyncValueProvider<ListItemsTransaction Function()>(
+        value,
+      ),
     );
   }
 }

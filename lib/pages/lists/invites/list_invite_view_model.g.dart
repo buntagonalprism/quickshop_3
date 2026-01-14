@@ -12,20 +12,24 @@ part of 'list_invite_view_model.dart';
 @ProviderFor(listInviteState)
 const listInviteStateProvider = ListInviteStateFamily._();
 
-final class ListInviteStateProvider extends $FunctionalProvider<
-    ListInviteViewModel,
-    ListInviteViewModel,
-    ListInviteViewModel> with $Provider<ListInviteViewModel> {
-  const ListInviteStateProvider._(
-      {required ListInviteStateFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'listInviteStateProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ListInviteStateProvider
+    extends
+        $FunctionalProvider<
+          ListInviteViewModel,
+          ListInviteViewModel,
+          ListInviteViewModel
+        >
+    with $Provider<ListInviteViewModel> {
+  const ListInviteStateProvider._({
+    required ListInviteStateFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'listInviteStateProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$listInviteStateHash();
@@ -40,16 +44,13 @@ final class ListInviteStateProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ListInviteViewModel> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ListInviteViewModel create(Ref ref) {
     final argument = this.argument as String;
-    return listInviteState(
-      ref,
-      argument,
-    );
+    return listInviteState(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -76,17 +77,15 @@ String _$listInviteStateHash() => r'288905b47e8d1afaef2dfdc57b81467701ecb77c';
 final class ListInviteStateFamily extends $Family
     with $FunctionalFamilyOverride<ListInviteViewModel, String> {
   const ListInviteStateFamily._()
-      : super(
-          retry: null,
-          name: r'listInviteStateProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'listInviteStateProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ListInviteStateProvider call(
-    String inviteId,
-  ) =>
+  ListInviteStateProvider call(String inviteId) =>
       ListInviteStateProvider._(argument: inviteId, from: this);
 
   @override

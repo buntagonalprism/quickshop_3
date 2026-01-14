@@ -11,51 +11,47 @@ part of 'shopping_category_suggestion.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$ShoppingCategorySuggestion {
-  String get id;
-  String get name;
-  int? get popularity;
 
-  /// Create a copy of ShoppingCategorySuggestion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $ShoppingCategorySuggestionCopyWith<ShoppingCategorySuggestion>
-      get copyWith =>
-          _$ShoppingCategorySuggestionCopyWithImpl<ShoppingCategorySuggestion>(
-              this as ShoppingCategorySuggestion, _$identity);
+ String get id; String get name; int? get popularity;
+/// Create a copy of ShoppingCategorySuggestion
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ShoppingCategorySuggestionCopyWith<ShoppingCategorySuggestion> get copyWith => _$ShoppingCategorySuggestionCopyWithImpl<ShoppingCategorySuggestion>(this as ShoppingCategorySuggestion, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is ShoppingCategorySuggestion &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.popularity, popularity) ||
-                other.popularity == popularity));
-  }
 
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, popularity);
 
-  @override
-  String toString() {
-    return 'ShoppingCategorySuggestion(id: $id, name: $name, popularity: $popularity)';
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingCategorySuggestion&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.popularity, popularity) || other.popularity == popularity));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,name,popularity);
+
+@override
+String toString() {
+  return 'ShoppingCategorySuggestion(id: $id, name: $name, popularity: $popularity)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $ShoppingCategorySuggestionCopyWith<$Res> {
-  factory $ShoppingCategorySuggestionCopyWith(ShoppingCategorySuggestion value,
-          $Res Function(ShoppingCategorySuggestion) _then) =
-      _$ShoppingCategorySuggestionCopyWithImpl;
-  @useResult
-  $Res call({String id, String name, int? popularity});
-}
+abstract mixin class $ShoppingCategorySuggestionCopyWith<$Res>  {
+  factory $ShoppingCategorySuggestionCopyWith(ShoppingCategorySuggestion value, $Res Function(ShoppingCategorySuggestion) _then) = _$ShoppingCategorySuggestionCopyWithImpl;
+@useResult
+$Res call({
+ String id, String name, int? popularity
+});
 
+
+
+
+}
 /// @nodoc
 class _$ShoppingCategorySuggestionCopyWithImpl<$Res>
     implements $ShoppingCategorySuggestionCopyWith<$Res> {
@@ -64,244 +60,198 @@ class _$ShoppingCategorySuggestionCopyWithImpl<$Res>
   final ShoppingCategorySuggestion _self;
   final $Res Function(ShoppingCategorySuggestion) _then;
 
-  /// Create a copy of ShoppingCategorySuggestion
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? popularity = freezed,
-  }) {
-    return _then(_self.copyWith(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _self.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      popularity: freezed == popularity
-          ? _self.popularity
-          : popularity // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ));
-  }
+/// Create a copy of ShoppingCategorySuggestion
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? popularity = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
 }
+
+}
+
 
 /// Adds pattern-matching-related methods to [ShoppingCategorySuggestion].
 extension ShoppingCategorySuggestionPatterns on ShoppingCategorySuggestion {
-  /// A variant of `map` that fallback to returning `orElse`.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case _:
-  ///     return orElse();
-  /// }
-  /// ```
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ShoppingCategorySuggestion value)? $default, {
-    required TResult orElse(),
-  }) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestion() when $default != null:
-        return $default(_that);
-      case _:
-        return orElse();
-    }
-  }
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ShoppingCategorySuggestion value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestion() when $default != null:
+return $default(_that);case _:
+  return orElse();
 
-  /// A `switch`-like method, using callbacks.
-  ///
-  /// Callbacks receives the raw object, upcasted.
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case final Subclass2 value:
-  ///     return ...;
-  /// }
-  /// ```
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ShoppingCategorySuggestion value) $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestion():
-        return $default(_that);
-      case _:
-        throw StateError('Unexpected subclass');
-    }
-  }
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ShoppingCategorySuggestion value)  $default,){
+final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestion():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
 
-  /// A variant of `map` that fallback to returning `null`.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case _:
-  ///     return null;
-  /// }
-  /// ```
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ShoppingCategorySuggestion value)? $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestion() when $default != null:
-        return $default(_that);
-      case _:
-        return null;
-    }
-  }
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ShoppingCategorySuggestion value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestion() when $default != null:
+return $default(_that);case _:
+  return null;
 
-  /// A variant of `when` that fallback to an `orElse` callback.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case _:
-  ///     return orElse();
-  /// }
-  /// ```
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String name, int? popularity)? $default, {
-    required TResult orElse(),
-  }) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestion() when $default != null:
-        return $default(_that.id, _that.name, _that.popularity);
-      case _:
-        return orElse();
-    }
-  }
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int? popularity)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestion() when $default != null:
+return $default(_that.id,_that.name,_that.popularity);case _:
+  return orElse();
 
-  /// A `switch`-like method, using callbacks.
-  ///
-  /// As opposed to `map`, this offers destructuring.
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case Subclass2(:final field2):
-  ///     return ...;
-  /// }
-  /// ```
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(String id, String name, int? popularity) $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestion():
-        return $default(_that.id, _that.name, _that.popularity);
-      case _:
-        throw StateError('Unexpected subclass');
-    }
-  }
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int? popularity)  $default,) {final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestion():
+return $default(_that.id,_that.name,_that.popularity);case _:
+  throw StateError('Unexpected subclass');
 
-  /// A variant of `when` that fallback to returning `null`
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case _:
-  ///     return null;
-  /// }
-  /// ```
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String name, int? popularity)? $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestion() when $default != null:
-        return $default(_that.id, _that.name, _that.popularity);
-      case _:
-        return null;
-    }
-  }
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int? popularity)?  $default,) {final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestion() when $default != null:
+return $default(_that.id,_that.name,_that.popularity);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
+
 
 class _ShoppingCategorySuggestion extends ShoppingCategorySuggestion {
-  const _ShoppingCategorySuggestion(
-      {required this.id, required this.name, this.popularity})
-      : super._();
+  const _ShoppingCategorySuggestion({required this.id, required this.name, this.popularity}): super._();
+  
 
-  @override
-  final String id;
-  @override
-  final String name;
-  @override
-  final int? popularity;
+@override final  String id;
+@override final  String name;
+@override final  int? popularity;
 
-  /// Create a copy of ShoppingCategorySuggestion
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$ShoppingCategorySuggestionCopyWith<_ShoppingCategorySuggestion>
-      get copyWith => __$ShoppingCategorySuggestionCopyWithImpl<
-          _ShoppingCategorySuggestion>(this, _$identity);
+/// Create a copy of ShoppingCategorySuggestion
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ShoppingCategorySuggestionCopyWith<_ShoppingCategorySuggestion> get copyWith => __$ShoppingCategorySuggestionCopyWithImpl<_ShoppingCategorySuggestion>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _ShoppingCategorySuggestion &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.popularity, popularity) ||
-                other.popularity == popularity));
-  }
 
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, popularity);
 
-  @override
-  String toString() {
-    return 'ShoppingCategorySuggestion(id: $id, name: $name, popularity: $popularity)';
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingCategorySuggestion&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.popularity, popularity) || other.popularity == popularity));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,name,popularity);
+
+@override
+String toString() {
+  return 'ShoppingCategorySuggestion(id: $id, name: $name, popularity: $popularity)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$ShoppingCategorySuggestionCopyWith<$Res>
-    implements $ShoppingCategorySuggestionCopyWith<$Res> {
-  factory _$ShoppingCategorySuggestionCopyWith(
-          _ShoppingCategorySuggestion value,
-          $Res Function(_ShoppingCategorySuggestion) _then) =
-      __$ShoppingCategorySuggestionCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String id, String name, int? popularity});
-}
+abstract mixin class _$ShoppingCategorySuggestionCopyWith<$Res> implements $ShoppingCategorySuggestionCopyWith<$Res> {
+  factory _$ShoppingCategorySuggestionCopyWith(_ShoppingCategorySuggestion value, $Res Function(_ShoppingCategorySuggestion) _then) = __$ShoppingCategorySuggestionCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String name, int? popularity
+});
 
+
+
+
+}
 /// @nodoc
 class __$ShoppingCategorySuggestionCopyWithImpl<$Res>
     implements _$ShoppingCategorySuggestionCopyWith<$Res> {
@@ -310,30 +260,18 @@ class __$ShoppingCategorySuggestionCopyWithImpl<$Res>
   final _ShoppingCategorySuggestion _self;
   final $Res Function(_ShoppingCategorySuggestion) _then;
 
-  /// Create a copy of ShoppingCategorySuggestion
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? popularity = freezed,
-  }) {
-    return _then(_ShoppingCategorySuggestion(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _self.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      popularity: freezed == popularity
-          ? _self.popularity
-          : popularity // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ));
-  }
+/// Create a copy of ShoppingCategorySuggestion
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? popularity = freezed,}) {
+  return _then(_ShoppingCategorySuggestion(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+
 }
 
 // dart format on

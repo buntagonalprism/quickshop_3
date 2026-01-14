@@ -12,20 +12,24 @@ part of 'checklist_view_model.dart';
 @ProviderFor(checklistViewModel)
 const checklistViewModelProvider = ChecklistViewModelFamily._();
 
-final class ChecklistViewModelProvider extends $FunctionalProvider<
-    ChecklistViewModel,
-    ChecklistViewModel,
-    ChecklistViewModel> with $Provider<ChecklistViewModel> {
-  const ChecklistViewModelProvider._(
-      {required ChecklistViewModelFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'checklistViewModelProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ChecklistViewModelProvider
+    extends
+        $FunctionalProvider<
+          ChecklistViewModel,
+          ChecklistViewModel,
+          ChecklistViewModel
+        >
+    with $Provider<ChecklistViewModel> {
+  const ChecklistViewModelProvider._({
+    required ChecklistViewModelFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'checklistViewModelProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$checklistViewModelHash();
@@ -40,16 +44,13 @@ final class ChecklistViewModelProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ChecklistViewModel> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ChecklistViewModel create(Ref ref) {
     final argument = this.argument as String;
-    return checklistViewModel(
-      ref,
-      argument,
-    );
+    return checklistViewModel(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -77,17 +78,15 @@ String _$checklistViewModelHash() =>
 final class ChecklistViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ChecklistViewModel, String> {
   const ChecklistViewModelFamily._()
-      : super(
-          retry: null,
-          name: r'checklistViewModelProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'checklistViewModelProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ChecklistViewModelProvider call(
-    String listId,
-  ) =>
+  ChecklistViewModelProvider call(String listId) =>
       ChecklistViewModelProvider._(argument: listId, from: this);
 
   @override

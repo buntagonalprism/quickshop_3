@@ -12,20 +12,24 @@ part of 'shopping_list_view_model.dart';
 @ProviderFor(shoppingListViewModel)
 const shoppingListViewModelProvider = ShoppingListViewModelFamily._();
 
-final class ShoppingListViewModelProvider extends $FunctionalProvider<
-    ShoppingListViewModel,
-    ShoppingListViewModel,
-    ShoppingListViewModel> with $Provider<ShoppingListViewModel> {
-  const ShoppingListViewModelProvider._(
-      {required ShoppingListViewModelFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'shoppingListViewModelProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ShoppingListViewModelProvider
+    extends
+        $FunctionalProvider<
+          ShoppingListViewModel,
+          ShoppingListViewModel,
+          ShoppingListViewModel
+        >
+    with $Provider<ShoppingListViewModel> {
+  const ShoppingListViewModelProvider._({
+    required ShoppingListViewModelFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'shoppingListViewModelProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingListViewModelHash();
@@ -40,16 +44,13 @@ final class ShoppingListViewModelProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ShoppingListViewModel> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingListViewModel create(Ref ref) {
     final argument = this.argument as String;
-    return shoppingListViewModel(
-      ref,
-      argument,
-    );
+    return shoppingListViewModel(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -77,17 +78,15 @@ String _$shoppingListViewModelHash() =>
 final class ShoppingListViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingListViewModel, String> {
   const ShoppingListViewModelFamily._()
-      : super(
-          retry: null,
-          name: r'shoppingListViewModelProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'shoppingListViewModelProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ShoppingListViewModelProvider call(
-    String listId,
-  ) =>
+  ShoppingListViewModelProvider call(String listId) =>
       ShoppingListViewModelProvider._(argument: listId, from: this);
 
   @override

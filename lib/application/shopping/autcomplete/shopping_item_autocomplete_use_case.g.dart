@@ -13,21 +13,24 @@ part of 'shopping_item_autocomplete_use_case.dart';
 const shoppingItemAutocompleteUseCaseProvider =
     ShoppingItemAutocompleteUseCaseFamily._();
 
-final class ShoppingItemAutocompleteUseCaseProvider extends $FunctionalProvider<
-        ShoppingItemAutocompleteUseCase,
-        ShoppingItemAutocompleteUseCase,
-        ShoppingItemAutocompleteUseCase>
+final class ShoppingItemAutocompleteUseCaseProvider
+    extends
+        $FunctionalProvider<
+          ShoppingItemAutocompleteUseCase,
+          ShoppingItemAutocompleteUseCase,
+          ShoppingItemAutocompleteUseCase
+        >
     with $Provider<ShoppingItemAutocompleteUseCase> {
-  const ShoppingItemAutocompleteUseCaseProvider._(
-      {required ShoppingItemAutocompleteUseCaseFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'shoppingItemAutocompleteUseCaseProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const ShoppingItemAutocompleteUseCaseProvider._({
+    required ShoppingItemAutocompleteUseCaseFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'shoppingItemAutocompleteUseCaseProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingItemAutocompleteUseCaseHash();
@@ -42,24 +45,22 @@ final class ShoppingItemAutocompleteUseCaseProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ShoppingItemAutocompleteUseCase> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingItemAutocompleteUseCase create(Ref ref) {
     final argument = this.argument as String;
-    return shoppingItemAutocompleteUseCase(
-      ref,
-      argument,
-    );
+    return shoppingItemAutocompleteUseCase(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(ShoppingItemAutocompleteUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<ShoppingItemAutocompleteUseCase>(value),
+      providerOverride: $SyncValueProvider<ShoppingItemAutocompleteUseCase>(
+        value,
+      ),
     );
   }
 
@@ -81,17 +82,15 @@ String _$shoppingItemAutocompleteUseCaseHash() =>
 final class ShoppingItemAutocompleteUseCaseFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingItemAutocompleteUseCase, String> {
   const ShoppingItemAutocompleteUseCaseFamily._()
-      : super(
-          retry: null,
-          name: r'shoppingItemAutocompleteUseCaseProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'shoppingItemAutocompleteUseCaseProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ShoppingItemAutocompleteUseCaseProvider call(
-    String listId,
-  ) =>
+  ShoppingItemAutocompleteUseCaseProvider call(String listId) =>
       ShoppingItemAutocompleteUseCaseProvider._(argument: listId, from: this);
 
   @override

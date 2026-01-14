@@ -9,7 +9,6 @@ part of 'hidden_suggestions.dart';
 _HiddenSuggestions _$HiddenSuggestionsFromJson(Map<String, dynamic> json) =>
     _HiddenSuggestions(
       locale: json['locale'] as String,
-      version: (json['version'] as num).toInt(),
       lastUpdated: DateTime.parse(json['lastUpdated'] as String),
       items: (json['items'] as List<dynamic>).map((e) => e as String).toList(),
       categories: (json['categories'] as List<dynamic>)
@@ -20,7 +19,6 @@ _HiddenSuggestions _$HiddenSuggestionsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$HiddenSuggestionsToJson(_HiddenSuggestions instance) =>
     <String, dynamic>{
       'locale': instance.locale,
-      'version': instance.version,
       'lastUpdated': instance.lastUpdated.toIso8601String(),
       'items': instance.items,
       'categories': instance.categories,

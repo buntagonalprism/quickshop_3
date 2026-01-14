@@ -34,7 +34,7 @@ class UserProfileRepo {
         _cachedUserHistory = UserProfile(
           userId: user.id,
           lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(0),
-          lastHiddenSuggestionsVersion: 0,
+          hiddenSuggestionsVersion: 0,
         );
       } else {
         _cachedUserHistory = _fromFirestore(user.id, snapshot);
@@ -65,7 +65,7 @@ class UserProfileRepo {
     return UserProfile(
       userId: userId,
       lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastHistoryUpdate]),
-      lastHiddenSuggestionsVersion: data[_Fields.lastHiddenSuggestionsVersion],
+      hiddenSuggestionsVersion: data[_Fields.lastHiddenSuggestionsVersion],
     );
   }
 }

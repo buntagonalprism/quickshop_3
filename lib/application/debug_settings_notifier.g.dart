@@ -14,16 +14,16 @@ const debugSettingsProvider = DebugSettingsNotifierFamily._();
 
 final class DebugSettingsNotifierProvider
     extends $NotifierProvider<DebugSettingsNotifier, bool> {
-  const DebugSettingsNotifierProvider._(
-      {required DebugSettingsNotifierFamily super.from,
-      required DebugSetting super.argument})
-      : super(
-          retry: null,
-          name: r'debugSettingsProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const DebugSettingsNotifierProvider._({
+    required DebugSettingsNotifierFamily super.from,
+    required DebugSetting super.argument,
+  }) : super(
+         retry: null,
+         name: r'debugSettingsProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$debugSettingsNotifierHash();
@@ -63,20 +63,23 @@ String _$debugSettingsNotifierHash() =>
 
 final class DebugSettingsNotifierFamily extends $Family
     with
-        $ClassFamilyOverride<DebugSettingsNotifier, bool, bool, bool,
-            DebugSetting> {
+        $ClassFamilyOverride<
+          DebugSettingsNotifier,
+          bool,
+          bool,
+          bool,
+          DebugSetting
+        > {
   const DebugSettingsNotifierFamily._()
-      : super(
-          retry: null,
-          name: r'debugSettingsProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: false,
-        );
+    : super(
+        retry: null,
+        name: r'debugSettingsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
 
-  DebugSettingsNotifierProvider call(
-    DebugSetting type,
-  ) =>
+  DebugSettingsNotifierProvider call(DebugSetting type) =>
       DebugSettingsNotifierProvider._(argument: type, from: this);
 
   @override
@@ -87,18 +90,20 @@ abstract class _$DebugSettingsNotifier extends $Notifier<bool> {
   late final _$args = ref.$arg as DebugSetting;
   DebugSetting get type => _$args;
 
-  bool build(
-    DebugSetting type,
-  );
+  bool build(DebugSetting type);
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(
-      _$args,
-    );
+    final created = build(_$args);
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

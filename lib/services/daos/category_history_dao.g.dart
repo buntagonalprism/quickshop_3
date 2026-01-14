@@ -6,4 +6,15 @@ part of 'category_history_dao.dart';
 mixin _$CategoryHistoryDaoMixin on DatabaseAccessor<AppDatabase> {
   $CategoryHistoryTableTable get categoryHistoryTable =>
       attachedDatabase.categoryHistoryTable;
+  CategoryHistoryDaoManager get managers => CategoryHistoryDaoManager(this);
+}
+
+class CategoryHistoryDaoManager {
+  final _$CategoryHistoryDaoMixin _db;
+  CategoryHistoryDaoManager(this._db);
+  $$CategoryHistoryTableTableTableManager get categoryHistoryTable =>
+      $$CategoryHistoryTableTableTableManager(
+        _db.attachedDatabase,
+        _db.categoryHistoryTable,
+      );
 }

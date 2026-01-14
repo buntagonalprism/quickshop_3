@@ -16,15 +16,15 @@ final class AnalyticsProvider
     extends $FunctionalProvider<Analytics, Analytics, Analytics>
     with $Provider<Analytics> {
   const AnalyticsProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'analyticsProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'analyticsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$analyticsHash();

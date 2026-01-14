@@ -12,19 +12,24 @@ part of 'package_info.dart';
 @ProviderFor(packageInfo)
 const packageInfoProvider = PackageInfoProvider._();
 
-final class PackageInfoProvider extends $FunctionalProvider<
-        AsyncValue<PackageInfo>, PackageInfo, FutureOr<PackageInfo>>
+final class PackageInfoProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PackageInfo>,
+          PackageInfo,
+          FutureOr<PackageInfo>
+        >
     with $FutureModifier<PackageInfo>, $FutureProvider<PackageInfo> {
   const PackageInfoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'packageInfoProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'packageInfoProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$packageInfoHash();
@@ -32,8 +37,8 @@ final class PackageInfoProvider extends $FunctionalProvider<
   @$internal
   @override
   $FutureProviderElement<PackageInfo> $createElement(
-          $ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<PackageInfo> create(Ref ref) {

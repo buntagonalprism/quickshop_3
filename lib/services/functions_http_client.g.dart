@@ -12,20 +12,24 @@ part of 'functions_http_client.dart';
 @ProviderFor(functionsHttpClient)
 const functionsHttpClientProvider = FunctionsHttpClientProvider._();
 
-final class FunctionsHttpClientProvider extends $FunctionalProvider<
-    FunctionsHttpClient,
-    FunctionsHttpClient,
-    FunctionsHttpClient> with $Provider<FunctionsHttpClient> {
+final class FunctionsHttpClientProvider
+    extends
+        $FunctionalProvider<
+          FunctionsHttpClient,
+          FunctionsHttpClient,
+          FunctionsHttpClient
+        >
+    with $Provider<FunctionsHttpClient> {
   const FunctionsHttpClientProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'functionsHttpClientProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'functionsHttpClientProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$functionsHttpClientHash();
@@ -33,8 +37,8 @@ final class FunctionsHttpClientProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<FunctionsHttpClient> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   FunctionsHttpClient create(Ref ref) {

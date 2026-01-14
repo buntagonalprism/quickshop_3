@@ -12,19 +12,24 @@ part of 'list_provider.dart';
 @ProviderFor(list)
 const listProvider = ListFamily._();
 
-final class ListProvider extends $FunctionalProvider<
-    AsyncValue<ListSummary?>,
-    AsyncValue<ListSummary?>,
-    AsyncValue<ListSummary?>> with $Provider<AsyncValue<ListSummary?>> {
-  const ListProvider._(
-      {required ListFamily super.from, required String super.argument})
-      : super(
-          retry: null,
-          name: r'listProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class ListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ListSummary?>,
+          AsyncValue<ListSummary?>,
+          AsyncValue<ListSummary?>
+        >
+    with $Provider<AsyncValue<ListSummary?>> {
+  const ListProvider._({
+    required ListFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'listProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$listHash();
@@ -39,16 +44,13 @@ final class ListProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<AsyncValue<ListSummary?>> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   AsyncValue<ListSummary?> create(Ref ref) {
     final argument = this.argument as String;
-    return list(
-      ref,
-      argument,
-    );
+    return list(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -75,17 +77,15 @@ String _$listHash() => r'ec8fc89a3c6fcba1b400f05cbc136b8ec4c74ec9';
 final class ListFamily extends $Family
     with $FunctionalFamilyOverride<AsyncValue<ListSummary?>, String> {
   const ListFamily._()
-      : super(
-          retry: null,
-          name: r'listProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'listProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ListProvider call(
-    String listId,
-  ) =>
+  ListProvider call(String listId) =>
       ListProvider._(argument: listId, from: this);
 
   @override

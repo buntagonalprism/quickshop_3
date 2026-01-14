@@ -4,11 +4,13 @@ import 'package:path_provider/path_provider.dart';
 
 import 'daos/category_history_dao.dart';
 import 'daos/category_suggestion_dao.dart';
+import 'daos/hidden_suggestions_dao.dart';
 import 'daos/item_history_dao.dart';
 import 'daos/item_suggestion_dao.dart';
 import 'daos/load_progress_dao.dart';
 import 'tables/category_history_table.dart';
 import 'tables/category_suggestion_table.dart';
+import 'tables/hidden_suggestions_table.dart';
 import 'tables/item_history_table.dart';
 import 'tables/item_suggestion_table.dart';
 import 'tables/load_progress_table.dart';
@@ -48,20 +50,25 @@ class QueryExecutorConfig extends AppDatabaseConfig {
   QueryExecutorConfig(this.executor);
 }
 
-@DriftDatabase(tables: [
-  ItemSuggestionsTable,
-  CategorySuggestionsTable,
-  ItemHistoryTable,
-  CategoryHistoryTable,
-  TokenTable,
-  LoadProgressTable,
-], daos: [
-  ItemSuggestionDao,
-  CategorySuggestionDao,
-  ItemHistoryDao,
-  CategoryHistoryDao,
-  LoadProgressDao,
-])
+@DriftDatabase(
+  tables: [
+    ItemSuggestionsTable,
+    CategorySuggestionsTable,
+    ItemHistoryTable,
+    CategoryHistoryTable,
+    TokenTable,
+    LoadProgressTable,
+    HiddenSuggestionsTable,
+  ],
+  daos: [
+    ItemSuggestionDao,
+    CategorySuggestionDao,
+    ItemHistoryDao,
+    CategoryHistoryDao,
+    LoadProgressDao,
+    HiddenSuggestionsDao,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase(AppDatabaseConfig config) : super(config.executor);
 
@@ -70,13 +77,15 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration {
-    return MigrationStrategy(onUpgrade: (m, from, to) async {
-      // The dumb migration strategy: delete all tables and recreate them.
-      for (final table in allTables) {
-        await m.deleteTable(table.actualTableName);
-        await m.createTable(table);
-      }
-    });
+    return MigrationStrategy(
+      onUpgrade: (m, from, to) async {
+        // The dumb migration strategy: delete all tables and recreate them.
+        for (final table in allTables) {
+          await m.deleteTable(table.actualTableName);
+          await m.createTable(table);
+        }
+      },
+    );
   }
 
   Iterable<String> _toTokens(String name) {
@@ -96,6 +105,7 @@ class AppDatabase extends _$AppDatabase {
     required TokenType type,
     required String queryString,
     GeneratedColumn<int>? orderByDescColumn,
+    GeneratedColumn<bool>? hiddenColumn,
     int limit = 20,
   }) async {
     final queryLower = queryString.toLowerCase();
@@ -105,19 +115,21 @@ class AppDatabase extends _$AppDatabase {
     if (queryTokens.isEmpty) {
       return [];
     }
-    final query = select(table).join([
-      innerJoin(
-          tokenTable, tokenTable.stringId.equalsExp(idColumn) & tokenTable.type.equals(type.value)),
-    ])
-      ..where(queryTokens.map((token) => tokenTable.token.like('$token%')).reduce((a, b) => a | b))
-      ..addColumns([amountOfTokenMatches])
-      ..groupBy([idColumn], having: amountOfTokenMatches.isBiggerOrEqualValue(queryTokens.length))
-      ..orderBy([
-        if (orderByDescColumn != null)
-          OrderingTerm(expression: orderByDescColumn, mode: OrderingMode.desc),
-        OrderingTerm(expression: nameColumn, mode: OrderingMode.asc),
-      ])
-      ..limit(limit);
+    final query =
+        select(table).join([
+            innerJoin(tokenTable, tokenTable.stringId.equalsExp(idColumn) & tokenTable.type.equals(type.value)),
+          ])
+          ..where(queryTokens.map((token) => tokenTable.token.like('$token%')).reduce((a, b) => a | b))
+          ..addColumns([amountOfTokenMatches])
+          ..groupBy([idColumn], having: amountOfTokenMatches.isBiggerOrEqualValue(queryTokens.length))
+          ..orderBy([
+            if (orderByDescColumn != null) OrderingTerm(expression: orderByDescColumn, mode: OrderingMode.desc),
+            OrderingTerm(expression: nameColumn, mode: OrderingMode.asc),
+          ])
+          ..limit(limit);
+    if (hiddenColumn != null) {
+      query.where(hiddenColumn.equals(false));
+    }
 
     final joinResults = await query.get();
     final rowResults = joinResults.map((row) => row.readTable(table)).toList();

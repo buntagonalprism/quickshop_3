@@ -13,21 +13,24 @@ part of 'shopping_category_suggestion_repo.dart';
 const shoppingCategorySuggestionRepoProvider =
     ShoppingCategorySuggestionRepoProvider._();
 
-final class ShoppingCategorySuggestionRepoProvider extends $FunctionalProvider<
-        ShoppingCategorySuggestionRepo,
-        ShoppingCategorySuggestionRepo,
-        ShoppingCategorySuggestionRepo>
+final class ShoppingCategorySuggestionRepoProvider
+    extends
+        $FunctionalProvider<
+          ShoppingCategorySuggestionRepo,
+          ShoppingCategorySuggestionRepo,
+          ShoppingCategorySuggestionRepo
+        >
     with $Provider<ShoppingCategorySuggestionRepo> {
   const ShoppingCategorySuggestionRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'shoppingCategorySuggestionRepoProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'shoppingCategorySuggestionRepoProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingCategorySuggestionRepoHash();
@@ -35,8 +38,8 @@ final class ShoppingCategorySuggestionRepoProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<ShoppingCategorySuggestionRepo> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   ShoppingCategorySuggestionRepo create(Ref ref) {
@@ -47,8 +50,9 @@ final class ShoppingCategorySuggestionRepoProvider extends $FunctionalProvider<
   Override overrideWithValue(ShoppingCategorySuggestionRepo value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<ShoppingCategorySuggestionRepo>(value),
+      providerOverride: $SyncValueProvider<ShoppingCategorySuggestionRepo>(
+        value,
+      ),
     );
   }
 }

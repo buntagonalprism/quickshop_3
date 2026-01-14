@@ -80,15 +80,15 @@ final class UpstreamProvider
   /// Each test is still able to access an independent value of this provider, thanks to the use of a
   /// [ProviderContainer] which scopes all providers to the test.
   const UpstreamProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'upstreamProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'upstreamProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$upstreamHash();
@@ -112,15 +112,15 @@ const delayDisposeProvider = DelayDisposeProvider._();
 final class DelayDisposeProvider extends $FunctionalProvider<int, int, int>
     with $Provider<int> {
   const DelayDisposeProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'delayDisposeProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'delayDisposeProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$delayDisposeHash();

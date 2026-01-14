@@ -12,20 +12,24 @@ part of 'shared_preferences.dart';
 @ProviderFor(sharedPrefs)
 const sharedPrefsProvider = SharedPrefsProvider._();
 
-final class SharedPrefsProvider extends $FunctionalProvider<
-    SharedPreferencesWithCache,
-    SharedPreferencesWithCache,
-    SharedPreferencesWithCache> with $Provider<SharedPreferencesWithCache> {
+final class SharedPrefsProvider
+    extends
+        $FunctionalProvider<
+          SharedPreferencesWithCache,
+          SharedPreferencesWithCache,
+          SharedPreferencesWithCache
+        >
+    with $Provider<SharedPreferencesWithCache> {
   const SharedPrefsProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'sharedPrefsProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'sharedPrefsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$sharedPrefsHash();
@@ -33,8 +37,8 @@ final class SharedPrefsProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<SharedPreferencesWithCache> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   SharedPreferencesWithCache create(Ref ref) {

@@ -12,18 +12,20 @@ part of 'user_profile_repo.dart';
 @ProviderFor(userProfileRepo)
 const userProfileRepoProvider = UserProfileRepoProvider._();
 
-final class UserProfileRepoProvider extends $FunctionalProvider<UserProfileRepo,
-    UserProfileRepo, UserProfileRepo> with $Provider<UserProfileRepo> {
+final class UserProfileRepoProvider
+    extends
+        $FunctionalProvider<UserProfileRepo, UserProfileRepo, UserProfileRepo>
+    with $Provider<UserProfileRepo> {
   const UserProfileRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'userProfileRepoProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userProfileRepoProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$userProfileRepoHash();
@@ -47,4 +49,4 @@ final class UserProfileRepoProvider extends $FunctionalProvider<UserProfileRepo,
   }
 }
 
-String _$userProfileRepoHash() => r'1e364a05c336d23fdbba19057e830eab08174f36';
+String _$userProfileRepoHash() => r'f5dcd5503f2295dee39b7c6c7bcd8c5c3eeb0dde';

@@ -5,6 +5,7 @@ import '../repositories/hidden_suggestions_repo.dart';
 import '../repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
 import '../repositories/user_profile_repo.dart';
 import '../repositories/user_profile_transaction.dart';
+import '../services/tables/hidden_suggestions_table.dart';
 
 part 'hidden_suggestions_use_case.g.dart';
 
@@ -18,13 +19,11 @@ class HiddenSuggestionsUseCase {
   HiddenSuggestionsUseCase(this._ref) {
     _ref.read(userProfileRepoProvider).getProfile().listen((profile) async {
       if (profile != null) {
-        final hiddenSuggestionsVersion = profile.lastHiddenSuggestionsVersion;
-        if (hiddenSuggestionsVersion > 0) {
-          final hiddenSuggestions =
-              await _ref.read(hiddenSuggestionsRepoProvider).getHiddenSuggestions(hiddenSuggestionsVersion);
-          if (hiddenSuggestions != null) {
-            _ref.read(shoppingItemSuggestionRepoProvider).onHiddenSuggestionsUpdated(hiddenSuggestions.items);
-          }
+        final hiddenSuggestionsVersion = profile.hiddenSuggestionsVersion;
+        final repo = _ref.read(hiddenSuggestionsRepoProvider);
+        if (hiddenSuggestionsVersion > repo.processedHiddenSuggestionsVersion) {
+          await repo.fetchHiddenSuggestions(hiddenSuggestionsVersion);
+          _ref.read(shoppingItemSuggestionRepoProvider).onHiddenSuggestionsUpdated();
         }
       }
     });
@@ -36,11 +35,10 @@ class HiddenSuggestionsUseCase {
     // Hide the suggestion locally
     await _ref.read(shoppingItemSuggestionRepoProvider).hideSuggestion(suggestion.sourceId);
 
-    final tx = _ref.read(userProfileTransactionProvider)();
-
     // Save the hidden suggestion to the user's profile to sync across devices
+    final tx = _ref.read(userProfileTransactionProvider)();
     _ref.read(userProfileRepoProvider).incrementHiddenSuggestionsVersion(tx);
-    _ref.read(hiddenSuggestionsRepoProvider).hideItem(tx, suggestion.sourceId);
+    _ref.read(hiddenSuggestionsRepoProvider).hideSuggestionRemotely(tx, SuggestionType.item, suggestion.sourceId);
     await tx.commit();
   }
 }

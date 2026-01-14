@@ -27,15 +27,15 @@ final class ListLeaveInProgressNotifierProvider
   /// the permission-denied error that would otherwise occur once the user no longer has permission
   /// to read the list.
   const ListLeaveInProgressNotifierProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'listLeaveInProgressProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'listLeaveInProgressProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$listLeaveInProgressNotifierHash();
@@ -68,8 +68,14 @@ abstract class _$ListLeaveInProgressNotifier extends $Notifier<Set<ListId>> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<Set<ListId>, Set<ListId>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<Set<ListId>, Set<ListId>>, Set<ListId>, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Set<ListId>, Set<ListId>>,
+              Set<ListId>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

@@ -16,15 +16,15 @@ final class SettingsRepoProvider
     extends $FunctionalProvider<SettingsRepo, SettingsRepo, SettingsRepo>
     with $Provider<SettingsRepo> {
   const SettingsRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'settingsRepoProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'settingsRepoProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$settingsRepoHash();

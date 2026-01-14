@@ -14,16 +14,16 @@ const shoppingItemsProvider = ShoppingItemsNotifierFamily._();
 
 final class ShoppingItemsNotifierProvider
     extends $StreamNotifierProvider<ShoppingItemsNotifier, List<ShoppingItem>> {
-  const ShoppingItemsNotifierProvider._(
-      {required ShoppingItemsNotifierFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'shoppingItemsProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  const ShoppingItemsNotifierProvider._({
+    required ShoppingItemsNotifierFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'shoppingItemsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$shoppingItemsNotifierHash();
@@ -56,23 +56,22 @@ String _$shoppingItemsNotifierHash() =>
 final class ShoppingItemsNotifierFamily extends $Family
     with
         $ClassFamilyOverride<
-            ShoppingItemsNotifier,
-            AsyncValue<List<ShoppingItem>>,
-            List<ShoppingItem>,
-            Stream<List<ShoppingItem>>,
-            String> {
+          ShoppingItemsNotifier,
+          AsyncValue<List<ShoppingItem>>,
+          List<ShoppingItem>,
+          Stream<List<ShoppingItem>>,
+          String
+        > {
   const ShoppingItemsNotifierFamily._()
-      : super(
-          retry: null,
-          name: r'shoppingItemsProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'shoppingItemsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  ShoppingItemsNotifierProvider call(
-    String listId,
-  ) =>
+  ShoppingItemsNotifierProvider call(String listId) =>
       ShoppingItemsNotifierProvider._(argument: listId, from: this);
 
   @override
@@ -84,22 +83,21 @@ abstract class _$ShoppingItemsNotifier
   late final _$args = ref.$arg as String;
   String get listId => _$args;
 
-  Stream<List<ShoppingItem>> build(
-    String listId,
-  );
+  Stream<List<ShoppingItem>> build(String listId);
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(
-      _$args,
-    );
+    final created = build(_$args);
     final ref =
         this.ref as $Ref<AsyncValue<List<ShoppingItem>>, List<ShoppingItem>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<ShoppingItem>>, List<ShoppingItem>>,
-        AsyncValue<List<ShoppingItem>>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<ShoppingItem>>, List<ShoppingItem>>,
+              AsyncValue<List<ShoppingItem>>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

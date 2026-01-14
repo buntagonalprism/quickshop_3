@@ -71,17 +71,8 @@ class ShoppingItemSuggestionRepo {
     });
   }
 
-  void onHiddenSuggestionsUpdated(List<String> hiddenSuggestionIds) async {
-    // Check to see if any new suggestions have been hidden
-    final newHiddenIds = hiddenSuggestionIds.toSet().difference(_hiddenSuggestionIds);
-    if (newHiddenIds.isNotEmpty) {
-      // Remove the hidden suggestions from the local database
-      await _db.itemSuggestionDao.deleteByIds(newHiddenIds.toList());
-
-      // Update prefs to confirm they have been deleted locally
-      _hiddenSuggestionIds.addAll(newHiddenIds);
-      await _prefs.setStringList(_hiddenSuggestionsKey, _hiddenSuggestionIds.toList()..sort());
-    }
+  void onHiddenSuggestionsUpdated() async {
+    await _db.itemSuggestionDao.updateAllHiddenFlags();
   }
 
   Future<List<ShoppingItemSuggestion>> searchSuggestions(String query) async {
@@ -135,6 +126,7 @@ class ShoppingItemSuggestionRepo {
             nameLower: (data['name'] as String).toLowerCase(),
             categories: (data['categories'] as List<dynamic>).join('|'),
             popularity: data['popularity'] ?? 0,
+            hidden: false,
           );
         }).toList(),
       );
@@ -145,12 +137,6 @@ class ShoppingItemSuggestionRepo {
   }
 
   Future<void> hideSuggestion(String suggestionId) async {
-    // Delete the suggestion from the local database so it won't appear in future searches
-    await _db.itemSuggestionDao.deleteById(suggestionId);
-
-    // Mark the suggestion as hidden in shared preferences, confirming it has been deleted locally
-    if (_hiddenSuggestionIds.add(suggestionId)) {
-      await _prefs.setStringList(_hiddenSuggestionsKey, _hiddenSuggestionIds.toList()..sort());
-    }
+    await _db.itemSuggestionDao.updateHiddenFlag(suggestionId, true, _ref.read(localeServiceProvider).languageCode);
   }
 }

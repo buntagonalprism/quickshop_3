@@ -11,49 +11,47 @@ part of 'shopping_category_suggestions_summary.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$ShoppingCategorySuggestionsSummary {
-  Map<String, DateTime> get updatedAt;
 
-  /// Create a copy of ShoppingCategorySuggestionsSummary
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $ShoppingCategorySuggestionsSummaryCopyWith<
-          ShoppingCategorySuggestionsSummary>
-      get copyWith => _$ShoppingCategorySuggestionsSummaryCopyWithImpl<
-              ShoppingCategorySuggestionsSummary>(
-          this as ShoppingCategorySuggestionsSummary, _$identity);
+ Map<String, DateTime> get updatedAt;
+/// Create a copy of ShoppingCategorySuggestionsSummary
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ShoppingCategorySuggestionsSummaryCopyWith<ShoppingCategorySuggestionsSummary> get copyWith => _$ShoppingCategorySuggestionsSummaryCopyWithImpl<ShoppingCategorySuggestionsSummary>(this as ShoppingCategorySuggestionsSummary, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is ShoppingCategorySuggestionsSummary &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
-  }
 
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(updatedAt));
 
-  @override
-  String toString() {
-    return 'ShoppingCategorySuggestionsSummary(updatedAt: $updatedAt)';
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingCategorySuggestionsSummary&&const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(updatedAt));
+
+@override
+String toString() {
+  return 'ShoppingCategorySuggestionsSummary(updatedAt: $updatedAt)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $ShoppingCategorySuggestionsSummaryCopyWith<$Res> {
-  factory $ShoppingCategorySuggestionsSummaryCopyWith(
-          ShoppingCategorySuggestionsSummary value,
-          $Res Function(ShoppingCategorySuggestionsSummary) _then) =
-      _$ShoppingCategorySuggestionsSummaryCopyWithImpl;
-  @useResult
-  $Res call({Map<String, DateTime> updatedAt});
-}
+abstract mixin class $ShoppingCategorySuggestionsSummaryCopyWith<$Res>  {
+  factory $ShoppingCategorySuggestionsSummaryCopyWith(ShoppingCategorySuggestionsSummary value, $Res Function(ShoppingCategorySuggestionsSummary) _then) = _$ShoppingCategorySuggestionsSummaryCopyWithImpl;
+@useResult
+$Res call({
+ Map<String, DateTime> updatedAt
+});
 
+
+
+
+}
 /// @nodoc
 class _$ShoppingCategorySuggestionsSummaryCopyWithImpl<$Res>
     implements $ShoppingCategorySuggestionsSummaryCopyWith<$Res> {
@@ -62,238 +60,200 @@ class _$ShoppingCategorySuggestionsSummaryCopyWithImpl<$Res>
   final ShoppingCategorySuggestionsSummary _self;
   final $Res Function(ShoppingCategorySuggestionsSummary) _then;
 
-  /// Create a copy of ShoppingCategorySuggestionsSummary
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? updatedAt = null,
-  }) {
-    return _then(_self.copyWith(
-      updatedAt: null == updatedAt
-          ? _self.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as Map<String, DateTime>,
-    ));
-  }
+/// Create a copy of ShoppingCategorySuggestionsSummary
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? updatedAt = null,}) {
+  return _then(_self.copyWith(
+updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as Map<String, DateTime>,
+  ));
 }
+
+}
+
 
 /// Adds pattern-matching-related methods to [ShoppingCategorySuggestionsSummary].
-extension ShoppingCategorySuggestionsSummaryPatterns
-    on ShoppingCategorySuggestionsSummary {
-  /// A variant of `map` that fallback to returning `orElse`.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case _:
-  ///     return orElse();
-  /// }
-  /// ```
+extension ShoppingCategorySuggestionsSummaryPatterns on ShoppingCategorySuggestionsSummary {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ShoppingCategorySuggestionsSummary value)? $default, {
-    required TResult orElse(),
-  }) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestionsSummary() when $default != null:
-        return $default(_that);
-      case _:
-        return orElse();
-    }
-  }
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ShoppingCategorySuggestionsSummary value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestionsSummary() when $default != null:
+return $default(_that);case _:
+  return orElse();
 
-  /// A `switch`-like method, using callbacks.
-  ///
-  /// Callbacks receives the raw object, upcasted.
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case final Subclass2 value:
-  ///     return ...;
-  /// }
-  /// ```
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ShoppingCategorySuggestionsSummary value) $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestionsSummary():
-        return $default(_that);
-      case _:
-        throw StateError('Unexpected subclass');
-    }
-  }
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ShoppingCategorySuggestionsSummary value)  $default,){
+final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestionsSummary():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
 
-  /// A variant of `map` that fallback to returning `null`.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case _:
-  ///     return null;
-  /// }
-  /// ```
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ShoppingCategorySuggestionsSummary value)? $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestionsSummary() when $default != null:
-        return $default(_that);
-      case _:
-        return null;
-    }
-  }
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ShoppingCategorySuggestionsSummary value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestionsSummary() when $default != null:
+return $default(_that);case _:
+  return null;
 
-  /// A variant of `when` that fallback to an `orElse` callback.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case _:
-  ///     return orElse();
-  /// }
-  /// ```
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(Map<String, DateTime> updatedAt)? $default, {
-    required TResult orElse(),
-  }) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestionsSummary() when $default != null:
-        return $default(_that.updatedAt);
-      case _:
-        return orElse();
-    }
-  }
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<String, DateTime> updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestionsSummary() when $default != null:
+return $default(_that.updatedAt);case _:
+  return orElse();
 
-  /// A `switch`-like method, using callbacks.
-  ///
-  /// As opposed to `map`, this offers destructuring.
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case Subclass2(:final field2):
-  ///     return ...;
-  /// }
-  /// ```
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(Map<String, DateTime> updatedAt) $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestionsSummary():
-        return $default(_that.updatedAt);
-      case _:
-        throw StateError('Unexpected subclass');
-    }
-  }
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<String, DateTime> updatedAt)  $default,) {final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestionsSummary():
+return $default(_that.updatedAt);case _:
+  throw StateError('Unexpected subclass');
 
-  /// A variant of `when` that fallback to returning `null`
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case _:
-  ///     return null;
-  /// }
-  /// ```
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(Map<String, DateTime> updatedAt)? $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ShoppingCategorySuggestionsSummary() when $default != null:
-        return $default(_that.updatedAt);
-      case _:
-        return null;
-    }
-  }
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<String, DateTime> updatedAt)?  $default,) {final _that = this;
+switch (_that) {
+case _ShoppingCategorySuggestionsSummary() when $default != null:
+return $default(_that.updatedAt);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 
-class _ShoppingCategorySuggestionsSummary
-    extends ShoppingCategorySuggestionsSummary {
-  const _ShoppingCategorySuggestionsSummary(
-      {required final Map<String, DateTime> updatedAt})
-      : _updatedAt = updatedAt,
-        super._();
 
-  final Map<String, DateTime> _updatedAt;
-  @override
-  Map<String, DateTime> get updatedAt {
-    if (_updatedAt is EqualUnmodifiableMapView) return _updatedAt;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_updatedAt);
-  }
+class _ShoppingCategorySuggestionsSummary extends ShoppingCategorySuggestionsSummary {
+  const _ShoppingCategorySuggestionsSummary({required final  Map<String, DateTime> updatedAt}): _updatedAt = updatedAt,super._();
+  
 
-  /// Create a copy of ShoppingCategorySuggestionsSummary
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$ShoppingCategorySuggestionsSummaryCopyWith<
-          _ShoppingCategorySuggestionsSummary>
-      get copyWith => __$ShoppingCategorySuggestionsSummaryCopyWithImpl<
-          _ShoppingCategorySuggestionsSummary>(this, _$identity);
+ final  Map<String, DateTime> _updatedAt;
+@override Map<String, DateTime> get updatedAt {
+  if (_updatedAt is EqualUnmodifiableMapView) return _updatedAt;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_updatedAt);
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _ShoppingCategorySuggestionsSummary &&
-            const DeepCollectionEquality()
-                .equals(other._updatedAt, _updatedAt));
-  }
 
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_updatedAt));
+/// Create a copy of ShoppingCategorySuggestionsSummary
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ShoppingCategorySuggestionsSummaryCopyWith<_ShoppingCategorySuggestionsSummary> get copyWith => __$ShoppingCategorySuggestionsSummaryCopyWithImpl<_ShoppingCategorySuggestionsSummary>(this, _$identity);
 
-  @override
-  String toString() {
-    return 'ShoppingCategorySuggestionsSummary(updatedAt: $updatedAt)';
-  }
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingCategorySuggestionsSummary&&const DeepCollectionEquality().equals(other._updatedAt, _updatedAt));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_updatedAt));
+
+@override
+String toString() {
+  return 'ShoppingCategorySuggestionsSummary(updatedAt: $updatedAt)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$ShoppingCategorySuggestionsSummaryCopyWith<$Res>
-    implements $ShoppingCategorySuggestionsSummaryCopyWith<$Res> {
-  factory _$ShoppingCategorySuggestionsSummaryCopyWith(
-          _ShoppingCategorySuggestionsSummary value,
-          $Res Function(_ShoppingCategorySuggestionsSummary) _then) =
-      __$ShoppingCategorySuggestionsSummaryCopyWithImpl;
-  @override
-  @useResult
-  $Res call({Map<String, DateTime> updatedAt});
-}
+abstract mixin class _$ShoppingCategorySuggestionsSummaryCopyWith<$Res> implements $ShoppingCategorySuggestionsSummaryCopyWith<$Res> {
+  factory _$ShoppingCategorySuggestionsSummaryCopyWith(_ShoppingCategorySuggestionsSummary value, $Res Function(_ShoppingCategorySuggestionsSummary) _then) = __$ShoppingCategorySuggestionsSummaryCopyWithImpl;
+@override @useResult
+$Res call({
+ Map<String, DateTime> updatedAt
+});
 
+
+
+
+}
 /// @nodoc
 class __$ShoppingCategorySuggestionsSummaryCopyWithImpl<$Res>
     implements _$ShoppingCategorySuggestionsSummaryCopyWith<$Res> {
@@ -302,20 +262,16 @@ class __$ShoppingCategorySuggestionsSummaryCopyWithImpl<$Res>
   final _ShoppingCategorySuggestionsSummary _self;
   final $Res Function(_ShoppingCategorySuggestionsSummary) _then;
 
-  /// Create a copy of ShoppingCategorySuggestionsSummary
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? updatedAt = null,
-  }) {
-    return _then(_ShoppingCategorySuggestionsSummary(
-      updatedAt: null == updatedAt
-          ? _self._updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as Map<String, DateTime>,
-    ));
-  }
+/// Create a copy of ShoppingCategorySuggestionsSummary
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? updatedAt = null,}) {
+  return _then(_ShoppingCategorySuggestionsSummary(
+updatedAt: null == updatedAt ? _self._updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as Map<String, DateTime>,
+  ));
+}
+
+
 }
 
 // dart format on

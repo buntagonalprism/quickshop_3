@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../app_database.dart';
+import '../tables/hidden_suggestions_table.dart';
 import '../tables/item_suggestion_table.dart';
 import '../tables/token_table.dart';
 
@@ -36,11 +37,51 @@ class ItemSuggestionDao extends DatabaseAccessor<AppDatabase> with _$ItemSuggest
     });
   }
 
+  Future<void> updateHiddenFlag(String id, bool hidden, String locale) async {
+    await batch((batch) {
+      batch.update(
+        itemSuggestionsTable,
+        ItemSuggestionsTableCompanion(hidden: Value(hidden)),
+        where: (tbl) => tbl.id.equals(id),
+      );
+      if (hidden) {
+        batch.insert(
+          db.hiddenSuggestionsTable,
+          HiddenSuggestionsRow(id: id, type: SuggestionType.item.value, locale: locale),
+          mode: InsertMode.insertOrReplace,
+        );
+      } else {
+        batch.deleteWhere(
+          db.hiddenSuggestionsTable,
+          (tbl) => tbl.id.equals(id) & tbl.type.equals(SuggestionType.item.value) & tbl.locale.equals(locale),
+        );
+      }
+    });
+  }
+
+  Future<void> updateAllHiddenFlags() async {
+    final ist = itemSuggestionsTable;
+    final hst = db.hiddenSuggestionsTable;
+    await batch((batch) {
+      batch.update(ist, ItemSuggestionsTableCompanion(hidden: Value(false)));
+      batch.customStatement(
+        """UPDATE ${ist.tableName} 
+        SET ${ist.hidden.name} = 1 
+        WHERE EXISTS (
+          SELECT 1 FROM ${hst.tableName} 
+          WHERE ${hst.tableName}.${hst.id.name} = ${ist.tableName}.${ist.id.name} 
+          AND ${hst.tableName}.${hst.type.name} = '${SuggestionType.item.value}'
+        )""",
+      );
+    });
+  }
+
   Future<List<ItemSuggestionsRow>> query(String queryString) async {
     return db.queryByTokens<ItemSuggestionsRow, ItemSuggestionsTable>(
       table: itemSuggestionsTable,
       idColumn: itemSuggestionsTable.id,
       nameColumn: itemSuggestionsTable.nameLower,
+      hiddenColumn: itemSuggestionsTable.hidden,
       nameGetter: (row) => row.nameLower,
       idGetter: (row) => row.id,
       type: TokenType.itemSuggestion,

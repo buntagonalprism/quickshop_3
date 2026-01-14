@@ -9,6 +9,6 @@ abstract class UserProfile with _$UserProfile {
   const factory UserProfile({
     required String userId,
     required DateTime lastHistoryUpdate,
-    required int lastHiddenSuggestionsVersion,
+    required int hiddenSuggestionsVersion,
   }) = _UserHistory;
 }

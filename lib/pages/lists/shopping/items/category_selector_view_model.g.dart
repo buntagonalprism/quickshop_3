@@ -15,15 +15,15 @@ const categoryFilterProvider = CategoryFilterProvider._();
 final class CategoryFilterProvider
     extends $NotifierProvider<CategoryFilter, String> {
   const CategoryFilterProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'categoryFilterProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'categoryFilterProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$categoryFilterHash();
@@ -50,8 +50,14 @@ abstract class _$CategoryFilter extends $Notifier<String> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<String, String>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<String, String>, String, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<String, String>,
+              String,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -59,20 +65,24 @@ abstract class _$CategoryFilter extends $Notifier<String> {
 @ProviderFor(categorySelectorViewModel)
 const categorySelectorViewModelProvider = CategorySelectorViewModelFamily._();
 
-final class CategorySelectorViewModelProvider extends $FunctionalProvider<
-    CategorySelectorViewModel,
-    CategorySelectorViewModel,
-    CategorySelectorViewModel> with $Provider<CategorySelectorViewModel> {
-  const CategorySelectorViewModelProvider._(
-      {required CategorySelectorViewModelFamily super.from,
-      required String super.argument})
-      : super(
-          retry: null,
-          name: r'categorySelectorViewModelProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class CategorySelectorViewModelProvider
+    extends
+        $FunctionalProvider<
+          CategorySelectorViewModel,
+          CategorySelectorViewModel,
+          CategorySelectorViewModel
+        >
+    with $Provider<CategorySelectorViewModel> {
+  const CategorySelectorViewModelProvider._({
+    required CategorySelectorViewModelFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'categorySelectorViewModelProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$categorySelectorViewModelHash();
@@ -87,16 +97,13 @@ final class CategorySelectorViewModelProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<CategorySelectorViewModel> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   CategorySelectorViewModel create(Ref ref) {
     final argument = this.argument as String;
-    return categorySelectorViewModel(
-      ref,
-      argument,
-    );
+    return categorySelectorViewModel(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -125,17 +132,15 @@ String _$categorySelectorViewModelHash() =>
 final class CategorySelectorViewModelFamily extends $Family
     with $FunctionalFamilyOverride<CategorySelectorViewModel, String> {
   const CategorySelectorViewModelFamily._()
-      : super(
-          retry: null,
-          name: r'categorySelectorViewModelProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+    : super(
+        retry: null,
+        name: r'categorySelectorViewModelProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  CategorySelectorViewModelProvider call(
-    String listId,
-  ) =>
+  CategorySelectorViewModelProvider call(String listId) =>
       CategorySelectorViewModelProvider._(argument: listId, from: this);
 
   @override

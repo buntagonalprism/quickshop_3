@@ -16,15 +16,15 @@ final class ListRepoProvider
     extends $FunctionalProvider<ListRepo, ListRepo, ListRepo>
     with $Provider<ListRepo> {
   const ListRepoProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'listRepoProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'listRepoProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$listRepoHash();
