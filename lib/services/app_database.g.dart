@@ -2351,11 +2351,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $LoadProgressTableTable(this);
   late final $HiddenSuggestionsTableTable hiddenSuggestionsTable =
       $HiddenSuggestionsTableTable(this);
-  late final ItemSuggestionDao itemSuggestionDao = ItemSuggestionDao(
-    this as AppDatabase,
-  );
-  late final CategorySuggestionDao categorySuggestionDao =
-      CategorySuggestionDao(this as AppDatabase);
   late final ItemHistoryDao itemHistoryDao = ItemHistoryDao(
     this as AppDatabase,
   );
@@ -2365,7 +2360,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final LoadProgressDao loadProgressDao = LoadProgressDao(
     this as AppDatabase,
   );
-  late final HiddenSuggestionsDao hiddenSuggestionsDao = HiddenSuggestionsDao(
+  late final SuggestionsDao suggestionsDao = SuggestionsDao(
     this as AppDatabase,
   );
   @override

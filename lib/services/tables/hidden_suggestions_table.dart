@@ -9,11 +9,3 @@ class HiddenSuggestionsTable extends Table {
   @override
   String get tableName => 'HiddenSuggestions';
 }
-
-enum SuggestionType {
-  item('item'),
-  category('category');
-
-  final String value;
-  const SuggestionType(this.value);
-}

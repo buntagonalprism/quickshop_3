@@ -3,11 +3,9 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'daos/category_history_dao.dart';
-import 'daos/category_suggestion_dao.dart';
-import 'daos/hidden_suggestions_dao.dart';
 import 'daos/item_history_dao.dart';
-import 'daos/item_suggestion_dao.dart';
 import 'daos/load_progress_dao.dart';
+import 'daos/suggestions_dao.dart';
 import 'tables/category_history_table.dart';
 import 'tables/category_suggestion_table.dart';
 import 'tables/hidden_suggestions_table.dart';
@@ -61,12 +59,10 @@ class QueryExecutorConfig extends AppDatabaseConfig {
     HiddenSuggestionsTable,
   ],
   daos: [
-    ItemSuggestionDao,
-    CategorySuggestionDao,
     ItemHistoryDao,
     CategoryHistoryDao,
     LoadProgressDao,
-    HiddenSuggestionsDao,
+    SuggestionsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

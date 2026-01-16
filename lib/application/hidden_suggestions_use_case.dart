@@ -2,10 +2,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../repositories/hidden_suggestions_repo.dart';
-import '../repositories/shopping/suggestions/shopping_item_suggestion_repo.dart';
 import '../repositories/user_profile_repo.dart';
 import '../repositories/user_profile_transaction.dart';
-import '../services/tables/hidden_suggestions_table.dart';
+import '../services/tables/suggestion_type.dart';
 
 part 'hidden_suggestions_use_case.g.dart';
 
@@ -22,8 +21,7 @@ class HiddenSuggestionsUseCase {
         final hiddenSuggestionsVersion = profile.hiddenSuggestionsVersion;
         final repo = _ref.read(hiddenSuggestionsRepoProvider);
         if (hiddenSuggestionsVersion > repo.processedHiddenSuggestionsVersion) {
-          await repo.fetchHiddenSuggestions(hiddenSuggestionsVersion);
-          _ref.read(shoppingItemSuggestionRepoProvider).onHiddenSuggestionsUpdated();
+          await repo.fetchAndApplyHiddenSuggestions(hiddenSuggestionsVersion);
         }
       }
     });
@@ -33,7 +31,7 @@ class HiddenSuggestionsUseCase {
     assert(suggestion.source == ShoppingItemAutocompleteSource.suggested, 'Only suggestions can be hidden');
 
     // Hide the suggestion locally
-    await _ref.read(shoppingItemSuggestionRepoProvider).hideSuggestion(suggestion.sourceId);
+    await _ref.read(hiddenSuggestionsRepoProvider).hideSuggestionLocally(SuggestionType.item, suggestion.sourceId);
 
     // Save the hidden suggestion to the user's profile to sync across devices
     final tx = _ref.read(userProfileTransactionProvider)();

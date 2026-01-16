@@ -9,7 +9,7 @@ import '../services/auth_service.dart';
 import '../services/firestore.dart';
 import '../services/locale_service.dart';
 import '../services/shared_preferences.dart';
-import '../services/tables/hidden_suggestions_table.dart';
+import '../services/tables/suggestion_type.dart';
 import 'user_profile_repo.dart';
 import 'user_profile_transaction.dart';
 
@@ -30,7 +30,7 @@ class HiddenSuggestionsRepo {
 
   int get processedHiddenSuggestionsVersion => _ref.read(sharedPrefsProvider).getInt(versionKey) ?? 0;
 
-  Future<void> fetchHiddenSuggestions(int newVersion) async {
+  Future<void> fetchAndApplyHiddenSuggestions(int newVersion) async {
     final user = _ref.read(userAuthProvider);
     if (user == null) {
       return;
@@ -79,9 +79,15 @@ class HiddenSuggestionsRepo {
         ),
       );
     }
-    await db.hiddenSuggestionsDao.replaceAll(hiddenSuggestionRows);
+    await db.suggestionsDao.replaceAllHiddenSuggestions(hiddenSuggestionRows);
 
     await _ref.read(sharedPrefsProvider).setInt(versionKey, newVersion);
+  }
+
+  Future<void> hideSuggestionLocally(SuggestionType type, String suggestionId) {
+    final db = _ref.read(appDatabaseProvider);
+    final locale = _ref.read(localeServiceProvider);
+    return db.suggestionsDao.updateHiddenFlag(type, suggestionId, true, locale.languageCode);
   }
 
   void hideSuggestionRemotely(UserProfileTransaction tx, SuggestionType type, String suggestionId) {

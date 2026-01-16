@@ -71,13 +71,9 @@ class ShoppingItemSuggestionRepo {
     });
   }
 
-  void onHiddenSuggestionsUpdated() async {
-    await _db.itemSuggestionDao.updateAllHiddenFlags();
-  }
-
   Future<List<ShoppingItemSuggestion>> searchSuggestions(String query) async {
     final start = DateTime.now();
-    final itemSuggestionsData = await _db.itemSuggestionDao.query(query);
+    final itemSuggestionsData = await _db.suggestionsDao.queryItems(query);
     _log.captureSpan(start, '$ShoppingItemSuggestionRepo.$searchSuggestions');
     return itemSuggestionsData.map((entry) {
       return ShoppingItemSuggestion(
@@ -117,7 +113,7 @@ class ShoppingItemSuggestionRepo {
     }
 
     if (_currentLangCode == langCode) {
-      await _db.itemSuggestionDao.insert(
+      await _db.suggestionsDao.insertItems(
         allDocs.where((doc) => !_hiddenSuggestionIds.contains(doc.id)).map((doc) {
           final data = doc.data()!;
           return ItemSuggestionsRow(
@@ -134,9 +130,5 @@ class ShoppingItemSuggestionRepo {
       await _prefs.setString(_suggestionsLangCodeKey, langCode);
       await _db.loadProgressDao.save(LoadProgressType.itemSuggestion, lastUpdated);
     }
-  }
-
-  Future<void> hideSuggestion(String suggestionId) async {
-    await _db.itemSuggestionDao.updateHiddenFlag(suggestionId, true, _ref.read(localeServiceProvider).languageCode);
   }
 }

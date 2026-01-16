@@ -69,7 +69,7 @@ class ShoppingCategorySuggestionRepo {
 
   Future<List<ShoppingCategorySuggestion>> searchSuggestions(String query) async {
     final start = DateTime.now();
-    final suggestions = await _db.categorySuggestionDao.query(query);
+    final suggestions = await _db.suggestionsDao.queryCategories(query);
     _log.captureSpan(start, '$ShoppingCategorySuggestionRepo.$searchSuggestions');
     return suggestions.map((row) {
       return ShoppingCategorySuggestion(
@@ -107,7 +107,7 @@ class ShoppingCategorySuggestionRepo {
     }
 
     if (_currentLangCode == langCode) {
-      await _db.categorySuggestionDao.insert(
+      await _db.suggestionsDao.insertCategories(
         allDocs.map((doc) {
           final data = doc.data()!;
           return CategorySuggestionsRow(
