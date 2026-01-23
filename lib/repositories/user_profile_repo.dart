@@ -51,7 +51,7 @@ class UserProfileRepo {
     final fs = _ref.read(firestoreProvider);
     final userRef = fs.collection(collectionName).doc(user.id);
 
-    tx.batch.update(userRef, {_Fields.lastHiddenSuggestionsVersion: FieldValue.increment(1)});
+    tx.batch.update(userRef, {_Fields.hiddenSuggestionsVersion: FieldValue.increment(1)});
   }
 
   void setLastHistoryUpdate(UserProfileTransaction tx, DateTime newUpdateTime) {
@@ -65,12 +65,12 @@ class UserProfileRepo {
     return UserProfile(
       userId: userId,
       lastHistoryUpdate: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastHistoryUpdate]),
-      hiddenSuggestionsVersion: data[_Fields.lastHiddenSuggestionsVersion],
+      hiddenSuggestionsVersion: data[_Fields.hiddenSuggestionsVersion],
     );
   }
 }
 
 class _Fields {
   static const lastHistoryUpdate = 'lastHistoryUpdate';
-  static const lastHiddenSuggestionsVersion = 'lastHiddenSuggestionsVersion';
+  static const hiddenSuggestionsVersion = 'hiddenSuggestionsVersion';
 }
