@@ -30,6 +30,9 @@ class UserProfileRepo {
     }
     return fs.collection(collectionName).doc(user.id).snapshots().map((snapshot) {
       if (!snapshot.exists) {
+        // This should only be necessary in local debug environments. When running against
+        // a deployed Firebase environment, the user document should get auto-created by a
+        // Cloud Function triggered on user creation.
         httpClient.put('/createUser');
         _cachedUserHistory = UserProfile(
           userId: user.id,

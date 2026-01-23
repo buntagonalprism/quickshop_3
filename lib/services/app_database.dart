@@ -69,7 +69,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(AppDatabaseConfig config) : super(config.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
