@@ -37,7 +37,7 @@ class HiddenSuggestionsRepo {
     }
     final locale = _ref.read(localeServiceProvider);
 
-    // Finally, load from Firestore
+    // Fetch hidden suggestions from Firestore
     final fs = _ref.read(firestoreProvider);
     final localeHiddenSuggestionsDoc = fs
         .collection(UserProfileRepo.collectionName)
@@ -53,8 +53,8 @@ class HiddenSuggestionsRepo {
       hiddenSuggestions = HiddenSuggestions(
         locale: data[_Fields.locale],
         lastUpdated: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastUpdated]),
-        items: (data[_Fields.items] as List<dynamic>).cast<String>(),
-        categories: (data[_Fields.categories] as List<dynamic>).cast<String>(),
+        items: _listOrNull(data[_Fields.items]) ?? [],
+        categories: _listOrNull(data[_Fields.categories]) ?? [],
       );
     }
 
@@ -82,6 +82,13 @@ class HiddenSuggestionsRepo {
     await db.suggestionsDao.replaceAllHiddenSuggestions(hiddenSuggestionRows);
 
     await _ref.read(sharedPrefsProvider).setInt(versionKey, newVersion);
+  }
+
+  List<String>? _listOrNull(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    return (value as List<dynamic>).cast<String>();
   }
 
   Future<void> hideSuggestionLocally(SuggestionType type, String suggestionId) {
