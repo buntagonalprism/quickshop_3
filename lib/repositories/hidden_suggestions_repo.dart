@@ -24,7 +24,7 @@ class HiddenSuggestionsRepo {
   final Ref _ref;
   HiddenSuggestionsRepo(this._ref);
 
-  static const collectionName = 'hidden_suggestions';
+  static const collectionName = 'hiddenSuggestions';
 
   static const versionKey = 'processedHiddenSuggestionsVersion';
 
