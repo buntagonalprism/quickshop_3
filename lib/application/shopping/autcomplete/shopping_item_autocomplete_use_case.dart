@@ -58,7 +58,7 @@ class ShoppingItemAutocompleteUseCase {
     for (var item in history) {
       final autocomplete = ShoppingItemAutocomplete(
         product: item.name,
-        categories: item.categories,
+        category: item.category,
         quantity: parsedItem.quantity,
         source: ShoppingItemAutocompleteSource.history,
         sourceId: item.id,
@@ -74,7 +74,7 @@ class ShoppingItemAutocompleteUseCase {
     for (var suggestion in suggestions) {
       final autocomplete = ShoppingItemAutocomplete(
         product: suggestion.name,
-        categories: suggestion.categories,
+        category: suggestion.category,
         quantity: parsedItem.quantity,
         source: ShoppingItemAutocompleteSource.suggested,
         sourceId: suggestion.id,
@@ -102,7 +102,7 @@ class ShoppingItemAutocompleteUseCase {
   ShoppingItemAutocomplete _listItemToAutcomplete(ShoppingItem item) {
     return ShoppingItemAutocomplete(
       product: item.product,
-      categories: item.categories,
+      category: item.category,
       quantity: item.quantity,
       source: ShoppingItemAutocompleteSource.list,
       sourceId: item.id,

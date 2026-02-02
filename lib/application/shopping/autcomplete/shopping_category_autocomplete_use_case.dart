@@ -43,10 +43,9 @@ class ShoppingCategoryAutocompleteUseCase {
     if (listItemsAsync.hasValue) {
       final listItems = listItemsAsync.requireValue;
       for (var item in listItems) {
-        for (var category in item.categories) {
-          if (category.toLowerCase().startsWith(query) || category.toLowerCase().contains(query)) {
-            addIfNotAlreadyIncluded(_listCategoryToAutocomplete(category, item.id));
-          }
+        final category = item.category;
+        if (category.toLowerCase().startsWith(query) || category.toLowerCase().contains(query)) {
+          addIfNotAlreadyIncluded(_listCategoryToAutocomplete(category, item.id));
         }
       }
     }

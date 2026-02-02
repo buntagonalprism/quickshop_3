@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShoppingItem {
 
- String get id; String get path; String get product; String get quantity; List<String> get categories; String get addedByUserId; String get lastModifiedByUserId; DateTime get lastModifiedAt; bool get completed;
+ String get id; String get path; String get product; String get quantity; String get category; String get addedByUserId; String get lastModifiedByUserId; DateTime get lastModifiedAt; bool get completed;
 /// Create a copy of ShoppingItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ShoppingItemCopyWith<ShoppingItem> get copyWith => _$ShoppingItemCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItem&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.addedByUserId, addedByUserId) || other.addedByUserId == addedByUserId)&&(identical(other.lastModifiedByUserId, lastModifiedByUserId) || other.lastModifiedByUserId == lastModifiedByUserId)&&(identical(other.lastModifiedAt, lastModifiedAt) || other.lastModifiedAt == lastModifiedAt)&&(identical(other.completed, completed) || other.completed == completed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItem&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.addedByUserId, addedByUserId) || other.addedByUserId == addedByUserId)&&(identical(other.lastModifiedByUserId, lastModifiedByUserId) || other.lastModifiedByUserId == lastModifiedByUserId)&&(identical(other.lastModifiedAt, lastModifiedAt) || other.lastModifiedAt == lastModifiedAt)&&(identical(other.completed, completed) || other.completed == completed));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,path,product,quantity,const DeepCollectionEquality().hash(categories),addedByUserId,lastModifiedByUserId,lastModifiedAt,completed);
+int get hashCode => Object.hash(runtimeType,id,path,product,quantity,category,addedByUserId,lastModifiedByUserId,lastModifiedAt,completed);
 
 @override
 String toString() {
-  return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
+  return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, category: $category, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ShoppingItemCopyWith<$Res>  {
   factory $ShoppingItemCopyWith(ShoppingItem value, $Res Function(ShoppingItem) _then) = _$ShoppingItemCopyWithImpl;
 @useResult
 $Res call({
- String id, String path, String product, String quantity, List<String> categories, String addedByUserId, String lastModifiedByUserId, DateTime lastModifiedAt, bool completed
+ String id, String path, String product, String quantity, String category, String addedByUserId, String lastModifiedByUserId, DateTime lastModifiedAt, bool completed
 });
 
 
@@ -62,14 +62,14 @@ class _$ShoppingItemCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? path = null,Object? product = null,Object? quantity = null,Object? categories = null,Object? addedByUserId = null,Object? lastModifiedByUserId = null,Object? lastModifiedAt = null,Object? completed = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? path = null,Object? product = null,Object? quantity = null,Object? category = null,Object? addedByUserId = null,Object? lastModifiedByUserId = null,Object? lastModifiedAt = null,Object? completed = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,addedByUserId: null == addedByUserId ? _self.addedByUserId : addedByUserId // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,addedByUserId: null == addedByUserId ? _self.addedByUserId : addedByUserId // ignore: cast_nullable_to_non_nullable
 as String,lastModifiedByUserId: null == lastModifiedByUserId ? _self.lastModifiedByUserId : lastModifiedByUserId // ignore: cast_nullable_to_non_nullable
 as String,lastModifiedAt: null == lastModifiedAt ? _self.lastModifiedAt : lastModifiedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable
@@ -158,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String path,  String product,  String quantity,  List<String> categories,  String addedByUserId,  String lastModifiedByUserId,  DateTime lastModifiedAt,  bool completed)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String path,  String product,  String quantity,  String category,  String addedByUserId,  String lastModifiedByUserId,  DateTime lastModifiedAt,  bool completed)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShoppingItem() when $default != null:
-return $default(_that.id,_that.path,_that.product,_that.quantity,_that.categories,_that.addedByUserId,_that.lastModifiedByUserId,_that.lastModifiedAt,_that.completed);case _:
+return $default(_that.id,_that.path,_that.product,_that.quantity,_that.category,_that.addedByUserId,_that.lastModifiedByUserId,_that.lastModifiedAt,_that.completed);case _:
   return orElse();
 
 }
@@ -179,10 +179,10 @@ return $default(_that.id,_that.path,_that.product,_that.quantity,_that.categorie
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String path,  String product,  String quantity,  List<String> categories,  String addedByUserId,  String lastModifiedByUserId,  DateTime lastModifiedAt,  bool completed)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String path,  String product,  String quantity,  String category,  String addedByUserId,  String lastModifiedByUserId,  DateTime lastModifiedAt,  bool completed)  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItem():
-return $default(_that.id,_that.path,_that.product,_that.quantity,_that.categories,_that.addedByUserId,_that.lastModifiedByUserId,_that.lastModifiedAt,_that.completed);case _:
+return $default(_that.id,_that.path,_that.product,_that.quantity,_that.category,_that.addedByUserId,_that.lastModifiedByUserId,_that.lastModifiedAt,_that.completed);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +199,10 @@ return $default(_that.id,_that.path,_that.product,_that.quantity,_that.categorie
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String path,  String product,  String quantity,  List<String> categories,  String addedByUserId,  String lastModifiedByUserId,  DateTime lastModifiedAt,  bool completed)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String path,  String product,  String quantity,  String category,  String addedByUserId,  String lastModifiedByUserId,  DateTime lastModifiedAt,  bool completed)?  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItem() when $default != null:
-return $default(_that.id,_that.path,_that.product,_that.quantity,_that.categories,_that.addedByUserId,_that.lastModifiedByUserId,_that.lastModifiedAt,_that.completed);case _:
+return $default(_that.id,_that.path,_that.product,_that.quantity,_that.category,_that.addedByUserId,_that.lastModifiedByUserId,_that.lastModifiedAt,_that.completed);case _:
   return null;
 
 }
@@ -214,20 +214,14 @@ return $default(_that.id,_that.path,_that.product,_that.quantity,_that.categorie
 
 
 class _ShoppingItem extends ShoppingItem {
-  const _ShoppingItem({required this.id, required this.path, required this.product, required this.quantity, required final  List<String> categories, required this.addedByUserId, required this.lastModifiedByUserId, required this.lastModifiedAt, required this.completed}): _categories = categories,super._();
+  const _ShoppingItem({required this.id, required this.path, required this.product, required this.quantity, required this.category, required this.addedByUserId, required this.lastModifiedByUserId, required this.lastModifiedAt, required this.completed}): super._();
   
 
 @override final  String id;
 @override final  String path;
 @override final  String product;
 @override final  String quantity;
- final  List<String> _categories;
-@override List<String> get categories {
-  if (_categories is EqualUnmodifiableListView) return _categories;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_categories);
-}
-
+@override final  String category;
 @override final  String addedByUserId;
 @override final  String lastModifiedByUserId;
 @override final  DateTime lastModifiedAt;
@@ -243,16 +237,16 @@ _$ShoppingItemCopyWith<_ShoppingItem> get copyWith => __$ShoppingItemCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItem&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.addedByUserId, addedByUserId) || other.addedByUserId == addedByUserId)&&(identical(other.lastModifiedByUserId, lastModifiedByUserId) || other.lastModifiedByUserId == lastModifiedByUserId)&&(identical(other.lastModifiedAt, lastModifiedAt) || other.lastModifiedAt == lastModifiedAt)&&(identical(other.completed, completed) || other.completed == completed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItem&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.addedByUserId, addedByUserId) || other.addedByUserId == addedByUserId)&&(identical(other.lastModifiedByUserId, lastModifiedByUserId) || other.lastModifiedByUserId == lastModifiedByUserId)&&(identical(other.lastModifiedAt, lastModifiedAt) || other.lastModifiedAt == lastModifiedAt)&&(identical(other.completed, completed) || other.completed == completed));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,path,product,quantity,const DeepCollectionEquality().hash(_categories),addedByUserId,lastModifiedByUserId,lastModifiedAt,completed);
+int get hashCode => Object.hash(runtimeType,id,path,product,quantity,category,addedByUserId,lastModifiedByUserId,lastModifiedAt,completed);
 
 @override
 String toString() {
-  return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, categories: $categories, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
+  return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, category: $category, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
 }
 
 
@@ -263,7 +257,7 @@ abstract mixin class _$ShoppingItemCopyWith<$Res> implements $ShoppingItemCopyWi
   factory _$ShoppingItemCopyWith(_ShoppingItem value, $Res Function(_ShoppingItem) _then) = __$ShoppingItemCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String path, String product, String quantity, List<String> categories, String addedByUserId, String lastModifiedByUserId, DateTime lastModifiedAt, bool completed
+ String id, String path, String product, String quantity, String category, String addedByUserId, String lastModifiedByUserId, DateTime lastModifiedAt, bool completed
 });
 
 
@@ -280,14 +274,14 @@ class __$ShoppingItemCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? path = null,Object? product = null,Object? quantity = null,Object? categories = null,Object? addedByUserId = null,Object? lastModifiedByUserId = null,Object? lastModifiedAt = null,Object? completed = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? path = null,Object? product = null,Object? quantity = null,Object? category = null,Object? addedByUserId = null,Object? lastModifiedByUserId = null,Object? lastModifiedAt = null,Object? completed = null,}) {
   return _then(_ShoppingItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,addedByUserId: null == addedByUserId ? _self.addedByUserId : addedByUserId // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,addedByUserId: null == addedByUserId ? _self.addedByUserId : addedByUserId // ignore: cast_nullable_to_non_nullable
 as String,lastModifiedByUserId: null == lastModifiedByUserId ? _self.lastModifiedByUserId : lastModifiedByUserId // ignore: cast_nullable_to_non_nullable
 as String,lastModifiedAt: null == lastModifiedAt ? _self.lastModifiedAt : lastModifiedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable

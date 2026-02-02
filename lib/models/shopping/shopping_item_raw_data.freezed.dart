@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShoppingItemRawData {
 
- String get product; String get quantity; List<String> get categories;
+ String get product; String get quantity; String get category;
 /// Create a copy of ShoppingItemRawData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ShoppingItemRawDataCopyWith<ShoppingItemRawData> get copyWith => _$ShoppingItem
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemRawData&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other.categories, categories));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemRawData&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,const DeepCollectionEquality().hash(categories));
+int get hashCode => Object.hash(runtimeType,product,quantity,category);
 
 @override
 String toString() {
-  return 'ShoppingItemRawData(product: $product, quantity: $quantity, categories: $categories)';
+  return 'ShoppingItemRawData(product: $product, quantity: $quantity, category: $category)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ShoppingItemRawDataCopyWith<$Res>  {
   factory $ShoppingItemRawDataCopyWith(ShoppingItemRawData value, $Res Function(ShoppingItemRawData) _then) = _$ShoppingItemRawDataCopyWithImpl;
 @useResult
 $Res call({
- String product, String quantity, List<String> categories
+ String product, String quantity, String category
 });
 
 
@@ -62,12 +62,12 @@ class _$ShoppingItemRawDataCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemRawData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? product = null,Object? quantity = null,Object? categories = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? product = null,Object? quantity = null,Object? category = null,}) {
   return _then(_self.copyWith(
 product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -152,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String product,  String quantity,  List<String> categories)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String product,  String quantity,  String category)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShoppingItemRawData() when $default != null:
-return $default(_that.product,_that.quantity,_that.categories);case _:
+return $default(_that.product,_that.quantity,_that.category);case _:
   return orElse();
 
 }
@@ -173,10 +173,10 @@ return $default(_that.product,_that.quantity,_that.categories);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String product,  String quantity,  List<String> categories)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String product,  String quantity,  String category)  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemRawData():
-return $default(_that.product,_that.quantity,_that.categories);case _:
+return $default(_that.product,_that.quantity,_that.category);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +193,10 @@ return $default(_that.product,_that.quantity,_that.categories);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String product,  String quantity,  List<String> categories)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String product,  String quantity,  String category)?  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemRawData() when $default != null:
-return $default(_that.product,_that.quantity,_that.categories);case _:
+return $default(_that.product,_that.quantity,_that.category);case _:
   return null;
 
 }
@@ -208,18 +208,12 @@ return $default(_that.product,_that.quantity,_that.categories);case _:
 
 
 class _ShoppingItemRawData extends ShoppingItemRawData {
-   _ShoppingItemRawData({required this.product, required this.quantity, required final  List<String> categories}): _categories = categories,super._();
+   _ShoppingItemRawData({required this.product, required this.quantity, required this.category}): super._();
   
 
 @override final  String product;
 @override final  String quantity;
- final  List<String> _categories;
-@override List<String> get categories {
-  if (_categories is EqualUnmodifiableListView) return _categories;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_categories);
-}
-
+@override final  String category;
 
 /// Create a copy of ShoppingItemRawData
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +225,16 @@ _$ShoppingItemRawDataCopyWith<_ShoppingItemRawData> get copyWith => __$ShoppingI
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemRawData&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other._categories, _categories));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemRawData&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,const DeepCollectionEquality().hash(_categories));
+int get hashCode => Object.hash(runtimeType,product,quantity,category);
 
 @override
 String toString() {
-  return 'ShoppingItemRawData(product: $product, quantity: $quantity, categories: $categories)';
+  return 'ShoppingItemRawData(product: $product, quantity: $quantity, category: $category)';
 }
 
 
@@ -251,7 +245,7 @@ abstract mixin class _$ShoppingItemRawDataCopyWith<$Res> implements $ShoppingIte
   factory _$ShoppingItemRawDataCopyWith(_ShoppingItemRawData value, $Res Function(_ShoppingItemRawData) _then) = __$ShoppingItemRawDataCopyWithImpl;
 @override @useResult
 $Res call({
- String product, String quantity, List<String> categories
+ String product, String quantity, String category
 });
 
 
@@ -268,12 +262,12 @@ class __$ShoppingItemRawDataCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemRawData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? product = null,Object? quantity = null,Object? categories = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? product = null,Object? quantity = null,Object? category = null,}) {
   return _then(_ShoppingItemRawData(
 product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

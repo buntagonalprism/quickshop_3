@@ -9,10 +9,14 @@ void main() {
 
   setUp(() {
     id = 0;
-    database = AppDatabase(QueryExecutorConfig(DatabaseConnection(
-      NativeDatabase.memory(),
-      closeStreamsSynchronously: true,
-    )));
+    database = AppDatabase(
+      QueryExecutorConfig(
+        DatabaseConnection(
+          NativeDatabase.memory(),
+          closeStreamsSynchronously: true,
+        ),
+      ),
+    );
   });
   tearDown(() async {
     await database.close();
@@ -25,7 +29,7 @@ void main() {
       nameLower: name.toLowerCase(),
       lastUsed: DateTime.now().millisecondsSinceEpoch,
       usageCount: usageCount,
-      categories: category,
+      category: category,
     );
   }
 
@@ -105,7 +109,12 @@ void main() {
 
     final items = await database.itemHistoryDao.query('b');
     expect(items.length, 5);
-    expect(items.map((e) => e.name).toList(),
-        ['Bread', 'Banana Bread', 'Bread Pudding', 'Blueberry Muffin', 'Sliced Bread']);
+    expect(items.map((e) => e.name).toList(), [
+      'Bread',
+      'Banana Bread',
+      'Bread Pudding',
+      'Blueberry Muffin',
+      'Sliced Bread',
+    ]);
   });
 }

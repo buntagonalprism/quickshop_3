@@ -98,17 +98,21 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
       return;
     }
 
-    ref.read(shoppingItemsProvider(widget.listId).notifier).updateItem(
+    ref
+        .read(shoppingItemsProvider(widget.listId).notifier)
+        .updateItem(
           item: originalItem,
           newName: data.product,
           newQuantity: data.quantity,
-          newCategories: data.categories,
+          newCategory: data.category,
         );
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Updated item to ${data.displayName}'),
-      duration: const Duration(milliseconds: 2400),
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Updated item to ${data.displayName}'),
+        duration: const Duration(milliseconds: 2400),
+      ),
+    );
     Navigator.of(context).pop();
   }
 
@@ -142,9 +146,11 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
   void _deleteItem(BuildContext context, WidgetRef ref, ShoppingItem item) {
     ref.read(shoppingItemsProvider(widget.listId).notifier).deleteItem(item);
     ref.read(routerProvider).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Deleted item ${item.displayName}'),
-      duration: const Duration(milliseconds: 2400),
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Deleted item ${item.displayName}'),
+        duration: const Duration(milliseconds: 2400),
+      ),
+    );
   }
 }

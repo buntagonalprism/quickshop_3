@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShoppingItemAutocomplete {
 
- String get product; String get quantity; List<String> get categories; ShoppingItemAutocompleteSource get source; String get sourceId;
+ String get product; String get quantity; String get category; ShoppingItemAutocompleteSource get source; String get sourceId;
 /// Create a copy of ShoppingItemAutocomplete
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ShoppingItemAutocompleteCopyWith<ShoppingItemAutocomplete> get copyWith => _$Sh
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemAutocomplete&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.source, source) || other.source == source)&&(identical(other.sourceId, sourceId) || other.sourceId == sourceId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemAutocomplete&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.source, source) || other.source == source)&&(identical(other.sourceId, sourceId) || other.sourceId == sourceId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,const DeepCollectionEquality().hash(categories),source,sourceId);
+int get hashCode => Object.hash(runtimeType,product,quantity,category,source,sourceId);
 
 @override
 String toString() {
-  return 'ShoppingItemAutocomplete(product: $product, quantity: $quantity, categories: $categories, source: $source, sourceId: $sourceId)';
+  return 'ShoppingItemAutocomplete(product: $product, quantity: $quantity, category: $category, source: $source, sourceId: $sourceId)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ShoppingItemAutocompleteCopyWith<$Res>  {
   factory $ShoppingItemAutocompleteCopyWith(ShoppingItemAutocomplete value, $Res Function(ShoppingItemAutocomplete) _then) = _$ShoppingItemAutocompleteCopyWithImpl;
 @useResult
 $Res call({
- String product, String quantity, List<String> categories, ShoppingItemAutocompleteSource source, String sourceId
+ String product, String quantity, String category, ShoppingItemAutocompleteSource source, String sourceId
 });
 
 
@@ -62,12 +62,12 @@ class _$ShoppingItemAutocompleteCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemAutocomplete
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? product = null,Object? quantity = null,Object? categories = null,Object? source = null,Object? sourceId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? product = null,Object? quantity = null,Object? category = null,Object? source = null,Object? sourceId = null,}) {
   return _then(_self.copyWith(
 product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as ShoppingItemAutocompleteSource,sourceId: null == sourceId ? _self.sourceId : sourceId // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -154,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String product,  String quantity,  List<String> categories,  ShoppingItemAutocompleteSource source,  String sourceId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String product,  String quantity,  String category,  ShoppingItemAutocompleteSource source,  String sourceId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShoppingItemAutocomplete() when $default != null:
-return $default(_that.product,_that.quantity,_that.categories,_that.source,_that.sourceId);case _:
+return $default(_that.product,_that.quantity,_that.category,_that.source,_that.sourceId);case _:
   return orElse();
 
 }
@@ -175,10 +175,10 @@ return $default(_that.product,_that.quantity,_that.categories,_that.source,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String product,  String quantity,  List<String> categories,  ShoppingItemAutocompleteSource source,  String sourceId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String product,  String quantity,  String category,  ShoppingItemAutocompleteSource source,  String sourceId)  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemAutocomplete():
-return $default(_that.product,_that.quantity,_that.categories,_that.source,_that.sourceId);case _:
+return $default(_that.product,_that.quantity,_that.category,_that.source,_that.sourceId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +195,10 @@ return $default(_that.product,_that.quantity,_that.categories,_that.source,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String product,  String quantity,  List<String> categories,  ShoppingItemAutocompleteSource source,  String sourceId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String product,  String quantity,  String category,  ShoppingItemAutocompleteSource source,  String sourceId)?  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemAutocomplete() when $default != null:
-return $default(_that.product,_that.quantity,_that.categories,_that.source,_that.sourceId);case _:
+return $default(_that.product,_that.quantity,_that.category,_that.source,_that.sourceId);case _:
   return null;
 
 }
@@ -210,18 +210,12 @@ return $default(_that.product,_that.quantity,_that.categories,_that.source,_that
 
 
 class _ShoppingItemAutocomplete extends ShoppingItemAutocomplete {
-  const _ShoppingItemAutocomplete({required this.product, required this.quantity, required final  List<String> categories, required this.source, required this.sourceId}): _categories = categories,super._();
+  const _ShoppingItemAutocomplete({required this.product, required this.quantity, required this.category, required this.source, required this.sourceId}): super._();
   
 
 @override final  String product;
 @override final  String quantity;
- final  List<String> _categories;
-@override List<String> get categories {
-  if (_categories is EqualUnmodifiableListView) return _categories;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_categories);
-}
-
+@override final  String category;
 @override final  ShoppingItemAutocompleteSource source;
 @override final  String sourceId;
 
@@ -235,16 +229,16 @@ _$ShoppingItemAutocompleteCopyWith<_ShoppingItemAutocomplete> get copyWith => __
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemAutocomplete&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.source, source) || other.source == source)&&(identical(other.sourceId, sourceId) || other.sourceId == sourceId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemAutocomplete&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.source, source) || other.source == source)&&(identical(other.sourceId, sourceId) || other.sourceId == sourceId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,const DeepCollectionEquality().hash(_categories),source,sourceId);
+int get hashCode => Object.hash(runtimeType,product,quantity,category,source,sourceId);
 
 @override
 String toString() {
-  return 'ShoppingItemAutocomplete(product: $product, quantity: $quantity, categories: $categories, source: $source, sourceId: $sourceId)';
+  return 'ShoppingItemAutocomplete(product: $product, quantity: $quantity, category: $category, source: $source, sourceId: $sourceId)';
 }
 
 
@@ -255,7 +249,7 @@ abstract mixin class _$ShoppingItemAutocompleteCopyWith<$Res> implements $Shoppi
   factory _$ShoppingItemAutocompleteCopyWith(_ShoppingItemAutocomplete value, $Res Function(_ShoppingItemAutocomplete) _then) = __$ShoppingItemAutocompleteCopyWithImpl;
 @override @useResult
 $Res call({
- String product, String quantity, List<String> categories, ShoppingItemAutocompleteSource source, String sourceId
+ String product, String quantity, String category, ShoppingItemAutocompleteSource source, String sourceId
 });
 
 
@@ -272,12 +266,12 @@ class __$ShoppingItemAutocompleteCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemAutocomplete
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? product = null,Object? quantity = null,Object? categories = null,Object? source = null,Object? sourceId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? product = null,Object? quantity = null,Object? category = null,Object? source = null,Object? sourceId = null,}) {
   return _then(_ShoppingItemAutocomplete(
 product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as ShoppingItemAutocompleteSource,sourceId: null == sourceId ? _self.sourceId : sourceId // ignore: cast_nullable_to_non_nullable
 as String,
   ));

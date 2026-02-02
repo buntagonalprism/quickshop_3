@@ -9,7 +9,7 @@ abstract class ShoppingItemAutocomplete with _$ShoppingItemAutocomplete {
   const factory ShoppingItemAutocomplete({
     required String product,
     required String quantity,
-    required List<String> categories,
+    required String category,
     required ShoppingItemAutocompleteSource source,
     required String sourceId,
   }) = _ShoppingItemAutocomplete;

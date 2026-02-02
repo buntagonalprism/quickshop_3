@@ -10,10 +10,10 @@ abstract class ShoppingItemRawData with _$ShoppingItemRawData {
   factory ShoppingItemRawData({
     required String product,
     required String quantity,
-    required List<String> categories,
+    required String category,
   }) = _ShoppingItemRawData;
 
-  factory ShoppingItemRawData.empty() => ShoppingItemRawData(product: '', quantity: '', categories: []);
+  factory ShoppingItemRawData.empty() => ShoppingItemRawData(product: '', quantity: '', category: '');
 
   String get displayName => quantity.isEmpty ? product : '$quantity $product';
 }

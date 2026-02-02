@@ -29,9 +29,9 @@ abstract class ShoppingItemCreateModel with _$ShoppingItemCreateModel {
   }) = _ShoppingItemCreateData;
 
   factory ShoppingItemCreateModel.empty() => ShoppingItemCreateModel(
-        filter: '',
-        data: ShoppingItemRawData.empty(),
-      );
+    filter: '',
+    data: ShoppingItemRawData.empty(),
+  );
 
   bool get hasErrors => filterError != null || itemErrors?.hasErrors == true;
 }
@@ -77,8 +77,8 @@ class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
     _validateIfEnabled();
   }
 
-  void setSelectedCategories(List<String> selectedCategories) {
-    state = state.copyWith.data(categories: selectedCategories);
+  void setCategory(String category) {
+    state = state.copyWith.data(category: category);
     _validateIfEnabled();
   }
 

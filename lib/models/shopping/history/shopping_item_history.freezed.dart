@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShoppingItemHistory {
 
- String get id; String get name; String get nameLower; List<String> get categories; DateTime get lastUsed; int get usageCount; bool get deleted;
+ String get id; String get name; String get nameLower; String get category; DateTime get lastUsed; int get usageCount; bool get deleted;
 /// Create a copy of ShoppingItemHistory
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ShoppingItemHistoryCopyWith<ShoppingItemHistory> get copyWith => _$ShoppingItem
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameLower, nameLower) || other.nameLower == nameLower)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.lastUsed, lastUsed) || other.lastUsed == lastUsed)&&(identical(other.usageCount, usageCount) || other.usageCount == usageCount)&&(identical(other.deleted, deleted) || other.deleted == deleted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameLower, nameLower) || other.nameLower == nameLower)&&(identical(other.category, category) || other.category == category)&&(identical(other.lastUsed, lastUsed) || other.lastUsed == lastUsed)&&(identical(other.usageCount, usageCount) || other.usageCount == usageCount)&&(identical(other.deleted, deleted) || other.deleted == deleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,nameLower,const DeepCollectionEquality().hash(categories),lastUsed,usageCount,deleted);
+int get hashCode => Object.hash(runtimeType,id,name,nameLower,category,lastUsed,usageCount,deleted);
 
 @override
 String toString() {
-  return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
+  return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, category: $category, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ShoppingItemHistoryCopyWith<$Res>  {
   factory $ShoppingItemHistoryCopyWith(ShoppingItemHistory value, $Res Function(ShoppingItemHistory) _then) = _$ShoppingItemHistoryCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String nameLower, List<String> categories, DateTime lastUsed, int usageCount, bool deleted
+ String id, String name, String nameLower, String category, DateTime lastUsed, int usageCount, bool deleted
 });
 
 
@@ -62,13 +62,13 @@ class _$ShoppingItemHistoryCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemHistory
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? nameLower = null,Object? categories = null,Object? lastUsed = null,Object? usageCount = null,Object? deleted = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? nameLower = null,Object? category = null,Object? lastUsed = null,Object? usageCount = null,Object? deleted = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,nameLower: null == nameLower ? _self.nameLower : nameLower // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,lastUsed: null == lastUsed ? _self.lastUsed : lastUsed // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,lastUsed: null == lastUsed ? _self.lastUsed : lastUsed // ignore: cast_nullable_to_non_nullable
 as DateTime,usageCount: null == usageCount ? _self.usageCount : usageCount // ignore: cast_nullable_to_non_nullable
 as int,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,
@@ -156,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String nameLower,  List<String> categories,  DateTime lastUsed,  int usageCount,  bool deleted)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String nameLower,  String category,  DateTime lastUsed,  int usageCount,  bool deleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShoppingItemHistory() when $default != null:
-return $default(_that.id,_that.name,_that.nameLower,_that.categories,_that.lastUsed,_that.usageCount,_that.deleted);case _:
+return $default(_that.id,_that.name,_that.nameLower,_that.category,_that.lastUsed,_that.usageCount,_that.deleted);case _:
   return orElse();
 
 }
@@ -177,10 +177,10 @@ return $default(_that.id,_that.name,_that.nameLower,_that.categories,_that.lastU
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String nameLower,  List<String> categories,  DateTime lastUsed,  int usageCount,  bool deleted)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String nameLower,  String category,  DateTime lastUsed,  int usageCount,  bool deleted)  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemHistory():
-return $default(_that.id,_that.name,_that.nameLower,_that.categories,_that.lastUsed,_that.usageCount,_that.deleted);case _:
+return $default(_that.id,_that.name,_that.nameLower,_that.category,_that.lastUsed,_that.usageCount,_that.deleted);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +197,10 @@ return $default(_that.id,_that.name,_that.nameLower,_that.categories,_that.lastU
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String nameLower,  List<String> categories,  DateTime lastUsed,  int usageCount,  bool deleted)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String nameLower,  String category,  DateTime lastUsed,  int usageCount,  bool deleted)?  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemHistory() when $default != null:
-return $default(_that.id,_that.name,_that.nameLower,_that.categories,_that.lastUsed,_that.usageCount,_that.deleted);case _:
+return $default(_that.id,_that.name,_that.nameLower,_that.category,_that.lastUsed,_that.usageCount,_that.deleted);case _:
   return null;
 
 }
@@ -212,19 +212,13 @@ return $default(_that.id,_that.name,_that.nameLower,_that.categories,_that.lastU
 
 
 class _ShoppingItemHistory extends ShoppingItemHistory {
-  const _ShoppingItemHistory({required this.id, required this.name, required this.nameLower, required final  List<String> categories, required this.lastUsed, required this.usageCount, required this.deleted}): _categories = categories,super._();
+  const _ShoppingItemHistory({required this.id, required this.name, required this.nameLower, required this.category, required this.lastUsed, required this.usageCount, required this.deleted}): super._();
   
 
 @override final  String id;
 @override final  String name;
 @override final  String nameLower;
- final  List<String> _categories;
-@override List<String> get categories {
-  if (_categories is EqualUnmodifiableListView) return _categories;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_categories);
-}
-
+@override final  String category;
 @override final  DateTime lastUsed;
 @override final  int usageCount;
 @override final  bool deleted;
@@ -239,16 +233,16 @@ _$ShoppingItemHistoryCopyWith<_ShoppingItemHistory> get copyWith => __$ShoppingI
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameLower, nameLower) || other.nameLower == nameLower)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.lastUsed, lastUsed) || other.lastUsed == lastUsed)&&(identical(other.usageCount, usageCount) || other.usageCount == usageCount)&&(identical(other.deleted, deleted) || other.deleted == deleted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameLower, nameLower) || other.nameLower == nameLower)&&(identical(other.category, category) || other.category == category)&&(identical(other.lastUsed, lastUsed) || other.lastUsed == lastUsed)&&(identical(other.usageCount, usageCount) || other.usageCount == usageCount)&&(identical(other.deleted, deleted) || other.deleted == deleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,nameLower,const DeepCollectionEquality().hash(_categories),lastUsed,usageCount,deleted);
+int get hashCode => Object.hash(runtimeType,id,name,nameLower,category,lastUsed,usageCount,deleted);
 
 @override
 String toString() {
-  return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, categories: $categories, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
+  return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, category: $category, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
 }
 
 
@@ -259,7 +253,7 @@ abstract mixin class _$ShoppingItemHistoryCopyWith<$Res> implements $ShoppingIte
   factory _$ShoppingItemHistoryCopyWith(_ShoppingItemHistory value, $Res Function(_ShoppingItemHistory) _then) = __$ShoppingItemHistoryCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String nameLower, List<String> categories, DateTime lastUsed, int usageCount, bool deleted
+ String id, String name, String nameLower, String category, DateTime lastUsed, int usageCount, bool deleted
 });
 
 
@@ -276,13 +270,13 @@ class __$ShoppingItemHistoryCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemHistory
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? nameLower = null,Object? categories = null,Object? lastUsed = null,Object? usageCount = null,Object? deleted = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? nameLower = null,Object? category = null,Object? lastUsed = null,Object? usageCount = null,Object? deleted = null,}) {
   return _then(_ShoppingItemHistory(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,nameLower: null == nameLower ? _self.nameLower : nameLower // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,lastUsed: null == lastUsed ? _self.lastUsed : lastUsed // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,lastUsed: null == lastUsed ? _self.lastUsed : lastUsed // ignore: cast_nullable_to_non_nullable
 as DateTime,usageCount: null == usageCount ? _self.usageCount : usageCount // ignore: cast_nullable_to_non_nullable
 as int,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,

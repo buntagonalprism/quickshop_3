@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShoppingItemSuggestion {
 
- String get id; String get langCode; String get name; List<String> get categories; int? get popularity;
+ String get id; String get langCode; String get name; String get category; int? get popularity;
 /// Create a copy of ShoppingItemSuggestion
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ShoppingItemSuggestionCopyWith<ShoppingItemSuggestion> get copyWith => _$Shoppi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemSuggestion&&(identical(other.id, id) || other.id == id)&&(identical(other.langCode, langCode) || other.langCode == langCode)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.popularity, popularity) || other.popularity == popularity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemSuggestion&&(identical(other.id, id) || other.id == id)&&(identical(other.langCode, langCode) || other.langCode == langCode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.popularity, popularity) || other.popularity == popularity));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,langCode,name,const DeepCollectionEquality().hash(categories),popularity);
+int get hashCode => Object.hash(runtimeType,id,langCode,name,category,popularity);
 
 @override
 String toString() {
-  return 'ShoppingItemSuggestion(id: $id, langCode: $langCode, name: $name, categories: $categories, popularity: $popularity)';
+  return 'ShoppingItemSuggestion(id: $id, langCode: $langCode, name: $name, category: $category, popularity: $popularity)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ShoppingItemSuggestionCopyWith<$Res>  {
   factory $ShoppingItemSuggestionCopyWith(ShoppingItemSuggestion value, $Res Function(ShoppingItemSuggestion) _then) = _$ShoppingItemSuggestionCopyWithImpl;
 @useResult
 $Res call({
- String id, String langCode, String name, List<String> categories, int? popularity
+ String id, String langCode, String name, String category, int? popularity
 });
 
 
@@ -62,13 +62,13 @@ class _$ShoppingItemSuggestionCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemSuggestion
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? langCode = null,Object? name = null,Object? categories = null,Object? popularity = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? langCode = null,Object? name = null,Object? category = null,Object? popularity = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,langCode: null == langCode ? _self.langCode : langCode // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
@@ -154,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String langCode,  String name,  List<String> categories,  int? popularity)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String langCode,  String name,  String category,  int? popularity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShoppingItemSuggestion() when $default != null:
-return $default(_that.id,_that.langCode,_that.name,_that.categories,_that.popularity);case _:
+return $default(_that.id,_that.langCode,_that.name,_that.category,_that.popularity);case _:
   return orElse();
 
 }
@@ -175,10 +175,10 @@ return $default(_that.id,_that.langCode,_that.name,_that.categories,_that.popula
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String langCode,  String name,  List<String> categories,  int? popularity)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String langCode,  String name,  String category,  int? popularity)  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemSuggestion():
-return $default(_that.id,_that.langCode,_that.name,_that.categories,_that.popularity);case _:
+return $default(_that.id,_that.langCode,_that.name,_that.category,_that.popularity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +195,10 @@ return $default(_that.id,_that.langCode,_that.name,_that.categories,_that.popula
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String langCode,  String name,  List<String> categories,  int? popularity)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String langCode,  String name,  String category,  int? popularity)?  $default,) {final _that = this;
 switch (_that) {
 case _ShoppingItemSuggestion() when $default != null:
-return $default(_that.id,_that.langCode,_that.name,_that.categories,_that.popularity);case _:
+return $default(_that.id,_that.langCode,_that.name,_that.category,_that.popularity);case _:
   return null;
 
 }
@@ -210,19 +210,13 @@ return $default(_that.id,_that.langCode,_that.name,_that.categories,_that.popula
 
 
 class _ShoppingItemSuggestion extends ShoppingItemSuggestion {
-  const _ShoppingItemSuggestion({required this.id, required this.langCode, required this.name, required final  List<String> categories, this.popularity}): _categories = categories,super._();
+  const _ShoppingItemSuggestion({required this.id, required this.langCode, required this.name, required this.category, this.popularity}): super._();
   
 
 @override final  String id;
 @override final  String langCode;
 @override final  String name;
- final  List<String> _categories;
-@override List<String> get categories {
-  if (_categories is EqualUnmodifiableListView) return _categories;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_categories);
-}
-
+@override final  String category;
 @override final  int? popularity;
 
 /// Create a copy of ShoppingItemSuggestion
@@ -235,16 +229,16 @@ _$ShoppingItemSuggestionCopyWith<_ShoppingItemSuggestion> get copyWith => __$Sho
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemSuggestion&&(identical(other.id, id) || other.id == id)&&(identical(other.langCode, langCode) || other.langCode == langCode)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.popularity, popularity) || other.popularity == popularity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemSuggestion&&(identical(other.id, id) || other.id == id)&&(identical(other.langCode, langCode) || other.langCode == langCode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.popularity, popularity) || other.popularity == popularity));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,langCode,name,const DeepCollectionEquality().hash(_categories),popularity);
+int get hashCode => Object.hash(runtimeType,id,langCode,name,category,popularity);
 
 @override
 String toString() {
-  return 'ShoppingItemSuggestion(id: $id, langCode: $langCode, name: $name, categories: $categories, popularity: $popularity)';
+  return 'ShoppingItemSuggestion(id: $id, langCode: $langCode, name: $name, category: $category, popularity: $popularity)';
 }
 
 
@@ -255,7 +249,7 @@ abstract mixin class _$ShoppingItemSuggestionCopyWith<$Res> implements $Shopping
   factory _$ShoppingItemSuggestionCopyWith(_ShoppingItemSuggestion value, $Res Function(_ShoppingItemSuggestion) _then) = __$ShoppingItemSuggestionCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String langCode, String name, List<String> categories, int? popularity
+ String id, String langCode, String name, String category, int? popularity
 });
 
 
@@ -272,13 +266,13 @@ class __$ShoppingItemSuggestionCopyWithImpl<$Res>
 
 /// Create a copy of ShoppingItemSuggestion
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? langCode = null,Object? name = null,Object? categories = null,Object? popularity = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? langCode = null,Object? name = null,Object? category = null,Object? popularity = freezed,}) {
   return _then(_ShoppingItemSuggestion(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,langCode: null == langCode ? _self.langCode : langCode // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
-as List<String>,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }

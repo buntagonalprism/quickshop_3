@@ -86,7 +86,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                       rawData: ShoppingItemRawData(
                         product: model.data.product,
                         quantity: model.data.quantity,
-                        categories: model.data.categories,
+                        category: model.data.category,
                       ),
                     ),
                     errors: showErrorsOnTab == 2 ? model.itemErrors : null,
@@ -155,10 +155,12 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
       result.when(
         categoryRequired: () => moveToTab(1),
         alreadyOnList: (product) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(ShoppingItemCreatePageStrings.itemOnList(product)),
-            duration: const Duration(milliseconds: 2400),
-          ));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(ShoppingItemCreatePageStrings.itemOnList(product)),
+              duration: const Duration(milliseconds: 2400),
+            ),
+          );
         },
         success: (addedItem) {
           onAddedItem(addedItem.displayName, addMore);
@@ -176,10 +178,12 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   void showConfirmationSnackbar(String displayName) {
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(ShoppingItemCreatePageStrings.addedToList(displayName)),
-        duration: const Duration(milliseconds: 2400),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(ShoppingItemCreatePageStrings.addedToList(displayName)),
+          duration: const Duration(milliseconds: 2400),
+        ),
+      );
     }
   }
 
@@ -202,8 +206,12 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 }
 
 class ShoppingItemSearchView extends ConsumerStatefulWidget {
-  const ShoppingItemSearchView(
-      {required this.listId, required this.showErrors, required this.onAutocompleteSelected, super.key});
+  const ShoppingItemSearchView({
+    required this.listId,
+    required this.showErrors,
+    required this.onAutocompleteSelected,
+    super.key,
+  });
   final String listId;
   final bool showErrors;
   final Function(ShoppingItemAutocomplete autocomplete, bool addMore) onAutocompleteSelected;
@@ -227,32 +235,34 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
   @override
   Widget build(BuildContext context) {
     final model = ref.watch(shoppingItemCreateViewModelProvider);
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-        child: TextField(
-          key: _Keys.itemInputField,
-          decoration: InputDecoration(
-            labelText: 'Enter item name',
-            errorText: widget.showErrors ? model.filterError : null,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: TextField(
+            key: _Keys.itemInputField,
+            decoration: InputDecoration(
+              labelText: 'Enter item name',
+              errorText: widget.showErrors ? model.filterError : null,
+            ),
+            autofocus: true,
+            controller: nameController,
+            onChanged: (newValue) {
+              ref.read(shoppingItemCreateViewModelProvider.notifier).setFilter(newValue);
+            },
           ),
-          autofocus: true,
-          controller: nameController,
-          onChanged: (newValue) {
-            ref.read(shoppingItemCreateViewModelProvider.notifier).setFilter(newValue);
-          },
         ),
-      ),
-      Expanded(
-        child: model.filter.isEmpty
-            ? const ItemAutocompletePlaceholder()
-            : ItemSuggestionsList(
-                listId: widget.listId,
-                onAdd: (suggestion) => widget.onAutocompleteSelected(suggestion, false),
-                onAddMore: (suggestion) => widget.onAutocompleteSelected(suggestion, true),
-              ),
-      ),
-    ]);
+        Expanded(
+          child: model.filter.isEmpty
+              ? const ItemAutocompletePlaceholder()
+              : ItemSuggestionsList(
+                  listId: widget.listId,
+                  onAdd: (suggestion) => widget.onAutocompleteSelected(suggestion, false),
+                  onAddMore: (suggestion) => widget.onAutocompleteSelected(suggestion, true),
+                ),
+        ),
+      ],
+    );
   }
 }
 
@@ -328,80 +338,80 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
   Widget build(BuildContext context) {
     return switch (widget.autocomplete.source) {
       ShoppingItemAutocompleteSource.history || ShoppingItemAutocompleteSource.suggested => MenuAnchor(
-          onClose: () {
-            setState(() {
-              highlighted = false;
-              preventTaps = true;
-            });
-            Future.delayed(const Duration(milliseconds: 300), () {
-              setState(() => preventTaps = false);
-            });
-          },
-          builder: (context, controller, child) => ListTile(
-            visualDensity: VisualDensity.compact,
-            tileColor: highlighted ? Colors.grey.shade200 : null,
-            title: Text(widget.autocomplete.displayName),
-            subtitle: Text(widget.autocomplete.categories.join(', ')),
-            leading: Icon(
-              widget.autocomplete.source == ShoppingItemAutocompleteSource.history ? Icons.history : null,
-            ),
-            onLongPress: () {
-              controller.open();
-              setState(() => highlighted = true);
-            },
-            onTap: () {
-              if (highlighted) {
-                controller.close();
-                setState(() => highlighted = false);
-              } else if (!preventTaps) {
-                widget.onAdd();
-              }
-            },
-            trailing: IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () => widget.onAddMore(),
-            ),
-          ),
-          style: const MenuStyle(
-            alignment: Alignment.center,
-          ),
-          alignmentOffset: const Offset(-36, 0),
-          menuChildren: widget.autocomplete.source == ShoppingItemAutocompleteSource.suggested
-              ? [
-                  MenuItemButton(
-                    child: const Text('Hide suggestion'),
-                    onPressed: () => _onHideSuggestion(widget.autocomplete),
-                  )
-                ]
-              : [
-                  MenuItemButton(
-                    child: const Text('Edit history entry'),
-                    onPressed: () => _onEditHistoryEntry(widget.autocomplete),
-                  ),
-                  MenuItemButton(
-                    child: const Text('Remove from history'),
-                    onPressed: () => _onRemoveHistoryEntry(widget.autocomplete),
-                  ),
-                ],
-        ),
-      ShoppingItemAutocompleteSource.list => ListTile(
+        onClose: () {
+          setState(() {
+            highlighted = false;
+            preventTaps = true;
+          });
+          Future.delayed(const Duration(milliseconds: 300), () {
+            setState(() => preventTaps = false);
+          });
+        },
+        builder: (context, controller, child) => ListTile(
           visualDensity: VisualDensity.compact,
-          contentPadding: const EdgeInsets.only(left: 16, right: 4),
-          leading: const Icon(Icons.list),
-          title: Text(
-            widget.autocomplete.displayName,
-            style: const TextStyle(fontStyle: FontStyle.italic),
+          tileColor: highlighted ? Colors.grey.shade200 : null,
+          title: Text(widget.autocomplete.displayName),
+          subtitle: Text(widget.autocomplete.category),
+          leading: Icon(
+            widget.autocomplete.source == ShoppingItemAutocompleteSource.history ? Icons.history : null,
           ),
-          subtitle: const Text(
-            'Already on list',
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-          trailing: TextButton.icon(
-            onPressed: () => _onEditListItem(widget.autocomplete),
-            label: const Text('Edit'),
-            icon: const Icon(Icons.edit),
+          onLongPress: () {
+            controller.open();
+            setState(() => highlighted = true);
+          },
+          onTap: () {
+            if (highlighted) {
+              controller.close();
+              setState(() => highlighted = false);
+            } else if (!preventTaps) {
+              widget.onAdd();
+            }
+          },
+          trailing: IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => widget.onAddMore(),
           ),
         ),
+        style: const MenuStyle(
+          alignment: Alignment.center,
+        ),
+        alignmentOffset: const Offset(-36, 0),
+        menuChildren: widget.autocomplete.source == ShoppingItemAutocompleteSource.suggested
+            ? [
+                MenuItemButton(
+                  child: const Text('Hide suggestion'),
+                  onPressed: () => _onHideSuggestion(widget.autocomplete),
+                ),
+              ]
+            : [
+                MenuItemButton(
+                  child: const Text('Edit history entry'),
+                  onPressed: () => _onEditHistoryEntry(widget.autocomplete),
+                ),
+                MenuItemButton(
+                  child: const Text('Remove from history'),
+                  onPressed: () => _onRemoveHistoryEntry(widget.autocomplete),
+                ),
+              ],
+      ),
+      ShoppingItemAutocompleteSource.list => ListTile(
+        visualDensity: VisualDensity.compact,
+        contentPadding: const EdgeInsets.only(left: 16, right: 4),
+        leading: const Icon(Icons.list),
+        title: Text(
+          widget.autocomplete.displayName,
+          style: const TextStyle(fontStyle: FontStyle.italic),
+        ),
+        subtitle: const Text(
+          'Already on list',
+          style: TextStyle(fontStyle: FontStyle.italic),
+        ),
+        trailing: TextButton.icon(
+          onPressed: () => _onEditListItem(widget.autocomplete),
+          label: const Text('Edit'),
+          icon: const Icon(Icons.edit),
+        ),
+      ),
     };
   }
 
@@ -487,8 +497,9 @@ class ItemAutocompletePlaceholder extends StatelessWidget {
             leading: Icon(Icons.info_outline),
             title: Text('For better suggestions, put item quantities and product sizes at the start'),
             subtitle: Text(
-                'For example: 2 small green apples, 500g mince beef, two cans of tomato soup, a large loaf of bread'),
-          )
+              'For example: 2 small green apples, 500g mince beef, two cans of tomato soup, a large loaf of bread',
+            ),
+          ),
         ],
       ),
     );
@@ -523,6 +534,7 @@ class ShoppingItemCategorySelectView extends ConsumerStatefulWidget {
 
 class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCategorySelectView> {
   String? categoryError;
+  final controller = TextEditingController();
 
   @override
   void initState() {
@@ -552,24 +564,28 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text.rich(TextSpan(
-                      text: 'Base product name: ',
-                      style: bodyBoldStyle,
-                      children: [
-                        TextSpan(text: model.data.product, style: bodyStyle),
-                      ],
-                    )),
+                    Text.rich(
+                      TextSpan(
+                        text: 'Base product name: ',
+                        style: bodyBoldStyle,
+                        children: [
+                          TextSpan(text: model.data.product, style: bodyStyle),
+                        ],
+                      ),
+                    ),
                     2.vertical,
-                    Text.rich(TextSpan(
-                      text: 'Quantity/size: ',
-                      style: bodyBoldStyle,
-                      children: [
-                        TextSpan(
-                          text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
-                          style: bodyStyle,
-                        ),
-                      ],
-                    )),
+                    Text.rich(
+                      TextSpan(
+                        text: 'Quantity/size: ',
+                        style: bodyBoldStyle,
+                        children: [
+                          TextSpan(
+                            text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
+                            style: bodyStyle,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -585,9 +601,9 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
           16.vertical,
           CategorySelector(
             listId: widget.listId,
-            selectedCategories: model.data.categories,
-            onCategoriesChanged: (categories) {
-              ref.read(shoppingItemCreateViewModelProvider.notifier).setSelectedCategories(categories);
+            controller: controller,
+            onCategorySelected: () {
+              ref.read(shoppingItemCreateViewModelProvider.notifier).setCategory(controller.text);
             },
             error: categoryError,
           ),

@@ -10,7 +10,7 @@ abstract class ShoppingItemSuggestion with _$ShoppingItemSuggestion {
     required String id,
     required String langCode,
     required String name,
-    required List<String> categories,
+    required String category,
     int? popularity,
   }) = _ShoppingItemSuggestion;
 }

@@ -7,7 +7,7 @@ class ItemHistoryTable extends Table {
   TextColumn get nameLower => text()();
   IntColumn get lastUsed => integer()();
   IntColumn get usageCount => integer()();
-  TextColumn get categories => text()();
+  TextColumn get category => text()();
 
   @override
   String get tableName => 'ItemHistory';

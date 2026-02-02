@@ -80,7 +80,7 @@ class ShoppingItemSuggestionRepo {
         id: entry.id,
         name: entry.name,
         langCode: _currentLangCode ?? '',
-        categories: entry.categories.split('|'),
+        category: entry.category,
         popularity: entry.popularity,
       );
     }).toList();
@@ -120,7 +120,7 @@ class ShoppingItemSuggestionRepo {
             id: doc.id,
             name: data['name'],
             nameLower: (data['name'] as String).toLowerCase(),
-            categories: (data['categories'] as List<dynamic>).join('|'),
+            category: data['category'] as String,
             popularity: data['popularity'] ?? 0,
             hidden: false,
           );

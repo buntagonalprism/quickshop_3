@@ -51,7 +51,9 @@ ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
   }
 
   if (list.listType != ListType.shoppingList) {
-    ref.read(crashReporterProvider).report(
+    ref
+        .read(crashReporterProvider)
+        .report(
           'ShoppingListViewModel was invoked with list id $listId, which is not a shopping list',
           StackTrace.current,
         );
@@ -71,12 +73,11 @@ ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
   final items = itemsAsyncValue.requireValue;
   final categoryItems = <String, List<ShoppingItem>>{};
   for (final item in items) {
-    for (final category in item.categories) {
-      if (!categoryItems.containsKey(category)) {
-        categoryItems[category] = [];
-      }
-      categoryItems[category]!.add(item);
+    final category = item.category;
+    if (!categoryItems.containsKey(category)) {
+      categoryItems[category] = [];
     }
+    categoryItems[category]!.add(item);
   }
 
   categoryItems.forEach((key, value) {

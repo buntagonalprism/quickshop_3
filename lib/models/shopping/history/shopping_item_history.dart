@@ -10,7 +10,7 @@ abstract class ShoppingItemHistory with _$ShoppingItemHistory {
     required String id,
     required String name,
     required String nameLower,
-    required List<String> categories,
+    required String category,
     required DateTime lastUsed,
     required int usageCount,
     required bool deleted,

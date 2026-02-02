@@ -51,7 +51,7 @@ final class ShoppingItemsNotifierProvider
 }
 
 String _$shoppingItemsNotifierHash() =>
-    r'72dd0bfed206963f888141df5eee7e87fa9b45ba';
+    r'afa6e944c9a73fb512879e23d4b6470d3c569273';
 
 final class ShoppingItemsNotifierFamily extends $Family
     with

@@ -79,11 +79,13 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
   }
 
   Future<ShoppingItem> addAutocomplete(ShoppingItemAutocomplete autocomplete) {
-    return _addItem(ShoppingItemRawData(
-      product: autocomplete.product,
-      quantity: autocomplete.quantity,
-      categories: autocomplete.categories,
-    ));
+    return _addItem(
+      ShoppingItemRawData(
+        product: autocomplete.product,
+        quantity: autocomplete.quantity,
+        category: autocomplete.category,
+      ),
+    );
   }
 
   Future<ShoppingItem> _addItem(ShoppingItemRawData data) async {
@@ -121,18 +123,18 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     required ShoppingItem item,
     required String newName,
     required String newQuantity,
-    required List<String> newCategories,
+    required String newCategory,
   }) async {
     final tx = ref.read(listItemsTransactionProvider)();
     final data = ShoppingItemRawData(
       product: newName,
       quantity: newQuantity,
-      categories: newCategories,
+      category: newCategory,
     );
     final updatedItem = item.copyWith(
       product: newName,
       quantity: newQuantity,
-      categories: newCategories,
+      category: newCategory,
     );
     final items = state.requireValue;
     state = AsyncValue.data(replaceById(items, item.id, (i) => updatedItem));

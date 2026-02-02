@@ -13,7 +13,7 @@ abstract class ShoppingItem with _$ShoppingItem implements HasId {
     required String path,
     required String product,
     required String quantity,
-    required List<String> categories,
+    required String category,
     required String addedByUserId,
     required String lastModifiedByUserId,
     required DateTime lastModifiedAt,

@@ -39,12 +39,12 @@ class $ItemSuggestionsTableTable extends ItemSuggestionsTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _categoriesMeta = const VerificationMeta(
-    'categories',
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
   );
   @override
-  late final GeneratedColumn<String> categories = GeneratedColumn<String>(
-    'categories',
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -80,7 +80,7 @@ class $ItemSuggestionsTableTable extends ItemSuggestionsTable
     id,
     name,
     nameLower,
-    categories,
+    category,
     popularity,
     hidden,
   ];
@@ -117,13 +117,13 @@ class $ItemSuggestionsTableTable extends ItemSuggestionsTable
     } else if (isInserting) {
       context.missing(_nameLowerMeta);
     }
-    if (data.containsKey('categories')) {
+    if (data.containsKey('category')) {
       context.handle(
-        _categoriesMeta,
-        categories.isAcceptableOrUnknown(data['categories']!, _categoriesMeta),
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
       );
     } else if (isInserting) {
-      context.missing(_categoriesMeta);
+      context.missing(_categoryMeta);
     }
     if (data.containsKey('popularity')) {
       context.handle(
@@ -158,9 +158,9 @@ class $ItemSuggestionsTableTable extends ItemSuggestionsTable
         DriftSqlType.string,
         data['${effectivePrefix}name_lower'],
       )!,
-      categories: attachedDatabase.typeMapping.read(
+      category: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}categories'],
+        data['${effectivePrefix}category'],
       )!,
       popularity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -184,14 +184,14 @@ class ItemSuggestionsRow extends DataClass
   final String id;
   final String name;
   final String nameLower;
-  final String categories;
+  final String category;
   final int popularity;
   final bool hidden;
   const ItemSuggestionsRow({
     required this.id,
     required this.name,
     required this.nameLower,
-    required this.categories,
+    required this.category,
     required this.popularity,
     required this.hidden,
   });
@@ -201,7 +201,7 @@ class ItemSuggestionsRow extends DataClass
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
     map['name_lower'] = Variable<String>(nameLower);
-    map['categories'] = Variable<String>(categories);
+    map['category'] = Variable<String>(category);
     map['popularity'] = Variable<int>(popularity);
     map['hidden'] = Variable<bool>(hidden);
     return map;
@@ -212,7 +212,7 @@ class ItemSuggestionsRow extends DataClass
       id: Value(id),
       name: Value(name),
       nameLower: Value(nameLower),
-      categories: Value(categories),
+      category: Value(category),
       popularity: Value(popularity),
       hidden: Value(hidden),
     );
@@ -227,7 +227,7 @@ class ItemSuggestionsRow extends DataClass
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       nameLower: serializer.fromJson<String>(json['nameLower']),
-      categories: serializer.fromJson<String>(json['categories']),
+      category: serializer.fromJson<String>(json['category']),
       popularity: serializer.fromJson<int>(json['popularity']),
       hidden: serializer.fromJson<bool>(json['hidden']),
     );
@@ -239,7 +239,7 @@ class ItemSuggestionsRow extends DataClass
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
       'nameLower': serializer.toJson<String>(nameLower),
-      'categories': serializer.toJson<String>(categories),
+      'category': serializer.toJson<String>(category),
       'popularity': serializer.toJson<int>(popularity),
       'hidden': serializer.toJson<bool>(hidden),
     };
@@ -249,14 +249,14 @@ class ItemSuggestionsRow extends DataClass
     String? id,
     String? name,
     String? nameLower,
-    String? categories,
+    String? category,
     int? popularity,
     bool? hidden,
   }) => ItemSuggestionsRow(
     id: id ?? this.id,
     name: name ?? this.name,
     nameLower: nameLower ?? this.nameLower,
-    categories: categories ?? this.categories,
+    category: category ?? this.category,
     popularity: popularity ?? this.popularity,
     hidden: hidden ?? this.hidden,
   );
@@ -265,9 +265,7 @@ class ItemSuggestionsRow extends DataClass
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       nameLower: data.nameLower.present ? data.nameLower.value : this.nameLower,
-      categories: data.categories.present
-          ? data.categories.value
-          : this.categories,
+      category: data.category.present ? data.category.value : this.category,
       popularity: data.popularity.present
           ? data.popularity.value
           : this.popularity,
@@ -281,7 +279,7 @@ class ItemSuggestionsRow extends DataClass
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('nameLower: $nameLower, ')
-          ..write('categories: $categories, ')
+          ..write('category: $category, ')
           ..write('popularity: $popularity, ')
           ..write('hidden: $hidden')
           ..write(')'))
@@ -290,7 +288,7 @@ class ItemSuggestionsRow extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, name, nameLower, categories, popularity, hidden);
+      Object.hash(id, name, nameLower, category, popularity, hidden);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -298,7 +296,7 @@ class ItemSuggestionsRow extends DataClass
           other.id == this.id &&
           other.name == this.name &&
           other.nameLower == this.nameLower &&
-          other.categories == this.categories &&
+          other.category == this.category &&
           other.popularity == this.popularity &&
           other.hidden == this.hidden);
 }
@@ -308,7 +306,7 @@ class ItemSuggestionsTableCompanion
   final Value<String> id;
   final Value<String> name;
   final Value<String> nameLower;
-  final Value<String> categories;
+  final Value<String> category;
   final Value<int> popularity;
   final Value<bool> hidden;
   final Value<int> rowid;
@@ -316,7 +314,7 @@ class ItemSuggestionsTableCompanion
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.nameLower = const Value.absent(),
-    this.categories = const Value.absent(),
+    this.category = const Value.absent(),
     this.popularity = const Value.absent(),
     this.hidden = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -325,19 +323,19 @@ class ItemSuggestionsTableCompanion
     required String id,
     required String name,
     required String nameLower,
-    required String categories,
+    required String category,
     this.popularity = const Value.absent(),
     this.hidden = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
        nameLower = Value(nameLower),
-       categories = Value(categories);
+       category = Value(category);
   static Insertable<ItemSuggestionsRow> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? nameLower,
-    Expression<String>? categories,
+    Expression<String>? category,
     Expression<int>? popularity,
     Expression<bool>? hidden,
     Expression<int>? rowid,
@@ -346,7 +344,7 @@ class ItemSuggestionsTableCompanion
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (nameLower != null) 'name_lower': nameLower,
-      if (categories != null) 'categories': categories,
+      if (category != null) 'category': category,
       if (popularity != null) 'popularity': popularity,
       if (hidden != null) 'hidden': hidden,
       if (rowid != null) 'rowid': rowid,
@@ -357,7 +355,7 @@ class ItemSuggestionsTableCompanion
     Value<String>? id,
     Value<String>? name,
     Value<String>? nameLower,
-    Value<String>? categories,
+    Value<String>? category,
     Value<int>? popularity,
     Value<bool>? hidden,
     Value<int>? rowid,
@@ -366,7 +364,7 @@ class ItemSuggestionsTableCompanion
       id: id ?? this.id,
       name: name ?? this.name,
       nameLower: nameLower ?? this.nameLower,
-      categories: categories ?? this.categories,
+      category: category ?? this.category,
       popularity: popularity ?? this.popularity,
       hidden: hidden ?? this.hidden,
       rowid: rowid ?? this.rowid,
@@ -385,8 +383,8 @@ class ItemSuggestionsTableCompanion
     if (nameLower.present) {
       map['name_lower'] = Variable<String>(nameLower.value);
     }
-    if (categories.present) {
-      map['categories'] = Variable<String>(categories.value);
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
     }
     if (popularity.present) {
       map['popularity'] = Variable<int>(popularity.value);
@@ -406,7 +404,7 @@ class ItemSuggestionsTableCompanion
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('nameLower: $nameLower, ')
-          ..write('categories: $categories, ')
+          ..write('category: $category, ')
           ..write('popularity: $popularity, ')
           ..write('hidden: $hidden, ')
           ..write('rowid: $rowid')
@@ -837,12 +835,12 @@ class $ItemHistoryTableTable extends ItemHistoryTable
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _categoriesMeta = const VerificationMeta(
-    'categories',
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
   );
   @override
-  late final GeneratedColumn<String> categories = GeneratedColumn<String>(
-    'categories',
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -855,7 +853,7 @@ class $ItemHistoryTableTable extends ItemHistoryTable
     nameLower,
     lastUsed,
     usageCount,
-    categories,
+    category,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -906,13 +904,13 @@ class $ItemHistoryTableTable extends ItemHistoryTable
     } else if (isInserting) {
       context.missing(_usageCountMeta);
     }
-    if (data.containsKey('categories')) {
+    if (data.containsKey('category')) {
       context.handle(
-        _categoriesMeta,
-        categories.isAcceptableOrUnknown(data['categories']!, _categoriesMeta),
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
       );
     } else if (isInserting) {
-      context.missing(_categoriesMeta);
+      context.missing(_categoryMeta);
     }
     return context;
   }
@@ -943,9 +941,9 @@ class $ItemHistoryTableTable extends ItemHistoryTable
         DriftSqlType.int,
         data['${effectivePrefix}usage_count'],
       )!,
-      categories: attachedDatabase.typeMapping.read(
+      category: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}categories'],
+        data['${effectivePrefix}category'],
       )!,
     );
   }
@@ -962,14 +960,14 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
   final String nameLower;
   final int lastUsed;
   final int usageCount;
-  final String categories;
+  final String category;
   const ItemHistoryRow({
     required this.id,
     required this.name,
     required this.nameLower,
     required this.lastUsed,
     required this.usageCount,
-    required this.categories,
+    required this.category,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -979,7 +977,7 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
     map['name_lower'] = Variable<String>(nameLower);
     map['last_used'] = Variable<int>(lastUsed);
     map['usage_count'] = Variable<int>(usageCount);
-    map['categories'] = Variable<String>(categories);
+    map['category'] = Variable<String>(category);
     return map;
   }
 
@@ -990,7 +988,7 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
       nameLower: Value(nameLower),
       lastUsed: Value(lastUsed),
       usageCount: Value(usageCount),
-      categories: Value(categories),
+      category: Value(category),
     );
   }
 
@@ -1005,7 +1003,7 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
       nameLower: serializer.fromJson<String>(json['nameLower']),
       lastUsed: serializer.fromJson<int>(json['lastUsed']),
       usageCount: serializer.fromJson<int>(json['usageCount']),
-      categories: serializer.fromJson<String>(json['categories']),
+      category: serializer.fromJson<String>(json['category']),
     );
   }
   @override
@@ -1017,7 +1015,7 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
       'nameLower': serializer.toJson<String>(nameLower),
       'lastUsed': serializer.toJson<int>(lastUsed),
       'usageCount': serializer.toJson<int>(usageCount),
-      'categories': serializer.toJson<String>(categories),
+      'category': serializer.toJson<String>(category),
     };
   }
 
@@ -1027,14 +1025,14 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
     String? nameLower,
     int? lastUsed,
     int? usageCount,
-    String? categories,
+    String? category,
   }) => ItemHistoryRow(
     id: id ?? this.id,
     name: name ?? this.name,
     nameLower: nameLower ?? this.nameLower,
     lastUsed: lastUsed ?? this.lastUsed,
     usageCount: usageCount ?? this.usageCount,
-    categories: categories ?? this.categories,
+    category: category ?? this.category,
   );
   ItemHistoryRow copyWithCompanion(ItemHistoryTableCompanion data) {
     return ItemHistoryRow(
@@ -1045,9 +1043,7 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
       usageCount: data.usageCount.present
           ? data.usageCount.value
           : this.usageCount,
-      categories: data.categories.present
-          ? data.categories.value
-          : this.categories,
+      category: data.category.present ? data.category.value : this.category,
     );
   }
 
@@ -1059,14 +1055,14 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
           ..write('nameLower: $nameLower, ')
           ..write('lastUsed: $lastUsed, ')
           ..write('usageCount: $usageCount, ')
-          ..write('categories: $categories')
+          ..write('category: $category')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, name, nameLower, lastUsed, usageCount, categories);
+      Object.hash(id, name, nameLower, lastUsed, usageCount, category);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1076,7 +1072,7 @@ class ItemHistoryRow extends DataClass implements Insertable<ItemHistoryRow> {
           other.nameLower == this.nameLower &&
           other.lastUsed == this.lastUsed &&
           other.usageCount == this.usageCount &&
-          other.categories == this.categories);
+          other.category == this.category);
 }
 
 class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
@@ -1085,7 +1081,7 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
   final Value<String> nameLower;
   final Value<int> lastUsed;
   final Value<int> usageCount;
-  final Value<String> categories;
+  final Value<String> category;
   final Value<int> rowid;
   const ItemHistoryTableCompanion({
     this.id = const Value.absent(),
@@ -1093,7 +1089,7 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
     this.nameLower = const Value.absent(),
     this.lastUsed = const Value.absent(),
     this.usageCount = const Value.absent(),
-    this.categories = const Value.absent(),
+    this.category = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ItemHistoryTableCompanion.insert({
@@ -1102,21 +1098,21 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
     required String nameLower,
     required int lastUsed,
     required int usageCount,
-    required String categories,
+    required String category,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
        nameLower = Value(nameLower),
        lastUsed = Value(lastUsed),
        usageCount = Value(usageCount),
-       categories = Value(categories);
+       category = Value(category);
   static Insertable<ItemHistoryRow> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? nameLower,
     Expression<int>? lastUsed,
     Expression<int>? usageCount,
-    Expression<String>? categories,
+    Expression<String>? category,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1125,7 +1121,7 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
       if (nameLower != null) 'name_lower': nameLower,
       if (lastUsed != null) 'last_used': lastUsed,
       if (usageCount != null) 'usage_count': usageCount,
-      if (categories != null) 'categories': categories,
+      if (category != null) 'category': category,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1136,7 +1132,7 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
     Value<String>? nameLower,
     Value<int>? lastUsed,
     Value<int>? usageCount,
-    Value<String>? categories,
+    Value<String>? category,
     Value<int>? rowid,
   }) {
     return ItemHistoryTableCompanion(
@@ -1145,7 +1141,7 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
       nameLower: nameLower ?? this.nameLower,
       lastUsed: lastUsed ?? this.lastUsed,
       usageCount: usageCount ?? this.usageCount,
-      categories: categories ?? this.categories,
+      category: category ?? this.category,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1168,8 +1164,8 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
     if (usageCount.present) {
       map['usage_count'] = Variable<int>(usageCount.value);
     }
-    if (categories.present) {
-      map['categories'] = Variable<String>(categories.value);
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1185,7 +1181,7 @@ class ItemHistoryTableCompanion extends UpdateCompanion<ItemHistoryRow> {
           ..write('nameLower: $nameLower, ')
           ..write('lastUsed: $lastUsed, ')
           ..write('usageCount: $usageCount, ')
-          ..write('categories: $categories, ')
+          ..write('category: $category, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2383,7 +2379,7 @@ typedef $$ItemSuggestionsTableTableCreateCompanionBuilder =
       required String id,
       required String name,
       required String nameLower,
-      required String categories,
+      required String category,
       Value<int> popularity,
       Value<bool> hidden,
       Value<int> rowid,
@@ -2393,7 +2389,7 @@ typedef $$ItemSuggestionsTableTableUpdateCompanionBuilder =
       Value<String> id,
       Value<String> name,
       Value<String> nameLower,
-      Value<String> categories,
+      Value<String> category,
       Value<int> popularity,
       Value<bool> hidden,
       Value<int> rowid,
@@ -2423,8 +2419,8 @@ class $$ItemSuggestionsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get categories => $composableBuilder(
-    column: $table.categories,
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2463,8 +2459,8 @@ class $$ItemSuggestionsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get categories => $composableBuilder(
-    column: $table.categories,
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2497,10 +2493,8 @@ class $$ItemSuggestionsTableTableAnnotationComposer
   GeneratedColumn<String> get nameLower =>
       $composableBuilder(column: $table.nameLower, builder: (column) => column);
 
-  GeneratedColumn<String> get categories => $composableBuilder(
-    column: $table.categories,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
 
   GeneratedColumn<int> get popularity => $composableBuilder(
     column: $table.popularity,
@@ -2557,7 +2551,7 @@ class $$ItemSuggestionsTableTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> nameLower = const Value.absent(),
-                Value<String> categories = const Value.absent(),
+                Value<String> category = const Value.absent(),
                 Value<int> popularity = const Value.absent(),
                 Value<bool> hidden = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -2565,7 +2559,7 @@ class $$ItemSuggestionsTableTableTableManager
                 id: id,
                 name: name,
                 nameLower: nameLower,
-                categories: categories,
+                category: category,
                 popularity: popularity,
                 hidden: hidden,
                 rowid: rowid,
@@ -2575,7 +2569,7 @@ class $$ItemSuggestionsTableTableTableManager
                 required String id,
                 required String name,
                 required String nameLower,
-                required String categories,
+                required String category,
                 Value<int> popularity = const Value.absent(),
                 Value<bool> hidden = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -2583,7 +2577,7 @@ class $$ItemSuggestionsTableTableTableManager
                 id: id,
                 name: name,
                 nameLower: nameLower,
-                categories: categories,
+                category: category,
                 popularity: popularity,
                 hidden: hidden,
                 rowid: rowid,
@@ -2845,7 +2839,7 @@ typedef $$ItemHistoryTableTableCreateCompanionBuilder =
       required String nameLower,
       required int lastUsed,
       required int usageCount,
-      required String categories,
+      required String category,
       Value<int> rowid,
     });
 typedef $$ItemHistoryTableTableUpdateCompanionBuilder =
@@ -2855,7 +2849,7 @@ typedef $$ItemHistoryTableTableUpdateCompanionBuilder =
       Value<String> nameLower,
       Value<int> lastUsed,
       Value<int> usageCount,
-      Value<String> categories,
+      Value<String> category,
       Value<int> rowid,
     });
 
@@ -2893,8 +2887,8 @@ class $$ItemHistoryTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get categories => $composableBuilder(
-    column: $table.categories,
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2933,8 +2927,8 @@ class $$ItemHistoryTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get categories => $composableBuilder(
-    column: $table.categories,
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -2965,10 +2959,8 @@ class $$ItemHistoryTableTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get categories => $composableBuilder(
-    column: $table.categories,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
 }
 
 class $$ItemHistoryTableTableTableManager
@@ -3013,7 +3005,7 @@ class $$ItemHistoryTableTableTableManager
                 Value<String> nameLower = const Value.absent(),
                 Value<int> lastUsed = const Value.absent(),
                 Value<int> usageCount = const Value.absent(),
-                Value<String> categories = const Value.absent(),
+                Value<String> category = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ItemHistoryTableCompanion(
                 id: id,
@@ -3021,7 +3013,7 @@ class $$ItemHistoryTableTableTableManager
                 nameLower: nameLower,
                 lastUsed: lastUsed,
                 usageCount: usageCount,
-                categories: categories,
+                category: category,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3031,7 +3023,7 @@ class $$ItemHistoryTableTableTableManager
                 required String nameLower,
                 required int lastUsed,
                 required int usageCount,
-                required String categories,
+                required String category,
                 Value<int> rowid = const Value.absent(),
               }) => ItemHistoryTableCompanion.insert(
                 id: id,
@@ -3039,7 +3031,7 @@ class $$ItemHistoryTableTableTableManager
                 nameLower: nameLower,
                 lastUsed: lastUsed,
                 usageCount: usageCount,
-                categories: categories,
+                category: category,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

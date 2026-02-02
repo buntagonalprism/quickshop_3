@@ -64,7 +64,7 @@ class ShoppingItemHistoryRepo {
         nameLower: entry.nameLower,
         usageCount: entry.usageCount,
         lastUsed: DateTime.fromMillisecondsSinceEpoch(entry.lastUsed),
-        categories: entry.categories.split('|'),
+        category: entry.category,
         deleted: false,
       );
     }).toList();
@@ -110,7 +110,7 @@ class ShoppingItemHistoryRepo {
           nameLower: data['nameLower'],
           usageCount: data['usageCount'],
           lastUsed: data[_Fields.lastUsed],
-          categories: (data['categories'] as List).cast<String>().join('|'),
+          category: (data['categories'] as List).cast<String>().join('|'),
         );
       }).toList(),
     );

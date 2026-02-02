@@ -48,13 +48,12 @@ class ShoppingItemView extends ConsumerStatefulWidget {
 }
 
 class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
-  List<String> selectedCategories = [];
   late final TextEditingController productController;
   late final TextEditingController quantityController;
-  late final TextEditingController categoriesController = TextEditingController();
+  late final TextEditingController categoryController;
   final productFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
-  final categoriesFocusNode = FocusNode();
+  final categoryFocusNode = FocusNode();
 
   late final _Mode mode;
 
@@ -67,34 +66,37 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
       case ShoppingItemViewEditData(:final item):
         productController = TextEditingController(text: item.product);
         quantityController = TextEditingController(text: item.quantity);
-        selectedCategories = item.categories;
+        categoryController = TextEditingController(text: item.category);
         mode = _Mode.edit;
         break;
       case ShoppingItemViewCreateData(:final rawData):
         productController = TextEditingController(text: rawData.product);
         quantityController = TextEditingController(text: rawData.quantity);
-        selectedCategories = rawData.categories;
+        categoryController = TextEditingController(text: rawData.category);
         mode = _Mode.create;
         break;
     }
     productController.addListener(onDataChanges);
     quantityController.addListener(onDataChanges);
+    categoryController.addListener(onDataChanges);
   }
 
   void onDataChanges() {
-    widget.onDataChanged(ShoppingItemRawData(
-      product: productController.text,
-      quantity: quantityController.text,
-      categories: selectedCategories,
-    ));
+    widget.onDataChanged(
+      ShoppingItemRawData(
+        product: productController.text,
+        quantity: quantityController.text,
+        category: categoryController.text,
+      ),
+    );
   }
 
   @override
   void dispose() {
     productFocusNode.dispose();
     productController.dispose();
-    categoriesController.dispose();
-    categoriesFocusNode.dispose();
+    categoryController.dispose();
+    categoryFocusNode.dispose();
     quantityFocusNode.dispose();
     quantityController.dispose();
     super.dispose();
@@ -157,21 +159,15 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                       ),
                     ),
                     controller: quantityController,
-                    onSubmitted: (_) => categoriesFocusNode.requestFocus(),
+                    onSubmitted: (_) => categoryFocusNode.requestFocus(),
                   ),
                   20.vertical,
                   CategorySelector(
                     key: keys.categoriesInput,
                     listId: widget.listId,
-                    focusNode: categoriesFocusNode,
-                    controller: categoriesController,
-                    selectedCategories: selectedCategories,
-                    onCategoriesChanged: (newCategories) {
-                      setState(() {
-                        selectedCategories = newCategories;
-                        onDataChanges();
-                      });
-                    },
+                    focusNode: categoryFocusNode,
+                    controller: categoryController,
+                    onCategorySelected: () => setState(() => onDataChanges()),
                     error: widget.errors?.categoriesError,
                     onSubmitted: widget.onSubmitted,
                   ),
@@ -197,15 +193,15 @@ class ShoppingItemTooltipAction extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final showNameTooltip = ref.watch(tooltipsProvider(TooltipType.shoppingItemName));
     final showQuantityTooltip = ref.watch(tooltipsProvider(TooltipType.shoppingItemQuantity));
-    final showCategoriesTooltip = ref.watch(tooltipsProvider(TooltipType.shoppingItemCategories));
+    final showCategoryTooltip = ref.watch(tooltipsProvider(TooltipType.shoppingItemCategory));
 
-    if ([showNameTooltip, showQuantityTooltip, showCategoriesTooltip].any((e) => !e)) {
+    if ([showNameTooltip, showQuantityTooltip, showCategoryTooltip].any((e) => !e)) {
       return IconButton(
         icon: const Icon(Icons.help_outline),
         onPressed: () {
           ref.read(tooltipsProvider(TooltipType.shoppingItemName).notifier).set(true);
           ref.read(tooltipsProvider(TooltipType.shoppingItemQuantity).notifier).set(true);
-          ref.read(tooltipsProvider(TooltipType.shoppingItemCategories).notifier).set(true);
+          ref.read(tooltipsProvider(TooltipType.shoppingItemCategory).notifier).set(true);
         },
       );
     }

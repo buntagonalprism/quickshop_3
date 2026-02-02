@@ -128,7 +128,7 @@ final class ShoppingItemCreateViewModelProvider
 }
 
 String _$shoppingItemCreateViewModelHash() =>
-    r'4e7525473dae8909994bb72d4f9ed3128cae65e7';
+    r'0b077739ccc6323ae912c042d47079f6491b1caf';
 
 abstract class _$ShoppingItemCreateViewModel
     extends $Notifier<ShoppingItemCreateModel> {

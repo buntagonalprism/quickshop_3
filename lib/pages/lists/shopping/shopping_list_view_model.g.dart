@@ -73,7 +73,7 @@ final class ShoppingListViewModelProvider
 }
 
 String _$shoppingListViewModelHash() =>
-    r'5350de00665dc92d65ff1d635f9f11e99e492e71';
+    r'0523d5d3047bcf02c7e2b14ac97d5bc571c15bab';
 
 final class ShoppingListViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingListViewModel, String> {

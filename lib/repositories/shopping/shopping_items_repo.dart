@@ -36,7 +36,7 @@ class ShoppingListItemsRepo {
       path: '',
       product: data.product,
       quantity: data.quantity,
-      categories: data.categories,
+      category: data.category,
       addedByUserId: user!.id,
       lastModifiedByUserId: user.id,
       lastModifiedAt: DateTime.now(),
@@ -64,7 +64,7 @@ class ShoppingListItemsRepo {
     tx.batch.update(itemDoc, {
       _Fields.product: updatedData.product,
       _Fields.quantity: updatedData.quantity,
-      _Fields.categories: updatedData.categories,
+      _Fields.category: updatedData.category,
       _Fields.lastModifiedByUserId: ref.read(userAuthProvider)!.id,
       _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
     });
@@ -99,7 +99,7 @@ ShoppingItem _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     id: doc.id,
     product: data[_Fields.product],
     quantity: data[_Fields.quantity],
-    categories: (data[_Fields.categories] as List).cast<String>(),
+    category: data[_Fields.category],
     addedByUserId: data[_Fields.addedByUserId],
     lastModifiedByUserId: data[_Fields.lastModifiedByUserId],
     lastModifiedAt: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastModifiedAt]),
@@ -111,7 +111,7 @@ Map<String, dynamic> _toFirestore(ShoppingItem item) {
   return {
     _Fields.product: item.product,
     _Fields.quantity: item.quantity,
-    _Fields.categories: item.categories,
+    _Fields.category: item.category,
     _Fields.addedByUserId: item.addedByUserId,
     _Fields.lastModifiedByUserId: item.lastModifiedByUserId,
     _Fields.lastModifiedAt: item.lastModifiedAt.millisecondsSinceEpoch,
@@ -123,7 +123,7 @@ class _Fields {
   static const String completed = 'completed';
   static const String product = 'product';
   static const String quantity = 'quantity';
-  static const String categories = 'categories';
+  static const String category = 'category';
   static const String addedByUserId = 'addedByUserId';
   static const String lastModifiedByUserId = 'lastModifiedByUserId';
   static const String lastModifiedAt = 'lastModifiedAt';

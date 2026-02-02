@@ -25,7 +25,7 @@ class ShoppingItemErrors {
     return ShoppingItemErrors(
       productError: data.product.isEmpty ? messages.productNameMissing : null,
       quantityError: null,
-      categoriesError: data.categories.isEmpty ? messages.categoriesMissing : null,
+      categoriesError: data.category.isEmpty ? messages.categoriesMissing : null,
     );
   }
 

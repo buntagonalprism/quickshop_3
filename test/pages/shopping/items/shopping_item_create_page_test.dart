@@ -43,7 +43,7 @@ typedef _Strings = ShoppingItemCreatePageStrings;
 
 void main() {
   registerFallbackValue(FakeListItemsTransaction());
-  registerFallbackValue(buildItemRawData(p: '', q: '', c: []));
+  registerFallbackValue(buildItemRawData(p: '', q: '', c: ''));
 
   final listId = 'test-list-id';
   final list = ListSummary(
@@ -83,29 +83,31 @@ void main() {
   final categoryInputFieldFinder = find.descendant(of: find.byType(CategorySelector), matching: find.byType(TextField));
 
   Future<void> pumpScreen(WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ProviderScope(
-        overrides: [
-          shoppingItemAutocompleteUseCaseProvider(listId).overrideWithValue(itemAutocompleteRepo),
-          shoppingCategoryAutocompleteUseCaseProvider(listId).overrideWithValue(categoryAutocompleteRepo),
-          shoppingListItemsRepoProvider(listId).overrideWithValue(itemsRepo),
-          listRepoProvider.overrideWithValue(listRepo),
-          routerProvider.overrideWithValue(router),
-          sharedPrefsProvider.overrideWithValue(prefs),
-          firebaseAuthProvider.overrideWithValue(auth),
-          listItemsTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
-        ],
-        child: Consumer(
-          builder: (context, ref, _) {
-            // Adding a shopping item triggers a side effect of updating the list item
-            // count via the lists notifier. We need to ensure the lists notifier is in a
-            // valid state (i.e. has loaded the lists) to avoid state errors.
-            ref.watch(listsProvider);
-            return ShoppingItemCreatePage(listId: listId);
-          },
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ProviderScope(
+          overrides: [
+            shoppingItemAutocompleteUseCaseProvider(listId).overrideWithValue(itemAutocompleteRepo),
+            shoppingCategoryAutocompleteUseCaseProvider(listId).overrideWithValue(categoryAutocompleteRepo),
+            shoppingListItemsRepoProvider(listId).overrideWithValue(itemsRepo),
+            listRepoProvider.overrideWithValue(listRepo),
+            routerProvider.overrideWithValue(router),
+            sharedPrefsProvider.overrideWithValue(prefs),
+            firebaseAuthProvider.overrideWithValue(auth),
+            listItemsTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
+          ],
+          child: Consumer(
+            builder: (context, ref, _) {
+              // Adding a shopping item triggers a side effect of updating the list item
+              // count via the lists notifier. We need to ensure the lists notifier is in a
+              // valid state (i.e. has loaded the lists) to avoid state errors.
+              ref.watch(listsProvider);
+              return ShoppingItemCreatePage(listId: listId);
+            },
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Future<void> proceedToCategoryView(WidgetTester tester, String itemName) async {
@@ -123,8 +125,9 @@ void main() {
   }
 
   Future<void> selectCategory(WidgetTester tester, String categoryName) async {
-    answer(() => categoryAutocompleteRepo.getAutocomplete(categoryName))
-        .withValue([buildCategoryAutocomplete(categoryName)]);
+    answer(
+      () => categoryAutocompleteRepo.getAutocomplete(categoryName),
+    ).withValue([buildCategoryAutocomplete(categoryName)]);
     await tester.enterText(categoryInputFieldFinder, categoryName);
     await tester.pumpAndSettle();
 
@@ -133,8 +136,7 @@ void main() {
   }
 
   group('Item name error handling', () {
-    testWidgets(
-        'GIVEN no item name is entered '
+    testWidgets('GIVEN no item name is entered '
         'WHEN tapping done '
         'THEN show error', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -143,8 +145,7 @@ void main() {
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN item error displayed after tapping done '
+    testWidgets('GIVEN item error displayed after tapping done '
         'WHEN entering item name '
         'THEN error disappears', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -156,8 +157,7 @@ void main() {
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsNothing);
     });
 
-    testWidgets(
-        'GIVEN no item name is entered '
+    testWidgets('GIVEN no item name is entered '
         'WHEN tapping add more '
         'THEN show error', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -166,8 +166,7 @@ void main() {
       expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN item error displayed after tapping add more '
+    testWidgets('GIVEN item error displayed after tapping add more '
         'WHEN entering item name '
         'THEN error disappears', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -181,15 +180,13 @@ void main() {
   });
 
   group('Autocomplete item search results display', () {
-    testWidgets(
-        'GIVEN user has not yet entered any text '
+    testWidgets('GIVEN user has not yet entered any text '
         'THEN item create page instructions are shown', (WidgetTester tester) async {
       await pumpScreen(tester);
       expect(find.byType(ItemAutocompletePlaceholder), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN user has entered text '
+    testWidgets('GIVEN user has entered text '
         'WHEN autocomplete items are loading '
         'THEN loading indicator is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -200,8 +197,7 @@ void main() {
       expect(find.byType(ItemAutocompleteLoading), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN user has entered text '
+    testWidgets('GIVEN user has entered text '
         'WHEN there is an error loading autocomplete items '
         'THEN error view is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -211,8 +207,7 @@ void main() {
       expect(find.byType(ItemAutocompleteError), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN user has entered text '
+    testWidgets('GIVEN user has entered text '
         'WHEN there are no matching autocomplete items '
         'THEN empty results view shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -223,8 +218,7 @@ void main() {
       expect(find.byType(ItemAutocompleteEmpty), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN user has entered text '
+    testWidgets('GIVEN user has entered text '
         'WHEN there are matching autocomplete items '
         'THEN results are shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -246,15 +240,14 @@ void main() {
   });
 
   group('Adding items from autocomplete suggestions', () {
-    testWidgets(
-        'GIVEN autocomplete items are shown '
+    testWidgets('GIVEN autocomplete items are shown '
         'WHEN tapping autocomplete item '
         'THEN item is added to list and screen popped', (WidgetTester tester) async {
       await pumpScreen(tester);
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: ['Dairy']));
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
@@ -268,15 +261,14 @@ void main() {
       expect(find.text(_Strings.addedToList('Milk')), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN autocomplete items are shown '
+    testWidgets('GIVEN autocomplete items are shown '
         'WHEN tapping plus button on autocomplete item '
         'THEN item is added to list and page is reset for next item', (WidgetTester tester) async {
       await pumpScreen(tester);
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: ['Dairy']));
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
@@ -291,8 +283,7 @@ void main() {
       expect(getTextFieldText(tester), isEmpty);
     });
 
-    testWidgets(
-        'GIVEN an exact match autocomplete item is shown '
+    testWidgets('GIVEN an exact match autocomplete item is shown '
         'WHEN tapping done button '
         'THEN exact match item is added to list and screen is popped', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -303,7 +294,7 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: ['Dairy']));
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
@@ -317,8 +308,7 @@ void main() {
       expect(find.text(_Strings.addedToList('Milk')), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN an exact match autocomplete item is shown '
+    testWidgets('GIVEN an exact match autocomplete item is shown '
         'WHEN tapping add more button '
         'THEN exact match item is added to list and screen is reset', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -329,7 +319,7 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: exactMatch.displayName, q: '', c: ['Dairy']));
+      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: exactMatch.displayName, q: '', c: 'Dairy'));
       answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
@@ -346,8 +336,7 @@ void main() {
   });
 
   group('Items already on list', () {
-    testWidgets(
-        'GIVEN item name exactly matches item already on list '
+    testWidgets('GIVEN item name exactly matches item already on list '
         'WHEN tapping done '
         'THEN already on list snackbar error is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -364,8 +353,7 @@ void main() {
       expect(find.text(_Strings.itemOnList('Milk')), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN item name exactly matches item already on list '
+    testWidgets('GIVEN item name exactly matches item already on list '
         'WHEN tapping add more '
         'THEN already on list snackbar error is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -382,8 +370,7 @@ void main() {
       expect(find.text(_Strings.itemOnList('Milk')), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN item name exactly matches item already on list '
+    testWidgets('GIVEN item name exactly matches item already on list '
         'WHEN tapping Edit button on item '
         'THEN opens item edit page', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -402,8 +389,7 @@ void main() {
   });
 
   group('Category required for item', () {
-    testWidgets(
-        'GIVEN item name with no exact autocomplete match '
+    testWidgets('GIVEN item name with no exact autocomplete match '
         'WHEN tapping done '
         'THEN category input view is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -420,8 +406,7 @@ void main() {
       expect(find.byType(ShoppingItemSearchView), findsNothing);
     });
 
-    testWidgets(
-        'GIVEN item name with no exact autocomplete match '
+    testWidgets('GIVEN item name with no exact autocomplete match '
         'WHEN tapping add more '
         'THEN category input view is shown', (WidgetTester tester) async {
       await pumpScreen(tester);
@@ -454,8 +439,7 @@ void main() {
       expect(find.byType(ShoppingItemCategorySelectView), findsOneWidget);
     }
 
-    testWidgets(
-        'GIVEN category input view is shown '
+    testWidgets('GIVEN category input view is shown '
         'WHEN tapping done without inputting a category '
         'THEN show error', (WidgetTester tester) async {
       await proceedToCategoryView(tester);
@@ -466,8 +450,7 @@ void main() {
       expect(find.text(_Strings.categoryRequired), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN category input view is shown '
+    testWidgets('GIVEN category input view is shown '
         'WHEN tapping add more without inputting a category '
         'THEN show error', (WidgetTester tester) async {
       await proceedToCategoryView(tester);
@@ -478,8 +461,7 @@ void main() {
       expect(find.text(_Strings.categoryRequired), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN category input error is shown '
+    testWidgets('GIVEN category input error is shown '
         'WHEN entering a category '
         'THEN error is removed', (WidgetTester tester) async {
       await proceedToCategoryView(tester);
@@ -505,10 +487,9 @@ void main() {
     final itemName = 'Unknown Item';
     final categoryName = 'My new category';
 
-    addItemFn() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName]));
+    addItemFn() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName));
 
-    testWidgets(
-        'GIVEN category has been input in category view '
+    testWidgets('GIVEN category has been input in category view '
         'WHEN add more is tapped '
         'THEN item is added and item search screen shown', (WidgetTester tester) async {
       await proceedToCategoryView(tester, itemName);
@@ -527,8 +508,7 @@ void main() {
       expect(getTextFieldText(tester, itemInputFinder), isEmpty);
     });
 
-    testWidgets(
-        'GIVEN category has been input in category view '
+    testWidgets('GIVEN category has been input in category view '
         'WHEN done is tapped '
         'THEN item is added and screen is popped', (WidgetTester tester) async {
       await proceedToCategoryView(tester, itemName);
@@ -566,12 +546,12 @@ void main() {
     }
 
     void setupAddItemAnswer() {
-      answer(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName])))
-          .withValue(buildShoppingItem(itemName, categoryName));
+      answer(
+        () => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName)),
+      ).withValue(buildShoppingItem(itemName, categoryName));
     }
 
-    testWidgets(
-        'GIVEN item category input view '
+    testWidgets('GIVEN item category input view '
         'WHEN tapping edit product button '
         'THEN item edit view shown', (WidgetTester tester) async {
       await proceedToItemEditView(tester, itemName);
@@ -579,8 +559,7 @@ void main() {
       expect(find.byType(ShoppingItemView), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN invalid input on item edit view '
+    testWidgets('GIVEN invalid input on item edit view '
         'WHEN tapping done '
         'THEN validation errors shown', (WidgetTester tester) async {
       await proceedToItemEditView(tester, itemName);
@@ -602,8 +581,7 @@ void main() {
       verifyItemNotAdded();
     });
 
-    testWidgets(
-        'GIVEN invalid input on item edit view '
+    testWidgets('GIVEN invalid input on item edit view '
         'WHEN tapping add more '
         'THEN validation errors shown', (WidgetTester tester) async {
       await proceedToItemEditView(tester, itemName);
@@ -625,8 +603,7 @@ void main() {
       verifyItemNotAdded();
     });
 
-    testWidgets(
-        'GIVEN valid data on item edit view '
+    testWidgets('GIVEN valid data on item edit view '
         'WHEN tapping done '
         'THEN item is added and screen popped', (WidgetTester tester) async {
       await proceedToItemEditView(tester, itemName);
@@ -637,13 +614,12 @@ void main() {
       await tester.tap(doneButtonFinder);
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName]))).called(1);
+      verify(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName))).called(1);
       verify(() => router.pop()).called(1);
       expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
     });
 
-    testWidgets(
-        'GIVEN valid data on item edit view '
+    testWidgets('GIVEN valid data on item edit view '
         'WHEN tapping add more '
         'THEN item is added and screen reset to item search view', (WidgetTester tester) async {
       await proceedToItemEditView(tester, itemName);
@@ -654,7 +630,7 @@ void main() {
       await tester.tap(addMoreButtonFinder);
       await tester.pumpAndSettle();
 
-      verify(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: [categoryName]))).called(1);
+      verify(() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName))).called(1);
       verifyNever(() => router.pop());
       expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
       expect(find.byType(ShoppingItemSearchView), findsOneWidget);
@@ -699,17 +675,17 @@ extension _FinderExtensions on CommonFinders {
   }
 }
 
-ShoppingItemRawData buildItemRawData({required String p, String q = '', List<String> c = const []}) {
+ShoppingItemRawData buildItemRawData({required String p, String q = '', String c = ''}) {
   return ShoppingItemRawData(
     product: p,
     quantity: q,
-    categories: c,
+    category: c,
   );
 }
 
 ShoppingItemAutocomplete buildItemAutocomplete(
   String name,
-  String categories, {
+  String category, {
   String? quantity,
   ShoppingItemAutocompleteSource source = ShoppingItemAutocompleteSource.suggested,
 }) {
@@ -717,7 +693,7 @@ ShoppingItemAutocomplete buildItemAutocomplete(
     source: source,
     sourceId: name.toLowerCase().replaceAll(' ', '-'),
     product: name,
-    categories: categories.split(','),
+    category: category,
     quantity: quantity ?? '',
   );
 }
@@ -735,7 +711,7 @@ ShoppingCategoryAutocomplete buildCategoryAutocomplete(
 
 ShoppingItem buildShoppingItem(
   String name,
-  String categories, {
+  String category, {
   String? quantity,
 }) {
   final id = name.toLowerCase().replaceAll(' ', '-');
@@ -744,7 +720,7 @@ ShoppingItem buildShoppingItem(
     path: 'lists/test-list-id/items/$id',
     product: name,
     quantity: quantity ?? '',
-    categories: categories.split(','),
+    category: category,
     addedByUserId: 'test-user-id',
     lastModifiedByUserId: 'test-user-id',
     lastModifiedAt: DateTime.now(),
