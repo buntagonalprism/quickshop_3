@@ -8,10 +8,9 @@ part 'category_selector_view_model.freezed.dart';
 part 'category_selector_view_model.g.dart';
 
 @freezed
-class CategorySelectorItem with _$CategorySelectorItem {
+sealed class CategorySelectorItem with _$CategorySelectorItem {
   const CategorySelectorItem._();
 
-  const factory CategorySelectorItem.newCategory() = _NewCategory;
   const factory CategorySelectorItem.suggestion(String name) = _Suggestion;
   const factory CategorySelectorItem.history(String name) = _History;
   const factory CategorySelectorItem.list(String name) = _List;
@@ -49,9 +48,6 @@ class CategorySelectorViewModel {
         ShoppingCategoryAutocompleteSource.list => CategorySelectorItem.list(autocomplete.name),
       };
     }).toList();
-    if (items.isEmpty || filter.length > 3) {
-      items.insert(0, const CategorySelectorItem.newCategory());
-    }
     return items;
   }
 }

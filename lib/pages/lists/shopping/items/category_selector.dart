@@ -22,6 +22,10 @@ class CategorySelector extends StatefulWidget {
   final TextEditingController controller;
   final VoidCallback? onSubmitted;
 
+  static const tooltipTitle = 'Product category';
+  static const tooltipMessage =
+      'QuickShop uses categories to organse your shopping list.\n\nEnter the category where you might find this product in store. For example:\n\nDairy, Sauces, Herbs & Spices, Bakery, Laundry, Cleaning Supplies.';
+
   @override
   State<CategorySelector> createState() => _CategorySelectorState();
 }
@@ -117,9 +121,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                           hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
                           border: InputBorder.none,
                           suffixIcon: TooltipButton(
-                            title: 'Product categories',
-                            message:
-                                'The categories where you might find this product in store. For example:\n\nDairy, Sauces, Herbs & Spices, Bakery, Laundry, Cleaning Supplies.',
+                            title: CategorySelector.tooltipTitle,
+                            message: CategorySelector.tooltipMessage,
                           ),
                         ),
                       );
@@ -137,20 +140,6 @@ class _CategorySelectorState extends State<CategorySelector> {
                               itemBuilder: (BuildContext context, int index) {
                                 final option = options.elementAt(index);
                                 return option.when(
-                                  newCategory: () => CategoryAutocompleteTile(
-                                    title: Text.rich(
-                                      TextSpan(
-                                        text: 'Add new category: ',
-                                        children: [
-                                          TextSpan(
-                                            text: controller.text,
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () => _selectCategory(controller.text),
-                                  ),
                                   list: (name) => CategoryAutocompleteTile(
                                     title: Text(name),
                                     onTap: () => _selectCategory(name),

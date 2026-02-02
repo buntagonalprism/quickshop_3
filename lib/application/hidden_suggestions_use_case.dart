@@ -20,7 +20,7 @@ class HiddenSuggestionsUseCase {
       if (profile != null) {
         final hiddenSuggestionsVersion = profile.hiddenSuggestionsVersion;
         final repo = _ref.read(hiddenSuggestionsRepoProvider);
-        if (hiddenSuggestionsVersion > repo.processedHiddenSuggestionsVersion) {
+        if (hiddenSuggestionsVersion != null && hiddenSuggestionsVersion > repo.processedHiddenSuggestionsVersion) {
           await repo.fetchAndApplyHiddenSuggestions(hiddenSuggestionsVersion);
         }
       }

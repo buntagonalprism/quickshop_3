@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfile {
 
- String get userId; DateTime get lastHistoryUpdate; int get hiddenSuggestionsVersion;
+ String get userId; DateTime? get lastHistoryUpdate; int? get hiddenSuggestionsVersion; List<String>? get completedTutorials;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $UserProfileCopyWith<UserProfile> get copyWith => _$UserProfileCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.lastHistoryUpdate, lastHistoryUpdate) || other.lastHistoryUpdate == lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == hiddenSuggestionsVersion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.lastHistoryUpdate, lastHistoryUpdate) || other.lastHistoryUpdate == lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == hiddenSuggestionsVersion)&&const DeepCollectionEquality().equals(other.completedTutorials, completedTutorials));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,lastHistoryUpdate,hiddenSuggestionsVersion);
+int get hashCode => Object.hash(runtimeType,userId,lastHistoryUpdate,hiddenSuggestionsVersion,const DeepCollectionEquality().hash(completedTutorials));
 
 @override
 String toString() {
-  return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestionsVersion: $hiddenSuggestionsVersion)';
+  return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestionsVersion: $hiddenSuggestionsVersion, completedTutorials: $completedTutorials)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
- String userId, DateTime lastHistoryUpdate, int hiddenSuggestionsVersion
+ String userId, DateTime? lastHistoryUpdate, int? hiddenSuggestionsVersion, List<String>? completedTutorials
 });
 
 
@@ -62,12 +62,13 @@ class _$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? lastHistoryUpdate = null,Object? hiddenSuggestionsVersion = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? lastHistoryUpdate = freezed,Object? hiddenSuggestionsVersion = freezed,Object? completedTutorials = freezed,}) {
   return _then(_self.copyWith(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,lastHistoryUpdate: null == lastHistoryUpdate ? _self.lastHistoryUpdate : lastHistoryUpdate // ignore: cast_nullable_to_non_nullable
-as DateTime,hiddenSuggestionsVersion: null == hiddenSuggestionsVersion ? _self.hiddenSuggestionsVersion : hiddenSuggestionsVersion // ignore: cast_nullable_to_non_nullable
-as int,
+as String,lastHistoryUpdate: freezed == lastHistoryUpdate ? _self.lastHistoryUpdate : lastHistoryUpdate // ignore: cast_nullable_to_non_nullable
+as DateTime?,hiddenSuggestionsVersion: freezed == hiddenSuggestionsVersion ? _self.hiddenSuggestionsVersion : hiddenSuggestionsVersion // ignore: cast_nullable_to_non_nullable
+as int?,completedTutorials: freezed == completedTutorials ? _self.completedTutorials : completedTutorials // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 
@@ -88,10 +89,10 @@ extension UserProfilePatterns on UserProfile {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserHistory value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserProfile value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _UserHistory() when $default != null:
+case _UserProfile() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -110,10 +111,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserHistory value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserProfile value)  $default,){
 final _that = this;
 switch (_that) {
-case _UserHistory():
+case _UserProfile():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -131,10 +132,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserHistory value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserProfile value)?  $default,){
 final _that = this;
 switch (_that) {
-case _UserHistory() when $default != null:
+case _UserProfile() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  DateTime lastHistoryUpdate,  int hiddenSuggestionsVersion)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  DateTime? lastHistoryUpdate,  int? hiddenSuggestionsVersion,  List<String>? completedTutorials)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _UserHistory() when $default != null:
-return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVersion);case _:
+case _UserProfile() when $default != null:
+return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVersion,_that.completedTutorials);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVers
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  DateTime lastHistoryUpdate,  int hiddenSuggestionsVersion)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  DateTime? lastHistoryUpdate,  int? hiddenSuggestionsVersion,  List<String>? completedTutorials)  $default,) {final _that = this;
 switch (_that) {
-case _UserHistory():
-return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVersion);case _:
+case _UserProfile():
+return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVersion,_that.completedTutorials);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVers
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  DateTime lastHistoryUpdate,  int hiddenSuggestionsVersion)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  DateTime? lastHistoryUpdate,  int? hiddenSuggestionsVersion,  List<String>? completedTutorials)?  $default,) {final _that = this;
 switch (_that) {
-case _UserHistory() when $default != null:
-return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVersion);case _:
+case _UserProfile() when $default != null:
+return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVersion,_that.completedTutorials);case _:
   return null;
 
 }
@@ -207,45 +208,54 @@ return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVers
 /// @nodoc
 
 
-class _UserHistory extends UserProfile {
-  const _UserHistory({required this.userId, required this.lastHistoryUpdate, required this.hiddenSuggestionsVersion}): super._();
+class _UserProfile extends UserProfile {
+  const _UserProfile({required this.userId, this.lastHistoryUpdate, this.hiddenSuggestionsVersion, final  List<String>? completedTutorials}): _completedTutorials = completedTutorials,super._();
   
 
 @override final  String userId;
-@override final  DateTime lastHistoryUpdate;
-@override final  int hiddenSuggestionsVersion;
+@override final  DateTime? lastHistoryUpdate;
+@override final  int? hiddenSuggestionsVersion;
+ final  List<String>? _completedTutorials;
+@override List<String>? get completedTutorials {
+  final value = _completedTutorials;
+  if (value == null) return null;
+  if (_completedTutorials is EqualUnmodifiableListView) return _completedTutorials;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$UserHistoryCopyWith<_UserHistory> get copyWith => __$UserHistoryCopyWithImpl<_UserHistory>(this, _$identity);
+_$UserProfileCopyWith<_UserProfile> get copyWith => __$UserProfileCopyWithImpl<_UserProfile>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserHistory&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.lastHistoryUpdate, lastHistoryUpdate) || other.lastHistoryUpdate == lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == hiddenSuggestionsVersion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.lastHistoryUpdate, lastHistoryUpdate) || other.lastHistoryUpdate == lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == hiddenSuggestionsVersion)&&const DeepCollectionEquality().equals(other._completedTutorials, _completedTutorials));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,lastHistoryUpdate,hiddenSuggestionsVersion);
+int get hashCode => Object.hash(runtimeType,userId,lastHistoryUpdate,hiddenSuggestionsVersion,const DeepCollectionEquality().hash(_completedTutorials));
 
 @override
 String toString() {
-  return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestionsVersion: $hiddenSuggestionsVersion)';
+  return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestionsVersion: $hiddenSuggestionsVersion, completedTutorials: $completedTutorials)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$UserHistoryCopyWith<$Res> implements $UserProfileCopyWith<$Res> {
-  factory _$UserHistoryCopyWith(_UserHistory value, $Res Function(_UserHistory) _then) = __$UserHistoryCopyWithImpl;
+abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith<$Res> {
+  factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String userId, DateTime lastHistoryUpdate, int hiddenSuggestionsVersion
+ String userId, DateTime? lastHistoryUpdate, int? hiddenSuggestionsVersion, List<String>? completedTutorials
 });
 
 
@@ -253,21 +263,22 @@ $Res call({
 
 }
 /// @nodoc
-class __$UserHistoryCopyWithImpl<$Res>
-    implements _$UserHistoryCopyWith<$Res> {
-  __$UserHistoryCopyWithImpl(this._self, this._then);
+class __$UserProfileCopyWithImpl<$Res>
+    implements _$UserProfileCopyWith<$Res> {
+  __$UserProfileCopyWithImpl(this._self, this._then);
 
-  final _UserHistory _self;
-  final $Res Function(_UserHistory) _then;
+  final _UserProfile _self;
+  final $Res Function(_UserProfile) _then;
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? lastHistoryUpdate = null,Object? hiddenSuggestionsVersion = null,}) {
-  return _then(_UserHistory(
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? lastHistoryUpdate = freezed,Object? hiddenSuggestionsVersion = freezed,Object? completedTutorials = freezed,}) {
+  return _then(_UserProfile(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,lastHistoryUpdate: null == lastHistoryUpdate ? _self.lastHistoryUpdate : lastHistoryUpdate // ignore: cast_nullable_to_non_nullable
-as DateTime,hiddenSuggestionsVersion: null == hiddenSuggestionsVersion ? _self.hiddenSuggestionsVersion : hiddenSuggestionsVersion // ignore: cast_nullable_to_non_nullable
-as int,
+as String,lastHistoryUpdate: freezed == lastHistoryUpdate ? _self.lastHistoryUpdate : lastHistoryUpdate // ignore: cast_nullable_to_non_nullable
+as DateTime?,hiddenSuggestionsVersion: freezed == hiddenSuggestionsVersion ? _self.hiddenSuggestionsVersion : hiddenSuggestionsVersion // ignore: cast_nullable_to_non_nullable
+as int?,completedTutorials: freezed == completedTutorials ? _self._completedTutorials : completedTutorials // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 

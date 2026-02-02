@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../application/hidden_suggestions_use_case.dart';
 import '../../../../application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
 import '../../../../application/shopping/shopping_items_notifier.dart';
+import '../../../../application/tutorials_notifier.dart';
 import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../../../../models/shopping/shopping_item_raw_data.dart';
 import '../../../../router.dart';
 import '../../../../widgets/confirmation_dialog.dart';
 import '../../../../widgets/padding.dart';
+import '../../../../widgets/tooltip_button.dart';
 import 'category_selector.dart';
 import 'shopping_item_create_view_model.dart';
 import 'shopping_item_view.dart';
@@ -77,6 +79,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                     key: ValueKey('category_$childrenResetKey'),
                     listId: widget.listId,
                     showErrors: showErrorsOnTab == 1,
+                    isVisible: tabController.index == 1,
                     onEditItem: () => moveToTab(2),
                   ),
                   ShoppingItemView(
@@ -520,10 +523,12 @@ class ItemAutocompleteEmpty extends StatelessWidget {
 class ShoppingItemCategorySelectView extends ConsumerStatefulWidget {
   final String listId;
   final VoidCallback onEditItem;
+  final bool isVisible;
   final bool showErrors;
   const ShoppingItemCategorySelectView({
     required this.listId,
     required this.onEditItem,
+    required this.isVisible,
     required this.showErrors,
     super.key,
   });
@@ -535,10 +540,39 @@ class ShoppingItemCategorySelectView extends ConsumerStatefulWidget {
 class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCategorySelectView> {
   String? categoryError;
   final controller = TextEditingController();
+  final focusNode = FocusNode();
+  late bool shouldShowTutorial;
 
   @override
   void initState() {
     super.initState();
+    shouldShowTutorial = !ref.read(tutorialsProvider).contains(Tutorial.categorySelection);
+  }
+
+  @override
+  void didUpdateWidget(covariant ShoppingItemCategorySelectView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isVisible && !oldWidget.isVisible) {
+      if (shouldShowTutorial) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await Future.delayed(const Duration(milliseconds: 300));
+          if (mounted) {
+            await showDialog(
+              context: context,
+              builder: (context) => const TooltipDialog(
+                title: CategorySelector.tooltipTitle,
+                message: CategorySelector.tooltipMessage,
+              ),
+            );
+            await ref.read(tutorialsProvider.notifier).markTutorialCompleted(Tutorial.categorySelection);
+            focusNode.requestFocus();
+            setState(() => shouldShowTutorial = false);
+          }
+        });
+      } else {
+        focusNode.requestFocus();
+      }
+    }
   }
 
   @override
@@ -553,11 +587,6 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           16.vertical,
-          Text(
-            "Select one or more categories for where you might find this product in store.",
-            style: bodyStyle,
-          ),
-          6.vertical,
           Row(
             children: [
               Expanded(
@@ -602,6 +631,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
           CategorySelector(
             listId: widget.listId,
             controller: controller,
+            focusNode: focusNode,
             onCategorySelected: () {
               ref.read(shoppingItemCreateViewModelProvider.notifier).setCategory(controller.text);
             },

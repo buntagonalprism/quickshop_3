@@ -10,6 +10,7 @@ import '../services/firestore.dart';
 import '../services/locale_service.dart';
 import '../services/shared_preferences.dart';
 import '../services/tables/suggestion_type.dart';
+import '../utilities/parsing_utils.dart';
 import 'user_profile_repo.dart';
 import 'user_profile_transaction.dart';
 
@@ -53,8 +54,8 @@ class HiddenSuggestionsRepo {
       hiddenSuggestions = HiddenSuggestions(
         locale: data[_Fields.locale],
         lastUpdated: DateTime.fromMillisecondsSinceEpoch(data[_Fields.lastUpdated]),
-        items: _listOrNull(data[_Fields.items]) ?? [],
-        categories: _listOrNull(data[_Fields.categories]) ?? [],
+        items: listOrNull(data[_Fields.items]) ?? [],
+        categories: listOrNull(data[_Fields.categories]) ?? [],
       );
     }
 
@@ -82,13 +83,6 @@ class HiddenSuggestionsRepo {
     await db.suggestionsDao.replaceAllHiddenSuggestions(hiddenSuggestionRows);
 
     await _ref.read(sharedPrefsProvider).setInt(versionKey, newVersion);
-  }
-
-  List<String>? _listOrNull(dynamic value) {
-    if (value == null) {
-      return null;
-    }
-    return (value as List<dynamic>).cast<String>();
   }
 
   Future<void> hideSuggestionLocally(SuggestionType type, String suggestionId) {

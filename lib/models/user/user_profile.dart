@@ -8,7 +8,8 @@ abstract class UserProfile with _$UserProfile {
 
   const factory UserProfile({
     required String userId,
-    required DateTime lastHistoryUpdate,
-    required int hiddenSuggestionsVersion,
-  }) = _UserHistory;
+    DateTime? lastHistoryUpdate,
+    int? hiddenSuggestionsVersion,
+    List<String>? completedTutorials,
+  }) = _UserProfile;
 }

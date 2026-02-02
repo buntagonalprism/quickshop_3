@@ -14,11 +14,12 @@ UserHistoryLoaderUseCase userAutcompleteLoaderUseCase(Ref ref) {
 class UserHistoryLoaderUseCase {
   final Ref _ref;
   UserHistoryLoaderUseCase(this._ref) {
-    _ref.read(userProfileRepoProvider).getProfile().listen((hist) {
-      if (hist != null) {
-        _ref.read(shoppingCategoryHistoryRepoProvider).onUserHistoryUpdated(hist.lastHistoryUpdate);
-        _ref.read(shoppingItemHistoryRepoProvider).onUserHistoryUpdated(hist.lastHistoryUpdate);
+    _ref.listen(userProfileProvider, (_, profileAsync) {
+      final lastHistoryUpdate = profileAsync.value?.lastHistoryUpdate;
+      if (lastHistoryUpdate != null) {
+        _ref.read(shoppingCategoryHistoryRepoProvider).onUserHistoryUpdated(lastHistoryUpdate);
+        _ref.read(shoppingItemHistoryRepoProvider).onUserHistoryUpdated(lastHistoryUpdate);
       }
-    });
+    }, fireImmediately: true);
   }
 }
