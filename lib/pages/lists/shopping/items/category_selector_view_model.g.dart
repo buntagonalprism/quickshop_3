@@ -10,23 +10,30 @@ part of 'category_selector_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(CategoryFilter)
-const categoryFilterProvider = CategoryFilterProvider._();
+const categoryFilterProvider = CategoryFilterFamily._();
 
 final class CategoryFilterProvider
     extends $NotifierProvider<CategoryFilter, String> {
-  const CategoryFilterProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'categoryFilterProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+  const CategoryFilterProvider._({
+    required CategoryFilterFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'categoryFilterProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$categoryFilterHash();
+
+  @override
+  String toString() {
+    return r'categoryFilterProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
@@ -39,16 +46,47 @@ final class CategoryFilterProvider
       providerOverride: $SyncValueProvider<String>(value),
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CategoryFilterProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
-String _$categoryFilterHash() => r'e1541cb38ecdbb07e72fb5f47157bd863db23d1a';
+String _$categoryFilterHash() => r'ae8e51b251d456d6cf88eb8ed5da494c81bf0e3e';
+
+final class CategoryFilterFamily extends $Family
+    with $ClassFamilyOverride<CategoryFilter, String, String, String, String> {
+  const CategoryFilterFamily._()
+    : super(
+        retry: null,
+        name: r'categoryFilterProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  CategoryFilterProvider call(String listId) =>
+      CategoryFilterProvider._(argument: listId, from: this);
+
+  @override
+  String toString() => r'categoryFilterProvider';
+}
 
 abstract class _$CategoryFilter extends $Notifier<String> {
-  String build();
+  late final _$args = ref.$arg as String;
+  String get listId => _$args;
+
+  String build(String listId);
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
+    final created = build(_$args);
     final ref = this.ref as $Ref<String, String>;
     final element =
         ref.element
@@ -62,62 +100,55 @@ abstract class _$CategoryFilter extends $Notifier<String> {
   }
 }
 
-@ProviderFor(categorySelectorViewModel)
-const categorySelectorViewModelProvider = CategorySelectorViewModelFamily._();
+@ProviderFor(categoryAutocomplete)
+const categoryAutocompleteProvider = CategoryAutocompleteFamily._();
 
-final class CategorySelectorViewModelProvider
+final class CategoryAutocompleteProvider
     extends
         $FunctionalProvider<
-          CategorySelectorViewModel,
-          CategorySelectorViewModel,
-          CategorySelectorViewModel
+          AsyncValue<List<ShoppingCategoryAutocomplete>>,
+          List<ShoppingCategoryAutocomplete>,
+          FutureOr<List<ShoppingCategoryAutocomplete>>
         >
-    with $Provider<CategorySelectorViewModel> {
-  const CategorySelectorViewModelProvider._({
-    required CategorySelectorViewModelFamily super.from,
+    with
+        $FutureModifier<List<ShoppingCategoryAutocomplete>>,
+        $FutureProvider<List<ShoppingCategoryAutocomplete>> {
+  const CategoryAutocompleteProvider._({
+    required CategoryAutocompleteFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'categorySelectorViewModelProvider',
+         name: r'categoryAutocompleteProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$categorySelectorViewModelHash();
+  String debugGetCreateSourceHash() => _$categoryAutocompleteHash();
 
   @override
   String toString() {
-    return r'categorySelectorViewModelProvider'
+    return r'categoryAutocompleteProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  $ProviderElement<CategorySelectorViewModel> $createElement(
+  $FutureProviderElement<List<ShoppingCategoryAutocomplete>> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  CategorySelectorViewModel create(Ref ref) {
+  FutureOr<List<ShoppingCategoryAutocomplete>> create(Ref ref) {
     final argument = this.argument as String;
-    return categorySelectorViewModel(ref, argument);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(CategorySelectorViewModel value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<CategorySelectorViewModel>(value),
-    );
+    return categoryAutocomplete(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CategorySelectorViewModelProvider &&
-        other.argument == argument;
+    return other is CategoryAutocompleteProvider && other.argument == argument;
   }
 
   @override
@@ -126,23 +157,27 @@ final class CategorySelectorViewModelProvider
   }
 }
 
-String _$categorySelectorViewModelHash() =>
-    r'faa927d031b2c38669c76a7ce67c315afd7421dc';
+String _$categoryAutocompleteHash() =>
+    r'9bc6307f9089d8e4e6d77f28aeccfc3b0e26edb2';
 
-final class CategorySelectorViewModelFamily extends $Family
-    with $FunctionalFamilyOverride<CategorySelectorViewModel, String> {
-  const CategorySelectorViewModelFamily._()
+final class CategoryAutocompleteFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<ShoppingCategoryAutocomplete>>,
+          String
+        > {
+  const CategoryAutocompleteFamily._()
     : super(
         retry: null,
-        name: r'categorySelectorViewModelProvider',
+        name: r'categoryAutocompleteProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  CategorySelectorViewModelProvider call(String listId) =>
-      CategorySelectorViewModelProvider._(argument: listId, from: this);
+  CategoryAutocompleteProvider call(String listId) =>
+      CategoryAutocompleteProvider._(argument: listId, from: this);
 
   @override
-  String toString() => r'categorySelectorViewModelProvider';
+  String toString() => r'categoryAutocompleteProvider';
 }

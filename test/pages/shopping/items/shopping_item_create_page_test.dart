@@ -570,13 +570,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(errors.productNameMissing), findsOneWidget);
-      expect(find.text(errors.categoriesMissing), findsOneWidget);
+      expect(find.text(errors.categoryMissing), findsOneWidget);
 
       await tester.enterText(find.byKey(keys.productInput), itemName);
       await selectCategory(tester, categoryName);
 
       expect(find.text(errors.productNameMissing), findsNothing);
-      expect(find.text(errors.categoriesMissing), findsNothing);
+      expect(find.text(errors.categoryMissing), findsNothing);
 
       verifyItemNotAdded();
     });
@@ -592,13 +592,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(errors.productNameMissing), findsOneWidget);
-      expect(find.text(errors.categoriesMissing), findsOneWidget);
+      expect(find.text(errors.categoryMissing), findsOneWidget);
 
       await tester.enterText(find.byKey(keys.productInput), itemName);
       await selectCategory(tester, categoryName);
 
       expect(find.text(errors.productNameMissing), findsNothing);
-      expect(find.text(errors.categoriesMissing), findsNothing);
+      expect(find.text(errors.categoryMissing), findsNothing);
 
       verifyItemNotAdded();
     });
@@ -659,7 +659,7 @@ extension _FinderExtensions on CommonFinders {
 
   Finder categoryAutocompleteEntry(String text) {
     return find.descendant(
-      of: find.byType(CategoryAutocompleteTile),
+      of: find.byType(CategoryAutocompleteEntry),
       matching: find.text(text),
     );
   }

@@ -3,21 +3,21 @@ import '../../../../../models/shopping/shopping_item_raw_data.dart';
 class ShoppingItemErrors {
   final String? productError;
   final String? quantityError;
-  final String? categoriesError;
+  final String? categoryError;
 
   ShoppingItemErrors({
     required this.productError,
     required this.quantityError,
-    required this.categoriesError,
+    required this.categoryError,
   });
 
-  bool get hasErrors => productError != null || quantityError != null || categoriesError != null;
+  bool get hasErrors => productError != null || quantityError != null || categoryError != null;
 
   factory ShoppingItemErrors.empty() {
     return ShoppingItemErrors(
       productError: null,
       quantityError: null,
-      categoriesError: null,
+      categoryError: null,
     );
   }
 
@@ -25,12 +25,12 @@ class ShoppingItemErrors {
     return ShoppingItemErrors(
       productError: data.product.isEmpty ? messages.productNameMissing : null,
       quantityError: null,
-      categoriesError: data.category.isEmpty ? messages.categoriesMissing : null,
+      categoryError: data.category.isEmpty ? messages.categoryMissing : null,
     );
   }
 
   static const messages = (
     productNameMissing: 'Please enter a product name',
-    categoriesMissing: 'Please select at least one category',
+    categoryMissing: 'Please select at least one category',
   );
 }

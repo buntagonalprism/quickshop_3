@@ -1,191 +1,308 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../widgets/padding.dart';
-import '../../../../widgets/tooltip_button.dart';
+import '../../../../application/hidden_suggestions_use_case.dart';
+import '../../../../application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
+import '../../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
+import '../../../../widgets/confirmation_dialog.dart';
 import 'category_selector_view_model.dart';
 
-class CategorySelector extends StatefulWidget {
+class CategorySelector extends ConsumerStatefulWidget {
   const CategorySelector({
     required this.listId,
-    required this.onCategorySelected,
+    required this.onSubmit,
     required this.error,
     required this.controller,
     this.focusNode,
-    this.onSubmitted,
+    this.onAddMore,
     super.key,
   });
   final String listId;
-  final void Function() onCategorySelected;
+  final void Function() onSubmit;
+  final void Function()? onAddMore;
   final String? error;
   final FocusNode? focusNode;
   final TextEditingController controller;
-  final VoidCallback? onSubmitted;
 
   static const tooltipTitle = 'Product category';
   static const tooltipMessage =
       'QuickShop uses categories to organse your shopping list.\n\nEnter the category where you might find this product in store. For example:\n\nDairy, Sauces, Herbs & Spices, Bakery, Laundry, Cleaning Supplies.';
 
   @override
-  State<CategorySelector> createState() => _CategorySelectorState();
+  ConsumerState<CategorySelector> createState() => _CategorySelectorState();
 }
 
-class _CategorySelectorState extends State<CategorySelector> {
-  late TextEditingController controller;
-  late FocusNode focusNode;
-  bool enableAddCategory = false;
+class _CategorySelectorState extends ConsumerState<CategorySelector> {
+  @override
+  Widget build(BuildContext context) {
+    final filter = ref.watch(categoryFilterProvider(widget.listId));
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: TextField(
+            decoration: InputDecoration(
+              labelText: 'Enter category name',
+              errorText: widget.error,
+            ),
+            focusNode: widget.focusNode,
+            controller: widget.controller,
+            onChanged: (newValue) {
+              ref.read(categoryFilterProvider(widget.listId).notifier).setFilter(newValue);
+            },
+            onSubmitted: (_) => widget.onSubmit(),
+          ),
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: 200,
+          ),
+          child: filter.isEmpty
+              ? const CategoryAutocompletePlaceholder()
+              : CategorySuggestionsList(
+                  listId: widget.listId,
+                  onSelect: (suggestion) {
+                    widget.controller.text = suggestion.name;
+                    widget.onSubmit();
+                  },
+                  onSelectAndAdd: widget.onAddMore != null
+                      ? (suggestion) {
+                          widget.controller.text = suggestion.name;
+                          widget.onAddMore!();
+                        }
+                      : null,
+                ),
+        ),
+      ],
+    );
+  }
+}
+
+class CategorySuggestionsList extends ConsumerStatefulWidget {
+  const CategorySuggestionsList({
+    required this.listId,
+    required this.onSelect,
+    required this.onSelectAndAdd,
+    super.key,
+  });
+  final String listId;
+  final Function(ShoppingCategoryAutocomplete) onSelect;
+  final Function(ShoppingCategoryAutocomplete)? onSelectAndAdd;
 
   @override
-  void initState() {
-    super.initState();
-    controller = widget.controller;
-    focusNode = widget.focusNode ?? FocusNode();
-    focusNode.addListener(onFocusChanged);
-    controller.addListener(onInput);
-  }
+  ConsumerState<CategorySuggestionsList> createState() => _CategorySuggestionsListState();
+}
 
-  @override
-  void didUpdateWidget(CategorySelector oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller) {
-      controller.removeListener(onInput);
-      controller = widget.controller;
-      controller.addListener(onInput);
-    }
-    if (widget.focusNode != oldWidget.focusNode) {
-      focusNode.removeListener(onFocusChanged);
-      focusNode = widget.focusNode ?? FocusNode();
-      focusNode.addListener(onFocusChanged);
-    }
-  }
-
-  void onFocusChanged() {
-    setState(() {});
-  }
-
-  void onInput() {
-    final newEnableAddCategory = controller.text.length >= 2;
-    if (enableAddCategory != newEnableAddCategory) {
-      setState(() => enableAddCategory = newEnableAddCategory);
-    }
-  }
-
-  @override
-  void dispose() {
-    focusNode.removeListener(onFocusChanged);
-    controller.removeListener(onInput);
-    super.dispose();
-  }
+class _CategorySuggestionsListState extends ConsumerState<CategorySuggestionsList> {
+  int? highlightedIndex;
+  bool preventTaps = false;
 
   @override
   Widget build(BuildContext context) {
-    return InputDecorator(
-      isFocused: focusNode.hasFocus,
-      decoration: InputDecoration(
-        labelText: 'Category',
-        border: const OutlineInputBorder(),
-        contentPadding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-        isDense: true,
-        errorText: widget.error,
+    final autocompleteAsync = ref.watch(categoryAutocompleteProvider(widget.listId));
+    if (autocompleteAsync.isLoading && !autocompleteAsync.hasValue) {
+      return CategoryAutocompleteLoading();
+    }
+    if (autocompleteAsync.hasError) {
+      return CategoryAutocompleteError();
+    }
+    final autocompletes = autocompleteAsync.requireValue;
+    if (autocompletes.isEmpty) {
+      return const CategoryAutocompleteEmpty();
+    }
+    return ListView.builder(
+      itemCount: autocompletes.length,
+      itemBuilder: (context, index) {
+        final autocomplete = autocompletes[index];
+        return CategoryAutocompleteEntry(
+          listId: widget.listId,
+          autocomplete: autocomplete,
+          onAdd: () => widget.onSelect(autocomplete),
+          onAddMore: widget.onSelectAndAdd != null ? () => widget.onSelectAndAdd!(autocomplete) : null,
+        );
+      },
+    );
+  }
+}
+
+class CategoryAutocompleteEntry extends ConsumerStatefulWidget {
+  final String listId;
+  final ShoppingCategoryAutocomplete autocomplete;
+  final VoidCallback onAdd;
+  final VoidCallback? onAddMore;
+  const CategoryAutocompleteEntry({
+    super.key,
+    required this.listId,
+    required this.autocomplete,
+    required this.onAdd,
+    required this.onAddMore,
+  });
+
+  @override
+  ConsumerState<CategoryAutocompleteEntry> createState() => _CategoryAutocompleteEntryState();
+}
+
+class _CategoryAutocompleteEntryState extends ConsumerState<CategoryAutocompleteEntry> {
+  bool highlighted = false;
+  bool preventTaps = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuAnchor(
+      onClose: () {
+        setState(() {
+          highlighted = false;
+          preventTaps = true;
+        });
+        Future.delayed(const Duration(milliseconds: 300), () {
+          setState(() => preventTaps = false);
+        });
+      },
+      builder: (context, controller, child) => ListTile(
+        visualDensity: VisualDensity.compact,
+        tileColor: highlighted ? Colors.grey.shade200 : null,
+        title: Text(widget.autocomplete.name),
+        leading: Icon(
+          <ShoppingCategoryAutocompleteSource>{.history, .list}.contains(widget.autocomplete.source)
+              ? Icons.history
+              : null,
+        ),
+        onLongPress: () {
+          controller.open();
+          setState(() => highlighted = true);
+        },
+        onTap: () {
+          if (highlighted) {
+            controller.close();
+            setState(() => highlighted = false);
+          } else if (!preventTaps) {
+            widget.onAdd();
+          }
+        },
+        trailing: widget.onAddMore != null
+            ? IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () => widget.onAddMore!(),
+              )
+            : null,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Consumer(
-                builder: (context, ref, _) {
-                  final vm = ref.watch(categorySelectorViewModelProvider(widget.listId));
-                  return RawAutocomplete<CategorySelectorItem>(
-                    optionsViewOpenDirection: OptionsViewOpenDirection.up,
-                    focusNode: focusNode,
-                    textEditingController: controller,
-                    optionsBuilder: (textEditingValue) {
-                      if (textEditingValue.text.isEmpty) {
-                        return const [];
-                      }
-                      // While the search query for items is being performed, the autocomplete will
-                      // show the items from the last successfully completd query.
-                      return vm.getItems(textEditingValue.text);
-                    },
-                    fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
-                      return TextFormField(
-                        controller: textEditingController,
-                        focusNode: focusNode,
-                        onFieldSubmitted: (String value) => widget.onSubmitted?.call(),
-                        textInputAction: TextInputAction.done,
-                        textCapitalization: TextCapitalization.sentences,
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter category name',
-                          hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
-                          border: InputBorder.none,
-                          suffixIcon: TooltipButton(
-                            title: CategorySelector.tooltipTitle,
-                            message: CategorySelector.tooltipMessage,
-                          ),
-                        ),
-                      );
-                    },
-                    optionsViewBuilder: (context, onSelected, options) {
-                      return Align(
-                        alignment: Alignment.bottomLeft,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: 200, maxWidth: constraints.maxWidth),
-                          child: Material(
-                            elevation: 4,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: options.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final option = options.elementAt(index);
-                                return option.when(
-                                  list: (name) => CategoryAutocompleteTile(
-                                    title: Text(name),
-                                    onTap: () => _selectCategory(name),
-                                  ),
-                                  suggestion: (name) => CategoryAutocompleteTile(
-                                    title: Text(name),
-                                    onTap: () => _selectCategory(name),
-                                  ),
-                                  history: (name) => CategoryAutocompleteTile(
-                                    title: Text(name),
-                                    onTap: () => _selectCategory(name),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            },
+      style: const MenuStyle(
+        alignment: Alignment.center,
+      ),
+      alignmentOffset: const Offset(-36, 0),
+      menuChildren: switch (widget.autocomplete.source) {
+        ShoppingCategoryAutocompleteSource.suggested => [
+          MenuItemButton(
+            child: const Text('Hide suggestion'),
+            onPressed: () => _onHideSuggestion(widget.autocomplete),
           ),
-          4.vertical,
+        ],
+        ShoppingCategoryAutocompleteSource.history => [
+          MenuItemButton(
+            child: const Text('Edit history entry'),
+            onPressed: () => _onEditHistoryEntry(widget.autocomplete),
+          ),
+          MenuItemButton(
+            child: const Text('Remove from history'),
+            onPressed: () => _onRemoveHistoryEntry(widget.autocomplete),
+          ),
+        ],
+        ShoppingCategoryAutocompleteSource.list => [
+          MenuItemButton(
+            child: const Text('This is a category from your current shopping list'),
+            onPressed: () {},
+          ),
+        ],
+      },
+    );
+  }
+
+  void _onRemoveHistoryEntry(ShoppingCategoryAutocomplete historyEntry) async {
+    final didConfirm = await ConfirmationDialog.show(
+      context,
+      ConfirmationDialogContent(
+        title: 'Remove from history',
+        message: 'Do you want to remove this category from your history?',
+        confirmationAction: 'Remove',
+      ),
+    );
+    if (didConfirm) {
+      await ref.read(shoppingCategoryAutocompleteUseCaseProvider(widget.listId)).removeHistoryEntry(historyEntry);
+    }
+  }
+
+  void _onHideSuggestion(ShoppingCategoryAutocomplete suggestion) async {
+    final didConfirm = await ConfirmationDialog.show(
+      context,
+      ConfirmationDialogContent(
+        title: 'Hide suggestion',
+        message: 'Do you want to hide this suggestion?',
+        confirmationAction: 'Hide',
+      ),
+    );
+    if (didConfirm) {
+      await ref.read(hiddenSuggestionsUseCaseProvider).hideCategorySuggestion(suggestion);
+      ref.invalidate(categoryAutocompleteProvider(widget.listId));
+    }
+  }
+
+  void _onEditHistoryEntry(ShoppingCategoryAutocomplete history) {
+    // TODO: Show a history edit page
+  }
+}
+
+class CategoryAutocompleteError extends StatelessWidget {
+  const CategoryAutocompleteError({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('Failed to load suggestions'));
+  }
+}
+
+class CategoryAutocompleteLoading extends StatelessWidget {
+  const CategoryAutocompleteLoading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
+  }
+}
+
+class CategoryAutocompletePlaceholder extends StatelessWidget {
+  const CategoryAutocompletePlaceholder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text('Start typing to search suggested categories and your category history'),
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Long press suggestions to edit or delete them'),
+          ),
         ],
       ),
     );
   }
-
-  void _selectCategory(String category) {
-    controller.text = category;
-    widget.onCategorySelected();
-  }
 }
 
-class CategoryAutocompleteTile extends StatelessWidget {
-  final Widget title;
-  final VoidCallback onTap;
-  const CategoryAutocompleteTile({super.key, required this.title, required this.onTap});
+class CategoryAutocompleteEmpty extends StatelessWidget {
+  const CategoryAutocompleteEmpty({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: title,
-      onTap: onTap,
+    return const Center(
+      child: Text('No suggestions found'),
     );
   }
 }

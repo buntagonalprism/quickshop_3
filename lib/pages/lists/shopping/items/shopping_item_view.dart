@@ -108,13 +108,14 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
       children: [
         Expanded(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                16.vertical,
+                Padding(
+                  padding: 16.horizontalSymmetric,
+                  child: TextField(
                     key: keys.productInput,
                     autofocus: true,
                     focusNode: productFocusNode,
@@ -138,8 +139,11 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                     controller: productController,
                     onSubmitted: (value) => quantityFocusNode.requestFocus(),
                   ),
-                  20.vertical,
-                  TextField(
+                ),
+                20.vertical,
+                Padding(
+                  padding: 16.horizontalSymmetric,
+                  child: TextField(
                     key: keys.quantityInput,
                     focusNode: quantityFocusNode,
                     textInputAction: TextInputAction.next,
@@ -161,18 +165,18 @@ class _ShoppingItemViewState extends ConsumerState<ShoppingItemView> {
                     controller: quantityController,
                     onSubmitted: (_) => categoryFocusNode.requestFocus(),
                   ),
-                  20.vertical,
-                  CategorySelector(
-                    key: keys.categoriesInput,
-                    listId: widget.listId,
-                    focusNode: categoryFocusNode,
-                    controller: categoryController,
-                    onCategorySelected: () => setState(() => onDataChanges()),
-                    error: widget.errors?.categoriesError,
-                    onSubmitted: widget.onSubmitted,
-                  ),
-                ],
-              ),
+                ),
+                20.vertical,
+                CategorySelector(
+                  key: keys.categoriesInput,
+                  listId: widget.listId,
+                  focusNode: categoryFocusNode,
+                  controller: categoryController,
+                  onSubmit: () => setState(() => onDataChanges()),
+                  error: widget.errors?.categoryError,
+                ),
+                16.vertical,
+              ],
             ),
           ),
         ),

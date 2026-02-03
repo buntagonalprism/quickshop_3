@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../models/shopping/autocomplete/shopping_category_autocomplete.dart';
 import '../models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import '../repositories/hidden_suggestions_repo.dart';
 import '../repositories/user_profile_repo.dart';
@@ -37,6 +38,17 @@ class HiddenSuggestionsUseCase {
     final tx = _ref.read(userProfileTransactionProvider)();
     _ref.read(userProfileRepoProvider).incrementHiddenSuggestionsVersion(tx);
     _ref.read(hiddenSuggestionsRepoProvider).hideSuggestionRemotely(tx, SuggestionType.item, suggestion.sourceId);
+    await tx.commit();
+  }
+
+  Future<void> hideCategorySuggestion(ShoppingCategoryAutocomplete suggestion) async {
+    // Hide the suggestion locally
+    await _ref.read(hiddenSuggestionsRepoProvider).hideSuggestionLocally(SuggestionType.category, suggestion.sourceId);
+
+    // Save the hidden suggestion to the user's profile to sync across devices
+    final tx = _ref.read(userProfileTransactionProvider)();
+    _ref.read(userProfileRepoProvider).incrementHiddenSuggestionsVersion(tx);
+    _ref.read(hiddenSuggestionsRepoProvider).hideSuggestionRemotely(tx, SuggestionType.category, suggestion.sourceId);
     await tx.commit();
   }
 }

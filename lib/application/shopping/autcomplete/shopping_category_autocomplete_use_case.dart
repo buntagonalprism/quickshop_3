@@ -3,6 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
 import '../../../repositories/shopping/history/shopping_category_history_repo.dart';
 import '../../../repositories/shopping/suggestions/shopping_category_suggestion_repo.dart';
+import '../../../repositories/user_profile_repo.dart';
+import '../../../repositories/user_profile_transaction.dart';
 import '../shopping_items_notifier.dart';
 
 part 'shopping_category_autocomplete_use_case.g.dart';
@@ -17,6 +19,7 @@ class ShoppingCategoryAutocompleteUseCase {
   final Ref _ref;
   ShoppingCategorySuggestionRepo get _suggestionRepo => _ref.read(shoppingCategorySuggestionRepoProvider);
   ShoppingCategoryHistoryRepo get _historyRepo => _ref.read(shoppingCategoryHistoryRepoProvider);
+  UserProfileRepo get _userProfileRepo => _ref.read(userProfileRepoProvider);
 
   ShoppingCategoryAutocompleteUseCase(this._ref, this.listId);
 
@@ -77,6 +80,16 @@ class ShoppingCategoryAutocompleteUseCase {
     }
 
     return [...startMatches, ...middleMatches];
+  }
+
+  Future<void> removeHistoryEntry(ShoppingCategoryAutocomplete historyEntry) async {
+    assert(historyEntry.source == ShoppingCategoryAutocompleteSource.history, 'Only history entries can be removed');
+
+    final tx = _ref.read(userProfileTransactionProvider)();
+    final now = DateTime.now();
+    _historyRepo.deleteHistoryEntry(tx, historyEntry.sourceId, now);
+    _userProfileRepo.setLastHistoryUpdate(tx, now);
+    await tx.commit();
   }
 
   ShoppingCategoryAutocomplete _listCategoryToAutocomplete(String categoryName, String itemId) {

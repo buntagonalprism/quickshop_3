@@ -9,6 +9,7 @@ import '../../../services/auth_service.dart';
 import '../../../services/firestore.dart';
 import '../../../services/tables/load_progress_table.dart';
 import '../../user_profile_repo.dart';
+import '../../user_profile_transaction.dart';
 
 part 'shopping_category_history_repo.g.dart';
 
@@ -41,6 +42,15 @@ class ShoppingCategoryHistoryRepo {
     if (_retrievedUntil.isBefore(lastHistoryUpdate)) {
       _fetchHistory(_userId, _retrievedUntil);
     }
+  }
+
+  Future<void> deleteHistoryEntry(UserProfileTransaction tx, String itemId, DateTime deletedAt) async {
+    await _db.itemHistoryDao.deleteById(itemId);
+    final docRef = _fs.collection(UserProfileRepo.collectionName).doc(_userId).collection(collectionName).doc(itemId);
+    tx.batch.update(docRef, {
+      _Fields.deleted: true,
+      _Fields.lastUsed: deletedAt.millisecondsSinceEpoch,
+    });
   }
 
   Future<List<ShoppingCategoryHistory>> searchHistory(String query) async {
@@ -109,4 +119,5 @@ class ShoppingCategoryHistoryRepo {
 
 class _Fields {
   static const String lastUsed = 'lastUsed';
+  static const String deleted = 'deleted';
 }

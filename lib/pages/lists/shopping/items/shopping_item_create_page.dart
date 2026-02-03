@@ -81,6 +81,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                     showErrors: showErrorsOnTab == 1,
                     isVisible: tabController.index == 1,
                     onEditItem: () => moveToTab(2),
+                    onSelection: (addMore) => onDone(addMore: addMore),
                   ),
                   ShoppingItemView(
                     key: ValueKey('edit_$childrenResetKey'),
@@ -453,7 +454,6 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
 
   void _onEditHistoryEntry(ShoppingItemAutocomplete history) {
     // TODO: Show a history edit page
-    print('On edit: $history');
   }
 }
 
@@ -525,11 +525,13 @@ class ShoppingItemCategorySelectView extends ConsumerStatefulWidget {
   final VoidCallback onEditItem;
   final bool isVisible;
   final bool showErrors;
+  final Function(bool addMore) onSelection;
   const ShoppingItemCategorySelectView({
     required this.listId,
     required this.onEditItem,
     required this.isVisible,
     required this.showErrors,
+    required this.onSelection,
     super.key,
   });
 
@@ -547,6 +549,16 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
   void initState() {
     super.initState();
     shouldShowTutorial = !ref.read(tutorialsProvider).contains(Tutorial.categorySelection);
+    controller.addListener(() {
+      ref.read(shoppingItemCreateViewModelProvider.notifier).setCategory(controller.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -580,60 +592,65 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
     final bodyStyle = Theme.of(context).textTheme.bodyMedium;
     final bodyBoldStyle = bodyStyle?.copyWith(fontWeight: FontWeight.bold);
     final model = ref.watch(shoppingItemCreateViewModelProvider);
-    categoryError = widget.showErrors ? model.itemErrors?.categoriesError : null;
-    return Padding(
-      padding: 16.horizontalSymmetric,
+    categoryError = widget.showErrors ? model.itemErrors?.categoryError : null;
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          16.vertical,
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        text: 'Base product name: ',
-                        style: bodyBoldStyle,
-                        children: [
-                          TextSpan(text: model.data.product, style: bodyStyle),
-                        ],
+          12.vertical,
+          Padding(
+            padding: 16.horizontalSymmetric,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: 'Base product name: ',
+                          style: bodyBoldStyle,
+                          children: [
+                            TextSpan(text: model.data.product, style: bodyStyle),
+                          ],
+                        ),
                       ),
-                    ),
-                    2.vertical,
-                    Text.rich(
-                      TextSpan(
-                        text: 'Quantity/size: ',
-                        style: bodyBoldStyle,
-                        children: [
-                          TextSpan(
-                            text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
-                            style: bodyStyle,
-                          ),
-                        ],
+                      2.vertical,
+                      Text.rich(
+                        TextSpan(
+                          text: 'Quantity/size: ',
+                          style: bodyBoldStyle,
+                          children: [
+                            TextSpan(
+                              text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
+                              style: bodyStyle,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              8.horizontal,
-              TextButton.icon(
-                key: _Keys.editProductButton,
-                onPressed: widget.onEditItem,
-                label: Text('Edit'),
-                icon: Icon(Icons.edit),
-              ),
-            ],
+                8.horizontal,
+                TextButton.icon(
+                  key: _Keys.editProductButton,
+                  onPressed: widget.onEditItem,
+                  label: Text('Edit'),
+                  icon: Icon(Icons.edit),
+                ),
+              ],
+            ),
           ),
-          16.vertical,
+          10.vertical,
           CategorySelector(
             listId: widget.listId,
             controller: controller,
             focusNode: focusNode,
-            onCategorySelected: () {
-              ref.read(shoppingItemCreateViewModelProvider.notifier).setCategory(controller.text);
+            onSubmit: () {
+              widget.onSelection(false);
+            },
+            onAddMore: () {
+              widget.onSelection(true);
             },
             error: categoryError,
           ),
