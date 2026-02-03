@@ -163,9 +163,11 @@ class _CategoryAutocompleteEntryState extends ConsumerState<CategoryAutocomplete
         tileColor: highlighted ? Colors.grey.shade200 : null,
         title: Text(widget.autocomplete.name),
         leading: Icon(
-          <ShoppingCategoryAutocompleteSource>{.history, .list}.contains(widget.autocomplete.source)
-              ? Icons.history
-              : null,
+          switch (widget.autocomplete.source) {
+            ShoppingCategoryAutocompleteSource.suggested => null,
+            ShoppingCategoryAutocompleteSource.history => Icons.history,
+            ShoppingCategoryAutocompleteSource.list => Icons.list,
+          },
         ),
         onLongPress: () {
           controller.open();
