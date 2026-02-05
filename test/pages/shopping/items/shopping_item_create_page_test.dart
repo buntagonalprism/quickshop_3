@@ -6,11 +6,13 @@ import 'package:mocktail/mocktail.dart';
 import 'package:quickshop/application/lists_notifier.dart';
 import 'package:quickshop/application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
 import 'package:quickshop/application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
+import 'package:quickshop/application/tutorials_notifier.dart';
 import 'package:quickshop/models/list_summary.dart';
 import 'package:quickshop/models/shopping/autocomplete/shopping_category_autocomplete.dart';
 import 'package:quickshop/models/shopping/autocomplete/shopping_item_autocomplete.dart';
 import 'package:quickshop/models/shopping/shopping_item.dart';
 import 'package:quickshop/models/shopping/shopping_item_raw_data.dart';
+import 'package:quickshop/models/user/user_profile.dart';
 import 'package:quickshop/pages/lists/shopping/items/category_selector.dart';
 import 'package:quickshop/pages/lists/shopping/items/models/shopping_item_errors.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
@@ -19,6 +21,7 @@ import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
 import 'package:quickshop/repositories/list_items_transaction.dart';
 import 'package:quickshop/repositories/list_repo.dart';
 import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
+import 'package:quickshop/repositories/user_profile_repo.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/shared_preferences.dart';
@@ -33,6 +36,8 @@ class MockItemAutocompleteRepo extends Mock implements ShoppingItemAutocompleteU
 class MockCategoryAutocompleteRepo extends Mock implements ShoppingCategoryAutocompleteUseCase {}
 
 class MockShoppingListItemsRepo extends Mock implements ShoppingListItemsRepo {}
+
+class MockUserProfileRepo extends Mock implements UserProfileRepo {}
 
 class MockListRepo extends Mock implements ListRepo {}
 
@@ -61,6 +66,7 @@ void main() {
   late MockCategoryAutocompleteRepo categoryAutocompleteRepo;
   late MockShoppingListItemsRepo itemsRepo;
   late MockListRepo listRepo;
+  late MockUserProfileRepo userProfileRepo;
   late MockRouter router;
   late FakeSharedPreferences prefs;
   late FakeFirebaseAuth auth;
@@ -72,6 +78,9 @@ void main() {
     when(() => itemsRepo.itemsStream).thenAnswer((_) => const Stream.empty());
     listRepo = MockListRepo();
     when(() => listRepo.getAllLists()).thenAnswer((_) => Stream.value([list]));
+    userProfileRepo = MockUserProfileRepo();
+    when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(UserProfile(userId: 'test-user-id')));
+    when(() => userProfileRepo.setTutorialCompleted(any())).thenAnswer((_) => Future.value());
     router = MockRouter();
     prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
@@ -94,6 +103,7 @@ void main() {
             routerProvider.overrideWithValue(router),
             sharedPrefsProvider.overrideWithValue(prefs),
             firebaseAuthProvider.overrideWithValue(auth),
+            userProfileRepoProvider.overrideWithValue(userProfileRepo),
             listItemsTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
           ],
           child: Consumer(
@@ -102,6 +112,11 @@ void main() {
               // count via the lists notifier. We need to ensure the lists notifier is in a
               // valid state (i.e. has loaded the lists) to avoid state errors.
               ref.watch(listsProvider);
+
+              // The user profile is used to determine whether to show the category selection
+              // tutorial, so likewise we need to ensure this provider is eagerly loaded (like
+              // it is in the real app by the _EagerInitProviders widget).
+              ref.watch(userProfileProvider);
               return ShoppingItemCreatePage(listId: listId);
             },
           ),
@@ -125,9 +140,9 @@ void main() {
   }
 
   Future<void> selectCategory(WidgetTester tester, String categoryName) async {
-    answer(
-      () => categoryAutocompleteRepo.getAutocomplete(categoryName),
-    ).withValue([buildCategoryAutocomplete(categoryName)]);
+    when(() => categoryAutocompleteRepo.getAutocomplete(any())).thenAnswer((_) {
+      return Future.value([buildCategoryAutocomplete(categoryName)]);
+    });
     await tester.enterText(categoryInputFieldFinder, categoryName);
     await tester.pumpAndSettle();
 
@@ -424,7 +439,37 @@ void main() {
     });
   });
 
+  group('Category input tutorial', () {
+    final tutorialName = Tutorial.categorySelection.name;
+
+    testWidgets('GIVEN category input tutorial has not been seen before '
+        'THEN the tutorial is shown when opening category input page', (WidgetTester tester) async {
+      final userWithoutTutorial = UserProfile(userId: 'test-user-id', completedTutorials: []);
+      when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(userWithoutTutorial));
+      await proceedToCategoryView(tester, 'milk');
+      expect(find.text(CategorySelector.tooltipTitle), findsOneWidget);
+      expect(find.text(CategorySelector.tooltipMessage), findsOneWidget);
+      await tester.tap(find.text('OK'));
+      verify(() => userProfileRepo.setTutorialCompleted(tutorialName)).called(1);
+    });
+
+    testWidgets('GIVEN category input tutorial has been seen before '
+        'THEN the tutorial is not shown when opening category input page', (WidgetTester tester) async {
+      final userWithTutorial = UserProfile(userId: 'test-user-id', completedTutorials: [tutorialName]);
+      when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(userWithTutorial));
+      await proceedToCategoryView(tester, 'milk');
+      expect(find.text(CategorySelector.tooltipTitle), findsNothing);
+      expect(find.text(CategorySelector.tooltipMessage), findsNothing);
+      verifyNever(() => userProfileRepo.setTutorialCompleted(tutorialName));
+    });
+  });
+
   group('Category input view error handling', () {
+    final userWithTutorial = UserProfile(userId: 'test-user-id', completedTutorials: [Tutorial.categorySelection.name]);
+    setUp(() {
+      when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(userWithTutorial));
+    });
+
     Future<void> proceedToCategoryView(WidgetTester tester) async {
       await pumpScreen(tester);
 
@@ -487,6 +532,11 @@ void main() {
     final itemName = 'Unknown Item';
     final categoryName = 'My new category';
 
+    final userWithTutorial = UserProfile(userId: 'test-user-id', completedTutorials: [Tutorial.categorySelection.name]);
+    setUp(() {
+      when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(userWithTutorial));
+    });
+
     addItemFn() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName));
 
     testWidgets('GIVEN category has been input in category view '
@@ -531,6 +581,11 @@ void main() {
 
     final keys = ShoppingItemView.keys;
     final errors = ShoppingItemErrors.messages;
+
+    final userWithTutorial = UserProfile(userId: 'test-user-id', completedTutorials: [Tutorial.categorySelection.name]);
+    setUp(() {
+      when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(userWithTutorial));
+    });
 
     Future<void> proceedToItemEditView(WidgetTester tester, String itemName) async {
       await proceedToCategoryView(tester, itemName);
