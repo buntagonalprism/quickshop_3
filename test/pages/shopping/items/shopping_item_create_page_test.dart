@@ -139,14 +139,21 @@ void main() {
     expect(find.byType(ShoppingItemCategorySelectView), findsOneWidget);
   }
 
-  Future<void> selectCategory(WidgetTester tester, String categoryName) async {
+  Future<void> inputCategory(WidgetTester tester, String categoryName) async {
     when(() => categoryAutocompleteRepo.getAutocomplete(any())).thenAnswer((_) {
       return Future.value([buildCategoryAutocomplete(categoryName)]);
     });
     await tester.enterText(categoryInputFieldFinder, categoryName);
     await tester.pumpAndSettle();
+  }
 
-    await tester.tap(find.categoryAutocompleteEntry(categoryName));
+  Future<void> selectCategory(WidgetTester tester, String categoryName, {bool addMore = false}) async {
+    await inputCategory(tester, categoryName);
+
+    final tapTarget = addMore
+        ? find.categoryAutocompletePlusButton(categoryName)
+        : find.categoryAutocompleteEntry(categoryName);
+    await tester.tap(tapTarget);
     await tester.pumpAndSettle();
   }
 
@@ -516,12 +523,13 @@ void main() {
 
       expect(find.text(_Strings.categoryRequired), findsOneWidget);
 
+      // Enter text to remove error
       final categoryName = 'Dairy';
-      await selectCategory(tester, categoryName);
-
+      await inputCategory(tester, categoryName);
       expect(find.text(_Strings.categoryRequired), findsNothing);
 
-      await tester.tap(find.selectedCategoryRemoveButton(categoryName));
+      // Clear text to show error again
+      await tester.enterText(categoryInputFieldFinder, '');
       await tester.pumpAndSettle();
 
       expect(find.text(_Strings.categoryRequired), findsOneWidget);
@@ -544,9 +552,9 @@ void main() {
         'THEN item is added and item search screen shown', (WidgetTester tester) async {
       await proceedToCategoryView(tester, itemName);
 
-      await selectCategory(tester, categoryName);
+      when(addItemFn).thenAnswer((_) => Future.value(buildShoppingItem(itemName, categoryName)));
 
-      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+      await inputCategory(tester, categoryName);
 
       await tester.tap(addMoreButtonFinder);
       await tester.pumpAndSettle();
@@ -563,7 +571,7 @@ void main() {
         'THEN item is added and screen is popped', (WidgetTester tester) async {
       await proceedToCategoryView(tester, itemName);
 
-      await selectCategory(tester, categoryName);
+      await inputCategory(tester, categoryName);
 
       answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
 
@@ -571,7 +579,39 @@ void main() {
       await tester.pumpAndSettle();
 
       verify(() => router.pop()).called(1);
+      verify(addItemFn).called(1);
       expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
+    });
+
+    testWidgets('GIVEN category suggestion results shown '
+        'WHEN category suggestion is tapped '
+        'THEN item is added and screen is popped', (WidgetTester tester) async {
+      await proceedToCategoryView(tester, itemName);
+
+      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+
+      await selectCategory(tester, categoryName);
+
+      verify(() => router.pop()).called(1);
+      verify(addItemFn).called(1);
+      expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
+    });
+
+    testWidgets('GIVEN category suggestion results shown '
+        'WHEN category suggestion add more button is tapped '
+        'THEN item is added and screen is popped', (WidgetTester tester) async {
+      await proceedToCategoryView(tester, itemName);
+
+      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+
+      await selectCategory(tester, categoryName, addMore: true);
+
+      verifyNever(() => router.pop());
+      verify(addItemFn).called(1);
+      expect(find.text(_Strings.addedToList(itemName)), findsOneWidget);
+
+      expect(find.byType(ShoppingItemSearchView), findsOneWidget);
+      expect(getTextFieldText(tester, itemInputFinder), isEmpty);
     });
   });
 
@@ -719,13 +759,13 @@ extension _FinderExtensions on CommonFinders {
     );
   }
 
-  Finder selectedCategoryRemoveButton(String text) {
+  Finder categoryAutocompletePlusButton(String text) {
     return find.descendant(
       of: find.ancestor(
         of: find.text(text),
-        matching: find.byType(Chip),
+        matching: find.byType(CategoryAutocompleteEntry),
       ),
-      matching: find.byIcon(Icons.cancel),
+      matching: find.byIcon(Icons.add),
     );
   }
 }
