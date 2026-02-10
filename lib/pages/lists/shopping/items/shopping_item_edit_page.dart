@@ -87,7 +87,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
     // No data changed, nothing to save
     final data = rawData;
     if (data == null) {
-      Navigator.of(context).pop();
+      ref.read(routerProvider).go(Routes.shoppingListDetail(widget.listId).path);
       return;
     }
 
@@ -98,14 +98,13 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
       return;
     }
 
-    ref
-        .read(shoppingItemsProvider(widget.listId).notifier)
-        .updateItem(
-          item: originalItem,
-          newName: data.product,
-          newQuantity: data.quantity,
-          newCategory: data.category,
-        );
+    final notifier = ref.read(shoppingItemsProvider(widget.listId).notifier);
+    notifier.updateItem(
+      item: originalItem,
+      newName: data.product,
+      newQuantity: data.quantity,
+      newCategory: data.category,
+    );
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -113,7 +112,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
         duration: const Duration(milliseconds: 2400),
       ),
     );
-    Navigator.of(context).pop();
+    ref.read(routerProvider).go(Routes.shoppingListDetail(widget.listId).path);
   }
 
   void _showDeleteConfirmationDialog(BuildContext context, WidgetRef ref, ShoppingItem item) {
@@ -145,7 +144,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
 
   void _deleteItem(BuildContext context, WidgetRef ref, ShoppingItem item) {
     ref.read(shoppingItemsProvider(widget.listId).notifier).deleteItem(item);
-    ref.read(routerProvider).pop();
+    ref.read(routerProvider).go(Routes.shoppingListDetail(widget.listId).path);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Deleted item ${item.displayName}'),

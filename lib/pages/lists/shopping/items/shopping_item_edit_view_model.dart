@@ -22,15 +22,15 @@ class ShoppingItemEditModel with _$ShoppingItemEditModel {
 @riverpod
 ShoppingItemEditModel shoppingItemEditViewModel(Ref ref, String listId, String itemId) {
   final itemsValue = ref.watch(shoppingItemsProvider(listId));
-  if (itemsValue.isLoading) {
-    return const ShoppingItemEditModel.loading();
-  }
   if (itemsValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(itemsValue);
     return const ShoppingItemEditModel.error();
   }
+  if (itemsValue.isLoading) {
+    return const ShoppingItemEditModel.loading();
+  }
   final items = itemsValue.value!;
-  final item = items.firstWhereOrNull((item) => item.path == 'lists/$listId/items/$itemId');
+  final item = items.firstWhereOrNull((item) => item.id == itemId);
   if (item == null) {
     return const ShoppingItemEditModel.notFound();
   }
