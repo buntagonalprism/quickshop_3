@@ -39,20 +39,20 @@ class ChecklistEntryRepo {
     });
   }
 
-  Future<void> addItem(ListItemsTransaction tx, String itemName, ChecklistAddPosition position) async {
+  void addItem(ListItemsTransaction tx, String itemName, ChecklistAddPosition position) {
     return switch (position) {
       ChecklistAddPosition.start => _addItemAtIndex(tx, itemName, 0),
       ChecklistAddPosition.end => _addItemAtIndex(tx, itemName, _listEntries[listId]!.length),
     };
   }
 
-  Future<void> addItemAfter(ListItemsTransaction tx, String itemName, ChecklistEntry afterEntry) async {
+  void addItemAfter(ListItemsTransaction tx, String itemName, ChecklistEntry afterEntry) {
     final entries = _listEntries[listId]!;
     final index = entries.indexOf(afterEntry);
-    return _addItemAtIndex(tx, itemName, index + 1);
+    _addItemAtIndex(tx, itemName, index + 1);
   }
 
-  Future<void> _addItemAtIndex(ListItemsTransaction tx, String itemName, int index) async {
+  void _addItemAtIndex(ListItemsTransaction tx, String itemName, int index) {
     final fs = ref.read(firestoreProvider);
 
     final entries = _listEntries[listId]!;
@@ -72,20 +72,20 @@ class ChecklistEntryRepo {
     _logIfDuplicateKeysFound(insertUpdates);
   }
 
-  Future<void> addHeading(ListItemsTransaction tx, String headingName, ChecklistAddPosition position) async {
+  void addHeading(ListItemsTransaction tx, String headingName, ChecklistAddPosition position) {
     return switch (position) {
       ChecklistAddPosition.start => _addHeadingAtIndex(tx, headingName, 0),
       ChecklistAddPosition.end => _addHeadingAtIndex(tx, headingName, _listEntries[listId]!.length),
     };
   }
 
-  Future<void> addHeadingAfter(ListItemsTransaction tx, String headingName, ChecklistEntry afterEntry) async {
+  void addHeadingAfter(ListItemsTransaction tx, String headingName, ChecklistEntry afterEntry) {
     final entries = _listEntries[listId]!;
     final index = entries.indexOf(afterEntry);
-    return _addHeadingAtIndex(tx, headingName, index + 1);
+    _addHeadingAtIndex(tx, headingName, index + 1);
   }
 
-  Future<void> _addHeadingAtIndex(ListItemsTransaction tx, String headingName, int index) async {
+  void _addHeadingAtIndex(ListItemsTransaction tx, String headingName, int index) {
     final fs = ref.read(firestoreProvider);
 
     final entries = _listEntries[listId]!;
@@ -243,9 +243,7 @@ class ChecklistEntryRepo {
 
 /// Represents the set of updates that need to be made when inserting an entry into a list.
 class _KeyInsertUpdates {
-  _KeyInsertUpdates(List<ChecklistEntry> entries, int insertIndex)
-      : _entries = entries,
-        _insertIndex = insertIndex {
+  _KeyInsertUpdates(List<ChecklistEntry> entries, int insertIndex) : _entries = entries, _insertIndex = insertIndex {
     if (_willInsertBetweenDuplicateKeys()) {
       _handleInsertBetweenDuplicateKeys();
     } else {
@@ -324,25 +322,29 @@ ChecklistEntry _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
   return switch (type) {
     _itemTypeName => _itemFromFirestore(id, json),
     _headingTypeName => _headingFromFirestore(id, json),
-    _ => throw ArgumentError.value(type, _Fields.type, 'Invalid value for checklist entry type')
+    _ => throw ArgumentError.value(type, _Fields.type, 'Invalid value for checklist entry type'),
   };
 }
 
 ChecklistEntry _itemFromFirestore(String id, Map<String, dynamic> json) {
-  return ChecklistEntry.item(ChecklistItem(
-    id: id,
-    name: json[_Fields.name] as String,
-    completed: json[_Fields.completed] as bool,
-    sortKey: UserSortKey.fromJson(json[_Fields.sortKey] as Map<String, dynamic>),
-  ));
+  return ChecklistEntry.item(
+    ChecklistItem(
+      id: id,
+      name: json[_Fields.name] as String,
+      completed: json[_Fields.completed] as bool,
+      sortKey: UserSortKey.fromJson(json[_Fields.sortKey] as Map<String, dynamic>),
+    ),
+  );
 }
 
 ChecklistEntry _headingFromFirestore(String id, Map<String, dynamic> json) {
-  return ChecklistEntry.heading(ChecklistHeading(
-    id: id,
-    name: json[_Fields.name] as String,
-    sortKey: UserSortKey.fromJson(json[_Fields.sortKey] as Map<String, dynamic>),
-  ));
+  return ChecklistEntry.heading(
+    ChecklistHeading(
+      id: id,
+      name: json[_Fields.name] as String,
+      sortKey: UserSortKey.fromJson(json[_Fields.sortKey] as Map<String, dynamic>),
+    ),
+  );
 }
 
 Map<String, dynamic> _itemToFirestore(ChecklistItem item) {

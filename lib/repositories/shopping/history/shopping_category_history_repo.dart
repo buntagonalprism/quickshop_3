@@ -44,8 +44,8 @@ class ShoppingCategoryHistoryRepo {
     }
   }
 
-  Future<void> deleteHistoryEntry(UserProfileTransaction tx, String itemId, DateTime deletedAt) async {
-    await _db.itemHistoryDao.deleteById(itemId);
+  void deleteHistoryEntry(UserProfileTransaction tx, String itemId, DateTime deletedAt) {
+    _db.categoryHistoryDao.deleteById(itemId);
     final docRef = _fs.collection(UserProfileRepo.collectionName).doc(_userId).collection(collectionName).doc(itemId);
     tx.batch.update(docRef, {
       _Fields.deleted: true,

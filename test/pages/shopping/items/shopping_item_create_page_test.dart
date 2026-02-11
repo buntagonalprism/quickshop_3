@@ -269,8 +269,8 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
-      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
+      ShoppingItem addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
+      when(addFn).thenReturn(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
       await tester.pumpAndSettle();
@@ -290,8 +290,8 @@ void main() {
 
       final autocomplete = buildItemAutocomplete('Milk', 'Dairy');
       answer(() => itemAutocompleteRepo.getAutocomplete('milk')).withValue([autocomplete]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
-      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
+      ShoppingItem addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
+      when(addFn).thenReturn(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, 'Milk');
       await tester.pumpAndSettle();
@@ -316,8 +316,8 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
-      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
+      ShoppingItem addFn() => itemsRepo.addItem(any(), buildItemRawData(p: 'Milk', q: '', c: 'Dairy'));
+      when(addFn).thenReturn(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
       await tester.pumpAndSettle();
@@ -341,8 +341,8 @@ void main() {
         buildItemAutocomplete('Skim Milk', 'Dairy'),
         buildItemAutocomplete('Full fat Milk', 'Dairy'),
       ]);
-      addFn() => itemsRepo.addItem(any(), buildItemRawData(p: exactMatch.displayName, q: '', c: 'Dairy'));
-      answer(addFn).withValue(buildShoppingItem('Milk', 'Dairy'));
+      ShoppingItem addFn() => itemsRepo.addItem(any(), buildItemRawData(p: exactMatch.displayName, q: '', c: 'Dairy'));
+      when(addFn).thenReturn(buildShoppingItem('Milk', 'Dairy'));
 
       await tester.enterText(itemInputFinder, exactMatch.displayName);
       await tester.pumpAndSettle();
@@ -545,14 +545,14 @@ void main() {
       when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(userWithTutorial));
     });
 
-    addItemFn() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName));
+    ShoppingItem addItemFn() => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName));
 
     testWidgets('GIVEN category has been input in category view '
         'WHEN add more is tapped '
         'THEN item is added and item search screen shown', (WidgetTester tester) async {
       await proceedToCategoryView(tester, itemName);
 
-      when(addItemFn).thenAnswer((_) => Future.value(buildShoppingItem(itemName, categoryName)));
+      when(addItemFn).thenReturn(buildShoppingItem(itemName, categoryName));
 
       await inputCategory(tester, categoryName);
 
@@ -573,7 +573,7 @@ void main() {
 
       await inputCategory(tester, categoryName);
 
-      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+      when(addItemFn).thenReturn(buildShoppingItem(itemName, categoryName));
 
       await tester.tap(doneButtonFinder);
       await tester.pumpAndSettle();
@@ -588,7 +588,7 @@ void main() {
         'THEN item is added and screen is popped', (WidgetTester tester) async {
       await proceedToCategoryView(tester, itemName);
 
-      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+      when(addItemFn).thenReturn(buildShoppingItem(itemName, categoryName));
 
       await selectCategory(tester, categoryName);
 
@@ -602,7 +602,7 @@ void main() {
         'THEN item is added and screen is popped', (WidgetTester tester) async {
       await proceedToCategoryView(tester, itemName);
 
-      answer(addItemFn).withValue(buildShoppingItem(itemName, categoryName));
+      when(addItemFn).thenReturn(buildShoppingItem(itemName, categoryName));
 
       await selectCategory(tester, categoryName, addMore: true);
 
@@ -641,9 +641,9 @@ void main() {
     }
 
     void setupAddItemAnswer() {
-      answer(
+      when(
         () => itemsRepo.addItem(any(), buildItemRawData(p: itemName, q: '', c: categoryName)),
-      ).withValue(buildShoppingItem(itemName, categoryName));
+      ).thenReturn(buildShoppingItem(itemName, categoryName));
     }
 
     testWidgets('GIVEN item category input view '

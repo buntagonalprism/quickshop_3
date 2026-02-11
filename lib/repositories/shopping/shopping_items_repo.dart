@@ -28,7 +28,7 @@ class ShoppingListItemsRepo {
     });
   }
 
-  Future<ShoppingItem> addItem(ListItemsTransaction tx, ShoppingItemRawData data) async {
+  ShoppingItem addItem(ListItemsTransaction tx, ShoppingItemRawData data) {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userAuthProvider);
     final item = ShoppingItem(
@@ -58,7 +58,7 @@ class ShoppingListItemsRepo {
     });
   }
 
-  Future<void> updateItem(ListItemsTransaction tx, ShoppingItem item, ShoppingItemRawData updatedData) async {
+  void updateItem(ListItemsTransaction tx, ShoppingItem item, ShoppingItemRawData updatedData) {
     final fs = ref.read(firestoreProvider);
     final itemDoc = fs.doc(item.path);
     tx.batch.update(itemDoc, {
@@ -71,7 +71,7 @@ class ShoppingListItemsRepo {
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemUpdated());
   }
 
-  void deleteItems(ListItemsTransaction tx, List<ShoppingItem> items) async {
+  void deleteItems(ListItemsTransaction tx, List<ShoppingItem> items) {
     final fs = ref.read(firestoreProvider);
     final user = ref.read(userAuthProvider);
 

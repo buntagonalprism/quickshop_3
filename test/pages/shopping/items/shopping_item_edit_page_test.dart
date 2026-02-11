@@ -209,7 +209,7 @@ void main() {
       category: newCategoryName,
     );
 
-    Future<void> expectedCall() => itemsRepo.updateItem(any(), item, expectedUpdates);
+    void expectedCall() => itemsRepo.updateItem(any(), item, expectedUpdates);
     when(expectedCall).thenAnswer((_) => Future.value());
 
     await tester.tap(doneButtonFinder);
