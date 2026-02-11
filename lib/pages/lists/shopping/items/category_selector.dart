@@ -230,6 +230,7 @@ class _CategoryAutocompleteEntryState extends ConsumerState<CategoryAutocomplete
     );
     if (didConfirm) {
       await ref.read(shoppingCategoryAutocompleteUseCaseProvider(widget.listId)).removeHistoryEntry(historyEntry);
+      ref.invalidate(categoryAutocompleteProvider(widget.listId));
     }
   }
 

@@ -94,8 +94,13 @@ class ShoppingCategoryHistoryRepo {
       return;
     }
 
+    final notDeletedDocs = allDocs.where((doc) {
+      final data = doc.data()!;
+      return data[_Fields.deleted] != true;
+    }).toList();
+
     await _db.categoryHistoryDao.insert(
-      allDocs.map((doc) {
+      notDeletedDocs.map((doc) {
         final data = doc.data()!;
         return CategoryHistoryRow(
           id: doc.id,
@@ -106,6 +111,12 @@ class ShoppingCategoryHistoryRepo {
         );
       }).toList(),
     );
+
+    final deletedDocs = allDocs.where((doc) {
+      final data = doc.data()!;
+      return data[_Fields.deleted] == true;
+    }).toList();
+    await _db.categoryHistoryDao.deleteByIds(deletedDocs.map((doc) => doc.id).toList());
 
     _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(
       allDocs.last.data()!['lastUsed'],

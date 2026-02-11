@@ -25,6 +25,17 @@ class CategoryHistoryDao extends DatabaseAccessor<AppDatabase> with _$CategoryHi
     });
   }
 
+  Future<void> deleteByIds(List<String> ids) async {
+    // Batch the list into groups of 50 to avoid queries that are too large
+    for (var i = 0; i < ids.length; i += 50) {
+      final batchIds = ids.sublist(i, i + 50 > ids.length ? ids.length : i + 50);
+      await batch((batch) {
+        batch.deleteWhere(categoryHistoryTable, (tbl) => tbl.id.isIn(batchIds));
+        db.deleteTokens(batch, TokenType.categoryHistory, batchIds);
+      });
+    }
+  }
+
   Future<List<CategoryHistoryRow>> query(String queryString) async {
     return db.queryByTokens<CategoryHistoryRow, CategoryHistoryTable>(
       table: categoryHistoryTable,
