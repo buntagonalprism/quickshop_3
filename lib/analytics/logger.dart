@@ -11,7 +11,7 @@ Logger logger(Ref ref) {
 class Logger {
   Logger._();
   void log(String message) {
-    // Todo: implement a proper logging framework
+    // TODO: implement a proper logging framework
     if (kDebugMode) {
       print('QSLog: $message');
     }

@@ -8,6 +8,7 @@ import 'daos/load_progress_dao.dart';
 import 'daos/suggestions_dao.dart';
 import 'tables/category_history_table.dart';
 import 'tables/category_suggestion_table.dart';
+import 'tables/db_preferences_table.dart';
 import 'tables/hidden_suggestions_table.dart';
 import 'tables/item_history_table.dart';
 import 'tables/item_suggestion_table.dart';
@@ -57,6 +58,7 @@ class QueryExecutorConfig extends AppDatabaseConfig {
     TokenTable,
     LoadProgressTable,
     HiddenSuggestionsTable,
+    DbPreferencesTable,
   ],
   daos: [
     ItemHistoryDao,
@@ -69,7 +71,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(AppDatabaseConfig config) : super(config.executor);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration {
@@ -175,5 +177,17 @@ class AppDatabase extends _$AppDatabase {
       batch.deleteAll(itemSuggestionsTable);
       batch.deleteWhere(loadProgressTable, (t) => t.type.isIn(suggestionProgressTypes));
     });
+  }
+
+  Future<void> savePreference(DbPreferenceKey key, String value) {
+    return into(dbPreferencesTable).insert(
+      DbPreferencesRow(key: key.value, value: value),
+      mode: InsertMode.insertOrReplace,
+    );
+  }
+
+  Future<String?> getPreference(DbPreferenceKey key) async {
+    final row = await (select(dbPreferencesTable)..where((t) => t.key.equals(key.value))).getSingleOrNull();
+    return row?.value;
   }
 }

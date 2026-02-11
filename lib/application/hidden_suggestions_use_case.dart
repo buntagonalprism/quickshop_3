@@ -17,15 +17,17 @@ HiddenSuggestionsUseCase hiddenSuggestionsUseCase(Ref ref) {
 class HiddenSuggestionsUseCase {
   final Ref _ref;
   HiddenSuggestionsUseCase(this._ref) {
-    _ref.read(userProfileRepoProvider).getProfile().listen((profile) async {
+    _ref.listen(userProfileProvider, (_, profileAsync) async {
+      final profile = profileAsync.value;
       if (profile != null) {
         final hiddenSuggestionsVersion = profile.hiddenSuggestionsVersion;
         final repo = _ref.read(hiddenSuggestionsRepoProvider);
-        if (hiddenSuggestionsVersion != null && hiddenSuggestionsVersion > repo.processedHiddenSuggestionsVersion) {
+        final processedVersion = await repo.getProcessedHiddenSuggestionsVersion();
+        if (hiddenSuggestionsVersion != null && hiddenSuggestionsVersion > processedVersion) {
           await repo.fetchAndApplyHiddenSuggestions(hiddenSuggestionsVersion);
         }
       }
-    });
+    }, fireImmediately: true);
   }
 
   Future<void> hideItemSuggestion(ShoppingItemAutocomplete suggestion) async {

@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'analytics/crash_reporter.dart';
+import 'application/hidden_suggestions_use_case.dart';
 import 'application/settings_notifier.dart';
 import 'application/tutorials_notifier.dart';
 import 'application/user_history_loader_use_case.dart';
@@ -98,6 +99,7 @@ class _EagerInitProviders extends ConsumerWidget {
     ref.watch(shoppingCategorySuggestionRepoProvider);
     ref.watch(shoppingItemSuggestionRepoProvider);
     ref.watch(tutorialsProvider);
+    ref.watch(hiddenSuggestionsUseCaseProvider);
 
     // The userIdProvider in particular needs to be watched because it is used by
     // delayDispose to force providers to rebuild on logout. In Riverpod 3, if a

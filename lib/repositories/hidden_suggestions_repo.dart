@@ -8,7 +8,7 @@ import '../services/app_database_provider.dart';
 import '../services/auth_service.dart';
 import '../services/firestore.dart';
 import '../services/locale_service.dart';
-import '../services/shared_preferences.dart';
+import '../services/tables/db_preferences_table.dart';
 import '../services/tables/suggestion_type.dart';
 import '../utilities/parsing_utils.dart';
 import 'user_profile_repo.dart';
@@ -27,9 +27,11 @@ class HiddenSuggestionsRepo {
 
   static const collectionName = 'hiddenSuggestions';
 
-  static const versionKey = 'processedHiddenSuggestionsVersion';
-
-  int get processedHiddenSuggestionsVersion => _ref.read(sharedPrefsProvider).getInt(versionKey) ?? 0;
+  Future<int> getProcessedHiddenSuggestionsVersion() async {
+    final db = _ref.read(appDatabaseProvider);
+    final value = await db.getPreference(DbPreferenceKey.processedHiddenSuggestionsVersion);
+    return int.tryParse(value ?? '') ?? 0;
+  }
 
   Future<void> fetchAndApplyHiddenSuggestions(int newVersion) async {
     final user = _ref.read(userAuthProvider);
@@ -82,7 +84,7 @@ class HiddenSuggestionsRepo {
     }
     await db.suggestionsDao.replaceAllHiddenSuggestions(hiddenSuggestionRows);
 
-    await _ref.read(sharedPrefsProvider).setInt(versionKey, newVersion);
+    await db.savePreference(DbPreferenceKey.processedHiddenSuggestionsVersion, newVersion.toString());
   }
 
   Future<void> hideSuggestionLocally(SuggestionType type, String suggestionId) {
