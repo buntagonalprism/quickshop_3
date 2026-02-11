@@ -90,7 +90,7 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
 
   Future<ShoppingItem> _addItem(ShoppingItemRawData data) async {
     final tx = ref.read(listItemsTransactionProvider)();
-    final item = await ref.read(shoppingListItemsRepoProvider(listId)).addItem(tx, data);
+    final item = ref.read(shoppingListItemsRepoProvider(listId)).addItem(tx, data);
     ref.read(listsProvider.notifier).incrementListItemCount(tx, listId, 1);
     await tx.commit();
     return item;
