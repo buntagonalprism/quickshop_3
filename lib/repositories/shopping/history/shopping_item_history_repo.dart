@@ -110,7 +110,7 @@ class ShoppingItemHistoryRepo {
           nameLower: data['nameLower'],
           usageCount: data['usageCount'],
           lastUsed: data[_Fields.lastUsed],
-          category: (data['categories'] as List).cast<String>().join('|'),
+          category: data['category'],
         );
       }).toList(),
     );

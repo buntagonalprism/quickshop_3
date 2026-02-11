@@ -29,14 +29,10 @@ class ShoppingItemSuggestionRepo {
 
   String? _currentLangCode;
   static const _suggestionsLangCodeKey = 'itemSuggestionsLangCode';
-  static const _hiddenSuggestionsKey = 'hiddenItemSuggestions';
   StreamSubscription? _summarySub;
-
-  late Set<String> _hiddenSuggestionIds;
 
   ShoppingItemSuggestionRepo(this._ref) {
     _currentLangCode = _prefs.getString(_suggestionsLangCodeKey);
-    _hiddenSuggestionIds = _prefs.getStringList(_hiddenSuggestionsKey)?.toSet() ?? <String>{};
     _ref.listen(
       localeServiceProvider,
       (_, locale) async {
@@ -114,7 +110,7 @@ class ShoppingItemSuggestionRepo {
 
     if (_currentLangCode == langCode) {
       await _db.suggestionsDao.insertItems(
-        allDocs.where((doc) => !_hiddenSuggestionIds.contains(doc.id)).map((doc) {
+        allDocs.map((doc) {
           final data = doc.data()!;
           return ItemSuggestionsRow(
             id: doc.id,

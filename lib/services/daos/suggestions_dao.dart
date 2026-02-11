@@ -42,6 +42,7 @@ class SuggestionsDao extends DatabaseAccessor<AppDatabase> with _$SuggestionsDao
     final itemsById = {for (var row in rows) row.id: row.nameLower};
     await batch((batch) {
       batch.insertAll(itemSuggestionsTable, rows, mode: InsertMode.insertOrReplace);
+      _updateAllHiddenFlags(batch, SuggestionType.item);
       db.updateTokens(batch, TokenType.itemSuggestion, itemsById);
     });
   }
@@ -50,6 +51,7 @@ class SuggestionsDao extends DatabaseAccessor<AppDatabase> with _$SuggestionsDao
     final categoriesById = {for (var row in rows) row.id: row.nameLower};
     await batch((batch) {
       batch.insertAll(categorySuggestionsTable, rows, mode: InsertMode.insertOrReplace);
+      _updateAllHiddenFlags(batch, SuggestionType.category);
       db.updateTokens(batch, TokenType.categorySuggestion, categoriesById);
     });
   }
