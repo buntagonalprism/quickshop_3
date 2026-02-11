@@ -434,6 +434,7 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
     );
     if (didConfirm) {
       await ref.read(shoppingItemAutocompleteUseCaseProvider(widget.listId)).removeHistoryEntry(historyEntry);
+      ref.invalidate(itemAutocompleteProvider(widget.listId));
     }
   }
 
