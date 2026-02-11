@@ -10,4 +10,7 @@ class CategoryHistoryTable extends Table {
 
   @override
   String get tableName => 'CategoryHistory';
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

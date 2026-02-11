@@ -10,4 +10,7 @@ class CategorySuggestionsTable extends Table {
 
   @override
   String get tableName => 'CategorySuggestions';
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

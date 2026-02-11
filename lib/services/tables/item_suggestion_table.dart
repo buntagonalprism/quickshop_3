@@ -11,4 +11,7 @@ class ItemSuggestionsTable extends Table {
 
   @override
   String get tableName => 'ItemSuggestions';
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

@@ -74,7 +74,7 @@ final class ShoppingItemEditViewModelProvider
 }
 
 String _$shoppingItemEditViewModelHash() =>
-    r'199ab60cde7189b52bff64b2a515de061cf703f3';
+    r'5733fecf23bf0b81a491f633ab8752f45c2d0ff2';
 
 final class ShoppingItemEditViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingItemEditModel, (String, String)> {

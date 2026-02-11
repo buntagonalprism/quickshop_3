@@ -16,7 +16,9 @@ enum LoadProgressType {
   itemSuggestion(1),
   categorySuggestion(2),
   itemHistory(3),
-  categoryHistory(4);
+  categoryHistory(4),
+  hiddenSuggestions(5)
+  ;
 
   final int value;
   const LoadProgressType(this.value);

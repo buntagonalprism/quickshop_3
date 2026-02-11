@@ -8,4 +8,7 @@ class HiddenSuggestionsTable extends Table {
 
   @override
   String get tableName => 'HiddenSuggestions';
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

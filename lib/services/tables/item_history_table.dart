@@ -11,4 +11,7 @@ class ItemHistoryTable extends Table {
 
   @override
   String get tableName => 'ItemHistory';
+
+  @override
+  Set<Column> get primaryKey => {id};
 }
