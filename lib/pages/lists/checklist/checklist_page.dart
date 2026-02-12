@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../application/checklists/checklist_entry_notifier.dart';
-import '../../../application/debug_settings_notifier.dart';
-import '../../../models/checklist_entry.dart';
-import '../../../models/list_summary.dart';
+import '../../../data/checklists/application/checklist_entry_notifier.dart';
+import '../../../data/settings/application/debug_settings_notifier.dart';
+import '../../../data/checklists/models/checklist_entry.dart';
+import '../../../data/lists/models/list_summary.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
 import 'checklist_editing_view.dart';
@@ -31,63 +31,66 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
       orElse: () => '',
     );
     return Scaffold(
-        appBar: AppBar(
-          title: Text(listTitle),
-          actions: isEditing
-              ? [
-                  TextButton.icon(
-                    icon: const Icon(Icons.done),
-                    label: const Text('DONE'),
-                    onPressed: () => setState(() => isEditing = false),
-                  )
-                ]
-              : [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    tooltip: 'Edit list',
-                    onPressed: () => setState(() => isEditing = true),
-                  ),
-                  Builder(builder: (context) {
+      appBar: AppBar(
+        title: Text(listTitle),
+        actions: isEditing
+            ? [
+                TextButton.icon(
+                  icon: const Icon(Icons.done),
+                  label: const Text('DONE'),
+                  onPressed: () => setState(() => isEditing = false),
+                ),
+              ]
+            : [
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  tooltip: 'Edit list',
+                  onPressed: () => setState(() => isEditing = true),
+                ),
+                Builder(
+                  builder: (context) {
                     return IconButton(
                       icon: const Icon(Icons.more_vert),
                       tooltip: 'Show menu',
                       onPressed: () => Scaffold.of(context).openEndDrawer(),
                     );
-                  }),
-                ],
-        ),
-        endDrawer: ListDetailDrawer(
-          listId: widget.listId,
-          actions: [
-            ListAction(
-              name: 'Delete completed items',
-              icon: const Icon(Icons.delete),
-              onTap: () => onRemoveCheckedItems(),
-            ),
-            ListAction(
-              name: 'Uncheck all items',
-              icon: const Icon(Icons.check_box_outline_blank),
-              onTap: () => onUncheckAllItems(),
-            ),
-            // Only show if debugging
-            if (kDebugMode)
-              ListAction(
-                name: 'Debug: Show sort keys',
-                icon: const Icon(Icons.sort),
-                onTap: () => ref.read(debugSettingsProvider(DebugSetting.showSortKeys).notifier).toggle(),
-              ),
-          ],
-        ),
-        body: state.when(
-          notFound: () => const Center(child: Text('List not found')),
-          error: () => const Center(child: Text('Failed to load list')),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          success: (list, items) => ChecklistContentsView(
-            list: list,
-            items: items,
-            isEditing: isEditing,
+                  },
+                ),
+              ],
+      ),
+      endDrawer: ListDetailDrawer(
+        listId: widget.listId,
+        actions: [
+          ListAction(
+            name: 'Delete completed items',
+            icon: const Icon(Icons.delete),
+            onTap: () => onRemoveCheckedItems(),
           ),
-        ));
+          ListAction(
+            name: 'Uncheck all items',
+            icon: const Icon(Icons.check_box_outline_blank),
+            onTap: () => onUncheckAllItems(),
+          ),
+          // Only show if debugging
+          if (kDebugMode)
+            ListAction(
+              name: 'Debug: Show sort keys',
+              icon: const Icon(Icons.sort),
+              onTap: () => ref.read(debugSettingsProvider(DebugSetting.showSortKeys).notifier).toggle(),
+            ),
+        ],
+      ),
+      body: state.when(
+        notFound: () => const Center(child: Text('List not found')),
+        error: () => const Center(child: Text('Failed to load list')),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        success: (list, items) => ChecklistContentsView(
+          list: list,
+          items: items,
+          isEditing: isEditing,
+        ),
+      ),
+    );
   }
 
   void onUncheckAllItems() async {

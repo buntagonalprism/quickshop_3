@@ -7,17 +7,17 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:quickshop/analytics/analytics.dart';
 import 'package:quickshop/analytics/crash_reporter.dart';
-import 'package:quickshop/application/lists_notifier.dart';
-import 'package:quickshop/application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
-import 'package:quickshop/models/list_summary.dart';
-import 'package:quickshop/models/shopping/shopping_item.dart';
-import 'package:quickshop/models/shopping/shopping_item_raw_data.dart';
+import 'package:quickshop/data/firestore_transaction.dart';
+import 'package:quickshop/data/lists/application/lists_notifier.dart';
+import 'package:quickshop/data/lists/models/list_summary.dart';
+import 'package:quickshop/data/lists/repositories/list_repo.dart';
+import 'package:quickshop/data/shopping/autocomplete/application/shopping_category_autocomplete_use_case.dart';
+import 'package:quickshop/data/shopping/items/models/shopping_item.dart';
+import 'package:quickshop/data/shopping/items/models/shopping_item_raw_data.dart';
+import 'package:quickshop/data/shopping/items/repositories/shopping_items_repo.dart';
 import 'package:quickshop/pages/lists/shopping/items/models/shopping_item_errors.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_edit_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
-import 'package:quickshop/repositories/list_items_transaction.dart';
-import 'package:quickshop/repositories/list_repo.dart';
-import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/shared_preferences.dart';
@@ -104,7 +104,7 @@ void main() {
             shoppingListItemsRepoProvider(listId).overrideWithValue(itemsRepo),
             listRepoProvider.overrideWithValue(listRepo),
             routerProvider.overrideWithValue(router),
-            listItemsTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
+            firestoreTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
             firebaseAuthProvider.overrideWithValue(auth),
             sharedPrefsProvider.overrideWithValue(prefs),
             analyticsProvider.overrideWithValue(analytics),

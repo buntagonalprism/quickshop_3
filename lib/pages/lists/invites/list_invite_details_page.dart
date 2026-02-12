@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../application/lists_notifier.dart';
-import '../../../models/list_invite.dart';
-import '../../../models/list_summary.dart';
+import '../../../data/lists/application/lists_notifier.dart';
+import '../../../data/lists/models/list_invite.dart';
+import '../../../data/lists/models/list_summary.dart';
 import '../../../router.dart';
 import '../../../services/http_result.dart';
 import '../../../widgets/button_progress_indicator.dart';
@@ -127,9 +127,11 @@ class _IsOwnerView extends StatelessWidget {
   }
 
   void _shareLink(ListInvite invite) {
-    SharePlus.instance.share(ShareParams(
-      text: "I'd like to share this Quickshop shopping list with you: ${invite.url}",
-    ));
+    SharePlus.instance.share(
+      ShareParams(
+        text: "I'd like to share this Quickshop shopping list with you: ${invite.url}",
+      ),
+    );
   }
 }
 

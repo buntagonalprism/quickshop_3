@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../application/hidden_suggestions_use_case.dart';
-import '../../../../application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
-import '../../../../application/shopping/shopping_items_notifier.dart';
-import '../../../../application/tutorials_notifier.dart';
-import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
-import '../../../../models/shopping/shopping_item_raw_data.dart';
+import '../../../../data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
+import '../../../../data/shopping/autocomplete/application/shopping_item_autocomplete_use_case.dart';
+import '../../../../data/shopping/items/application/shopping_items_notifier.dart';
+import '../../../../data/settings/application/tutorials_notifier.dart';
+import '../../../../data/shopping/autocomplete/models/shopping_item_autocomplete.dart';
+import '../../../../data/shopping/items/models/shopping_item_raw_data.dart';
 import '../../../../router.dart';
 import '../../../../widgets/confirmation_dialog.dart';
 import '../../../../widgets/padding.dart';

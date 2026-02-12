@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../application/tooltips_notifier.dart';
-import '../models/tooltip_type.dart';
+import '../data/settings/application/tooltips_notifier.dart';
+import '../data/settings/models/tooltip_type.dart';
 
 class ToggleTooltip extends ConsumerWidget {
   const ToggleTooltip({super.key, required this.type, required this.message});

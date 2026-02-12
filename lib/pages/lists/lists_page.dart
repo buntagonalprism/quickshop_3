@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import '../../analytics/crash_reporter.dart';
-import '../../application/lists_notifier.dart';
-import '../../models/list_summary.dart';
+import '../../data/lists/application/lists_notifier.dart';
+import '../../data/lists/models/list_summary.dart';
 import '../../router.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/center_scrollable_column.dart';
@@ -21,41 +21,45 @@ class ListsPage extends ConsumerWidget {
         title: const Text('My lists'),
         leading: const ProfileIcon(),
       ),
-      body: Builder(builder: (context) {
-        final listsValue = ref.watch(listsProvider);
-        if (listsValue.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (listsValue.hasError) {
-          ref.read(crashReporterProvider).reportAsyncError(listsValue);
-          return const Center(
-            child: Text('Failed to load lists'),
+      body: Builder(
+        builder: (context) {
+          final listsValue = ref.watch(listsProvider);
+          if (listsValue.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (listsValue.hasError) {
+            ref.read(crashReporterProvider).reportAsyncError(listsValue);
+            return const Center(
+              child: Text('Failed to load lists'),
+            );
+          }
+          final lists = listsValue.requireValue;
+          if (lists.isEmpty) {
+            return const ListsEmptyView();
+          }
+          return ListView.builder(
+            itemCount: lists.length + 1,
+            itemBuilder: (context, index) {
+              // Add a spacer at the bottom so that we can overscroll the list, preventing the FAB
+              // from covering the last list item
+              if (index == lists.length) {
+                return const SizedBox(height: 80);
+              }
+              final listSummary = lists[index];
+              return ListSummaryTile(listSummary: listSummary);
+            },
           );
-        }
-        final lists = listsValue.requireValue;
-        if (lists.isEmpty) {
-          return const ListsEmptyView();
-        }
-        return ListView.builder(
-          itemCount: lists.length + 1,
-          itemBuilder: (context, index) {
-            // Add a spacer at the bottom so that we can overscroll the list, preventing the FAB
-            // from covering the last list item
-            if (index == lists.length) {
-              return const SizedBox(height: 80);
-            }
-            final listSummary = lists[index];
-            return ListSummaryTile(listSummary: listSummary);
-          },
-        );
-      }),
-      floatingActionButton: Consumer(builder: (context, ref, _) {
-        return FloatingActionButton.extended(
-          label: const Text('New list'),
-          icon: SvgPicture.asset('assets/images/new_list_icon.svg', height: 20, width: 20),
-          onPressed: () => ref.read(routerProvider).push(Routes.newList.path),
-        );
-      }),
+        },
+      ),
+      floatingActionButton: Consumer(
+        builder: (context, ref, _) {
+          return FloatingActionButton.extended(
+            label: const Text('New list'),
+            icon: SvgPicture.asset('assets/images/new_list_icon.svg', height: 20, width: 20),
+            onPressed: () => ref.read(routerProvider).push(Routes.newList.path),
+          );
+        },
+      ),
     );
   }
 }
@@ -177,15 +181,15 @@ class ListSummaryIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (listSummary.listType) {
       ListType.shoppingList => Image.asset(
-          'assets/logo/logo_grey_small.png',
-          height: 26,
-          width: 26,
-          color: Theme.of(context).iconTheme.color,
-        ),
+        'assets/logo/logo_grey_small.png',
+        height: 26,
+        width: 26,
+        color: Theme.of(context).iconTheme.color,
+      ),
       ListType.checklist => const Padding(
-          padding: EdgeInsets.all(1),
-          child: Icon(Icons.check_box_outlined, size: 24),
-        ),
+        padding: EdgeInsets.all(1),
+        child: Icon(Icons.check_box_outlined, size: 24),
+      ),
     };
   }
 }

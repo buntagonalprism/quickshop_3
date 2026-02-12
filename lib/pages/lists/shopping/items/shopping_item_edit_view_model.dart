@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../analytics/crash_reporter.dart';
-import '../../../../application/shopping/shopping_items_notifier.dart';
-import '../../../../models/shopping/shopping_item.dart';
+import '../../../../data/shopping/items/application/shopping_items_notifier.dart';
+import '../../../../data/shopping/items/models/shopping_item.dart';
 
 part 'shopping_item_edit_view_model.freezed.dart';
 part 'shopping_item_edit_view_model.g.dart';

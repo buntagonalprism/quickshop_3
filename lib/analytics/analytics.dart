@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../models/list_summary.dart';
+import '../data/lists/models/list_summary.dart';
 
 part 'analytics.g.dart';
 
@@ -21,15 +21,19 @@ class Analytics {
     if (kDebugMode) {
       print('QSLog-Analytics: ${event.name} ${event.parameters}');
     } else {
-      unawaited(FirebaseAnalytics.instance.logEvent(
-        name: event.name,
-        parameters: event.parameters,
-      ));
-      Sentry.addBreadcrumb(Breadcrumb(
-        message: event.name,
-        data: event.parameters,
-        level: SentryLevel.info,
-      ));
+      unawaited(
+        FirebaseAnalytics.instance.logEvent(
+          name: event.name,
+          parameters: event.parameters,
+        ),
+      );
+      Sentry.addBreadcrumb(
+        Breadcrumb(
+          message: event.name,
+          data: event.parameters,
+          level: SentryLevel.info,
+        ),
+      );
     }
   }
 }
@@ -83,24 +87,24 @@ class AnalyticsEvent {
   const AnalyticsEvent.checklistItemsBatchDeleted() : this._('checklist_items_batch_deleted', const {});
   const AnalyticsEvent.checklistItemsBatchUnchecked() : this._('checklist_items_batch_unchecked', const {});
   AnalyticsEvent.checklistDuplicateSortKeysDetected(int count)
-      : this._('checklist_duplicate_sort_keys_detected', {'count': count});
+    : this._('checklist_duplicate_sort_keys_detected', {'count': count});
 
   AnalyticsEvent.httpRetry({required String uri, required String reason})
-      : this._('http_retry', {
-          'uri': uri,
-          'reason': reason,
-        });
+    : this._('http_retry', {
+        'uri': uri,
+        'reason': reason,
+      });
 
   AnalyticsEvent.httpConnectionError({required String uri, required int statusCode, required String errorMessage})
-      : this._('http_connection_error', {
-          'uri': uri,
-          'status_code': statusCode,
-          'error_message': errorMessage,
-        });
+    : this._('http_connection_error', {
+        'uri': uri,
+        'status_code': statusCode,
+        'error_message': errorMessage,
+      });
 
   AnalyticsEvent.loginFailed({required String errorCode, required String errorMessage})
-      : this._('login_failed', {
-          'error_code': errorCode,
-          'error_message': errorMessage,
-        });
+    : this._('login_failed', {
+        'error_code': errorCode,
+        'error_message': errorMessage,
+      });
 }

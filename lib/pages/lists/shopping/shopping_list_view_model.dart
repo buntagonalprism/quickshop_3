@@ -2,10 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
-import '../../../application/list_provider.dart';
-import '../../../application/shopping/shopping_items_notifier.dart';
-import '../../../models/list_summary.dart';
-import '../../../models/shopping/shopping_item.dart';
+import '../../../data/lists/application/list_provider.dart';
+import '../../../data/shopping/items/application/shopping_items_notifier.dart';
+import '../../../data/lists/models/list_summary.dart';
+import '../../../data/shopping/items/models/shopping_item.dart';
 
 part 'shopping_list_view_model.freezed.dart';
 part 'shopping_list_view_model.g.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:mocktail/mocktail.dart';
-import 'package:quickshop/models/user/user_auth.dart';
+import 'package:quickshop/data/user/models/user_auth.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:riverpod/misc.dart';
 

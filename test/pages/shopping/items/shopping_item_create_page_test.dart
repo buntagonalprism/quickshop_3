@@ -3,25 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:quickshop/application/lists_notifier.dart';
-import 'package:quickshop/application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
-import 'package:quickshop/application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
-import 'package:quickshop/application/tutorials_notifier.dart';
-import 'package:quickshop/models/list_summary.dart';
-import 'package:quickshop/models/shopping/autocomplete/shopping_category_autocomplete.dart';
-import 'package:quickshop/models/shopping/autocomplete/shopping_item_autocomplete.dart';
-import 'package:quickshop/models/shopping/shopping_item.dart';
-import 'package:quickshop/models/shopping/shopping_item_raw_data.dart';
-import 'package:quickshop/models/user/user_profile.dart';
+import 'package:quickshop/data/firestore_transaction.dart';
+import 'package:quickshop/data/lists/application/lists_notifier.dart';
+import 'package:quickshop/data/lists/models/list_summary.dart';
+import 'package:quickshop/data/lists/repositories/list_repo.dart';
+import 'package:quickshop/data/settings/application/tutorials_notifier.dart';
+import 'package:quickshop/data/shopping/autocomplete/application/shopping_category_autocomplete_use_case.dart';
+import 'package:quickshop/data/shopping/autocomplete/application/shopping_item_autocomplete_use_case.dart';
+import 'package:quickshop/data/shopping/autocomplete/models/shopping_category_autocomplete.dart';
+import 'package:quickshop/data/shopping/autocomplete/models/shopping_item_autocomplete.dart';
+import 'package:quickshop/data/shopping/items/models/shopping_item.dart';
+import 'package:quickshop/data/shopping/items/models/shopping_item_raw_data.dart';
+import 'package:quickshop/data/shopping/items/repositories/shopping_items_repo.dart';
+import 'package:quickshop/data/user/models/user_profile.dart';
+import 'package:quickshop/data/user/repositories/user_profile_repo.dart';
 import 'package:quickshop/pages/lists/shopping/items/category_selector.dart';
 import 'package:quickshop/pages/lists/shopping/items/models/shopping_item_errors.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_page.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_model.dart';
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
-import 'package:quickshop/repositories/list_items_transaction.dart';
-import 'package:quickshop/repositories/list_repo.dart';
-import 'package:quickshop/repositories/shopping/shopping_items_repo.dart';
-import 'package:quickshop/repositories/user_profile_repo.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
 import 'package:quickshop/services/shared_preferences.dart';
@@ -104,7 +104,7 @@ void main() {
             sharedPrefsProvider.overrideWithValue(prefs),
             firebaseAuthProvider.overrideWithValue(auth),
             userProfileRepoProvider.overrideWithValue(userProfileRepo),
-            listItemsTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
+            firestoreTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
           ],
           child: Consumer(
             builder: (context, ref, _) {

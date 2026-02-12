@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../application/tooltips_notifier.dart';
-import '../../../../models/shopping/shopping_item.dart';
-import '../../../../models/shopping/shopping_item_raw_data.dart';
-import '../../../../models/tooltip_type.dart';
+import '../../../../data/settings/application/tooltips_notifier.dart';
+import '../../../../data/shopping/items/models/shopping_item.dart';
+import '../../../../data/shopping/items/models/shopping_item_raw_data.dart';
+import '../../../../data/settings/models/tooltip_type.dart';
 import '../../../../widgets/padding.dart';
 import '../../../../widgets/tooltip_button.dart';
 import 'category_selector.dart';

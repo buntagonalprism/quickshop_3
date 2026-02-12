@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../application/checklists/checklist_entry_notifier.dart';
-import '../../../application/debug_settings_notifier.dart';
-import '../../../models/checklist_entry.dart';
-import '../../../models/list_summary.dart';
-import '../../../repositories/checklist_entry_repo.dart';
+import '../../../data/checklists/application/checklist_entry_notifier.dart';
+import '../../../data/settings/application/debug_settings_notifier.dart';
+import '../../../data/checklists/models/checklist_entry.dart';
+import '../../../data/lists/models/list_summary.dart';
+import '../../../data/checklists/repositories/checklist_entry_repo.dart';
 import 'checklist_text_edit_dialog.dart';
 
 class ChecklistEditingView extends ConsumerStatefulWidget {

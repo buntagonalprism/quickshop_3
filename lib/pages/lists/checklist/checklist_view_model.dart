@@ -2,10 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
-import '../../../application/checklists/checklist_entry_notifier.dart';
-import '../../../application/list_provider.dart';
-import '../../../models/checklist_entry.dart';
-import '../../../models/list_summary.dart';
+import '../../../data/checklists/application/checklist_entry_notifier.dart';
+import '../../../data/lists/application/list_provider.dart';
+import '../../../data/checklists/models/checklist_entry.dart';
+import '../../../data/lists/models/list_summary.dart';
 
 part 'checklist_view_model.freezed.dart';
 part 'checklist_view_model.g.dart';
@@ -41,7 +41,9 @@ ChecklistViewModel checklistViewModel(Ref ref, String listId) {
   }
 
   if (list.listType != ListType.checklist) {
-    ref.read(crashReporterProvider).report(
+    ref
+        .read(crashReporterProvider)
+        .report(
           'ChecklistViewModel was invoked with list id $listId, which is not a checklist',
           StackTrace.current,
         );

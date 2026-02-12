@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../application/hidden_suggestions_use_case.dart';
-import '../../../../application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
-import '../../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
+import '../../../../data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
+import '../../../../data/shopping/autocomplete/application/shopping_category_autocomplete_use_case.dart';
+import '../../../../data/shopping/autocomplete/models/shopping_category_autocomplete.dart';
 import '../../../../widgets/confirmation_dialog.dart';
 import 'category_selector_view_model.dart';
 

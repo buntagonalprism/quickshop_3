@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/user/user_auth.dart';
+import '../data/user/models/user_auth.dart';
 import 'firebase_auth.dart';
 
 part 'auth_service.g.dart';

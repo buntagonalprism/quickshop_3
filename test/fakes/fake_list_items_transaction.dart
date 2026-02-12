@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quickshop/repositories/list_items_transaction.dart';
+import 'package:quickshop/data/firestore_transaction.dart';
 
 import '../mocks/mock_firestore.dart';
 
-class FakeListItemsTransaction implements ListItemsTransaction {
+class FakeListItemsTransaction implements FirestoreTransaction {
   @override
   WriteBatch get batch => MockBatch();
 

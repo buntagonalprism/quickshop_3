@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../application/shopping/shopping_items_notifier.dart';
-import '../../../../models/shopping/shopping_item.dart';
-import '../../../../models/shopping/shopping_item_raw_data.dart';
+import '../../../../data/shopping/items/application/shopping_items_notifier.dart';
+import '../../../../data/shopping/items/models/shopping_item.dart';
+import '../../../../data/shopping/items/models/shopping_item_raw_data.dart';
 import '../../../../router.dart';
 import 'models/shopping_item_errors.dart';
 import 'shopping_item_edit_view_model.dart';

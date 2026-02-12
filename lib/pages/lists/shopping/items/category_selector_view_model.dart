@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../application/shopping/autcomplete/shopping_category_autocomplete_use_case.dart';
-import '../../../../models/shopping/autocomplete/shopping_category_autocomplete.dart';
+import '../../../../data/shopping/autocomplete/application/shopping_category_autocomplete_use_case.dart';
+import '../../../../data/shopping/autocomplete/models/shopping_category_autocomplete.dart';
 
 part 'category_selector_view_model.g.dart';
 

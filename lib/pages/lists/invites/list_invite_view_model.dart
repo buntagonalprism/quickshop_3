@@ -2,9 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/crash_reporter.dart';
-import '../../../application/list_invite_providers.dart';
-import '../../../application/lists_notifier.dart';
-import '../../../models/list_invite.dart';
+import '../../../data/lists/application/list_invite_providers.dart';
+import '../../../data/lists/application/lists_notifier.dart';
+import '../../../data/lists/models/list_invite.dart';
 import '../../../services/auth_service.dart';
 
 part 'list_invite_view_model.freezed.dart';

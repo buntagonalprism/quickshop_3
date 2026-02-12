@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../application/shopping/autcomplete/shopping_item_autocomplete_use_case.dart';
-import '../../../../models/shopping/autocomplete/shopping_item_autocomplete.dart';
-import '../../../../models/shopping/shopping_item_raw_data.dart';
+import '../../../../data/shopping/autocomplete/application/shopping_item_autocomplete_use_case.dart';
+import '../../../../data/shopping/autocomplete/models/shopping_item_autocomplete.dart';
+import '../../../../data/shopping/items/models/shopping_item_raw_data.dart';
 import '../../../../services/shopping_item_name_parser.dart';
 import 'models/shopping_item_errors.dart';
 

@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:quickshop/application/checklists/checklist_entry_notifier.dart';
-import 'package:quickshop/application/list_leave_in_progress_notifier.dart';
-import 'package:quickshop/application/lists_notifier.dart';
-import 'package:quickshop/models/checklist_entry.dart';
-import 'package:quickshop/models/list_summary.dart';
-import 'package:quickshop/models/user_sortable.dart';
-import 'package:quickshop/repositories/checklist_entry_repo.dart';
-import 'package:quickshop/repositories/list_repo.dart';
+import 'package:quickshop/data/checklists/application/checklist_entry_notifier.dart';
+import 'package:quickshop/data/lists/application/list_leave_in_progress_notifier.dart';
+import 'package:quickshop/data/lists/application/lists_notifier.dart';
+import 'package:quickshop/data/checklists/models/checklist_entry.dart';
+import 'package:quickshop/data/lists/models/list_summary.dart';
+import 'package:quickshop/data/user_sortable.dart';
+import 'package:quickshop/data/checklists/repositories/checklist_entry_repo.dart';
+import 'package:quickshop/data/lists/repositories/list_repo.dart';
 import 'package:quickshop/services/firestore.dart';
 import 'package:riverpod/riverpod.dart';
 

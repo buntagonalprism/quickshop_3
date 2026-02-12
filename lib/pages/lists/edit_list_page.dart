@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/list_provider.dart';
-import '../../application/lists_notifier.dart';
-import '../../models/list_summary.dart';
+import '../../data/lists/application/list_provider.dart';
+import '../../data/lists/application/lists_notifier.dart';
+import '../../data/lists/models/list_summary.dart';
 import '../../router.dart';
 import '../../widgets/button_progress_indicator.dart';
 

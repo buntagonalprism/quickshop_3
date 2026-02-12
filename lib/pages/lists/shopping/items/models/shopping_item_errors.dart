@@ -1,4 +1,4 @@
-import '../../../../../models/shopping/shopping_item_raw_data.dart';
+import '../../../../../data/shopping/items/models/shopping_item_raw_data.dart';
 
 class ShoppingItemErrors {
   final String? productError;

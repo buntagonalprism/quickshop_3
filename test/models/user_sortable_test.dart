@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:quickshop/models/user_sortable.dart';
+import 'package:quickshop/data/user_sortable.dart';
 
 /// The following sites were useful in performing base36 calculations:
 /// - http://www.unitconversion.org/numbers/base-10-to-base-36-conversion.html - converts between

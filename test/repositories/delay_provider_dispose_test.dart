@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:quickshop/repositories/delay_provider_dispose.dart';
+import 'package:quickshop/data/delay_provider_dispose.dart';
 import 'package:quickshop/services/auth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

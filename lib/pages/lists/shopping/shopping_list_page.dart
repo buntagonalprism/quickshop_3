@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../application/shopping/shopping_items_notifier.dart';
-import '../../../models/list_summary.dart';
-import '../../../models/shopping/shopping_item.dart';
-import '../../../repositories/shopping/shopping_items_repo.dart';
+import '../../../data/shopping/items/application/shopping_items_notifier.dart';
+import '../../../data/lists/models/list_summary.dart';
+import '../../../data/shopping/items/models/shopping_item.dart';
+import '../../../data/shopping/items/repositories/shopping_items_repo.dart';
 import '../../../router.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
@@ -27,13 +27,15 @@ class ShoppingListPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(listTitle),
         actions: [
-          Builder(builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.more_vert),
-              tooltip: 'Show menu',
-              onPressed: () => Scaffold.of(context).openEndDrawer(),
-            );
-          }),
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.more_vert),
+                tooltip: 'Show menu',
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+              );
+            },
+          ),
         ],
       ),
       endDrawer: ListDetailDrawer(
@@ -43,7 +45,7 @@ class ShoppingListPage extends ConsumerWidget {
             name: 'Delete completed items',
             icon: const Icon(Icons.delete),
             onTap: () => onRemoveCheckedItems(context, ref, listId),
-          )
+          ),
         ],
       ),
       body: state.when(

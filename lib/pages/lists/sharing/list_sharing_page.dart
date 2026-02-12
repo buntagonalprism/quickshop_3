@@ -4,12 +4,12 @@ import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../analytics/crash_reporter.dart';
-import '../../../application/list_invite_providers.dart';
-import '../../../application/list_provider.dart';
-import '../../../models/list_invite.dart';
-import '../../../models/list_summary.dart';
-import '../../../models/user/user_auth.dart';
-import '../../../repositories/list_invite_repo.dart';
+import '../../../data/lists/application/list_invite_providers.dart';
+import '../../../data/lists/application/list_provider.dart';
+import '../../../data/lists/models/list_invite.dart';
+import '../../../data/lists/models/list_summary.dart';
+import '../../../data/user/models/user_auth.dart';
+import '../../../data/lists/repositories/list_invite_repo.dart';
 
 class ListSharingPage extends ConsumerStatefulWidget {
   const ListSharingPage({super.key, required this.listId});
@@ -111,18 +111,19 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
             Row(
               children: [
                 Checkbox(
-                    value: _checkboxValue(invite),
-                    onChanged: (value) {
-                      // Ignore changes while link is being created or deleted
-                      if (linkCreationInProgress || linkDeletionInProgress) {
-                        return;
-                      }
-                      if (value!) {
-                        _createSharingLink();
-                      } else {
-                        _deleteSharingLink(invite);
-                      }
-                    }),
+                  value: _checkboxValue(invite),
+                  onChanged: (value) {
+                    // Ignore changes while link is being created or deleted
+                    if (linkCreationInProgress || linkDeletionInProgress) {
+                      return;
+                    }
+                    if (value!) {
+                      _createSharingLink();
+                    } else {
+                      _deleteSharingLink(invite);
+                    }
+                  },
+                ),
                 const Text(
                   'Enable my sharing link',
                   textAlign: TextAlign.center,
@@ -242,8 +243,10 @@ class _SharingLinkTileState extends ConsumerState<SharingLinkTile> {
   /// into a Facebook message and trigger the issue. The "Share" button includes the following
   /// message to workaround the issue.
   void _shareLink(ListInvite invite) {
-    SharePlus.instance.share(ShareParams(
-      text: "I'd like to share this Quickshop shopping list with you: ${invite.url}",
-    ));
+    SharePlus.instance.share(
+      ShareParams(
+        text: "I'd like to share this Quickshop shopping list with you: ${invite.url}",
+      ),
+    );
   }
 }

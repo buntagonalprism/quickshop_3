@@ -1,4 +1,4 @@
-import '../models/has_id.dart';
+import '../data/has_id.dart';
 
 List<T> replaceById<T extends HasId>(List<T> list, String id, T Function(T current) updater) {
   final index = list.indexWhere((e) => e.id == id);

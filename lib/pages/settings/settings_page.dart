@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/settings_notifier.dart';
+import '../../data/settings/application/settings_notifier.dart';
 import '../../services/package_info.dart';
 
 /// Displays the various settings that can be customized by the user.

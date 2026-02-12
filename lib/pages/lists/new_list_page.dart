@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../analytics/crash_reporter.dart';
-import '../../application/lists_notifier.dart';
-import '../../models/list_summary.dart';
+import '../../data/lists/application/lists_notifier.dart';
+import '../../data/lists/models/list_summary.dart';
 import '../../router.dart';
 
 class NewListPage extends ConsumerStatefulWidget {
