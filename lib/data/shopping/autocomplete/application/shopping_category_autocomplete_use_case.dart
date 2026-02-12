@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../firestore_transaction.dart';
+import '../../../common/application/firestore_transaction.dart';
 import '../../../user/repositories/user_profile_repo.dart';
 import '../../history/repositories/shopping_category_history_repo.dart';
 import '../../items/application/shopping_items_notifier.dart';

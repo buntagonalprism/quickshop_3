@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:quickshop/data/user_sortable.dart';
+import 'package:quickshop/data/common/models/user_sortable.dart';
 
 /// The following sites were useful in performing base36 calculations:
 /// - http://www.unitconversion.org/numbers/base-10-to-base-36-conversion.html - converts between
@@ -8,16 +8,14 @@ import 'package:quickshop/data/user_sortable.dart';
 ///   large numbers, as other calculators would convert to an exponent and truncate the precision
 void main() {
   group('UserSortKey.between ', () {
-    test(
-        'GIVEN two identical sort keys'
+    test('GIVEN two identical sort keys'
         'THEN between throws an ArgumentError', () {
       const a = UserSortKey(primary: 1, secondary: '1234');
       const b = UserSortKey(primary: 1, secondary: '1234');
       expect(() => UserSortKey.between(a, b), throwsArgumentError);
     });
 
-    test(
-        'GIVEN a primary gap of more than two '
+    test('GIVEN a primary gap of more than two '
         'THEN between returns the next primary with no secondary', () {
       const a = UserSortKey(primary: 3, secondary: '1234');
       const b = UserSortKey(primary: 7, secondary: '1dk1');
@@ -26,8 +24,7 @@ void main() {
       expect(result.secondary, '');
     });
 
-    test(
-        'GIVEN a primary gap of two '
+    test('GIVEN a primary gap of two '
         'THEN between returns the intermediate primary with no secondary', () {
       const a = UserSortKey(primary: 1, secondary: '1234');
       const b = UserSortKey(primary: 3, secondary: '1dk1');
@@ -36,8 +33,7 @@ void main() {
       expect(result.secondary, '');
     });
 
-    test(
-        'GIVEN a primary gap of one '
+    test('GIVEN a primary gap of one '
         'AND no secondary values '
         'THEN between returns the first primary and the median secondary segment value', () {
       const a = UserSortKey(primary: 1, secondary: '');
@@ -49,8 +45,7 @@ void main() {
       expect(result.secondary, 'hzzz');
     });
 
-    test(
-        'GIVEN a primary gap of one '
+    test('GIVEN a primary gap of one '
         'AND first has a single-segment secondary value '
         'THEN between returns the median between the first secondary and max for the segment', () {
       const a = UserSortKey(primary: 1, secondary: '1234'); // 49,360 in base 10
@@ -62,8 +57,7 @@ void main() {
       expect(result.secondary, 'ij1j');
     });
 
-    test(
-        'GIVEN a primary gap of one '
+    test('GIVEN a primary gap of one '
         'AND first has a single secondary segment of max value '
         'THEN between returns an additional segment with the median segment value', () {
       const a = UserSortKey(primary: 1, secondary: 'zzzz');
@@ -73,11 +67,9 @@ void main() {
       expect(result.secondary, 'zzzz-hzzz');
     });
 
-    test(
-        'GIVEN a primary gap of one '
+    test('GIVEN a primary gap of one '
         'AND first has a multiple-segment secondary value '
-        'THEN between returns the median between the first secondary and max for the segment length',
-        () {
+        'THEN between returns the median between the first secondary and max for the segment length', () {
       const a = UserSortKey(primary: 1, secondary: '1234-abcd');
       const b = UserSortKey(primary: 2, secondary: 'abcd'); // This secondary value is not used
       final result = UserSortKey.between(a, b);
@@ -89,8 +81,7 @@ void main() {
       expect(result.secondary, 'ij1k-55o6');
     });
 
-    test(
-        'GIVEN a primary gap of one '
+    test('GIVEN a primary gap of one '
         'AND first has a single secondary segment of max value '
         'THEN between returns an additional segment with the median segment value', () {
       const a = UserSortKey(primary: 1, secondary: 'zzzz');
@@ -100,8 +91,7 @@ void main() {
       expect(result.secondary, 'zzzz-hzzz');
     });
 
-    test(
-        'GIVEN no primary gap '
+    test('GIVEN no primary gap '
         'AND secondary values of equal segment length '
         'THEN between returns the median secondary', () {
       const a = UserSortKey(primary: 1, secondary: '1234');
@@ -115,8 +105,7 @@ void main() {
       expect(result.secondary, '5opq');
     });
 
-    test(
-        'GIVEN no primary gap '
+    test('GIVEN no primary gap '
         'AND second has a longer secondary '
         'THEN between returns the median secondary as though the first was zero-padded', () {
       const a = UserSortKey(primary: 1, secondary: '1234');
@@ -130,8 +119,7 @@ void main() {
       expect(result.secondary, '5opq-p7q8');
     });
 
-    test(
-        'GIVEN no primary gap '
+    test('GIVEN no primary gap '
         'AND first has a longer secondary '
         'THEN between returns the median secondary as though the second was z-padded', () {
       const a = UserSortKey(primary: 1, secondary: '1234-5678');
@@ -145,8 +133,7 @@ void main() {
       expect(result.secondary, '5opr-2l3l');
     });
 
-    test(
-        'GIVEN no primary gap '
+    test('GIVEN no primary gap '
         'AND a secondary gap of two '
         'THEN between returns the intermediate secondary', () {
       const a = UserSortKey(primary: 1, secondary: '1234');
@@ -156,8 +143,7 @@ void main() {
       expect(result.secondary, '1235');
     });
 
-    test(
-        'GIVEN no primary gap '
+    test('GIVEN no primary gap '
         'AND a secondary gap of one '
         'THEN between returns an additional segment with the median segment value', () {
       const a = UserSortKey(primary: 1, secondary: '1234');
@@ -169,22 +155,19 @@ void main() {
   });
 
   group('UserSortKey.subdivide ', () {
-    test(
-        'GIVEN an intervals count of 0 '
+    test('GIVEN an intervals count of 0 '
         'THEN an argument error is thrown', () {
       const key = UserSortKey(primary: 1, secondary: 'ab12');
       expect(() => key.subdivide(0), throwsArgumentError);
     });
 
-    test(
-        'GIVEN an intervals count of 1 '
+    test('GIVEN an intervals count of 1 '
         'THEN the key is returned unchanged', () {
       const key = UserSortKey(primary: 1, secondary: 'ab12');
       expect(key.subdivide(1), [key]);
     });
 
-    test(
-        'GIVEN an intervals count of 2 '
+    test('GIVEN an intervals count of 2 '
         'AND a secondary value present '
         'THEN two results are returned with a subdivided last segment appended', () {
       const key = UserSortKey(primary: 1, secondary: 'ab12');
@@ -195,8 +178,7 @@ void main() {
       ]);
     });
 
-    test(
-        'GIVEN an intervals count of 3 '
+    test('GIVEN an intervals count of 3 '
         'AND no secondary value present '
         'THEN three results are returned with a subdivided last segment', () {
       const key = UserSortKey(primary: 4, secondary: '');
@@ -208,8 +190,7 @@ void main() {
       ]);
     });
 
-    test(
-        'GIVEN an intervals count of 5 '
+    test('GIVEN an intervals count of 5 '
         'THEN five results are returned with a subdivided last segment appended', () {
       const key = UserSortKey(primary: 1, secondary: 'ab12');
       // The segment max value of zzzz is 1,679,615 in base 10
@@ -224,16 +205,14 @@ void main() {
   });
 
   group('List<UserSortable>.userSort ', () {
-    test(
-        'GIVEN an empty list '
+    test('GIVEN an empty list '
         'THEN the list is returned unchanged', () {
       final list = <UserSortable>[];
       list.userSort();
       expect(list, isEmpty);
     });
 
-    test(
-        'GIVEN a list of UserSortable objects '
+    test('GIVEN a list of UserSortable objects '
         'AND no UserSortKey values are equal '
         'THEN the list is sorted by the UserSortKey', () {
       final list = List<UserSortable>.from(const [
@@ -253,8 +232,7 @@ void main() {
       ]);
     });
 
-    test(
-        'GIVEN a list of UserSortable objects '
+    test('GIVEN a list of UserSortable objects '
         'AND there are secondary sort keys of different length '
         'THEN longer secondary sort keys are sorted after equal segments of shorter length', () {
       final list = List<UserSortable>.from(const [
@@ -277,8 +255,7 @@ void main() {
       ]);
     });
 
-    test(
-        'GIVEN a list of UserSortable objects '
+    test('GIVEN a list of UserSortable objects '
         'AND some UserSortKey values are equal '
         'THEN those items are sorted by the sortFallback', () {
       final list = List<UserSortable>.from(const [

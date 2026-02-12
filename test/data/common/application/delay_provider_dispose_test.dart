@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:quickshop/data/delay_provider_dispose.dart';
+import 'package:quickshop/data/common/application/delay_provider_dispose.dart';
 import 'package:quickshop/services/auth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../fakes/fake_firebase_auth.dart';
-import '../utilities/create_provider_container.dart';
+import '../../../fakes/fake_firebase_auth.dart';
+import '../../../utilities/create_provider_container.dart';
 
 part 'delay_provider_dispose_test.g.dart';
 

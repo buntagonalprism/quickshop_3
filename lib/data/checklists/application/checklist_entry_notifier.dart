@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../utilities/replace_by_id.dart';
-import '../../delay_provider_dispose.dart';
-import '../../firestore_transaction.dart';
+import '../../common/application/delay_provider_dispose.dart';
+import '../../common/application/firestore_transaction.dart';
 import '../../lists/application/list_leave_in_progress_notifier.dart';
 import '../../lists/application/lists_notifier.dart';
 import '../models/checklist_entry.dart';

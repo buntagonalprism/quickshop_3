@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:quickshop/data/firestore_transaction.dart';
+import 'package:quickshop/data/common/application/firestore_transaction.dart';
 import 'package:quickshop/data/lists/application/lists_notifier.dart';
 import 'package:quickshop/data/lists/models/list_summary.dart';
 import 'package:quickshop/data/lists/repositories/list_repo.dart';

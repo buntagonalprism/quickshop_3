@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/http_result.dart';
 import '../../../utilities/replace_by_id.dart';
-import '../../firestore_transaction.dart';
+import '../../common/application/firestore_transaction.dart';
 import '../models/list_invite.dart';
 import '../models/list_summary.dart';
 import '../repositories/list_repo.dart';

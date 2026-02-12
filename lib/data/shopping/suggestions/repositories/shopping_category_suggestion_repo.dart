@@ -5,12 +5,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../analytics/logger.dart';
-import '../../../../services/app_database.dart';
-import '../../../../services/app_database_provider.dart';
 import '../../../../services/firestore.dart';
 import '../../../../services/locale_service.dart';
 import '../../../../services/shared_preferences.dart';
-import '../../../../services/tables/load_progress_table.dart';
+import '../../../app_database.dart';
+import '../../../app_database_provider.dart';
+import '../../../common/database/load_progress_table.dart';
 import '../models/shopping_category_suggestion.dart';
 
 part 'shopping_category_suggestion_repo.g.dart';

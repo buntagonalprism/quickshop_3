@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quickshop/data/firestore_transaction.dart';
+import 'package:quickshop/data/common/application/firestore_transaction.dart';
 
 import '../mocks/mock_firestore.dart';
 

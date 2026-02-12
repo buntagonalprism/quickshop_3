@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../analytics/analytics.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/firestore.dart';
-import '../../../firestore_transaction.dart';
+import '../../../common/application/firestore_transaction.dart';
 import '../models/shopping_item.dart';
 import '../models/shopping_item_raw_data.dart';
 

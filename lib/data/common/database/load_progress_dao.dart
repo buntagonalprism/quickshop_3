@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
-import '../app_database.dart';
-import '../tables/load_progress_table.dart';
+import '../../app_database.dart';
+import 'load_progress_table.dart';
 
 part 'load_progress_dao.g.dart';
 
@@ -17,10 +17,7 @@ class LoadProgressDao extends DatabaseAccessor<AppDatabase> with _$LoadProgressD
   }
 
   Future<DateTime?> get(LoadProgressType type) async {
-    final row = await (select(loadProgressTable)..where((t) => t.type.equals(type.value)))
-        .getSingleOrNull();
-    return row?.retrievedUntil != null
-        ? DateTime.fromMillisecondsSinceEpoch(row!.retrievedUntil)
-        : null;
+    final row = await (select(loadProgressTable)..where((t) => t.type.equals(type.value))).getSingleOrNull();
+    return row?.retrievedUntil != null ? DateTime.fromMillisecondsSinceEpoch(row!.retrievedUntil) : null;
   }
 }

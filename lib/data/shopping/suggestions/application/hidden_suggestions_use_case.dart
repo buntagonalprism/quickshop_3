@@ -1,10 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../services/tables/suggestion_type.dart';
-import '../../../firestore_transaction.dart';
+import '../../../common/application/firestore_transaction.dart';
 import '../../../user/repositories/user_profile_repo.dart';
 import '../../autocomplete/models/shopping_category_autocomplete.dart';
 import '../../autocomplete/models/shopping_item_autocomplete.dart';
+import '../database/suggestion_type.dart';
 import '../repositories/hidden_suggestions_repo.dart';
 
 part 'hidden_suggestions_use_case.g.dart';

@@ -6,7 +6,7 @@ import '../../../services/auth_service.dart';
 import '../../../services/firestore.dart';
 import '../../../services/functions_http_client.dart';
 import '../../../services/http_result.dart';
-import '../../firestore_transaction.dart';
+import '../../common/application/firestore_transaction.dart';
 import '../../user/models/user_auth.dart';
 import '../application/list_leave_in_progress_notifier.dart';
 import '../models/list_invite.dart';

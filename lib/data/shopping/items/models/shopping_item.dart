@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../has_id.dart';
+import '../../../common/models/has_id.dart';
 
 part 'shopping_item.freezed.dart';
 

@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../services/app_database.dart';
-import '../../../../services/app_database_provider.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/firestore.dart';
 import '../../../../services/locale_service.dart';
-import '../../../../services/tables/db_preferences_table.dart';
-import '../../../../services/tables/suggestion_type.dart';
 import '../../../../utilities/parsing_utils.dart';
-import '../../../firestore_transaction.dart';
+import '../../../app_database.dart';
+import '../../../app_database_provider.dart';
+import '../../../common/application/firestore_transaction.dart';
+import '../../../settings/database/db_preferences_table.dart';
 import '../../../user/models/hidden_suggestions.dart';
 import '../../../user/repositories/user_profile_repo.dart';
+import '../database/suggestion_type.dart';
 
 part 'hidden_suggestions_repo.g.dart';
 

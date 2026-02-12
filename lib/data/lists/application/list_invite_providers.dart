@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../common/application/delay_provider_dispose.dart';
 import '../models/list_invite.dart';
-import '../../delay_provider_dispose.dart';
 import '../repositories/list_invite_repo.dart';
 
 part 'list_invite_providers.g.dart';

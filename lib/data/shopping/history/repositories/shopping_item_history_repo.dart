@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../analytics/logger.dart';
-import '../../../../services/app_database.dart';
-import '../../../../services/app_database_provider.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/firestore.dart';
-import '../../../../services/tables/load_progress_table.dart';
-import '../../../firestore_transaction.dart';
+import '../../../app_database.dart';
+import '../../../app_database_provider.dart';
+import '../../../common/application/firestore_transaction.dart';
+import '../../../common/database/load_progress_table.dart';
 import '../../../user/repositories/user_profile_repo.dart';
 import '../models/shopping_item_history.dart';
 

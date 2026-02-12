@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 
-import '../app_database.dart';
-import '../tables/category_history_table.dart';
-import '../tables/token_table.dart';
+import '../../../app_database.dart';
+import '../../../common/database/token_table.dart';
+import 'category_history_table.dart';
 
 part 'category_history_dao.g.dart';
 

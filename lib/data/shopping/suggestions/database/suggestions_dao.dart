@@ -1,11 +1,11 @@
 import 'package:drift/drift.dart';
 
-import '../app_database.dart';
-import '../tables/category_suggestion_table.dart';
-import '../tables/hidden_suggestions_table.dart';
-import '../tables/item_suggestion_table.dart';
-import '../tables/suggestion_type.dart';
-import '../tables/token_table.dart';
+import '../../../app_database.dart';
+import '../../../common/database/token_table.dart';
+import 'category_suggestion_table.dart';
+import 'hidden_suggestions_table.dart';
+import 'item_suggestion_table.dart';
+import 'suggestion_type.dart';
 
 part 'suggestions_dao.g.dart';
 

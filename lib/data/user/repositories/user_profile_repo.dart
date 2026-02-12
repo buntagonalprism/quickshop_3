@@ -5,7 +5,7 @@ import '../../../services/auth_service.dart';
 import '../../../services/firestore.dart';
 import '../../../services/functions_http_client.dart';
 import '../../../utilities/parsing_utils.dart';
-import '../../firestore_transaction.dart';
+import '../../common/application/firestore_transaction.dart';
 import '../models/user_profile.dart';
 
 part 'user_profile_repo.g.dart';

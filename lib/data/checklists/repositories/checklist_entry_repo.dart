@@ -4,8 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../analytics/analytics.dart';
 import '../../../services/firestore.dart';
-import '../../firestore_transaction.dart';
-import '../../user_sortable.dart';
+import '../../common/application/firestore_transaction.dart';
+import '../../common/models/user_sortable.dart';
 import '../models/checklist_entry.dart';
 
 part 'checklist_entry_repo.g.dart';

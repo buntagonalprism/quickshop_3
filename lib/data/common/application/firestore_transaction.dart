@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../services/firestore.dart';
+import '../../../services/firestore.dart';
 
 part 'firestore_transaction.g.dart';
 

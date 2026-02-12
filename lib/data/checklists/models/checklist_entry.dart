@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../has_id.dart';
-import '../../user_sortable.dart';
+import '../../common/models/has_id.dart';
+import '../../common/models/user_sortable.dart';
 
 part 'checklist_entry.freezed.dart';
 

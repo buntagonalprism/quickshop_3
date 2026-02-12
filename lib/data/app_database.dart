@@ -2,18 +2,18 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'daos/category_history_dao.dart';
-import 'daos/item_history_dao.dart';
-import 'daos/load_progress_dao.dart';
-import 'daos/suggestions_dao.dart';
-import 'tables/category_history_table.dart';
-import 'tables/category_suggestion_table.dart';
-import 'tables/db_preferences_table.dart';
-import 'tables/hidden_suggestions_table.dart';
-import 'tables/item_history_table.dart';
-import 'tables/item_suggestion_table.dart';
-import 'tables/load_progress_table.dart';
-import 'tables/token_table.dart';
+import 'common/database/load_progress_dao.dart';
+import 'common/database/load_progress_table.dart';
+import 'common/database/token_table.dart';
+import 'settings/database/db_preferences_table.dart';
+import 'shopping/history/database/category_history_dao.dart';
+import 'shopping/history/database/category_history_table.dart';
+import 'shopping/history/database/item_history_dao.dart';
+import 'shopping/history/database/item_history_table.dart';
+import 'shopping/suggestions/database/category_suggestion_table.dart';
+import 'shopping/suggestions/database/hidden_suggestions_table.dart';
+import 'shopping/suggestions/database/item_suggestion_table.dart';
+import 'shopping/suggestions/database/suggestions_dao.dart';
 
 part 'app_database.g.dart';
 

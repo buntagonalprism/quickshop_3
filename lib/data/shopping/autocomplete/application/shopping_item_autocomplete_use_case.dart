@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../services/shopping_item_name_parser.dart';
-import '../../../delay_provider_dispose.dart';
-import '../../../firestore_transaction.dart';
+import '../../../common/application/delay_provider_dispose.dart';
+import '../../../common/application/firestore_transaction.dart';
 import '../../../user/repositories/user_profile_repo.dart';
 import '../../history/repositories/shopping_item_history_repo.dart';
 import '../../items/application/shopping_items_notifier.dart';

@@ -3,15 +3,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'analytics/crash_reporter.dart';
-import 'data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
+import 'data/app_database_provider.dart';
 import 'data/settings/application/settings_notifier.dart';
 import 'data/settings/application/tutorials_notifier.dart';
 import 'data/shopping/history/application/user_history_loader_use_case.dart';
+import 'data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
 import 'data/shopping/suggestions/repositories/shopping_category_suggestion_repo.dart';
 import 'data/shopping/suggestions/repositories/shopping_item_suggestion_repo.dart';
 import 'localization/app_localizations.dart';
 import 'router.dart';
-import 'services/app_database_provider.dart';
 import 'services/auth_service.dart';
 import 'services/locale_service.dart';
 

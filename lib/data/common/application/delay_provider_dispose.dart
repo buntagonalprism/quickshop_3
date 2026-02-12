@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
 
-import '../services/auth_service.dart';
+import '../../../services/auth_service.dart';
 
 extension DelayProviderDisposeExtension on Ref {
   /// Delay disposal of this provider for the specified [duration]. This means the provider state is
