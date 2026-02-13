@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
-import '../../../../data/shopping/autocomplete/application/shopping_item_autocomplete_use_case.dart';
-import '../../../../data/shopping/items/application/shopping_items_notifier.dart';
 import '../../../../data/settings/application/tutorials_notifier.dart';
+import '../../../../data/shopping/autocomplete/application/shopping_item_autocomplete_use_case.dart';
 import '../../../../data/shopping/autocomplete/models/shopping_item_autocomplete.dart';
+import '../../../../data/shopping/history/repositories/shopping_item_history_repo.dart';
+import '../../../../data/shopping/items/application/shopping_items_notifier.dart';
 import '../../../../data/shopping/items/models/shopping_item_raw_data.dart';
+import '../../../../data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
 import '../../../../router.dart';
 import '../../../../widgets/confirmation_dialog.dart';
 import '../../../../widgets/padding.dart';
 import '../../../../widgets/tooltip_button.dart';
+import '../history/shopping_history_item_edit_dialog.dart';
 import 'category_selector.dart';
 import 'shopping_item_create_view_model.dart';
 import 'shopping_item_view.dart';
@@ -453,8 +455,14 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
     }
   }
 
-  void _onEditHistoryEntry(ShoppingItemAutocomplete history) {
-    // TODO: Show a history edit page
+  void _onEditHistoryEntry(ShoppingItemAutocomplete history) async {
+    final history = await ref.read(shoppingItemHistoryRepoProvider).get(widget.autocomplete.sourceId);
+    if (mounted) {
+      await ShoppingHistoryItemEditDialog.show(context, history);
+      if (mounted) {
+        ref.invalidate(itemAutocompleteProvider(widget.listId));
+      }
+    }
   }
 }
 

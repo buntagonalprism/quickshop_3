@@ -32,9 +32,24 @@ class ShoppingItemHistoryRepo {
 
   ShoppingItemHistoryRepo._(this._ref);
 
+  Future<ShoppingItemHistory> get(String id) async {
+    final row = await _db.itemHistoryDao.getById(id);
+    return _dbRowToModel(row);
+  }
+
+  void update(FirestoreTransaction tx, String id, String newName, String newCategory) async {
+    _db.itemHistoryDao.updateContent(id, newName, newCategory);
+    final docRef = _fs.collection(UserProfileRepo.collectionName).doc(_userId).collection(collectionName).doc(id);
+    tx.batch.update(docRef, {
+      'name': newName,
+      'nameLower': newName.toLowerCase(),
+      'category': newCategory,
+    });
+  }
+
   void onUserHistoryUpdated(DateTime lastHistoryUpdate) async {
     if (_retrievedUntil == _zeroTime) {
-      final progress = await _db.loadProgressDao.get(LoadProgressType.categoryHistory);
+      final progress = await _db.loadProgressDao.get(LoadProgressType.itemHistory);
       if (progress != null) {
         _retrievedUntil = progress;
       }
@@ -57,17 +72,19 @@ class ShoppingItemHistoryRepo {
     final start = DateTime.now();
     final itemHistoryData = await _db.itemHistoryDao.query(query);
     _log.captureSpan(start, '$ShoppingItemHistoryRepo.$searchHistory');
-    return itemHistoryData.map((entry) {
-      return ShoppingItemHistory(
-        id: entry.id,
-        name: entry.name,
-        nameLower: entry.nameLower,
-        usageCount: entry.usageCount,
-        lastUsed: DateTime.fromMillisecondsSinceEpoch(entry.lastUsed),
-        category: entry.category,
-        deleted: false,
-      );
-    }).toList();
+    return itemHistoryData.map(_dbRowToModel).toList();
+  }
+
+  ShoppingItemHistory _dbRowToModel(ItemHistoryRow entry) {
+    return ShoppingItemHistory(
+      id: entry.id,
+      name: entry.name,
+      nameLower: entry.nameLower,
+      usageCount: entry.usageCount,
+      lastUsed: DateTime.fromMillisecondsSinceEpoch(entry.lastUsed),
+      category: entry.category,
+      deleted: false,
+    );
   }
 
   Future<void> _fetchHistory(String userId, DateTime since) async {

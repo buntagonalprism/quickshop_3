@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
 import '../../../../data/shopping/autocomplete/application/shopping_category_autocomplete_use_case.dart';
 import '../../../../data/shopping/autocomplete/models/shopping_category_autocomplete.dart';
+import '../../../../data/shopping/history/repositories/shopping_category_history_repo.dart';
+import '../../../../data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
 import '../../../../widgets/confirmation_dialog.dart';
+import '../history/shopping_history_category_edit_dialog.dart';
 import 'category_selector_view_model.dart';
 
 class CategorySelector extends ConsumerStatefulWidget {
@@ -249,8 +251,14 @@ class _CategoryAutocompleteEntryState extends ConsumerState<CategoryAutocomplete
     }
   }
 
-  void _onEditHistoryEntry(ShoppingCategoryAutocomplete history) {
-    // TODO: Show a history edit page
+  void _onEditHistoryEntry(ShoppingCategoryAutocomplete history) async {
+    final history = await ref.read(shoppingCategoryHistoryRepoProvider).get(widget.autocomplete.sourceId);
+    if (mounted) {
+      await ShoppingHistoryCategoryEditDialog.show(context, history);
+      if (mounted) {
+        ref.invalidate(categoryAutocompleteProvider(widget.listId));
+      }
+    }
   }
 }
 

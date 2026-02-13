@@ -10,11 +10,26 @@ part 'category_history_dao.g.dart';
 class CategoryHistoryDao extends DatabaseAccessor<AppDatabase> with _$CategoryHistoryDaoMixin {
   CategoryHistoryDao(super.db);
 
+  Future<CategoryHistoryRow> getById(String id) async {
+    return (select(categoryHistoryTable)..where((tbl) => tbl.id.equals(id))).getSingle();
+  }
+
   Future<void> insert(List<CategoryHistoryRow> rows) async {
     final categorysById = {for (var row in rows) row.id: row.nameLower};
     await batch((batch) {
       batch.insertAll(categoryHistoryTable, rows, mode: InsertMode.insertOrReplace);
       db.updateTokens(batch, TokenType.categoryHistory, categorysById);
+    });
+  }
+
+  Future<void> updateContent(String id, String newName) async {
+    final companion = CategoryHistoryTableCompanion(
+      name: Value(newName),
+      nameLower: Value(newName.toLowerCase()),
+    );
+    await batch((batch) {
+      batch.update(categoryHistoryTable, companion, where: (tbl) => tbl.id.equals(id));
+      db.updateTokens(batch, TokenType.categoryHistory, {id: newName.toLowerCase()});
     });
   }
 

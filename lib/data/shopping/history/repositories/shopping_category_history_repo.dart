@@ -32,6 +32,20 @@ class ShoppingCategoryHistoryRepo {
 
   ShoppingCategoryHistoryRepo._(this._ref);
 
+  Future<ShoppingCategoryHistory> get(String id) async {
+    final row = await _db.categoryHistoryDao.getById(id);
+    return _dbRowToModel(row);
+  }
+
+  void update(FirestoreTransaction tx, String id, String newName) async {
+    _db.categoryHistoryDao.updateContent(id, newName);
+    final docRef = _fs.collection(UserProfileRepo.collectionName).doc(_userId).collection(collectionName).doc(id);
+    tx.batch.update(docRef, {
+      'name': newName,
+      'nameLower': newName.toLowerCase(),
+    });
+  }
+
   void onUserHistoryUpdated(DateTime lastHistoryUpdate) async {
     if (_retrievedUntil == _zeroTime) {
       final progress = await _db.loadProgressDao.get(LoadProgressType.categoryHistory);
@@ -57,15 +71,17 @@ class ShoppingCategoryHistoryRepo {
     final start = DateTime.now();
     final categoryHistory = await _db.categoryHistoryDao.query(query);
     _log.captureSpan(start, '$ShoppingCategoryHistoryRepo.$searchHistory');
-    return categoryHistory.map((row) {
-      return ShoppingCategoryHistory(
-        id: row.id,
-        name: row.name,
-        nameLower: row.nameLower,
-        usageCount: row.usageCount,
-        lastUsed: DateTime.fromMillisecondsSinceEpoch(row.lastUsed),
-      );
-    }).toList();
+    return categoryHistory.map(_dbRowToModel).toList();
+  }
+
+  ShoppingCategoryHistory _dbRowToModel(CategoryHistoryRow row) {
+    return ShoppingCategoryHistory(
+      id: row.id,
+      name: row.name,
+      nameLower: row.nameLower,
+      usageCount: row.usageCount,
+      lastUsed: DateTime.fromMillisecondsSinceEpoch(row.lastUsed),
+    );
   }
 
   Future<void> _fetchHistory(String userId, DateTime since) async {
