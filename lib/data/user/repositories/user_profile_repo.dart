@@ -76,7 +76,7 @@ class UserProfileRepo {
     final fs = _ref.read(firestoreProvider);
     final userRef = fs.collection(collectionName).doc(user.id);
 
-    return userRef.set({
+    return userRef.update({
       _Fields.completedTutorials: FieldValue.arrayUnion([tutorialId]),
     });
   }
