@@ -75,6 +75,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                     key: ValueKey('search_$childrenResetKey'),
                     showErrors: showErrorsOnTab == 0,
                     onAutocompleteSelected: onAutocompleteSelected,
+                    onSubmitted: () => onDone(addMore: false),
                     listId: widget.listId,
                   ),
                   ShoppingItemCategorySelectView(
@@ -216,11 +217,13 @@ class ShoppingItemSearchView extends ConsumerStatefulWidget {
     required this.listId,
     required this.showErrors,
     required this.onAutocompleteSelected,
+    required this.onSubmitted,
     super.key,
   });
   final String listId;
   final bool showErrors;
   final Function(ShoppingItemAutocomplete autocomplete, bool addMore) onAutocompleteSelected;
+  final VoidCallback onSubmitted;
 
   @override
   ConsumerState<ShoppingItemSearchView> createState() => _ShoppingItemSearchViewState();
@@ -256,6 +259,8 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
             onChanged: (newValue) {
               ref.read(shoppingItemCreateViewModelProvider.notifier).setFilter(newValue);
             },
+            textInputAction: TextInputAction.done,
+            onSubmitted: (_) => widget.onSubmitted(),
           ),
         ),
         Expanded(
