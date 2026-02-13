@@ -16,6 +16,10 @@ extension DelayProviderDisposeExtension on Ref {
   /// when the last listener disconnected - i.e. when [onCancel] was called. A new value will only
   /// be rebuilt with the new upstream data once a new listener is connected again.
   ///
+  /// Note that, in Riverpod 3.0, Stream providers with no listeners automatically pause their internal
+  /// stream subscription to save resources. Any data emitted by the underlying stream will be lost,
+  /// and the provider will continue to maintain the cached value from before the last listener detached.
+  ///
   /// When a provider [onDispose] is invoked, all existing keepAlive links are removed, so the
   /// provider will not be notified again of any further upstream changes until a new listener is
   /// connected again. If using Firestore as an upstream data source, this means the query snapshot

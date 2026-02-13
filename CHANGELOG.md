@@ -1,3 +1,9 @@
+# 0.4.0 - 2026-02-14
+- Save per user item history for shopping lists
+- Sync user history and item suggestions to local database
+- Search history and suggestions when creating shopping items
+- Shopping items now have only a single category, not multiple
+
 # 0.3.2 - 2025-02-04
 Fix to not show the leave list option to list owners. 
 
