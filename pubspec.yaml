@@ -4,12 +4,6 @@ description: "A new Flutter project."
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
 
-# Manually increment using semver approach when performing a release:
-# - Increment major version for substantial app changes
-# - Increment minor version for standard releases / new features
-# - Increment patch version for bug fixes
-# Ensure to add an entry in CHANGELOG.md for each release describing the changes.
-version: 0.3.2
 
 environment:
   sdk: ^3.10.0

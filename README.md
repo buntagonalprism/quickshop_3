@@ -141,34 +141,27 @@ Each commit on main branch runs flutter tests using the pipeline `.github/workfl
 
 ### Dev Deployment
 To release to development:
-1. Manually run the `Dev - Build and Deploy` pipeline in github actions. The source file for this pipeline `.github/workflows/build_and_deploy_dev.yaml` pipeline
+1. Manually run the `Dev - Build and Deploy` pipeline in github actions, passing in a semantic version number in format `<MAJOR>.<MINOR>.<PATCH>`
+    - The source file for this pipeline `.github/workflows/build_and_deploy_dev.yaml` pipeline
 
 Dev pipeline behaviour:
-- Read the `version` component of `pubspec.yaml` and validate it is in format `<MAJOR>.<MINOR>.<PATCH>`
-- Tag the current commit with a tag in format `<MAJOR>.<MINOR>.<PATCH>-dev.<BUILD_NUMBER>`
-- Build the application, passing in the build number from the CI pipeline
+- Tag the current commit with a tag in format `dev/<MAJOR>.<MINOR>.<PATCH>-<BUILD_NUMBER>`
+- Build the application with the semantic version and build number
 
-There can be multiple dev releases with the same semantic version number; dev releases should primarily be differentiated by the build number. 
+There can be multiple dev releases with the same semantic version number which can be differentiated by the build number. 
 
 ### Prod Deployment
 To release to production:
-1. On master, update the `version` property in `pubspec.yaml` and add an entry describing the changes in this release in `CHANGELOG.md`
-2. Create a release branch with name `release/<MAJOR>.<MINOR>`
-3. Manually run the `Prod - Build and Deploy` pipeline in github actions. The source file for this pipeline is `github/workflows/build_and_deploy_prod.yaml`
+1. On master, add an entry describing the changes in this release in `CHANGELOG.md` with a semantic version number in format `<MAJOR>.<MINOR>.<PATCH>`
+2. Manually run the `Prod - Build and Deploy` pipeline in github actions, supplying the semantic version number as an input property. 
+    - The source file for this pipeline is `github/workflows/build_and_deploy_prod.yaml`
 
 Release pipeline behaviour: 
-- Read the `version` component of `pubspec.yaml` and validate it is in format `<MAJOR>.<MINOR>.<PATCH>`
-- Check for a an existing git tag with that version; fail if it already exists
-- Otherwise tag the current commit with that version in format `<MAJOR>.<MINOR>.<PATCH>`
-- Build the application, passing in the build number from the CI pipeline
+- Check for an existing git tag with that semantic version; fail if it already exists
+- Otherwise tag the current commit with that version 
+- Build the application with the semantic version 
 
 This approach ensures there will be only a single production release build with a given semantic version number. 
-
-To release a hotfix:
-1. Checkout the release branch `release/<MAJOR>.<MINOR>`
-2. Increment the patch number of the the `version` property in `pubspec.yaml` and add an entry describing the fix in this release in `CHANGELOG.md`
-3. Manually run the `Prod - Build and Deploy` pipeline in github actions.
-4. Cherry pick the hotfix back to master, if the fix is not already in master
 
 
 ## Localization
