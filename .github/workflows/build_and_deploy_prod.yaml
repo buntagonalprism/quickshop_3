@@ -65,7 +65,7 @@ jobs:
         run: |
           # Check if a tag already exists for this semantic version
           if git rev-parse "${{ inputs.version }}" >/dev/null 2>&1; then
-            echo "Error: A production release commit already exists with tag '${{ inputs.version }}'. Update the semantic version in pubspec.yaml and rerun this pipeline to build a new production release. To re-run a failed release pipeline, delete the tag before re-running."
+            echo "Error: A production release commit already exists with tag '${{ inputs.version }}'. Update CHANGELOG.md and rerun this pipeline with a new version number. To re-run a failed release pipeline, delete the tag before re-running."
             exit 1
           else
             tag_version="${{ inputs.version }}"
@@ -103,13 +103,6 @@ jobs:
               ref: 'refs/tags/${{ env.tag_version }}',
               sha: context.sha
             })
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'corretto' 
-          java-version: '21'
-          cache: gradle
 
       - name: Build prod android apk
         run: flutter build apk --release --flavor=prod --dart-define-from-file=settings/app_settings_prod.json --dart-define-from-file=settings/app_secrets_prod.json --build-number=${{ github.run_number }} --build-name=${{ inputs.version }}
