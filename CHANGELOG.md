@@ -1,3 +1,6 @@
+# 0.4.1 - 2026-02-15
+- Capitalise shopping item and category text fields by default
+
 # 0.4.0 - 2026-02-14
 - Save per user item history for shopping lists
 - Sync user history and item suggestions to local database

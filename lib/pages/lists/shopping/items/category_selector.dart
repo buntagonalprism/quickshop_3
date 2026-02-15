@@ -53,6 +53,7 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
               ref.read(categoryFilterProvider(widget.listId).notifier).setFilter(newValue);
             },
             onSubmitted: (_) => widget.onSubmit(),
+            textCapitalization: TextCapitalization.sentences,
           ),
         ),
         ConstrainedBox(

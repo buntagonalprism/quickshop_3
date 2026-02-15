@@ -259,6 +259,7 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
             onChanged: (newValue) {
               ref.read(shoppingItemCreateViewModelProvider.notifier).setFilter(newValue);
             },
+            textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => widget.onSubmitted(),
           ),
