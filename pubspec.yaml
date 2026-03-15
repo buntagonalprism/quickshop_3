@@ -41,6 +41,8 @@ dependencies:
   shared_preferences: ^2.3.2
   skeletonizer: ^2.1.0
   uuid: ^4.5.1
+  words_to_numbers:
+    git: https://github.com/buntagonalprism/words_to_numbers
 
 dev_dependencies:
   flutter_test:

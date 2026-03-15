@@ -1402,6 +1402,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  words_to_numbers:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "7d9f6d33117a94daf29979dd447c7221ff72b773"
+      url: "https://github.com/buntagonalprism/words_to_numbers"
+    source: git
+    version: "1.0.0"
   xdg_directories:
     dependency: transitive
     description:
