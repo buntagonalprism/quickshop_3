@@ -1,3 +1,6 @@
+# 0.4.2 - 2026-03-15
+- Improve shopping item quantity extraction
+
 # 0.4.1 - 2026-02-15
 - Capitalise shopping item and category text fields by default
 
