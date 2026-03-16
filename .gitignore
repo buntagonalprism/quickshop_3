@@ -55,3 +55,4 @@ app_settings_local.json
 
 # FVM Version Cache
 .fvm/
+.claude/settings.local.json

@@ -4,6 +4,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:marionette_flutter/marionette_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +30,7 @@ Future<void> main() async {
       appRunner: _main,
     );
   } else {
-    WidgetsFlutterBinding.ensureInitialized();
+    MarionetteBinding.ensureInitialized();
     await _main();
   }
 }
@@ -48,11 +49,13 @@ Future<void> _main() async {
       clientId: DefaultFirebaseOptions.googleSignInClientId,
     ),
   ]);
-  runApp(ProviderScope(
-    overrides: [
-      sharedPrefsProvider.overrideWithValue(prefs),
-      settingsServiceProvider.overrideWithValue(settings),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPrefsProvider.overrideWithValue(prefs),
+        settingsServiceProvider.overrideWithValue(settings),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }

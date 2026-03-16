@@ -102,6 +102,15 @@ Install SQLite version as close as possible to that used by Drift. See https://p
 
 SQLite download links are available here: https://www.sqlite.org/download.html. Note that the links to older versions of SQLite are not listed on this site, to encourage always using the latest version, but download links all have a consistent format. E.g. if the current link to download Windows binaries for version 3.50.4 is https://www.sqlite.org/2025/sqlite-dll-win-x64-3500400.zip, then to download the older version 3.50.3 simply change the 4 to a 3 https://www.sqlite.org/2025/sqlite-dll-win-x64-3500300.zip
 
+### AI Assisted Development
+This project uses [marionette](https://pub.dev/packages/marionette_flutter) to allow local AI agents to inspect and interact with QuickShop during development. Functionality provided by marionette includes the capability to view text displayed on the screen, perform interactions like tapping buttons and entering text, view log output, and take screenshots. 
+
+The `marionette_mcp` server is installed as a dev dependency of this project, and `.mcp.json` includes the run command to launch it using fvm, so it should be automatically detected when launching an MCP compatable agent in this folder.  
+
+To connect:
+1. Look for a line like the following in the flutter debug run output: `Connecting to VM Service at ws://127.0.0.1:50495/wt-4wKX-wSk=/ws`. 
+2. Instruct your agent to connect to that URI, e.g. *Use the marionette MCP server to connect to my running flutter app on VM service URI: ws://127.0.0.1:50495/wt-4wKX-wSk=/ws*
+
 ## Assets
 The `assets` directory houses images, fonts, and any other files you want to
 include with your application.
