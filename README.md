@@ -111,6 +111,12 @@ To connect:
 1. Look for a line like the following in the flutter debug run output: `Connecting to VM Service at ws://127.0.0.1:50495/wt-4wKX-wSk=/ws`. 
 2. Instruct your agent to connect to that URI, e.g. *Use the marionette MCP server to connect to my running flutter app on VM service URI: ws://127.0.0.1:50495/wt-4wKX-wSk=/ws*
 
+In addition, the built-in [Dart and Flutter MCP Server](https://docs.flutter.dev/ai/mcp-server#overview) is also configured in `.mcp.json`. This MCP server provides development-time capabilities like looking up symbol definitions and fetching package source code files, as well as runtime capabilities to inspect the widget tree of a running application and get exceptions. 
+
+To connect to a running application for runtime capabilities:
+1. Open the VSCode command pallete (CTRL + SHIFT + P) and select **Dart: Copy DTD Uri to Clipboard**. Note that this is a different URI to the VM Service URI for marionette. 
+2. Instruct your agent to connect to the dart tooling deamon using that URI, e.g. *Use the dart MCP server to connect to the dart tooling deamon with URI: ws://127.0.0.1:60537/7-ov0spwEfA=*
+
 ## Assets
 The `assets` directory houses images, fonts, and any other files you want to
 include with your application.

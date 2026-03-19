@@ -2,7 +2,17 @@
   "mcpServers": {
     "marionette": {
       "type": "stdio",
-      "command": "fvm dart run marionette_mcp"
+      "command": "fvm dart run marionette_mcp",
+      "args": []
+    },
+    "dart": {
+      "type": "stdio",
+      "command": "fvm",
+      "args": [
+        "dart",
+        "mcp-server"
+      ],
+      "env": {}
     }
   }
 }
