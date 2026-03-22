@@ -168,7 +168,8 @@ There can be multiple dev releases with the same semantic version number which c
 ### Prod Deployment
 To release to production:
 1. On master, add an entry describing the changes in this release in `CHANGELOG.md` with a semantic version number in format `<MAJOR>.<MINOR>.<PATCH>`
-2. Manually run the `Prod - Build and Deploy` pipeline in github actions, supplying the semantic version number as an input property. 
+1. Create a release branch from master in format `release/v<MAJOR>.<MINOR>`. 
+2. Manually run the `Prod - Build and Deploy` pipeline in github actions, supplying the full semantic version number as an input property. 
     - The source file for this pipeline is `github/workflows/build_and_deploy_prod.yaml`
 
 Release pipeline behaviour: 
@@ -178,6 +179,14 @@ Release pipeline behaviour:
 
 This approach ensures there will be only a single production release build with a given semantic version number. 
 
+### Hotfix Deployment
+Hotfix approach:
+1. Branch from main, fix the issue, and document the fix as a new patch version in `CHANGELOG.md`
+2. Merge the fix to main
+3. Cherry pick the fix to the release branch `release/v<MAJOR>.<MINOR>`
+4. Run the `Prod - Build and Deploy` pipeline to deploy the hotfix app version
+
+This approach ensures that we can perform hotfix releases without including any features that may already be merged to main but which are not yet ready for release. In the future, feature flags should be used instead to negate the need for release branches.
 
 ## Localization
 This project generates localized messages based on arb files found in
