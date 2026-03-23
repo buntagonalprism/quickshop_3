@@ -7,6 +7,11 @@ on:
         description: 'Version'
         required: true
         type: string
+      release_notes:
+        description: 'Release notes'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   test_and_build:
@@ -83,8 +88,11 @@ jobs:
         shell: bash
         env:
           SERVICE_ACCOUNT: ${{ secrets.FB_APP_DIST_CREDENTIALS }}
+          FIREBASE_RELEASE_NOTES: ${{ inputs.release_notes }}
         run: |
           echo "$SERVICE_ACCOUNT" >> google_service_account.json
           export GOOGLE_APPLICATION_CREDENTIALS=google_service_account.json
+          echo "Distributing app ${{ inputs.version }} with release notes: ${FIREBASE_RELEASE_NOTES}"
+          releaseNotes="${FIREBASE_RELEASE_NOTES//\\n/$'\n'}"
           firebase --version
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/${{ env.apk_name }} --app ${{ vars.ANDROID_FIREBASE_APP_ID }} --release-notes "Dev Build ${{ inputs.version }}" --groups ${{ vars.APP_TESTER_GROUPS }}
+          firebase appdistribution:distribute build/app/outputs/flutter-apk/${{ env.apk_name }} --app ${{ vars.ANDROID_FIREBASE_APP_ID }} --release-notes "$releaseNotes" --groups ${{ vars.APP_TESTER_GROUPS }}
