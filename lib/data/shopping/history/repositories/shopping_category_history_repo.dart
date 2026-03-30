@@ -21,7 +21,7 @@ ShoppingCategoryHistoryRepo shoppingCategoryHistoryRepo(Ref ref) {
 class ShoppingCategoryHistoryRepo {
   final Ref _ref;
   AppDatabase get _db => _ref.read(appDatabaseProvider);
-  Logger get _log => _ref.read(loggerProvider);
+  Logger get _log => _ref.read(loggerProvider('$ShoppingCategoryHistoryRepo'));
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
   String get _userId => _ref.read(userAuthProvider)!.id;
 
@@ -54,6 +54,7 @@ class ShoppingCategoryHistoryRepo {
       }
     }
     if (_retrievedUntil.isBefore(lastHistoryUpdate)) {
+      _log.log('Fetching user category history since $_retrievedUntil');
       _fetchHistory(_userId, _retrievedUntil);
     }
   }
@@ -68,9 +69,9 @@ class ShoppingCategoryHistoryRepo {
   }
 
   Future<List<ShoppingCategoryHistory>> searchHistory(String query) async {
-    final start = DateTime.now();
+    final span = _log.startSpan('searchHistory');
     final categoryHistory = await _db.categoryHistoryDao.query(query);
-    _log.captureSpan(start, '$ShoppingCategoryHistoryRepo.$searchHistory');
+    await span.finish();
     return categoryHistory.map(_dbRowToModel).toList();
   }
 

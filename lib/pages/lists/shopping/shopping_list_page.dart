@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../data/shopping/items/application/shopping_items_notifier.dart';
 import '../../../data/lists/models/list_summary.dart';
+import '../../../data/shopping/items/application/shopping_items_notifier.dart';
 import '../../../data/shopping/items/models/shopping_item.dart';
-import '../../../data/shopping/items/repositories/shopping_items_repo.dart';
 import '../../../router.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
@@ -138,7 +137,7 @@ class ShoppingItemTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      onTap: () => ref.read(shoppingListItemsRepoProvider(list.id)).toggleItem(item),
+      onTap: () => ref.read(shoppingItemsProvider(list.id).notifier).toggleItem(item),
       onLongPress: () => ref.read(routerProvider).go(Routes.shoppingListEditItem(list.id, item.id).path),
       title: Text(
         item.displayName,
@@ -147,7 +146,7 @@ class ShoppingItemTile extends ConsumerWidget {
       trailing: Checkbox(
         value: item.completed,
         onChanged: (value) {
-          ref.read(shoppingListItemsRepoProvider(list.id)).toggleItem(item);
+          ref.read(shoppingItemsProvider(list.id).notifier).toggleItem(item);
         },
       ),
     );

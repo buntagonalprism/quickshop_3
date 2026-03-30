@@ -10,23 +10,30 @@ part of 'logger.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(logger)
-const loggerProvider = LoggerProvider._();
+const loggerProvider = LoggerFamily._();
 
 final class LoggerProvider extends $FunctionalProvider<Logger, Logger, Logger>
     with $Provider<Logger> {
-  const LoggerProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'loggerProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+  const LoggerProvider._({
+    required LoggerFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'loggerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$loggerHash();
+
+  @override
+  String toString() {
+    return r'loggerProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
@@ -35,7 +42,8 @@ final class LoggerProvider extends $FunctionalProvider<Logger, Logger, Logger>
 
   @override
   Logger create(Ref ref) {
-    return logger(ref);
+    final argument = this.argument as String;
+    return logger(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -45,6 +53,34 @@ final class LoggerProvider extends $FunctionalProvider<Logger, Logger, Logger>
       providerOverride: $SyncValueProvider<Logger>(value),
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LoggerProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
-String _$loggerHash() => r'b79bb80312edeba85af6ee6f64cb8e383bb7c5d6';
+String _$loggerHash() => r'a6c7d6f22ceba2259989a272958f676dc7813475';
+
+final class LoggerFamily extends $Family
+    with $FunctionalFamilyOverride<Logger, String> {
+  const LoggerFamily._()
+    : super(
+        retry: null,
+        name: r'loggerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  LoggerProvider call(String source) =>
+      LoggerProvider._(argument: source, from: this);
+
+  @override
+  String toString() => r'loggerProvider';
+}

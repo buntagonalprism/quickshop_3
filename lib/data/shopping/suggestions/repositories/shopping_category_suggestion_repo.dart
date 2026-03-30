@@ -23,7 +23,7 @@ ShoppingCategorySuggestionRepo shoppingCategorySuggestionRepo(Ref ref) {
 class ShoppingCategorySuggestionRepo {
   final Ref _ref;
   AppDatabase get _db => _ref.read(appDatabaseProvider);
-  Logger get _log => _ref.read(loggerProvider);
+  Logger get _log => _ref.read(loggerProvider('$ShoppingCategorySuggestionRepo'));
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
   SharedPreferencesWithCache get _prefs => _ref.read(sharedPrefsProvider);
 
@@ -60,6 +60,7 @@ class ShoppingCategorySuggestionRepo {
           final lastUpdatedTimestamp = data['lastUpdated'][_currentLangCode!] ?? 0;
           final lastUpdated = DateTime.fromMillisecondsSinceEpoch(lastUpdatedTimestamp);
           if (loadProgress.isBefore(lastUpdated)) {
+            _log.log('Fetching category suggestions for locale "$_currentLangCode" since $lastUpdated');
             _fetchSuggestions(_currentLangCode!, loadProgress, lastUpdated);
           }
         }
@@ -68,9 +69,9 @@ class ShoppingCategorySuggestionRepo {
   }
 
   Future<List<ShoppingCategorySuggestion>> searchSuggestions(String query) async {
-    final start = DateTime.now();
+    final span = _log.startSpan('searchSuggestions');
     final suggestions = await _db.suggestionsDao.queryCategories(query);
-    _log.captureSpan(start, '$ShoppingCategorySuggestionRepo.$searchSuggestions');
+    await span.finish();
     return suggestions.map((row) {
       return ShoppingCategorySuggestion(
         id: row.id,

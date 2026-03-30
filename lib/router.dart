@@ -114,9 +114,9 @@ GoRouter router(Ref ref) {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -134,7 +134,7 @@ GoRouter router(Ref ref) {
                     builder: (context, state) => RecipeDetailPage(
                       recipeId: state.pathParameters[_RouteParams.recipeId]!,
                     ),
-                  )
+                  ),
                 ],
               ),
             ],
@@ -182,11 +182,13 @@ GoRouter router(Ref ref) {
     ],
     refreshListenable: loggedInNotifier,
     redirect: (context, state) {
+      final logger = ref.read(loggerProvider('RouterRedirection'));
+
       // Handle unauthenticated users
       if (!loggedInNotifier.value) {
         // Redirect unauthenticated users who have opened a list invite link to login first
         if (state.uri.path.startsWith(Routes.listInviteDetails(''))) {
-          ref.read(loggerProvider).log('Redirecting unauthenticated user to login');
+          logger.log('Redirecting unauthenticated user to login');
 
           // Store the invite ID so the user can be redirected to the invite details after login
           _pendingListInviteId = state.uri.pathSegments.last;
@@ -195,7 +197,7 @@ GoRouter router(Ref ref) {
 
         // Redirect unauthenticated users to login
         if (!state.uri.path.startsWith(Routes.login)) {
-          ref.read(loggerProvider).log('Redirecting unauthenticated user to login');
+          logger.log('Redirecting unauthenticated user to login');
           return Routes.login;
         }
       }
@@ -282,41 +284,41 @@ class Routes {
     _RouteSegments.newItem,
   ]);
   static RoutePath editList(String listId) => lists.extend([
-        listId,
-        _RouteSegments.edit,
-      ]);
+    listId,
+    _RouteSegments.edit,
+  ]);
   static RoutePath shareList(String listId) => lists.extend([
-        listId,
-        _RouteSegments.share,
-      ]);
+    listId,
+    _RouteSegments.share,
+  ]);
 
   static RoutePath checklistDetail(String listId) => RoutePath([
-        _RouteSegments.lists,
-        _RouteSegments.checklist,
-        listId,
-      ]);
+    _RouteSegments.lists,
+    _RouteSegments.checklist,
+    listId,
+  ]);
   static RoutePath checklistNewItem(String listId) => checklistDetail(listId).extend([
-        _RouteSegments.items,
-        _RouteSegments.newItem,
-      ]);
+    _RouteSegments.items,
+    _RouteSegments.newItem,
+  ]);
   static RoutePath checklistEditItem(String listId, String itemId) => checklistDetail(listId).extend([
-        _RouteSegments.items,
-        itemId,
-      ]);
+    _RouteSegments.items,
+    itemId,
+  ]);
 
   static RoutePath shoppingListDetail(String listId) => RoutePath([
-        _RouteSegments.lists,
-        _RouteSegments.shopping,
-        listId,
-      ]);
+    _RouteSegments.lists,
+    _RouteSegments.shopping,
+    listId,
+  ]);
   static RoutePath shoppingListNewItem(String listId) => shoppingListDetail(listId).extend([
-        _RouteSegments.items,
-        _RouteSegments.newItem,
-      ]);
+    _RouteSegments.items,
+    _RouteSegments.newItem,
+  ]);
   static RoutePath shoppingListEditItem(String listId, String itemId) => shoppingListDetail(listId).extend([
-        _RouteSegments.items,
-        itemId,
-      ]);
+    _RouteSegments.items,
+    itemId,
+  ]);
 
   static const recipes = '/${_RouteSegments.recipes}';
   static const newRecipe = '${Routes.recipes}/${_RouteSegments.newItem}';

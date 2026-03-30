@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../analytics/logger.dart';
 import '../data/user/models/user_auth.dart';
 import 'firebase_auth.dart';
 
@@ -12,7 +13,10 @@ UserAuth? userAuth(Ref ref) {
   // Watch for changes on the auth user stream, but we can get the current user synchronously.
   final _ = ref.watch(_authUserStreamProvider);
   final authService = ref.watch(authServiceProvider);
-  return authService.currentUser;
+  final user = authService.currentUser;
+  final log = ref.read(loggerProvider('$AuthService'));
+  log.log('User auth updated: ${user != null ? 'ID: ${user.id}, Email: ${user.email}' : 'no logged in user'}');
+  return user;
 }
 
 @Riverpod(keepAlive: true)
@@ -28,12 +32,13 @@ String? userId(Ref ref) {
 
 @Riverpod(keepAlive: true)
 AuthService authService(Ref ref) {
-  return AuthService(ref.read(firebaseAuthProvider));
+  return AuthService(ref.read(firebaseAuthProvider), ref.read(loggerProvider('$AuthService')));
 }
 
 class AuthService {
   final FirebaseAuth _auth;
-  AuthService(this._auth);
+  final Logger _log;
+  AuthService(this._auth, this._log);
 
   UserAuth? get currentUser {
     final authUser = _auth.currentUser;
@@ -45,6 +50,7 @@ class AuthService {
   }
 
   void logout() {
+    _log.log('Logout');
     FirebaseAuth.instance.signOut();
     // In the Flutter Firebase Authentication package for mobile clients, the first time a user
     // signs in with google they are always shown an account selection screen (even if they only

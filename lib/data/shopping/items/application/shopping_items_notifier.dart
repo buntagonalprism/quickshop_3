@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../analytics/analytics.dart';
+import '../../../../analytics/logger.dart';
 import '../../../../services/shopping_item_name_parser.dart';
 import '../../../../utilities/replace_by_id.dart';
 import '../../../common/application/delay_provider_dispose.dart';
@@ -38,17 +39,21 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     return ref.watch(shoppingListItemsRepoProvider(listId)).itemsStream;
   }
 
+  late final _log = ref.read(loggerProvider('$ShoppingItemsNotifier'));
+
   Future<ShoppingItem> addItem(ShoppingItemRawData itemData) {
     return _addItem(itemData);
   }
 
   Future<void> toggleItem(ShoppingItem item) async {
+    _log.log('Toggling item ${item.id}: ${item.displayName}');
     final items = state.requireValue;
     state = AsyncValue.data(replaceById(items, item.id, (i) => i.copyWith(completed: !i.completed)));
     return ref.read(shoppingListItemsRepoProvider(listId)).toggleItem(item);
   }
 
   Future<void> deleteItem(ShoppingItem item) async {
+    _log.log('Deleting item ${item.id}: ${item.displayName}');
     final items = state.requireValue;
     state = AsyncValue.data(
       items.where((i) => i.id != item.id).toList(),
@@ -65,8 +70,10 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
     final items = state.requireValue;
     final deletedItems = items.where((item) => item.completed).toList();
     if (items.isEmpty) {
-      return 0; // No items to delete
+      _log.log('No completed items to delete');
+      return 0;
     }
+    _log.log('Deleting ${deletedItems.length} completed items');
     state = AsyncValue.data(
       items.where((item) => !item.completed).toList(),
     );
@@ -91,6 +98,7 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
   Future<ShoppingItem> _addItem(ShoppingItemRawData data) async {
     final tx = ref.read(firestoreTransactionProvider)();
     final item = ref.read(shoppingListItemsRepoProvider(listId)).addItem(tx, data);
+    _log.log('Adding item ${item.id} ${item.displayName}');
     ref.read(listsProvider.notifier).incrementListItemCount(tx, listId, 1);
     await tx.commit();
     return item;
@@ -136,6 +144,7 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
       quantity: newQuantity,
       category: newCategory,
     );
+    _log.log('Updating item ${item.id} to ${updatedItem.displayName}');
     final items = state.requireValue;
     state = AsyncValue.data(replaceById(items, item.id, (i) => updatedItem));
     ref.read(shoppingListItemsRepoProvider(listId)).updateItem(tx, item, data);

@@ -19,7 +19,7 @@ class Analytics {
 
   void logEvent(AnalyticsEvent event) {
     if (kDebugMode) {
-      print('QSLog-Analytics: ${event.name} ${event.parameters}');
+      print('[QSLog-Analytics] ${event.name}${event.parameters.isNotEmpty ? ' ${event.parameters}' : ''}');
     } else {
       unawaited(
         FirebaseAnalytics.instance.logEvent(

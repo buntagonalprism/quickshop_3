@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../analytics/logger.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/firestore.dart';
 import '../../../services/functions_http_client.dart';
@@ -25,8 +26,9 @@ class UserProfileRepo {
   final Ref _ref;
   UserProfileRepo(this._ref);
 
-  late UserProfile _cachedUserHistory;
+  late UserProfile _cachedUserProfile;
   static const collectionName = 'users';
+  late final _log = _ref.read(loggerProvider('$UserProfileRepo'));
 
   Stream<UserProfile?> getProfile() {
     final fs = _ref.read(firestoreProvider);
@@ -40,18 +42,20 @@ class UserProfileRepo {
         // This should only be necessary in local debug environments. When running against
         // a deployed Firebase environment, the user document should get auto-created by a
         // Cloud Function triggered on user creation.
+        _log.log('Creating user');
         httpClient.put('/createUser');
-        _cachedUserHistory = UserProfile(
+        _cachedUserProfile = UserProfile(
           userId: user.id,
         );
       } else {
-        _cachedUserHistory = _fromFirestore(user.id, snapshot);
+        _cachedUserProfile = _fromFirestore(user.id, snapshot);
       }
-      return _cachedUserHistory;
+      return _cachedUserProfile;
     });
   }
 
   void incrementHiddenSuggestionsVersion(FirestoreTransaction tx) async {
+    _log.log('Incrementing hidden suggestions vesion, was: ${_cachedUserProfile.hiddenSuggestionsVersion}');
     final user = _ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User not signed in');
@@ -63,12 +67,14 @@ class UserProfileRepo {
   }
 
   void setLastHistoryUpdate(FirestoreTransaction tx, DateTime newUpdateTime) {
+    _log.log('Setting last history update: $newUpdateTime');
     final fs = _ref.read(firestoreProvider);
-    final userRef = fs.collection(collectionName).doc(_cachedUserHistory.userId);
+    final userRef = fs.collection(collectionName).doc(_cachedUserProfile.userId);
     tx.batch.update(userRef, {_Fields.lastHistoryUpdate: newUpdateTime.millisecondsSinceEpoch});
   }
 
   Future<void> setTutorialCompleted(String tutorialId) {
+    _log.log('Setting tutorial completed: $tutorialId');
     final user = _ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User not signed in');

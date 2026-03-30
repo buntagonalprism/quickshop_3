@@ -21,7 +21,7 @@ ShoppingItemHistoryRepo shoppingItemHistoryRepo(Ref ref) {
 class ShoppingItemHistoryRepo {
   final Ref _ref;
   AppDatabase get _db => _ref.read(appDatabaseProvider);
-  Logger get _log => _ref.read(loggerProvider);
+  Logger get _log => _ref.read(loggerProvider('$ShoppingItemHistoryRepo'));
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
   String get _userId => _ref.read(userAuthProvider)!.id;
 
@@ -55,6 +55,7 @@ class ShoppingItemHistoryRepo {
       }
     }
     if (_retrievedUntil.isBefore(lastHistoryUpdate)) {
+      _log.log('Fetching user item history since $_retrievedUntil');
       _fetchHistory(_userId, _retrievedUntil);
     }
   }
@@ -69,9 +70,9 @@ class ShoppingItemHistoryRepo {
   }
 
   Future<List<ShoppingItemHistory>> searchHistory(String query) async {
-    final start = DateTime.now();
+    final span = _log.startSpan('searchHistory');
     final itemHistoryData = await _db.itemHistoryDao.query(query);
-    _log.captureSpan(start, '$ShoppingItemHistoryRepo.$searchHistory');
+    await span.finish();
     return itemHistoryData.map(_dbRowToModel).toList();
   }
 

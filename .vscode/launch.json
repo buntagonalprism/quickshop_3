@@ -13,9 +13,9 @@
                 "--flavor",
                 "dev",
                 "--dart-define-from-file",
-                "settings/app_secrets_dev.json",
-                "--dart-define-from-file",
                 "settings/app_settings_dev.json",
+                "--dart-define-from-file",
+                "settings/app_secrets_dev.json",
                 "--dart-define-from-file",
                 "settings/app_settings_local.json"
             ]
@@ -28,9 +28,9 @@
                 "--flavor",
                 "dev",
                 "--dart-define-from-file",
-                "settings/app_secrets_dev.json",
+                "settings/app_settings_dev.json",
                 "--dart-define-from-file",
-                "settings/app_settings_dev.json"
+                "settings/app_secrets_dev.json"
             ]
         },
         {

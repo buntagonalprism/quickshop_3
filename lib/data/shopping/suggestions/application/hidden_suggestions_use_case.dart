@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../analytics/logger.dart';
 import '../../../common/application/firestore_transaction.dart';
 import '../../../user/repositories/user_profile_repo.dart';
 import '../../autocomplete/models/shopping_category_autocomplete.dart';
@@ -24,14 +25,19 @@ class HiddenSuggestionsUseCase {
         final repo = _ref.read(hiddenSuggestionsRepoProvider);
         final processedVersion = await repo.getProcessedHiddenSuggestionsVersion();
         if (hiddenSuggestionsVersion != null && hiddenSuggestionsVersion > processedVersion) {
+          _log.log('Updating hidden suggestions from version $processedVersion to $hiddenSuggestionsVersion');
           await repo.fetchAndApplyHiddenSuggestions(hiddenSuggestionsVersion);
         }
       }
     }, fireImmediately: true);
   }
 
+  late final _log = _ref.read(loggerProvider('$HiddenSuggestionsUseCase'));
+
   Future<void> hideItemSuggestion(ShoppingItemAutocomplete suggestion) async {
     assert(suggestion.source == ShoppingItemAutocompleteSource.suggested, 'Only suggestions can be hidden');
+
+    _log.log('Hiding item suggestion: ${suggestion.sourceId}');
 
     // Hide the suggestion locally
     await _ref.read(hiddenSuggestionsRepoProvider).hideSuggestionLocally(SuggestionType.item, suggestion.sourceId);
@@ -46,6 +52,8 @@ class HiddenSuggestionsUseCase {
   Future<void> hideCategorySuggestion(ShoppingCategoryAutocomplete suggestion) async {
     // Hide the suggestion locally
     await _ref.read(hiddenSuggestionsRepoProvider).hideSuggestionLocally(SuggestionType.category, suggestion.sourceId);
+
+    _log.log('Hiding category suggestion ${suggestion.sourceId}');
 
     // Save the hidden suggestion to the user's profile to sync across devices
     final tx = _ref.read(firestoreTransactionProvider)();

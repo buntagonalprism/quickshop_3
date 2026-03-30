@@ -48,7 +48,7 @@ final class UserAuthProvider
   }
 }
 
-String _$userAuthHash() => r'd82bd1ca3531dcb8007f8fc5603921a4ef29f122';
+String _$userAuthHash() => r'd09107fbcd90aa2b617715896daec9eca73c8848';
 
 @ProviderFor(loggedIn)
 const loggedInProvider = LoggedInProvider._();
@@ -170,7 +170,7 @@ final class AuthServiceProvider
   }
 }
 
-String _$authServiceHash() => r'f3704361ff66d151d86200240344d66b2995be3d';
+String _$authServiceHash() => r'98dc7cde0ebdafb8c5919d17f420a276cc9bc56a';
 
 @ProviderFor(_authUserStream)
 const _authUserStreamProvider = _AuthUserStreamProvider._();
