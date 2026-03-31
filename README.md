@@ -59,21 +59,17 @@ As such, it might seem pointless to designate any values as secret/sensitive in 
 ### Targeting Local Firebase Emulator
 The Quickshop backend comprises the a Firestore database and a collection of Firebase Functions. These can be emulated locally for debugging purposes - see the Quickshop Firebase project for details regarding the Firebase emulator. 
 
-To connect the Quickshop app to a local Firebase emulator:
-1. Copy the `settings/app_settings_local_example.json` file to `settings/app_settings_local.json`
-1. Setup local connection configuration:
-    - **Android Physical Devices**:
-        - Setup a reverse proxy using the android debug command `adb reverse tcp:8080 tcp:8080`. This proxies any requests to `localhost:8080` on the Anroid device being debugged to port 8080 of the host computer. Port 8080 is the default port for the Firebase Firestore emulator. 
-        - Set the entry in the local settings JSON file: `"FIRESTORE_EMULATOR_HOST": "localhost:8080"` 
-    - **Android Emulator**:
-        - Set the entry in the local settings JSON file: `"FIRESTORE_EMULATOR_HOST": "10.0.2.2:8080"` to `app_secrets_dev.json`
-        - This IP address automatically redirects requests on the Android emulator to the corresponding port on the host computer. 
-    - **Screen Mirroring Physical Devices**:    
-        - Android emulators can be quite slow, but it is convenient to have the running app accessible on desktop to quickly type and control with a mouse. 
-        - [scrcpy](https://github.com/Genymobile/scrcpy) is a tool which makes it easy to mirror the screen of a physical Android phone to any computer.
-        - Due to a bug in Flutter (fixed in master but not yet in stable as of 3.32), use `scrcpy --no-mouse-hover` to avoid exceptions. See: https://github.com/flutter/flutter/issues/160144
-    
-2. Run the "Local (debug)" launch configuration, which 
+To connect the Quickshop app to a local Firebase emulator, run the **Local (debug)** launch configuration is VSCode. This configuration:
+1. Runs a prelaunch task to execute `tool/setup_local_settings.dart`
+2. The task creates `app_settings_local.json` with the configuration required for the app under debug to connect to Firebase emulators running on your machine.
+3. The `SettingsService` uses these configuration values to determine the connection endpoint:
+    - Android emulators uses the special loopback IP address `10.0.2.2` to connect to your machine
+    - iOS simulators use `localhost` to connect to your machine
+    - Physical Android and iOS devices use the IP address of your computer. They must be connected to the same local network as your machine.  
+
+### Screen Mirroring Physical Devices
+- Android emulators can be quite slow, but it is convenient to have the running app accessible on desktop to quickly type and control with a mouse. 
+- [scrcpy](https://github.com/Genymobile/scrcpy) is a tool which makes it easy to mirror the screen of a physical Android phone to any computer.    
 
 ### Targeting other Firebase Projects
 To run Quickshop against another Firebase project, copy and rename the `settings/app_secrets_example.json` file to `app_secrets_<ENV>.json` file
