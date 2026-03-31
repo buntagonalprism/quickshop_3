@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../data/checklists/application/checklist_entry_notifier.dart';
-import '../../../data/settings/application/debug_settings_notifier.dart';
 import '../../../data/checklists/models/checklist_entry.dart';
 import '../../../data/lists/models/list_summary.dart';
+import '../../../data/settings/application/debug_settings_notifier.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
 import 'checklist_editing_view.dart';
@@ -88,6 +88,7 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
           list: list,
           items: items,
           isEditing: isEditing,
+          onLongPress: () => setState(() => isEditing = true),
         ),
       ),
     );
@@ -110,11 +111,13 @@ class ChecklistContentsView extends StatelessWidget {
     required this.list,
     required this.items,
     required this.isEditing,
+    this.onLongPress,
     super.key,
   });
   final ListSummary list;
   final List<ChecklistEntry> items;
   final bool isEditing;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +130,7 @@ class ChecklistContentsView extends StatelessWidget {
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
-        return ChecklistPageEntryTile(entry: items[index], listId: list.id);
+        return ChecklistPageEntryTile(entry: items[index], listId: list.id, onLongPress: onLongPress);
       },
     );
   }
@@ -185,10 +188,12 @@ class ChecklistPageEntryTile extends StatelessWidget {
   const ChecklistPageEntryTile({
     required this.listId,
     required this.entry,
+    this.onLongPress,
     super.key,
   });
   final String listId;
   final ChecklistEntry entry;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -196,9 +201,11 @@ class ChecklistPageEntryTile extends StatelessWidget {
       item: (item) => ChecklistItemTile(
         item: item,
         listId: listId,
+        onLongPress: onLongPress,
       ),
       heading: (heading) => ChecklistHeadingTile(
         heading: heading,
+        onLongPress: onLongPress,
       ),
     );
   }
@@ -208,16 +215,19 @@ class ChecklistItemTile extends ConsumerWidget {
   const ChecklistItemTile({
     required this.listId,
     required this.item,
+    this.onLongPress,
     super.key,
   });
   final String listId;
   final ChecklistItem item;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       visualDensity: VisualDensity.compact,
       onTap: () => toggleItemCompleted(ref),
+      onLongPress: onLongPress,
       title: Text(
         item.name,
         style: item.completed ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
@@ -237,15 +247,20 @@ class ChecklistItemTile extends ConsumerWidget {
 class ChecklistHeadingTile extends StatelessWidget {
   const ChecklistHeadingTile({
     required this.heading,
+    this.onLongPress,
     super.key,
   });
   final ChecklistHeading heading;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-      child: Text(heading.name, style: Theme.of(context).textTheme.headlineSmall),
+    return GestureDetector(
+      onLongPress: onLongPress,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+        child: Text(heading.name, style: Theme.of(context).textTheme.headlineSmall),
+      ),
     );
   }
 }
