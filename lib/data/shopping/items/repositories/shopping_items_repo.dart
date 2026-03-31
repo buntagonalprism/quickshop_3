@@ -51,10 +51,10 @@ class ShoppingListItemsRepo {
     );
   }
 
-  Future<void> toggleItem(ShoppingItem item) async {
+  Future<void> setItemCompleted(String itemId, bool completed) async {
     final fs = ref.read(firestoreProvider);
-    await fs.doc(item.path).update({
-      _Fields.completed: !item.completed,
+    await fs.doc('lists/$listId/items/$itemId').update({
+      _Fields.completed: completed,
     });
   }
 

@@ -103,10 +103,10 @@ class ChecklistEntryRepo {
     _logIfDuplicateKeysFound(insertUpdates);
   }
 
-  Future<void> toggleItem(ChecklistItem item) {
+  Future<void> setItemCompleted(String itemId, bool completed) {
     final fs = ref.read(firestoreProvider);
-    return fs.doc('lists/$listId/items/${item.id}').update({
-      _Fields.completed: !item.completed,
+    return fs.doc('lists/$listId/items/$itemId').update({
+      _Fields.completed: completed,
     });
   }
 

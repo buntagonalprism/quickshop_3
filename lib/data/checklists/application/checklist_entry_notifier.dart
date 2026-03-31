@@ -124,7 +124,7 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
     state = AsyncValue.data(
       replaceById(entries, item.id, (e) => ChecklistEntry.item(updatedItem)),
     );
-    return _entryRepo.toggleItem(updatedItem);
+    return _entryRepo.setItemCompleted(updatedItem.id, updatedItem.completed);
   }
 
   Future<void> uncheckAll() {

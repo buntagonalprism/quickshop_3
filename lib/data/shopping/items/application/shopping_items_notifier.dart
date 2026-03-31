@@ -48,8 +48,9 @@ class ShoppingItemsNotifier extends _$ShoppingItemsNotifier {
   Future<void> toggleItem(ShoppingItem item) async {
     _log.log('Toggling item ${item.id}: ${item.displayName}');
     final items = state.requireValue;
-    state = AsyncValue.data(replaceById(items, item.id, (i) => i.copyWith(completed: !i.completed)));
-    return ref.read(shoppingListItemsRepoProvider(listId)).toggleItem(item);
+    final newValue = !item.completed;
+    state = AsyncValue.data(replaceById(items, item.id, (i) => i.copyWith(completed: newValue)));
+    return ref.read(shoppingListItemsRepoProvider(listId)).setItemCompleted(item.id, newValue);
   }
 
   Future<void> deleteItem(ShoppingItem item) async {
