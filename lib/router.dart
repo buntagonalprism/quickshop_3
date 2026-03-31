@@ -24,6 +24,10 @@ import 'pages/recipes/new_recipe_page.dart';
 import 'pages/recipes/recipe_detail_page.dart';
 import 'pages/recipes/recipes_page.dart';
 import 'pages/settings/settings_page.dart';
+import 'pages/stores/store_add_page.dart';
+import 'pages/stores/store_edit_page.dart';
+import 'pages/stores/store_locations_page.dart';
+import 'pages/stores/stores_list_page.dart';
 import 'services/auth_service.dart';
 
 part 'router.g.dart';
@@ -112,6 +116,38 @@ GoRouter router(Ref ref) {
                           listId: state.pathParameters[_RouteParams.listId]!,
                           itemId: state.pathParameters[_RouteParams.itemId]!,
                         ),
+                      ),
+                      GoRoute(
+                        path: _RouteSegments.stores,
+                        parentNavigatorKey: _rootNavigatorKey,
+                        builder: (context, state) => StoresListPage(
+                          listId: state.pathParameters[_RouteParams.listId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: _RouteSegments.newItem,
+                            parentNavigatorKey: _rootNavigatorKey,
+                            builder: (context, state) => StoreAddPage(
+                              listId: state.pathParameters[_RouteParams.listId]!,
+                            ),
+                          ),
+                          GoRoute(
+                            path: ':${_RouteParams.storeId}/${_RouteSegments.edit}',
+                            parentNavigatorKey: _rootNavigatorKey,
+                            builder: (context, state) => StoreEditPage(
+                              listId: state.pathParameters[_RouteParams.listId]!,
+                              storeId: state.pathParameters[_RouteParams.storeId]!,
+                            ),
+                          ),
+                          GoRoute(
+                            path: ':${_RouteParams.storeId}/${_RouteSegments.locations}',
+                            parentNavigatorKey: _rootNavigatorKey,
+                            builder: (context, state) => StoreLocationsPage(
+                              listId: state.pathParameters[_RouteParams.listId]!,
+                              storeId: state.pathParameters[_RouteParams.storeId]!,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -241,6 +277,7 @@ class _RouteParams {
   static const recipeId = 'recipeId';
   static const inviteId = 'inviteId';
   static const itemId = 'itemId';
+  static const storeId = 'storeId';
 }
 
 class _RouteSegments {
@@ -260,6 +297,8 @@ class _RouteSegments {
   static const items = 'items';
   static const shopping = 'shopping';
   static const checklist = 'checklist';
+  static const stores = 'stores';
+  static const locations = 'locations';
 }
 
 /// There is no dedicated home page, only the subpages like /lists, /recipes, etc, so there is no
@@ -319,6 +358,17 @@ class Routes {
     _RouteSegments.items,
     itemId,
   ]);
+
+  static RoutePath storesList(String shoppingListId) =>
+      shoppingListDetail(shoppingListId).extend([_RouteSegments.stores]);
+
+  static RoutePath storeAdd(String shoppingListId) => storesList(shoppingListId).extend([_RouteSegments.newItem]);
+
+  static RoutePath storeEdit(String shoppingListId, String storeId) =>
+      storesList(shoppingListId).extend([storeId, _RouteSegments.edit]);
+
+  static RoutePath storeLocations(String shoppingListId, String storeId) =>
+      storesList(shoppingListId).extend([storeId, _RouteSegments.locations]);
 
   static const recipes = '/${_RouteSegments.recipes}';
   static const newRecipe = '${Routes.recipes}/${_RouteSegments.newItem}';

@@ -26,6 +26,11 @@ class ShoppingListPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(listTitle),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.storefront),
+            tooltip: 'Stores',
+            onPressed: () => ref.read(routerProvider).go(Routes.storesList(listId).path),
+          ),
           Builder(
             builder: (context) {
               return IconButton(
