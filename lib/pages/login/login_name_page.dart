@@ -50,34 +50,36 @@ class _LoginNamePageState extends State<LoginNamePage> {
               ),
             ),
           ),
-          Consumer(builder: (context, ref, _) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  TextButton(
-                    onPressed: () => ref.read(routerProvider).go(Routes.postLogin),
-                    child: const Text('Skip'),
-                  ),
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: () {
-                      final userName = _nameController.text;
-                      if (userName.isEmpty) {
-                        setState(() {
-                          errorText = 'Please enter your name';
-                        });
-                        return;
-                      }
-                      ref.read(authServiceProvider).setUserName(userName);
-                      ref.read(routerProvider).go(Routes.postLogin);
-                    },
-                    child: const Text('Continue'),
-                  )
-                ],
-              ),
-            );
-          })
+          Consumer(
+            builder: (context, ref, _) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () => ref.read(routerProvider).go(Routes.postLogin),
+                      child: const Text('Skip'),
+                    ),
+                    const Spacer(),
+                    ElevatedButton(
+                      onPressed: () {
+                        final userName = _nameController.text;
+                        if (userName.isEmpty) {
+                          setState(() {
+                            errorText = 'Please enter your name';
+                          });
+                          return;
+                        }
+                        ref.read(authServiceProvider).setUserName(userName);
+                        ref.read(routerProvider).go(Routes.postLogin);
+                      },
+                      child: const Text('Continue'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

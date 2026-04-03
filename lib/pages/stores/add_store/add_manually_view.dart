@@ -32,8 +32,7 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
   }
 
   Future<void> _moveToCurrentLocation({bool animate = true}) async {
-    final location =
-        await ref.read(locationServiceProvider).getCurrentLocation();
+    final location = await ref.read(locationServiceProvider).getCurrentLocation();
     if (!mounted || location == null) return;
 
     final cameraPosition = CameraPosition(
@@ -43,11 +42,9 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
 
     if (_mapController != null) {
       if (animate) {
-        await _mapController!
-            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        await _mapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       } else {
-        await _mapController!
-            .moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        await _mapController!.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
       }
     }
 
@@ -60,8 +57,7 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
     final locationService = ref.read(locationServiceProvider);
     final permission = await locationService.checkPermission();
 
-    if (permission == LocationPermission.whileInUse ||
-        permission == LocationPermission.always) {
+    if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
       await _moveToCurrentLocation();
       return;
     }
@@ -76,8 +72,7 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
     if (!shouldRequest || !mounted) return;
 
     final result = await locationService.requestPermission();
-    if (result == LocationPermission.whileInUse ||
-        result == LocationPermission.always) {
+    if (result == LocationPermission.whileInUse || result == LocationPermission.always) {
       await _moveToCurrentLocation();
     } else if (result == LocationPermission.deniedForever && mounted) {
       await LocationPermissionDeniedDialog.show(context);
@@ -142,11 +137,8 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
                 ),
                 onMapCreated: (controller) async {
                   _mapController = controller;
-                  final permission = await ref
-                      .read(locationServiceProvider)
-                      .checkPermission();
-                  if (permission == LocationPermission.whileInUse ||
-                      permission == LocationPermission.always) {
+                  final permission = await ref.read(locationServiceProvider).checkPermission();
+                  if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
                     await _moveToCurrentLocation(animate: false);
                   }
                 },

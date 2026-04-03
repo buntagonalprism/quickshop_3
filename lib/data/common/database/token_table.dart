@@ -18,7 +18,8 @@ enum TokenType {
   itemSuggestion(1),
   categorySuggestion(2),
   itemHistory(3),
-  categoryHistory(4);
+  categoryHistory(4)
+  ;
 
   final int value;
   const TokenType(this.value);

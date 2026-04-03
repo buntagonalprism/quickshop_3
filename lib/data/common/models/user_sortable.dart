@@ -196,10 +196,12 @@ abstract class UserSortKey with _$UserSortKey {
     final keys = <UserSortKey>[];
     for (var i = 0; i < intervals; i++) {
       final newSegment = (segmentIncrement * (i + 1)).toRadixString(36);
-      keys.add(UserSortKey(
-        primary: primary,
-        secondary: [...existingSegments, newSegment].join(_seperator),
-      ));
+      keys.add(
+        UserSortKey(
+          primary: primary,
+          secondary: [...existingSegments, newSegment].join(_seperator),
+        ),
+      );
     }
     return keys;
   }

@@ -17,6 +17,5 @@ abstract class ListInvite with _$ListInvite {
     required String inviterName,
   }) = _ListInvite;
 
-  String get url =>
-      'https://${const String.fromEnvironment('QUICKSHOP_WEB_HOST')}/lists/invites/$id';
+  String get url => 'https://${const String.fromEnvironment('QUICKSHOP_WEB_HOST')}/lists/invites/$id';
 }

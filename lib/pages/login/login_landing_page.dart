@@ -49,66 +49,70 @@ class LoginLandingPage extends ConsumerWidget {
                       'Quickshop',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                            color: Colors.orange,
-                            fontFamily: 'RacingSansOne',
-                          ),
+                        color: Colors.orange,
+                        fontFamily: 'RacingSansOne',
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
                         'Rocket through your shopping',
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontFamily: 'RacingSansOne',
-                              color: Colors.grey[500],
-                            ),
+                          fontFamily: 'RacingSansOne',
+                          color: Colors.grey[500],
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
                     switch (greetingType) {
                       LoginGreetingType.none => const SizedBox(height: 24),
                       LoginGreetingType.forInvite => const Padding(
-                          padding: EdgeInsets.fromLTRB(32, 0, 24, 32),
-                          child: Text(
-                            'It looks like someone has shared a Quickshop list with you. Please sign in or create an account to view it.',
-                            textAlign: TextAlign.center,
-                          ),
+                        padding: EdgeInsets.fromLTRB(32, 0, 24, 32),
+                        child: Text(
+                          'It looks like someone has shared a Quickshop list with you. Please sign in or create an account to view it.',
+                          textAlign: TextAlign.center,
                         ),
+                      ),
                     },
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Consumer(builder: (context, ref, _) {
-                        return ElevatedButton(
-                          onPressed: () => ref.read(routerProvider).push(Routes.loginEmail),
-                          style: ButtonStyle(
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            ),
-                            padding: WidgetStateProperty.all(
-                              const EdgeInsets.symmetric(vertical: 11, horizontal: 11),
-                            ),
-                          ),
-                          child: Stack(children: [
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Icon(Icons.email),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Continue with email',
-                                style: TextStyle(
-                                  fontSize: 19,
-                                  color: Colors.grey[600],
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
+                      child: Consumer(
+                        builder: (context, ref, _) {
+                          return ElevatedButton(
+                            onPressed: () => ref.read(routerProvider).push(Routes.loginEmail),
+                            style: ButtonStyle(
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
                               ),
+                              padding: WidgetStateProperty.all(
+                                const EdgeInsets.symmetric(vertical: 11, horizontal: 11),
+                              ),
                             ),
-                          ]),
-                        );
-                      }),
+                            child: Stack(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(Icons.email),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Continue with email',
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                      color: Colors.grey[600],
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Padding(
@@ -130,7 +134,7 @@ class LoginLandingPage extends ConsumerWidget {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -176,13 +180,16 @@ class _BackgroundAnimationState extends State<BackgroundAnimation> with SingleTi
       constraints: widget.constraints,
     );
 
-    _offsetAnimation = Tween<Offset>(
-      begin: animationPath.start,
-      end: animationPath.end,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
+    _offsetAnimation =
+        Tween<Offset>(
+          begin: animationPath.start,
+          end: animationPath.end,
+        ).animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: Curves.easeOut,
+          ),
+        );
     _controller.duration = Duration(milliseconds: (1000 * animationPath.distance / animationSpeed).round());
     _controller.forward();
   }

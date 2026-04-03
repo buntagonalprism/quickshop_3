@@ -42,18 +42,20 @@ class SettingsPage extends ConsumerWidget {
                 DropdownMenuItem(
                   value: ThemeMode.dark,
                   child: Text('Dark'),
-                )
+                ),
               ],
             ),
           ),
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: Consumer(builder: (context, ref, _) {
-              final versionAsync = ref.watch(packageInfoProvider);
-              if (versionAsync.isLoading) return const CircularProgressIndicator();
-              final version = versionAsync.requireValue;
-              return Text('Version: ${version.version}+${version.buildNumber}');
-            }),
+            title: Consumer(
+              builder: (context, ref, _) {
+                final versionAsync = ref.watch(packageInfoProvider);
+                if (versionAsync.isLoading) return const CircularProgressIndicator();
+                final version = versionAsync.requireValue;
+                return Text('Version: ${version.version}+${version.buildNumber}');
+              },
+            ),
           ),
           ElevatedButton(
             onPressed: () {

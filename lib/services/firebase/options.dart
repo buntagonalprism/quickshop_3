@@ -3,7 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 class DefaultFirebaseOptions {
-  static const unsupportedPlatformMessage = 'Platform not supported. To setup this platform:\n'
+  static const unsupportedPlatformMessage =
+      'Platform not supported. To setup this platform:\n'
       '- Run the FlutterFire CLI for the new platform and a target Firebase environment project\n'
       '- Copy the `FirebaseOptions` object for the platform from the generated dart file to this file, and delete the generated file\n'
       '- Move any new values from the `FirebaseOptions` object into the corresponding app_secrets_<ENV>.json file for the target environment\n'
@@ -18,8 +19,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-            'DefaultFirebaseOptions have not been configured for ios. $unsupportedPlatformMessage');
+        throw UnsupportedError('DefaultFirebaseOptions have not been configured for ios. $unsupportedPlatformMessage');
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos. $unsupportedPlatformMessage',
@@ -58,6 +58,5 @@ class DefaultFirebaseOptions {
     storageBucket: String.fromEnvironment('firebaseStorageBucket'),
   );
 
-  static const String googleSignInClientId =
-      String.fromEnvironment('firebaseGoogleAuthWebClientId');
+  static const String googleSignInClientId = String.fromEnvironment('firebaseGoogleAuthWebClientId');
 }
