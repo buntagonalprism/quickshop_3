@@ -1,3 +1,4 @@
+
 plugins {
     id "com.android.application"
     // START: FlutterFire Configuration
@@ -26,6 +27,16 @@ if (!uploadKeystorePropsFile.exists()) {
 }
 def uploadKeystoreProps = new Properties()
 uploadKeystoreProps.load(new FileInputStream(uploadKeystorePropsFile))
+
+// Extract --dart-define values so they can be used as Android manifest placeholders.
+def dartDefines = [:]
+if (project.hasProperty('dart-defines')) {
+    project.property('dart-defines').split(',').each { entry ->
+        def pair = new String(entry.decodeBase64(), 'UTF-8').split('=', 2)
+        if (pair.length == 2) dartDefines[pair[0]] = pair[1]
+    }
+}
+
 
 android {
     namespace = "com.buntagon.quickshop"
@@ -71,6 +82,8 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        resValue "string", "google_maps_api_key", dartDefines.getOrDefault('GOOGLE_MAPS_PLATFORM_API_KEY_ANDROID', '')
 
         // Recommended configuration to prevent installation on unsupported x86 devices.
         // See: https://github.com/simolus3/sqlite3.dart/tree/main/sqlite3_flutter_libs#included-platforms

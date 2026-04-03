@@ -42,6 +42,8 @@ dependencies:
   shared_preferences: ^2.3.2
   skeletonizer: ^2.1.0
   uuid: ^4.5.1
+  geolocator: ^13.0.2
+  google_maps_flutter: ^2.10.0
   words_to_numbers:
     git: https://github.com/buntagonalprism/words_to_numbers
 

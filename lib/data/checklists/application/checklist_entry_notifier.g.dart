@@ -53,7 +53,7 @@ final class ChecklistEntryNotifierProvider
 }
 
 String _$checklistEntryNotifierHash() =>
-    r'c8ddd670e3c37ad6d9e325d1f9da7dfafb4565e8';
+    r'f8fe5926f8b0ad574650b524afe746fffb5cac77';
 
 final class ChecklistEntryNotifierFamily extends $Family
     with

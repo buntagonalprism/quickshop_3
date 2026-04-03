@@ -24,7 +24,7 @@ import 'pages/recipes/new_recipe_page.dart';
 import 'pages/recipes/recipe_detail_page.dart';
 import 'pages/recipes/recipes_page.dart';
 import 'pages/settings/settings_page.dart';
-import 'pages/stores/store_add_page.dart';
+import 'pages/stores/add_store/store_add_page.dart';
 import 'pages/stores/store_edit_page.dart';
 import 'pages/stores/store_locations_page.dart';
 import 'pages/stores/stores_list_page.dart';

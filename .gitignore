@@ -53,6 +53,13 @@ lib/services/firebase/*.dart
 # Local environment settings are specific to the developer's machine
 app_settings_local.json
 
+# Generated XCode config file used for substituting dart-define values in Info.plist
+ios/Flutter/DartDefines.xcconfig
+
+# Android build error reports
+/android/build/reports/problems/problems-report.html
+
+
 # FVM Version Cache
 .fvm/
 .claude/settings.local.json

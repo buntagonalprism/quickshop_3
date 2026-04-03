@@ -41,6 +41,14 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- Location permission: requested while the app is in use for finding nearby stores -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>QuickShop uses your location to find nearby stores</string>
+
+	<!-- The Google Maps iOS API key is populated from dart-define variables via the "Extract Dart Defines" Xcode build phase writing to DartDefines.xcconfig -->
+	<key>GOOGLE_MAPS_API_KEY</key>
+	<string>$(GOOGLE_MAPS_PLATFORM_API_KEY_IOS)</string>
+
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
