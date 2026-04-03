@@ -1,5 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// coverage:ignore-file
+// dart format off
+
 part of 'item_history_dao.dart';
 
 // ignore_for_file: type=lint

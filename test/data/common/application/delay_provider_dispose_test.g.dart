@@ -1,5 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// coverage:ignore-file
+// dart format off
+
 part of 'delay_provider_dispose_test.dart';
 
 // **************************************************************************

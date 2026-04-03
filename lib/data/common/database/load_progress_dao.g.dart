@@ -1,5 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// coverage:ignore-file
+// dart format off
+
 part of 'load_progress_dao.dart';
 
 // ignore_for_file: type=lint

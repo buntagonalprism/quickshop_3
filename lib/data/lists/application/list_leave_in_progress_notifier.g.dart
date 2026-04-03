@@ -1,5 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// coverage:ignore-file
+// dart format off
+
 part of 'list_leave_in_progress_notifier.dart';
 
 // **************************************************************************

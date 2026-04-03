@@ -1,0 +1,17 @@
+targets:
+  $default:
+    builders:
+      source_gen:combining_builder:
+        options:
+          # Append text after the header in each generated file. Rationale for
+          # these options:
+          # - Code coverage tools should ignore generated files because
+          #   generated code is expected to be correct and not all generated
+          #   methods will be used in application code. 
+          # - Formatting is turned off so that if the code generator produces
+          #   code that doesn't follow our dart format standards (e.g. different
+          #   line length) it won't be continually alternatively rewritten by
+          #   code gen output and then by dart format.
+          preamble: |
+            // coverage:ignore-file
+            // dart format off

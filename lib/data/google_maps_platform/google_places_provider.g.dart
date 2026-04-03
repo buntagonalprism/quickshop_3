@@ -1,5 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// coverage:ignore-file
+// dart format off
+
 part of 'google_places_provider.dart';
 
 // **************************************************************************
@@ -72,7 +75,7 @@ final class GooglePlacesAutocompleteProvider
 }
 
 String _$googlePlacesAutocompleteHash() =>
-    r'cae6a8ce6d6a10975dc9dd5914316bf61a22f78e';
+    r'473362dc43f9b65aaa1f2b48e38c40bb041d1904';
 
 final class GooglePlacesAutocompleteFamily extends $Family
     with
@@ -158,7 +161,7 @@ final class GooglePlaceCoordinatesProvider
 }
 
 String _$googlePlaceCoordinatesHash() =>
-    r'f6e87e50054af642ec65d082111d5f2ec76ff79a';
+    r'5d6c03ba804a27f416a227776b269820f1edeebd';
 
 final class GooglePlaceCoordinatesFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Coordinates?>, String> {
