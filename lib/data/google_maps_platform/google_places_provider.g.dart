@@ -75,7 +75,7 @@ final class GooglePlacesAutocompleteProvider
 }
 
 String _$googlePlacesAutocompleteHash() =>
-    r'473362dc43f9b65aaa1f2b48e38c40bb041d1904';
+    r'4ba20f476a78e3f6c9134ca0d1b7522de9792272';
 
 final class GooglePlacesAutocompleteFamily extends $Family
     with

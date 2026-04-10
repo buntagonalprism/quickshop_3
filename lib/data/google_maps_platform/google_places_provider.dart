@@ -32,7 +32,7 @@ Future<List<GooglePlaceResult>> googlePlacesAutocomplete(
     body['locationBias'] = {
       'circle': {
         'center': {'latitude': location.latitude, 'longitude': location.longitude},
-        'radius': 5000.0,
+        'radius': 2000.0,
       },
     };
   }
