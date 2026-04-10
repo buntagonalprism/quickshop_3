@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 
@@ -8,7 +7,6 @@ import '../../../data/common/models/coordinates.dart';
 import '../../../data/stores/models/store.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/location_service.dart';
-import '../../../widgets/location_dialogs.dart';
 
 class AddManuallyView extends ConsumerStatefulWidget {
   const AddManuallyView({super.key, required this.onDone});
@@ -31,52 +29,28 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
     super.dispose();
   }
 
-  Future<void> _moveToCurrentLocation({bool animate = true}) async {
-    final location = await ref.read(locationServiceProvider).getCurrentLocation();
-    if (!mounted || location == null) return;
-
+  Future<void> _moveToLocation(Coordinates location, {bool animate = true}) async {
+    if (!mounted) return;
     final cameraPosition = CameraPosition(
       target: LatLng(location.latitude, location.longitude),
       zoom: 16,
     );
+    setState(() => _selectedCoordinates = location);
 
-    if (_mapController != null) {
-      if (animate) {
-        await _mapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-      } else {
-        await _mapController!.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
-      }
-    }
-
-    if (mounted) {
-      setState(() => _selectedCoordinates = location);
+    if (animate) {
+      await _mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(cameraPosition),
+      );
+    } else {
+      await _mapController?.moveCamera(
+        CameraUpdate.newCameraPosition(cameraPosition),
+      );
     }
   }
 
   Future<void> _onLocationButtonTapped() async {
-    final locationService = ref.read(locationServiceProvider);
-    final permission = await locationService.checkPermission();
-
-    if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
-      await _moveToCurrentLocation();
-      return;
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      if (mounted) await LocationPermissionDeniedDialog.show(context);
-      return;
-    }
-
-    if (!mounted) return;
-    final shouldRequest = await LocationRationaleDialog.show(context);
-    if (!shouldRequest || !mounted) return;
-
-    final result = await locationService.requestPermission();
-    if (result == LocationPermission.whileInUse || result == LocationPermission.always) {
-      await _moveToCurrentLocation();
-    } else if (result == LocationPermission.deniedForever && mounted) {
-      await LocationPermissionDeniedDialog.show(context);
-    }
+    final location = await ref.read(locationServiceProvider).getLocationWithPermissionRequest(context);
+    if (location != null) await _moveToLocation(location);
   }
 
   void _onDone() {
@@ -102,6 +76,7 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
   @override
   Widget build(BuildContext context) {
     final nameIsEmpty = _nameController.text.trim().isEmpty;
+    final canGetLocation = ref.watch(canGetOrAutoRequestLocationProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -137,9 +112,9 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
                 ),
                 onMapCreated: (controller) async {
                   _mapController = controller;
-                  final permission = await ref.read(locationServiceProvider).checkPermission();
-                  if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
-                    await _moveToCurrentLocation(animate: false);
+                  if (canGetLocation) {
+                    final location = await ref.read(locationServiceProvider).getLocationWithPermissionRequest(context);
+                    if (location != null) await _moveToLocation(location, animate: false);
                   }
                 },
                 onCameraMove: (position) {
@@ -163,8 +138,11 @@ class _AddManuallyViewState extends ConsumerState<AddManuallyView> {
                 child: FloatingActionButton.small(
                   onPressed: _onLocationButtonTapped,
                   heroTag: 'store_add_location_button',
-                  tooltip: 'My location',
-                  child: const Icon(Icons.my_location),
+                  tooltip: canGetLocation ? 'My location' : 'Location permissions are disabled',
+                  backgroundColor: canGetLocation ? null : Theme.of(context).disabledColor,
+                  child: Icon(
+                    canGetLocation ? Icons.my_location : Icons.location_disabled,
+                  ),
                 ),
               ),
             ],

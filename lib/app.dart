@@ -14,6 +14,7 @@ import 'localization/app_localizations.dart';
 import 'router.dart';
 import 'services/auth_service.dart';
 import 'services/locale_service.dart';
+import 'services/location_service.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -100,6 +101,7 @@ class _EagerInitProviders extends ConsumerWidget {
     ref.watch(shoppingItemSuggestionRepoProvider);
     ref.watch(tutorialsProvider);
     ref.watch(hiddenSuggestionsUseCaseProvider);
+    ref.watch(canGetOrAutoRequestLocationProvider);
 
     // The userIdProvider in particular needs to be watched because it is used by
     // delayDispose to force providers to rebuild on logout. In Riverpod 3, if a

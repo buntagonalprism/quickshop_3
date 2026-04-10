@@ -20,10 +20,6 @@ class StoreAddPage extends ConsumerStatefulWidget {
 class _StoreAddPageState extends ConsumerState<StoreAddPage> {
   _StoreAddView _currentView = _StoreAddView.initial;
 
-  /// Tracks whether the location permission rationale dialog has been shown
-  /// this session for the search-nearby tab, to avoid repeating it on revisits.
-  bool _locationPermissionRequested = false;
-
   String get _title => switch (_currentView) {
     _StoreAddView.initial => 'Add store',
     _StoreAddView.searchNearby => 'Search nearby places',
@@ -58,8 +54,6 @@ class _StoreAddPageState extends ConsumerState<StoreAddPage> {
             ),
             _StoreAddView.searchNearby => SearchNearbyView(
               key: const ValueKey('searchNearby'),
-              locationPermissionAlreadyRequested: _locationPermissionRequested,
-              onLocationPermissionRequested: () => setState(() => _locationPermissionRequested = true),
               onDone: _onStoreDone,
             ),
             _StoreAddView.addManually => AddManuallyView(

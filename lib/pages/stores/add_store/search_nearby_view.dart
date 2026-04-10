@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../data/common/models/coordinates.dart';
@@ -11,18 +10,10 @@ import '../../../data/google_maps_platform/google_places_provider.dart';
 import '../../../data/stores/models/store.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/location_service.dart';
-import '../../../widgets/location_dialogs.dart';
 
 class SearchNearbyView extends ConsumerStatefulWidget {
-  const SearchNearbyView({
-    super.key,
-    required this.locationPermissionAlreadyRequested,
-    required this.onLocationPermissionRequested,
-    required this.onDone,
-  });
+  const SearchNearbyView({super.key, required this.onDone});
 
-  final bool locationPermissionAlreadyRequested;
-  final VoidCallback onLocationPermissionRequested;
   final void Function(Store store) onDone;
 
   @override
@@ -53,40 +44,16 @@ class _SearchNearbyViewState extends ConsumerState<SearchNearbyView> {
 
   Future<void> _initLocation() async {
     if (!mounted) return;
-    final locationService = ref.read(locationServiceProvider);
-    final permission = await locationService.checkPermission();
-
-    if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
-      await _fetchCurrentLocation();
-      return;
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      if (!widget.locationPermissionAlreadyRequested && mounted) {
-        await LocationPermissionDeniedDialog.show(context);
-        widget.onLocationPermissionRequested();
-      }
-      return;
-    }
-
-    // Permission is denied (not permanently) — show rationale once per session.
-    if (widget.locationPermissionAlreadyRequested) return;
-    widget.onLocationPermissionRequested();
-
-    if (!mounted) return;
-    final shouldRequest = await LocationRationaleDialog.show(context);
-    if (!shouldRequest || !mounted) return;
-
-    final result = await locationService.requestPermission();
-    if (result == LocationPermission.whileInUse || result == LocationPermission.always) {
-      await _fetchCurrentLocation();
-    } else if (result == LocationPermission.deniedForever && mounted) {
-      await LocationPermissionDeniedDialog.show(context);
+    if (!ref.read(canGetOrAutoRequestLocationProvider)) return;
+    final location = await ref.read(locationServiceProvider).getLocationWithPermissionRequest(context);
+    if (mounted && location != null) {
+      setState(() => _currentLocation = location);
     }
   }
 
-  Future<void> _fetchCurrentLocation() async {
-    final location = await ref.read(locationServiceProvider).getCurrentLocation();
+  Future<void> _onRequestLocation() async {
+    if (!mounted) return;
+    final location = await ref.read(locationServiceProvider).getLocationWithPermissionRequest(context);
     if (mounted && location != null) {
       setState(() => _currentLocation = location);
     }
@@ -142,6 +109,8 @@ class _SearchNearbyViewState extends ConsumerState<SearchNearbyView> {
 
   @override
   Widget build(BuildContext context) {
+    final canGetLocation = ref.watch(canGetOrAutoRequestLocationProvider);
+
     return Column(
       children: [
         Padding(
@@ -157,6 +126,23 @@ class _SearchNearbyViewState extends ConsumerState<SearchNearbyView> {
             textCapitalization: TextCapitalization.sentences,
           ),
         ),
+        if (!canGetLocation)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: _onRequestLocation,
+                child: Text(
+                  'Location permissions are disabled',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    decoration: TextDecoration.underline,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ),
+          ),
         Expanded(child: _buildResultsList()),
         if (_selectedResult != null)
           Material(

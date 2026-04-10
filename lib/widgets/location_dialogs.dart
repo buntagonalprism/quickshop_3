@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../services/location_service.dart';
 
 /// Dialog that explains why location permission is needed and asks the user
 /// to allow it. Returns true if the user agreed to grant permission.
@@ -37,15 +39,49 @@ class LocationRationaleDialog extends StatelessWidget {
 
 /// Dialog shown when location permissions are permanently denied. Offers a
 /// button to open the device app settings so the user can grant permission.
-class LocationPermissionDeniedDialog extends StatelessWidget {
+/// Monitors app lifecycle: if the user grants permission in settings and
+/// returns, the dialog pops automatically and returns `true`.
+/// Returns `false` if the user cancels without granting permission.
+class LocationPermissionDeniedDialog extends ConsumerStatefulWidget {
   const LocationPermissionDeniedDialog._();
 
-  static Future<void> show(BuildContext context) async {
-    if (!context.mounted) return;
-    await showDialog<void>(
+  static Future<bool> show(BuildContext context) async {
+    if (!context.mounted) return false;
+    final result = await showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (context) => const LocationPermissionDeniedDialog._(),
     );
+    return result ?? false;
+  }
+
+  @override
+  ConsumerState<LocationPermissionDeniedDialog> createState() => _LocationPermissionDeniedDialogState();
+}
+
+class _LocationPermissionDeniedDialogState extends ConsumerState<LocationPermissionDeniedDialog>
+    with WidgetsBindingObserver {
+  bool didOpenSettings = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (didOpenSettings) {
+        Navigator.of(context).pop(true);
+      }
+    }
   }
 
   @override
@@ -58,13 +94,13 @@ class LocationPermissionDeniedDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pop(false),
           child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
-            Geolocator.openAppSettings();
+            didOpenSettings = true;
+            ref.read(locationServiceProvider).openAppSettings();
           },
           child: const Text('Open Settings'),
         ),
