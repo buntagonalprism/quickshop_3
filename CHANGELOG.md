@@ -1,3 +1,6 @@
+# 0.4.3 - 2026-04-21
+- Fix double toggling on checklist items
+
 # 0.4.2 - 2026-03-15
 - Improve shopping item quantity extraction
 
