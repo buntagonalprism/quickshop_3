@@ -13,7 +13,7 @@ part of 'firestore_transaction.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(firestoreTransaction)
-const firestoreTransactionProvider = FirestoreTransactionProvider._();
+final firestoreTransactionProvider = FirestoreTransactionProvider._();
 
 final class FirestoreTransactionProvider
     extends
@@ -23,7 +23,7 @@ final class FirestoreTransactionProvider
           FirestoreTransaction Function()
         >
     with $Provider<FirestoreTransaction Function()> {
-  const FirestoreTransactionProvider._()
+  FirestoreTransactionProvider._()
     : super(
         from: null,
         argument: null,

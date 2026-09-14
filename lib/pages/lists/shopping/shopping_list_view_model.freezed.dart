@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_list_view_model.dart';
@@ -9,6 +9,7 @@ part of 'shopping_list_view_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -20,7 +21,7 @@ mixin _$ShoppingListViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingListViewModel);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingListViewModel);
 }
 
 
@@ -29,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ShoppingListViewModel()';
+    return 'ShoppingListViewModel()';
 }
 
 
@@ -203,7 +204,7 @@ class _Error extends ShoppingListViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
 }
 
 
@@ -212,7 +213,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ShoppingListViewModel.error()';
+    return 'ShoppingListViewModel.error()';
 }
 
 
@@ -235,7 +236,7 @@ class _Loading extends ShoppingListViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
 }
 
 
@@ -244,7 +245,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ShoppingListViewModel.loading()';
+    return 'ShoppingListViewModel.loading()';
 }
 
 
@@ -267,7 +268,7 @@ class _NotFound extends ShoppingListViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
 }
 
 
@@ -276,7 +277,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ShoppingListViewModel.notFound()';
+    return 'ShoppingListViewModel.notFound()';
 }
 
 
@@ -289,7 +290,7 @@ String toString() {
 
 
 class _ShoppingList extends ShoppingListViewModel {
-  const _ShoppingList({required this.list, required final  List<ShoppingListPageItem> items}): _items = items,super._();
+  const _ShoppingList({required this.list, required  List<ShoppingListPageItem> items}): _items = items,super._();
   
 
  final  ListSummary list;
@@ -311,16 +312,18 @@ _$ShoppingListCopyWith<_ShoppingList> get copyWith => __$ShoppingListCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingList&&(identical(other.list, list) || other.list == list)&&const DeepCollectionEquality().equals(other._items, _items));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingList&&(identical(other.list, list) || other.list == list)&&const DeepCollectionEquality().equals(other.items, _items));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,list,const DeepCollectionEquality().hash(_items));
+int get hashCode {
+    return Object.hash(runtimeType,list,const DeepCollectionEquality().hash(_items));
+}
 
 @override
 String toString() {
-  return 'ShoppingListViewModel.success(list: $list, items: $items)';
+    return 'ShoppingListViewModel.success(list: $list, items: $items)';
 }
 
 
@@ -377,7 +380,7 @@ mixin _$ShoppingListPageItem {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingListPageItem);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingListPageItem);
 }
 
 
@@ -386,7 +389,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ShoppingListPageItem()';
+    return 'ShoppingListPageItem()';
 }
 
 
@@ -553,16 +556,18 @@ _$ItemCopyWith<_Item> get copyWith => __$ItemCopyWithImpl<_Item>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Item&&(identical(other.item, item) || other.item == item));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Item&&(identical(other.item, item) || other.item == item));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,item);
+int get hashCode {
+    return Object.hash(runtimeType,item);
+}
 
 @override
 String toString() {
-  return 'ShoppingListPageItem.item(item: $item)';
+    return 'ShoppingListPageItem.item(item: $item)';
 }
 
 
@@ -628,16 +633,18 @@ _$CategoryCopyWith<_Category> get copyWith => __$CategoryCopyWithImpl<_Category>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Category&&(identical(other.name, name) || other.name == name));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Category&&(identical(other.name, name) || other.name == name));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,name);
+int get hashCode {
+    return Object.hash(runtimeType,name);
+}
 
 @override
 String toString() {
-  return 'ShoppingListPageItem.category(name: $name)';
+    return 'ShoppingListPageItem.category(name: $name)';
 }
 
 

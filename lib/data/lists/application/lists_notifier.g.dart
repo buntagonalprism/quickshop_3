@@ -13,11 +13,11 @@ part of 'lists_notifier.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ListsNotifier)
-const listsProvider = ListsNotifierProvider._();
+final listsProvider = ListsNotifierProvider._();
 
 final class ListsNotifierProvider
     extends $StreamNotifierProvider<ListsNotifier, List<ListSummary>> {
-  const ListsNotifierProvider._()
+  ListsNotifierProvider._()
     : super(
         from: null,
         argument: null,
@@ -42,8 +42,7 @@ abstract class _$ListsNotifier extends $StreamNotifier<List<ListSummary>> {
   Stream<List<ListSummary>> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref =
         this.ref as $Ref<AsyncValue<List<ListSummary>>, List<ListSummary>>;
     final element =
@@ -54,6 +53,6 @@ abstract class _$ListsNotifier extends $StreamNotifier<List<ListSummary>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

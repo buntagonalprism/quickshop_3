@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_item_create_view_model.dart';
@@ -9,6 +9,7 @@ part of 'shopping_item_create_view_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ShoppingItemCreateModelCopyWith<ShoppingItemCreateModel> get copyWith => _$Shop
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemCreateModel&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.data, data) || other.data == data)&&(identical(other.filterError, filterError) || other.filterError == filterError)&&(identical(other.itemErrors, itemErrors) || other.itemErrors == itemErrors));
+  final _this = this as ShoppingItemCreateModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemCreateModel&&(identical(other.filter, _this.filter) || other.filter == _this.filter)&&(identical(other.data, _this.data) || other.data == _this.data)&&(identical(other.filterError, _this.filterError) || other.filterError == _this.filterError)&&(identical(other.itemErrors, _this.itemErrors) || other.itemErrors == _this.itemErrors));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,filter,data,filterError,itemErrors);
+int get hashCode {
+  final _this = this as ShoppingItemCreateModel;
+  return Object.hash(runtimeType,_this.filter,_this.data,_this.filterError,_this.itemErrors);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemCreateModel(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
+  final _this = this as ShoppingItemCreateModel;
+  return 'ShoppingItemCreateModel(filter: ${_this.filter}, data: ${_this.data}, filterError: ${_this.filterError}, itemErrors: ${_this.itemErrors})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ShoppingItemCreateModelCopyWithImpl<$Res>
 /// Create a copy of ShoppingItemCreateModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? filter = null,Object? data = null,Object? filterError = freezed,Object? itemErrors = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ShoppingItemCreateModel(
 filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
 as String,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as ShoppingItemRawData,filterError: freezed == filterError ? _self.filterError : filterError // ignore: cast_nullable_to_non_nullable
@@ -236,16 +242,18 @@ _$ShoppingItemCreateDataCopyWith<_ShoppingItemCreateData> get copyWith => __$Sho
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemCreateData&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.data, data) || other.data == data)&&(identical(other.filterError, filterError) || other.filterError == filterError)&&(identical(other.itemErrors, itemErrors) || other.itemErrors == itemErrors));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemCreateData&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.data, data) || other.data == data)&&(identical(other.filterError, filterError) || other.filterError == filterError)&&(identical(other.itemErrors, itemErrors) || other.itemErrors == itemErrors));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,filter,data,filterError,itemErrors);
+int get hashCode {
+    return Object.hash(runtimeType,filter,data,filterError,itemErrors);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemCreateModel(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
+    return 'ShoppingItemCreateModel(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
 }
 
 

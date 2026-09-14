@@ -13,7 +13,7 @@ part of 'checklist_entry_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(checklistEntryRepo)
-const checklistEntryRepoProvider = ChecklistEntryRepoFamily._();
+final checklistEntryRepoProvider = ChecklistEntryRepoFamily._();
 
 final class ChecklistEntryRepoProvider
     extends
@@ -23,7 +23,7 @@ final class ChecklistEntryRepoProvider
           ChecklistEntryRepo
         >
     with $Provider<ChecklistEntryRepo> {
-  const ChecklistEntryRepoProvider._({
+  ChecklistEntryRepoProvider._({
     required ChecklistEntryRepoFamily super.from,
     required String super.argument,
   }) : super(
@@ -80,7 +80,7 @@ String _$checklistEntryRepoHash() =>
 
 final class ChecklistEntryRepoFamily extends $Family
     with $FunctionalFamilyOverride<ChecklistEntryRepo, String> {
-  const ChecklistEntryRepoFamily._()
+  ChecklistEntryRepoFamily._()
     : super(
         retry: null,
         name: r'checklistEntryRepoProvider',

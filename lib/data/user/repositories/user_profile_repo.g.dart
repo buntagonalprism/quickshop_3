@@ -13,7 +13,7 @@ part of 'user_profile_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userProfile)
-const userProfileProvider = UserProfileProvider._();
+final userProfileProvider = UserProfileProvider._();
 
 final class UserProfileProvider
     extends
@@ -23,7 +23,7 @@ final class UserProfileProvider
           Stream<UserProfile?>
         >
     with $FutureModifier<UserProfile?>, $StreamProvider<UserProfile?> {
-  const UserProfileProvider._()
+  UserProfileProvider._()
     : super(
         from: null,
         argument: null,
@@ -52,13 +52,13 @@ final class UserProfileProvider
 String _$userProfileHash() => r'e1321c2713503785d6f595c6172e8e16fb141314';
 
 @ProviderFor(userProfileRepo)
-const userProfileRepoProvider = UserProfileRepoProvider._();
+final userProfileRepoProvider = UserProfileRepoProvider._();
 
 final class UserProfileRepoProvider
     extends
         $FunctionalProvider<UserProfileRepo, UserProfileRepo, UserProfileRepo>
     with $Provider<UserProfileRepo> {
-  const UserProfileRepoProvider._()
+  UserProfileRepoProvider._()
     : super(
         from: null,
         argument: null,

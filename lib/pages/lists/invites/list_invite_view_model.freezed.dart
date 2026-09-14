@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'list_invite_view_model.dart';
@@ -9,6 +9,7 @@ part of 'list_invite_view_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -20,7 +21,7 @@ mixin _$ListInviteViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListInviteViewModel);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ListInviteViewModel);
 }
 
 
@@ -29,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ListInviteViewModel()';
+    return 'ListInviteViewModel()';
 }
 
 
@@ -215,7 +216,7 @@ class _Loading extends ListInviteViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
 }
 
 
@@ -224,7 +225,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ListInviteViewModel.loading()';
+    return 'ListInviteViewModel.loading()';
 }
 
 
@@ -247,7 +248,7 @@ class _Error extends ListInviteViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
 }
 
 
@@ -256,7 +257,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ListInviteViewModel.error()';
+    return 'ListInviteViewModel.error()';
 }
 
 
@@ -279,7 +280,7 @@ class _NotFound extends ListInviteViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
 }
 
 
@@ -288,7 +289,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ListInviteViewModel.notFound()';
+    return 'ListInviteViewModel.notFound()';
 }
 
 
@@ -316,16 +317,18 @@ _$IsOwnerCopyWith<_IsOwner> get copyWith => __$IsOwnerCopyWithImpl<_IsOwner>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IsOwner&&(identical(other.invite, invite) || other.invite == invite));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _IsOwner&&(identical(other.invite, invite) || other.invite == invite));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,invite);
+int get hashCode {
+    return Object.hash(runtimeType,invite);
+}
 
 @override
 String toString() {
-  return 'ListInviteViewModel.isOwner(invite: $invite)';
+    return 'ListInviteViewModel.isOwner(invite: $invite)';
 }
 
 
@@ -391,16 +394,18 @@ _$PendingCopyWith<_Pending> get copyWith => __$PendingCopyWithImpl<_Pending>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Pending&&(identical(other.invite, invite) || other.invite == invite));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Pending&&(identical(other.invite, invite) || other.invite == invite));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,invite);
+int get hashCode {
+    return Object.hash(runtimeType,invite);
+}
 
 @override
 String toString() {
-  return 'ListInviteViewModel.pending(invite: $invite)';
+    return 'ListInviteViewModel.pending(invite: $invite)';
 }
 
 
@@ -466,16 +471,18 @@ _$AcceptedCopyWith<_Accepted> get copyWith => __$AcceptedCopyWithImpl<_Accepted>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Accepted&&(identical(other.invite, invite) || other.invite == invite));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Accepted&&(identical(other.invite, invite) || other.invite == invite));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,invite);
+int get hashCode {
+    return Object.hash(runtimeType,invite);
+}
 
 @override
 String toString() {
-  return 'ListInviteViewModel.accepted(invite: $invite)';
+    return 'ListInviteViewModel.accepted(invite: $invite)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'hidden_suggestions.dart';
@@ -9,6 +9,7 @@ part of 'hidden_suggestions.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $HiddenSuggestionsCopyWith<HiddenSuggestions> get copyWith => _$HiddenSuggestion
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HiddenSuggestions&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated)&&const DeepCollectionEquality().equals(other.items, items)&&const DeepCollectionEquality().equals(other.categories, categories));
+  final _this = this as HiddenSuggestions;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HiddenSuggestions&&(identical(other.locale, _this.locale) || other.locale == _this.locale)&&(identical(other.lastUpdated, _this.lastUpdated) || other.lastUpdated == _this.lastUpdated)&&const DeepCollectionEquality().equals(other.items, _this.items)&&const DeepCollectionEquality().equals(other.categories, _this.categories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,locale,lastUpdated,const DeepCollectionEquality().hash(items),const DeepCollectionEquality().hash(categories));
+int get hashCode {
+  final _this = this as HiddenSuggestions;
+  return Object.hash(runtimeType,_this.locale,_this.lastUpdated,const DeepCollectionEquality().hash(_this.items),const DeepCollectionEquality().hash(_this.categories));
+}
 
 @override
 String toString() {
-  return 'HiddenSuggestions(locale: $locale, lastUpdated: $lastUpdated, items: $items, categories: $categories)';
+  final _this = this as HiddenSuggestions;
+  return 'HiddenSuggestions(locale: ${_this.locale}, lastUpdated: ${_this.lastUpdated}, items: ${_this.items}, categories: ${_this.categories})';
 }
 
 
@@ -66,7 +72,7 @@ class _$HiddenSuggestionsCopyWithImpl<$Res>
 /// Create a copy of HiddenSuggestions
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? locale = null,Object? lastUpdated = null,Object? items = null,Object? categories = null,}) {
-  return _then(_self.copyWith(
+  return _then(HiddenSuggestions(
 locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
 as String,lastUpdated: null == lastUpdated ? _self.lastUpdated : lastUpdated // ignore: cast_nullable_to_non_nullable
 as DateTime,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
@@ -212,7 +218,7 @@ return $default(_that.locale,_that.lastUpdated,_that.items,_that.categories);cas
 @JsonSerializable()
 
 class _HiddenSuggestions extends HiddenSuggestions {
-  const _HiddenSuggestions({required this.locale, required this.lastUpdated, required final  List<String> items, required final  List<String> categories}): _items = items,_categories = categories,super._();
+  const _HiddenSuggestions({required this.locale, required this.lastUpdated, required  List<String> items, required  List<String> categories}): _items = items,_categories = categories,super._();
   factory _HiddenSuggestions.fromJson(Map<String, dynamic> json) => _$HiddenSuggestionsFromJson(json);
 
 @override final  String locale;
@@ -245,16 +251,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HiddenSuggestions&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated)&&const DeepCollectionEquality().equals(other._items, _items)&&const DeepCollectionEquality().equals(other._categories, _categories));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HiddenSuggestions&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated)&&const DeepCollectionEquality().equals(other.items, _items)&&const DeepCollectionEquality().equals(other.categories, _categories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,locale,lastUpdated,const DeepCollectionEquality().hash(_items),const DeepCollectionEquality().hash(_categories));
+int get hashCode {
+    return Object.hash(runtimeType,locale,lastUpdated,const DeepCollectionEquality().hash(_items),const DeepCollectionEquality().hash(_categories));
+}
 
 @override
 String toString() {
-  return 'HiddenSuggestions(locale: $locale, lastUpdated: $lastUpdated, items: $items, categories: $categories)';
+    return 'HiddenSuggestions(locale: $locale, lastUpdated: $lastUpdated, items: $items, categories: $categories)';
 }
 
 

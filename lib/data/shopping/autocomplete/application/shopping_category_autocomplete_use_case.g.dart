@@ -13,7 +13,7 @@ part of 'shopping_category_autocomplete_use_case.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(shoppingCategoryAutocompleteUseCase)
-const shoppingCategoryAutocompleteUseCaseProvider =
+final shoppingCategoryAutocompleteUseCaseProvider =
     ShoppingCategoryAutocompleteUseCaseFamily._();
 
 final class ShoppingCategoryAutocompleteUseCaseProvider
@@ -24,7 +24,7 @@ final class ShoppingCategoryAutocompleteUseCaseProvider
           ShoppingCategoryAutocompleteUseCase
         >
     with $Provider<ShoppingCategoryAutocompleteUseCase> {
-  const ShoppingCategoryAutocompleteUseCaseProvider._({
+  ShoppingCategoryAutocompleteUseCaseProvider._({
     required ShoppingCategoryAutocompleteUseCaseFamily super.from,
     required String super.argument,
   }) : super(
@@ -86,7 +86,7 @@ String _$shoppingCategoryAutocompleteUseCaseHash() =>
 final class ShoppingCategoryAutocompleteUseCaseFamily extends $Family
     with
         $FunctionalFamilyOverride<ShoppingCategoryAutocompleteUseCase, String> {
-  const ShoppingCategoryAutocompleteUseCaseFamily._()
+  ShoppingCategoryAutocompleteUseCaseFamily._()
     : super(
         retry: null,
         name: r'shoppingCategoryAutocompleteUseCaseProvider',

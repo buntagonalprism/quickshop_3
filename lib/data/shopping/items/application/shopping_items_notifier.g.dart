@@ -13,11 +13,11 @@ part of 'shopping_items_notifier.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ShoppingItemsNotifier)
-const shoppingItemsProvider = ShoppingItemsNotifierFamily._();
+final shoppingItemsProvider = ShoppingItemsNotifierFamily._();
 
 final class ShoppingItemsNotifierProvider
     extends $StreamNotifierProvider<ShoppingItemsNotifier, List<ShoppingItem>> {
-  const ShoppingItemsNotifierProvider._({
+  ShoppingItemsNotifierProvider._({
     required ShoppingItemsNotifierFamily super.from,
     required String super.argument,
   }) : super(
@@ -65,7 +65,7 @@ final class ShoppingItemsNotifierFamily extends $Family
           Stream<List<ShoppingItem>>,
           String
         > {
-  const ShoppingItemsNotifierFamily._()
+  ShoppingItemsNotifierFamily._()
     : super(
         retry: null,
         name: r'shoppingItemsProvider',
@@ -89,8 +89,7 @@ abstract class _$ShoppingItemsNotifier
   Stream<List<ShoppingItem>> build(String listId);
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
+  WhenComplete runBuild() {
     final ref =
         this.ref as $Ref<AsyncValue<List<ShoppingItem>>, List<ShoppingItem>>;
     final element =
@@ -101,6 +100,6 @@ abstract class _$ShoppingItemsNotifier
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, () => build(_$args));
   }
 }

@@ -13,12 +13,12 @@ part of 'analytics.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(analytics)
-const analyticsProvider = AnalyticsProvider._();
+final analyticsProvider = AnalyticsProvider._();
 
 final class AnalyticsProvider
     extends $FunctionalProvider<Analytics, Analytics, Analytics>
     with $Provider<Analytics> {
-  const AnalyticsProvider._()
+  AnalyticsProvider._()
     : super(
         from: null,
         argument: null,

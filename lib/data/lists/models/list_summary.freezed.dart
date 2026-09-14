@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'list_summary.dart';
@@ -9,6 +9,7 @@ part of 'list_summary.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -30,16 +31,21 @@ $ListSummaryCopyWith<ListSummary> get copyWith => _$ListSummaryCopyWithImpl<List
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.editorIds, editorIds)&&const DeepCollectionEquality().equals(other.editors, editors)&&(identical(other.itemCount, itemCount) || other.itemCount == itemCount)&&const DeepCollectionEquality().equals(other.lastModified, lastModified)&&(identical(other.listType, listType) || other.listType == listType));
+  final _this = this as ListSummary;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListSummary&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.ownerId, _this.ownerId) || other.ownerId == _this.ownerId)&&const DeepCollectionEquality().equals(other.editorIds, _this.editorIds)&&const DeepCollectionEquality().equals(other.editors, _this.editors)&&(identical(other.itemCount, _this.itemCount) || other.itemCount == _this.itemCount)&&const DeepCollectionEquality().equals(other.lastModified, _this.lastModified)&&(identical(other.listType, _this.listType) || other.listType == _this.listType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,ownerId,const DeepCollectionEquality().hash(editorIds),const DeepCollectionEquality().hash(editors),itemCount,const DeepCollectionEquality().hash(lastModified),listType);
+int get hashCode {
+  final _this = this as ListSummary;
+  return Object.hash(runtimeType,_this.id,_this.name,_this.ownerId,const DeepCollectionEquality().hash(_this.editorIds),const DeepCollectionEquality().hash(_this.editors),_this.itemCount,const DeepCollectionEquality().hash(_this.lastModified),_this.listType);
+}
 
 @override
 String toString() {
-  return 'ListSummary(id: $id, name: $name, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, itemCount: $itemCount, lastModified: $lastModified, listType: $listType)';
+  final _this = this as ListSummary;
+  return 'ListSummary(id: ${_this.id}, name: ${_this.name}, ownerId: ${_this.ownerId}, editorIds: ${_this.editorIds}, editors: ${_this.editors}, itemCount: ${_this.itemCount}, lastModified: ${_this.lastModified}, listType: ${_this.listType})';
 }
 
 
@@ -68,7 +74,7 @@ class _$ListSummaryCopyWithImpl<$Res>
 /// Create a copy of ListSummary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? editorIds = null,Object? editors = null,Object? itemCount = null,Object? lastModified = null,Object? listType = null,}) {
-  return _then(_self.copyWith(
+  return _then(ListSummary(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
@@ -218,7 +224,7 @@ return $default(_that.id,_that.name,_that.ownerId,_that.editorIds,_that.editors,
 
 
 class _ListSummary extends ListSummary {
-  const _ListSummary({required this.id, required this.name, required this.ownerId, required final  List<String> editorIds, required final  List<UserAuth> editors, required this.itemCount, required final  Map<String, int> lastModified, required this.listType}): _editorIds = editorIds,_editors = editors,_lastModified = lastModified,super._();
+  const _ListSummary({required this.id, required this.name, required this.ownerId, required  List<String> editorIds, required  List<UserAuth> editors, required this.itemCount, required  Map<String, int> lastModified, required this.listType}): _editorIds = editorIds,_editors = editors,_lastModified = lastModified,super._();
   
 
 @override final  String id;
@@ -266,16 +272,18 @@ _$ListSummaryCopyWith<_ListSummary> get copyWith => __$ListSummaryCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._editorIds, _editorIds)&&const DeepCollectionEquality().equals(other._editors, _editors)&&(identical(other.itemCount, itemCount) || other.itemCount == itemCount)&&const DeepCollectionEquality().equals(other._lastModified, _lastModified)&&(identical(other.listType, listType) || other.listType == listType));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.editorIds, _editorIds)&&const DeepCollectionEquality().equals(other.editors, _editors)&&(identical(other.itemCount, itemCount) || other.itemCount == itemCount)&&const DeepCollectionEquality().equals(other.lastModified, _lastModified)&&(identical(other.listType, listType) || other.listType == listType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,ownerId,const DeepCollectionEquality().hash(_editorIds),const DeepCollectionEquality().hash(_editors),itemCount,const DeepCollectionEquality().hash(_lastModified),listType);
+int get hashCode {
+    return Object.hash(runtimeType,id,name,ownerId,const DeepCollectionEquality().hash(_editorIds),const DeepCollectionEquality().hash(_editors),itemCount,const DeepCollectionEquality().hash(_lastModified),listType);
+}
 
 @override
 String toString() {
-  return 'ListSummary(id: $id, name: $name, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, itemCount: $itemCount, lastModified: $lastModified, listType: $listType)';
+    return 'ListSummary(id: $id, name: $name, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, itemCount: $itemCount, lastModified: $lastModified, listType: $listType)';
 }
 
 

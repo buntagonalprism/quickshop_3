@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'checklist_entry.dart';
@@ -9,6 +9,7 @@ part of 'checklist_entry.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -20,7 +21,7 @@ mixin _$ChecklistEntry {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistEntry);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistEntry);
 }
 
 
@@ -29,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ChecklistEntry()';
+    return 'ChecklistEntry()';
 }
 
 
@@ -190,16 +191,18 @@ _$ChecklistEntryItemCopyWith<_ChecklistEntryItem> get copyWith => __$ChecklistEn
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistEntryItem&&(identical(other.item, item) || other.item == item));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistEntryItem&&(identical(other.item, item) || other.item == item));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,item);
+int get hashCode {
+    return Object.hash(runtimeType,item);
+}
 
 @override
 String toString() {
-  return 'ChecklistEntry.item(item: $item)';
+    return 'ChecklistEntry.item(item: $item)';
 }
 
 
@@ -265,16 +268,18 @@ _$ChecklistEntryHeadingCopyWith<_ChecklistEntryHeading> get copyWith => __$Check
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistEntryHeading&&(identical(other.heading, heading) || other.heading == heading));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistEntryHeading&&(identical(other.heading, heading) || other.heading == heading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,heading);
+int get hashCode {
+    return Object.hash(runtimeType,heading);
+}
 
 @override
 String toString() {
-  return 'ChecklistEntry.heading(heading: $heading)';
+    return 'ChecklistEntry.heading(heading: $heading)';
 }
 
 
@@ -335,16 +340,21 @@ $ChecklistItemCopyWith<ChecklistItem> get copyWith => _$ChecklistItemCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.sortKey, sortKey) || other.sortKey == sortKey));
+  final _this = this as ChecklistItem;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.completed, _this.completed) || other.completed == _this.completed)&&(identical(other.sortKey, _this.sortKey) || other.sortKey == _this.sortKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,completed,sortKey);
+int get hashCode {
+  final _this = this as ChecklistItem;
+  return Object.hash(runtimeType,_this.id,_this.name,_this.completed,_this.sortKey);
+}
 
 @override
 String toString() {
-  return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey)';
+  final _this = this as ChecklistItem;
+  return 'ChecklistItem(id: ${_this.id}, name: ${_this.name}, completed: ${_this.completed}, sortKey: ${_this.sortKey})';
 }
 
 
@@ -373,7 +383,7 @@ class _$ChecklistItemCopyWithImpl<$Res>
 /// Create a copy of ChecklistItem
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? completed = null,Object? sortKey = null,}) {
-  return _then(_self.copyWith(
+  return _then(ChecklistItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable
@@ -546,16 +556,18 @@ _$ChecklistItemCopyWith<_ChecklistItem> get copyWith => __$ChecklistItemCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.sortKey, sortKey) || other.sortKey == sortKey));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistItem&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.sortKey, sortKey) || other.sortKey == sortKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,completed,sortKey);
+int get hashCode {
+    return Object.hash(runtimeType,id,name,completed,sortKey);
+}
 
 @override
 String toString() {
-  return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey)';
+    return 'ChecklistItem(id: $id, name: $name, completed: $completed, sortKey: $sortKey)';
 }
 
 
@@ -619,16 +631,21 @@ $ChecklistHeadingCopyWith<ChecklistHeading> get copyWith => _$ChecklistHeadingCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistHeading&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.sortKey, sortKey) || other.sortKey == sortKey));
+  final _this = this as ChecklistHeading;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistHeading&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.sortKey, _this.sortKey) || other.sortKey == _this.sortKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,sortKey);
+int get hashCode {
+  final _this = this as ChecklistHeading;
+  return Object.hash(runtimeType,_this.id,_this.name,_this.sortKey);
+}
 
 @override
 String toString() {
-  return 'ChecklistHeading(id: $id, name: $name, sortKey: $sortKey)';
+  final _this = this as ChecklistHeading;
+  return 'ChecklistHeading(id: ${_this.id}, name: ${_this.name}, sortKey: ${_this.sortKey})';
 }
 
 
@@ -657,7 +674,7 @@ class _$ChecklistHeadingCopyWithImpl<$Res>
 /// Create a copy of ChecklistHeading
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? sortKey = null,}) {
-  return _then(_self.copyWith(
+  return _then(ChecklistHeading(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,sortKey: null == sortKey ? _self.sortKey : sortKey // ignore: cast_nullable_to_non_nullable
@@ -828,16 +845,18 @@ _$ChecklistHeadingCopyWith<_ChecklistHeading> get copyWith => __$ChecklistHeadin
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistHeading&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.sortKey, sortKey) || other.sortKey == sortKey));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistHeading&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.sortKey, sortKey) || other.sortKey == sortKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,sortKey);
+int get hashCode {
+    return Object.hash(runtimeType,id,name,sortKey);
+}
 
 @override
 String toString() {
-  return 'ChecklistHeading(id: $id, name: $name, sortKey: $sortKey)';
+    return 'ChecklistHeading(id: $id, name: $name, sortKey: $sortKey)';
 }
 
 

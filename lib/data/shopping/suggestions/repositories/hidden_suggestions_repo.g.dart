@@ -13,7 +13,7 @@ part of 'hidden_suggestions_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(hiddenSuggestionsRepo)
-const hiddenSuggestionsRepoProvider = HiddenSuggestionsRepoProvider._();
+final hiddenSuggestionsRepoProvider = HiddenSuggestionsRepoProvider._();
 
 final class HiddenSuggestionsRepoProvider
     extends
@@ -23,7 +23,7 @@ final class HiddenSuggestionsRepoProvider
           HiddenSuggestionsRepo
         >
     with $Provider<HiddenSuggestionsRepo> {
-  const HiddenSuggestionsRepoProvider._()
+  HiddenSuggestionsRepoProvider._()
     : super(
         from: null,
         argument: null,

@@ -13,13 +13,13 @@ part of 'settings_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(settingsService)
-const settingsServiceProvider = SettingsServiceProvider._();
+final settingsServiceProvider = SettingsServiceProvider._();
 
 final class SettingsServiceProvider
     extends
         $FunctionalProvider<SettingsService, SettingsService, SettingsService>
     with $Provider<SettingsService> {
-  const SettingsServiceProvider._()
+  SettingsServiceProvider._()
     : super(
         from: null,
         argument: null,

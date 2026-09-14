@@ -13,7 +13,7 @@ part of 'shopping_item_create_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(itemAutocomplete)
-const itemAutocompleteProvider = ItemAutocompleteFamily._();
+final itemAutocompleteProvider = ItemAutocompleteFamily._();
 
 final class ItemAutocompleteProvider
     extends
@@ -25,7 +25,7 @@ final class ItemAutocompleteProvider
     with
         $FutureModifier<List<ShoppingItemAutocomplete>>,
         $FutureProvider<List<ShoppingItemAutocomplete>> {
-  const ItemAutocompleteProvider._({
+  ItemAutocompleteProvider._({
     required ItemAutocompleteFamily super.from,
     required String super.argument,
   }) : super(
@@ -77,7 +77,7 @@ final class ItemAutocompleteFamily extends $Family
           FutureOr<List<ShoppingItemAutocomplete>>,
           String
         > {
-  const ItemAutocompleteFamily._()
+  ItemAutocompleteFamily._()
     : super(
         retry: null,
         name: r'itemAutocompleteProvider',
@@ -94,7 +94,7 @@ final class ItemAutocompleteFamily extends $Family
 }
 
 @ProviderFor(ShoppingItemCreateViewModel)
-const shoppingItemCreateViewModelProvider =
+final shoppingItemCreateViewModelProvider =
     ShoppingItemCreateViewModelProvider._();
 
 final class ShoppingItemCreateViewModelProvider
@@ -103,7 +103,7 @@ final class ShoppingItemCreateViewModelProvider
           ShoppingItemCreateViewModel,
           ShoppingItemCreateModel
         > {
-  const ShoppingItemCreateViewModelProvider._()
+  ShoppingItemCreateViewModelProvider._()
     : super(
         from: null,
         argument: null,
@@ -138,8 +138,7 @@ abstract class _$ShoppingItemCreateViewModel
   ShoppingItemCreateModel build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref =
         this.ref as $Ref<ShoppingItemCreateModel, ShoppingItemCreateModel>;
     final element =
@@ -150,6 +149,6 @@ abstract class _$ShoppingItemCreateViewModel
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

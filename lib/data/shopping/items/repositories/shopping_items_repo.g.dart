@@ -13,7 +13,7 @@ part of 'shopping_items_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(shoppingListItemsRepo)
-const shoppingListItemsRepoProvider = ShoppingListItemsRepoFamily._();
+final shoppingListItemsRepoProvider = ShoppingListItemsRepoFamily._();
 
 final class ShoppingListItemsRepoProvider
     extends
@@ -23,7 +23,7 @@ final class ShoppingListItemsRepoProvider
           ShoppingListItemsRepo
         >
     with $Provider<ShoppingListItemsRepo> {
-  const ShoppingListItemsRepoProvider._({
+  ShoppingListItemsRepoProvider._({
     required ShoppingListItemsRepoFamily super.from,
     required String super.argument,
   }) : super(
@@ -80,7 +80,7 @@ String _$shoppingListItemsRepoHash() =>
 
 final class ShoppingListItemsRepoFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingListItemsRepo, String> {
-  const ShoppingListItemsRepoFamily._()
+  ShoppingListItemsRepoFamily._()
     : super(
         retry: null,
         name: r'shoppingListItemsRepoProvider',

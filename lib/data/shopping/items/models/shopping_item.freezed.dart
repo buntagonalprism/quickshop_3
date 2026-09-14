@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_item.dart';
@@ -9,6 +9,7 @@ part of 'shopping_item.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ShoppingItemCopyWith<ShoppingItem> get copyWith => _$ShoppingItemCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItem&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.addedByUserId, addedByUserId) || other.addedByUserId == addedByUserId)&&(identical(other.lastModifiedByUserId, lastModifiedByUserId) || other.lastModifiedByUserId == lastModifiedByUserId)&&(identical(other.lastModifiedAt, lastModifiedAt) || other.lastModifiedAt == lastModifiedAt)&&(identical(other.completed, completed) || other.completed == completed));
+  final _this = this as ShoppingItem;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.product, _this.product) || other.product == _this.product)&&(identical(other.quantity, _this.quantity) || other.quantity == _this.quantity)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.addedByUserId, _this.addedByUserId) || other.addedByUserId == _this.addedByUserId)&&(identical(other.lastModifiedByUserId, _this.lastModifiedByUserId) || other.lastModifiedByUserId == _this.lastModifiedByUserId)&&(identical(other.lastModifiedAt, _this.lastModifiedAt) || other.lastModifiedAt == _this.lastModifiedAt)&&(identical(other.completed, _this.completed) || other.completed == _this.completed));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,path,product,quantity,category,addedByUserId,lastModifiedByUserId,lastModifiedAt,completed);
+int get hashCode {
+  final _this = this as ShoppingItem;
+  return Object.hash(runtimeType,_this.id,_this.path,_this.product,_this.quantity,_this.category,_this.addedByUserId,_this.lastModifiedByUserId,_this.lastModifiedAt,_this.completed);
+}
 
 @override
 String toString() {
-  return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, category: $category, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
+  final _this = this as ShoppingItem;
+  return 'ShoppingItem(id: ${_this.id}, path: ${_this.path}, product: ${_this.product}, quantity: ${_this.quantity}, category: ${_this.category}, addedByUserId: ${_this.addedByUserId}, lastModifiedByUserId: ${_this.lastModifiedByUserId}, lastModifiedAt: ${_this.lastModifiedAt}, completed: ${_this.completed})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ShoppingItemCopyWithImpl<$Res>
 /// Create a copy of ShoppingItem
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? path = null,Object? product = null,Object? quantity = null,Object? category = null,Object? addedByUserId = null,Object? lastModifiedByUserId = null,Object? lastModifiedAt = null,Object? completed = null,}) {
-  return _then(_self.copyWith(
+  return _then(ShoppingItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
@@ -237,16 +243,18 @@ _$ShoppingItemCopyWith<_ShoppingItem> get copyWith => __$ShoppingItemCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItem&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.addedByUserId, addedByUserId) || other.addedByUserId == addedByUserId)&&(identical(other.lastModifiedByUserId, lastModifiedByUserId) || other.lastModifiedByUserId == lastModifiedByUserId)&&(identical(other.lastModifiedAt, lastModifiedAt) || other.lastModifiedAt == lastModifiedAt)&&(identical(other.completed, completed) || other.completed == completed));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItem&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.addedByUserId, addedByUserId) || other.addedByUserId == addedByUserId)&&(identical(other.lastModifiedByUserId, lastModifiedByUserId) || other.lastModifiedByUserId == lastModifiedByUserId)&&(identical(other.lastModifiedAt, lastModifiedAt) || other.lastModifiedAt == lastModifiedAt)&&(identical(other.completed, completed) || other.completed == completed));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,path,product,quantity,category,addedByUserId,lastModifiedByUserId,lastModifiedAt,completed);
+int get hashCode {
+    return Object.hash(runtimeType,id,path,product,quantity,category,addedByUserId,lastModifiedByUserId,lastModifiedAt,completed);
+}
 
 @override
 String toString() {
-  return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, category: $category, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
+    return 'ShoppingItem(id: $id, path: $path, product: $product, quantity: $quantity, category: $category, addedByUserId: $addedByUserId, lastModifiedByUserId: $lastModifiedByUserId, lastModifiedAt: $lastModifiedAt, completed: $completed)';
 }
 
 

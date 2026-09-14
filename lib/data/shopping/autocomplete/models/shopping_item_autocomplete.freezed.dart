@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_item_autocomplete.dart';
@@ -9,6 +9,7 @@ part of 'shopping_item_autocomplete.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ShoppingItemAutocompleteCopyWith<ShoppingItemAutocomplete> get copyWith => _$Sh
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemAutocomplete&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.source, source) || other.source == source)&&(identical(other.sourceId, sourceId) || other.sourceId == sourceId));
+  final _this = this as ShoppingItemAutocomplete;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemAutocomplete&&(identical(other.product, _this.product) || other.product == _this.product)&&(identical(other.quantity, _this.quantity) || other.quantity == _this.quantity)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.sourceId, _this.sourceId) || other.sourceId == _this.sourceId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,category,source,sourceId);
+int get hashCode {
+  final _this = this as ShoppingItemAutocomplete;
+  return Object.hash(runtimeType,_this.product,_this.quantity,_this.category,_this.source,_this.sourceId);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemAutocomplete(product: $product, quantity: $quantity, category: $category, source: $source, sourceId: $sourceId)';
+  final _this = this as ShoppingItemAutocomplete;
+  return 'ShoppingItemAutocomplete(product: ${_this.product}, quantity: ${_this.quantity}, category: ${_this.category}, source: ${_this.source}, sourceId: ${_this.sourceId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ShoppingItemAutocompleteCopyWithImpl<$Res>
 /// Create a copy of ShoppingItemAutocomplete
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? product = null,Object? quantity = null,Object? category = null,Object? source = null,Object? sourceId = null,}) {
-  return _then(_self.copyWith(
+  return _then(ShoppingItemAutocomplete(
 product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
@@ -229,16 +235,18 @@ _$ShoppingItemAutocompleteCopyWith<_ShoppingItemAutocomplete> get copyWith => __
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemAutocomplete&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.source, source) || other.source == source)&&(identical(other.sourceId, sourceId) || other.sourceId == sourceId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemAutocomplete&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category)&&(identical(other.source, source) || other.source == source)&&(identical(other.sourceId, sourceId) || other.sourceId == sourceId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,category,source,sourceId);
+int get hashCode {
+    return Object.hash(runtimeType,product,quantity,category,source,sourceId);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemAutocomplete(product: $product, quantity: $quantity, category: $category, source: $source, sourceId: $sourceId)';
+    return 'ShoppingItemAutocomplete(product: $product, quantity: $quantity, category: $category, source: $source, sourceId: $sourceId)';
 }
 
 

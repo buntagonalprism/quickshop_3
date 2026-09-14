@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_item_history.dart';
@@ -9,6 +9,7 @@ part of 'shopping_item_history.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ShoppingItemHistoryCopyWith<ShoppingItemHistory> get copyWith => _$ShoppingItem
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameLower, nameLower) || other.nameLower == nameLower)&&(identical(other.category, category) || other.category == category)&&(identical(other.lastUsed, lastUsed) || other.lastUsed == lastUsed)&&(identical(other.usageCount, usageCount) || other.usageCount == usageCount)&&(identical(other.deleted, deleted) || other.deleted == deleted));
+  final _this = this as ShoppingItemHistory;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemHistory&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.nameLower, _this.nameLower) || other.nameLower == _this.nameLower)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.lastUsed, _this.lastUsed) || other.lastUsed == _this.lastUsed)&&(identical(other.usageCount, _this.usageCount) || other.usageCount == _this.usageCount)&&(identical(other.deleted, _this.deleted) || other.deleted == _this.deleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,nameLower,category,lastUsed,usageCount,deleted);
+int get hashCode {
+  final _this = this as ShoppingItemHistory;
+  return Object.hash(runtimeType,_this.id,_this.name,_this.nameLower,_this.category,_this.lastUsed,_this.usageCount,_this.deleted);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, category: $category, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
+  final _this = this as ShoppingItemHistory;
+  return 'ShoppingItemHistory(id: ${_this.id}, name: ${_this.name}, nameLower: ${_this.nameLower}, category: ${_this.category}, lastUsed: ${_this.lastUsed}, usageCount: ${_this.usageCount}, deleted: ${_this.deleted})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ShoppingItemHistoryCopyWithImpl<$Res>
 /// Create a copy of ShoppingItemHistory
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? nameLower = null,Object? category = null,Object? lastUsed = null,Object? usageCount = null,Object? deleted = null,}) {
-  return _then(_self.copyWith(
+  return _then(ShoppingItemHistory(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,nameLower: null == nameLower ? _self.nameLower : nameLower // ignore: cast_nullable_to_non_nullable
@@ -233,16 +239,18 @@ _$ShoppingItemHistoryCopyWith<_ShoppingItemHistory> get copyWith => __$ShoppingI
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameLower, nameLower) || other.nameLower == nameLower)&&(identical(other.category, category) || other.category == category)&&(identical(other.lastUsed, lastUsed) || other.lastUsed == lastUsed)&&(identical(other.usageCount, usageCount) || other.usageCount == usageCount)&&(identical(other.deleted, deleted) || other.deleted == deleted));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameLower, nameLower) || other.nameLower == nameLower)&&(identical(other.category, category) || other.category == category)&&(identical(other.lastUsed, lastUsed) || other.lastUsed == lastUsed)&&(identical(other.usageCount, usageCount) || other.usageCount == usageCount)&&(identical(other.deleted, deleted) || other.deleted == deleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,nameLower,category,lastUsed,usageCount,deleted);
+int get hashCode {
+    return Object.hash(runtimeType,id,name,nameLower,category,lastUsed,usageCount,deleted);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, category: $category, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
+    return 'ShoppingItemHistory(id: $id, name: $name, nameLower: $nameLower, category: $category, lastUsed: $lastUsed, usageCount: $usageCount, deleted: $deleted)';
 }
 
 

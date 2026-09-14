@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_item_suggestions_summary.dart';
@@ -9,6 +9,7 @@ part of 'shopping_item_suggestions_summary.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ShoppingItemSuggestionsSummaryCopyWith<ShoppingItemSuggestionsSummary> get copy
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemSuggestionsSummary&&const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+  final _this = this as ShoppingItemSuggestionsSummary;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemSuggestionsSummary&&const DeepCollectionEquality().equals(other.updatedAt, _this.updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(updatedAt));
+int get hashCode {
+  final _this = this as ShoppingItemSuggestionsSummary;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.updatedAt));
+}
 
 @override
 String toString() {
-  return 'ShoppingItemSuggestionsSummary(updatedAt: $updatedAt)';
+  final _this = this as ShoppingItemSuggestionsSummary;
+  return 'ShoppingItemSuggestionsSummary(updatedAt: ${_this.updatedAt})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ShoppingItemSuggestionsSummaryCopyWithImpl<$Res>
 /// Create a copy of ShoppingItemSuggestionsSummary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? updatedAt = null,}) {
-  return _then(_self.copyWith(
+  return _then(ShoppingItemSuggestionsSummary(
 updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as Map<String, DateTime>,
   ));
@@ -206,7 +212,7 @@ return $default(_that.updatedAt);case _:
 
 
 class _ShoppingItemSuggestionsSummary extends ShoppingItemSuggestionsSummary {
-  const _ShoppingItemSuggestionsSummary({required final  Map<String, DateTime> updatedAt}): _updatedAt = updatedAt,super._();
+  const _ShoppingItemSuggestionsSummary({required  Map<String, DateTime> updatedAt}): _updatedAt = updatedAt,super._();
   
 
  final  Map<String, DateTime> _updatedAt;
@@ -227,16 +233,18 @@ _$ShoppingItemSuggestionsSummaryCopyWith<_ShoppingItemSuggestionsSummary> get co
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemSuggestionsSummary&&const DeepCollectionEquality().equals(other._updatedAt, _updatedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemSuggestionsSummary&&const DeepCollectionEquality().equals(other.updatedAt, _updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_updatedAt));
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_updatedAt));
+}
 
 @override
 String toString() {
-  return 'ShoppingItemSuggestionsSummary(updatedAt: $updatedAt)';
+    return 'ShoppingItemSuggestionsSummary(updatedAt: $updatedAt)';
 }
 
 

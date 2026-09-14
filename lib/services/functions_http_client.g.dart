@@ -13,7 +13,7 @@ part of 'functions_http_client.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(functionsHttpClient)
-const functionsHttpClientProvider = FunctionsHttpClientProvider._();
+final functionsHttpClientProvider = FunctionsHttpClientProvider._();
 
 final class FunctionsHttpClientProvider
     extends
@@ -23,7 +23,7 @@ final class FunctionsHttpClientProvider
           FunctionsHttpClient
         >
     with $Provider<FunctionsHttpClient> {
-  const FunctionsHttpClientProvider._()
+  FunctionsHttpClientProvider._()
     : super(
         from: null,
         argument: null,

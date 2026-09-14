@@ -13,12 +13,12 @@ part of 'list_invite_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(listInviteRepo)
-const listInviteRepoProvider = ListInviteRepoProvider._();
+final listInviteRepoProvider = ListInviteRepoProvider._();
 
 final class ListInviteRepoProvider
     extends $FunctionalProvider<ListInviteRepo, ListInviteRepo, ListInviteRepo>
     with $Provider<ListInviteRepo> {
-  const ListInviteRepoProvider._()
+  ListInviteRepoProvider._()
     : super(
         from: null,
         argument: null,

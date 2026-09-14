@@ -2798,7 +2798,18 @@ class $$ItemSuggestionsTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$ItemSuggestionsTableTable, ItemSuggestionsRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ItemSuggestionsTableTable,
+                    ItemSuggestionsRow
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -3019,7 +3030,19 @@ class $$CategorySuggestionsTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<
+                    $CategorySuggestionsTableTable,
+                    CategorySuggestionsRow
+                  >(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $CategorySuggestionsTableTable,
+                    CategorySuggestionsRow
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -3250,7 +3273,16 @@ class $$ItemHistoryTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$ItemHistoryTableTable, ItemHistoryRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ItemHistoryTableTable,
+                    ItemHistoryRow
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -3464,7 +3496,18 @@ class $$CategoryHistoryTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$CategoryHistoryTableTable, CategoryHistoryRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $CategoryHistoryTableTable,
+                    CategoryHistoryRow
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -3492,22 +3535,20 @@ typedef $$CategoryHistoryTableTableProcessedTableManager =
       CategoryHistoryRow,
       PrefetchHooks Function()
     >;
-typedef $$TokenTableTableCreateCompanionBuilder =
-    TokenTableCompanion Function({
-      required int type,
-      Value<String?> stringId,
-      Value<int?> intId,
-      required String token,
-      Value<int> rowid,
-    });
-typedef $$TokenTableTableUpdateCompanionBuilder =
-    TokenTableCompanion Function({
-      Value<int> type,
-      Value<String?> stringId,
-      Value<int?> intId,
-      Value<String> token,
-      Value<int> rowid,
-    });
+typedef $$TokenTableTableCreateCompanionBuilder = TokenTableCompanion Function({
+  required int type,
+  Value<String?> stringId,
+  Value<int?> intId,
+  required String token,
+  Value<int> rowid,
+});
+typedef $$TokenTableTableUpdateCompanionBuilder = TokenTableCompanion Function({
+  Value<int> type,
+  Value<String?> stringId,
+  Value<int?> intId,
+  Value<String> token,
+  Value<int> rowid,
+});
 
 class $$TokenTableTableFilterComposer
     extends Composer<_$AppDatabase, $TokenTableTable> {
@@ -3646,7 +3687,16 @@ class $$TokenTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$TokenTableTable, TokenRow>(table),
+                  BaseReferences<_$AppDatabase, $TokenTableTable, TokenRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -3791,7 +3841,16 @@ class $$LoadProgressTableTableTableManager
                 retrievedUntil: retrievedUntil,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$LoadProgressTableTable, LoadProgressRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $LoadProgressTableTable,
+                    LoadProgressRow
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -3968,7 +4027,19 @@ class $$HiddenSuggestionsTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<
+                    $HiddenSuggestionsTableTable,
+                    HiddenSuggestionsRow
+                  >(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $HiddenSuggestionsTableTable,
+                    HiddenSuggestionsRow
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -4124,7 +4195,18 @@ class $$DbPreferencesTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$DbPreferencesTableTable, DbPreferencesRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $DbPreferencesTableTable,
+                    DbPreferencesRow
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),

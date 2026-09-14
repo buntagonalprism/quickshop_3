@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'store.dart';
@@ -9,6 +9,7 @@ part of 'store.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -31,16 +32,21 @@ $StoreCopyWith<Store> get copyWith => _$StoreCopyWithImpl<Store>(this as Store, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Store&&(identical(other.id, id) || other.id == id)&&(identical(other.storeName, storeName) || other.storeName == storeName)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.editorIds, editorIds)&&const DeepCollectionEquality().equals(other.editors, editors)&&(identical(other.coordinates, coordinates) || other.coordinates == coordinates)&&(identical(other.loyaltyCard, loyaltyCard) || other.loyaltyCard == loyaltyCard)&&const DeepCollectionEquality().equals(other.locations, locations));
+  final _this = this as Store;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Store&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.storeName, _this.storeName) || other.storeName == _this.storeName)&&(identical(other.ownerId, _this.ownerId) || other.ownerId == _this.ownerId)&&const DeepCollectionEquality().equals(other.editorIds, _this.editorIds)&&const DeepCollectionEquality().equals(other.editors, _this.editors)&&(identical(other.coordinates, _this.coordinates) || other.coordinates == _this.coordinates)&&(identical(other.loyaltyCard, _this.loyaltyCard) || other.loyaltyCard == _this.loyaltyCard)&&const DeepCollectionEquality().equals(other.locations, _this.locations));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,storeName,ownerId,const DeepCollectionEquality().hash(editorIds),const DeepCollectionEquality().hash(editors),coordinates,loyaltyCard,const DeepCollectionEquality().hash(locations));
+int get hashCode {
+  final _this = this as Store;
+  return Object.hash(runtimeType,_this.id,_this.storeName,_this.ownerId,const DeepCollectionEquality().hash(_this.editorIds),const DeepCollectionEquality().hash(_this.editors),_this.coordinates,_this.loyaltyCard,const DeepCollectionEquality().hash(_this.locations));
+}
 
 @override
 String toString() {
-  return 'Store(id: $id, storeName: $storeName, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, coordinates: $coordinates, loyaltyCard: $loyaltyCard, locations: $locations)';
+  final _this = this as Store;
+  return 'Store(id: ${_this.id}, storeName: ${_this.storeName}, ownerId: ${_this.ownerId}, editorIds: ${_this.editorIds}, editors: ${_this.editors}, coordinates: ${_this.coordinates}, loyaltyCard: ${_this.loyaltyCard}, locations: ${_this.locations})';
 }
 
 
@@ -69,7 +75,7 @@ class _$StoreCopyWithImpl<$Res>
 /// Create a copy of Store
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? storeName = null,Object? ownerId = null,Object? editorIds = null,Object? editors = null,Object? coordinates = freezed,Object? loyaltyCard = freezed,Object? locations = null,}) {
-  return _then(_self.copyWith(
+  return _then(Store(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,storeName: null == storeName ? _self.storeName : storeName // ignore: cast_nullable_to_non_nullable
 as String,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
@@ -243,7 +249,7 @@ return $default(_that.id,_that.storeName,_that.ownerId,_that.editorIds,_that.edi
 
 
 class _Store extends Store {
-  const _Store({required this.id, required this.storeName, required this.ownerId, required final  List<String> editorIds, required final  List<UserAuth> editors, this.coordinates, this.loyaltyCard, required final  List<StoreLocation> locations}): _editorIds = editorIds,_editors = editors,_locations = locations,super._();
+  const _Store({required this.id, required this.storeName, required this.ownerId, required  List<String> editorIds, required  List<UserAuth> editors, this.coordinates, this.loyaltyCard, required  List<StoreLocation> locations}): _editorIds = editorIds,_editors = editors,_locations = locations,super._();
   
 
 @override final  String id;
@@ -292,16 +298,18 @@ _$StoreCopyWith<_Store> get copyWith => __$StoreCopyWithImpl<_Store>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Store&&(identical(other.id, id) || other.id == id)&&(identical(other.storeName, storeName) || other.storeName == storeName)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._editorIds, _editorIds)&&const DeepCollectionEquality().equals(other._editors, _editors)&&(identical(other.coordinates, coordinates) || other.coordinates == coordinates)&&(identical(other.loyaltyCard, loyaltyCard) || other.loyaltyCard == loyaltyCard)&&const DeepCollectionEquality().equals(other._locations, _locations));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Store&&(identical(other.id, id) || other.id == id)&&(identical(other.storeName, storeName) || other.storeName == storeName)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.editorIds, _editorIds)&&const DeepCollectionEquality().equals(other.editors, _editors)&&(identical(other.coordinates, coordinates) || other.coordinates == coordinates)&&(identical(other.loyaltyCard, loyaltyCard) || other.loyaltyCard == loyaltyCard)&&const DeepCollectionEquality().equals(other.locations, _locations));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,storeName,ownerId,const DeepCollectionEquality().hash(_editorIds),const DeepCollectionEquality().hash(_editors),coordinates,loyaltyCard,const DeepCollectionEquality().hash(_locations));
+int get hashCode {
+    return Object.hash(runtimeType,id,storeName,ownerId,const DeepCollectionEquality().hash(_editorIds),const DeepCollectionEquality().hash(_editors),coordinates,loyaltyCard,const DeepCollectionEquality().hash(_locations));
+}
 
 @override
 String toString() {
-  return 'Store(id: $id, storeName: $storeName, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, coordinates: $coordinates, loyaltyCard: $loyaltyCard, locations: $locations)';
+    return 'Store(id: $id, storeName: $storeName, ownerId: $ownerId, editorIds: $editorIds, editors: $editors, coordinates: $coordinates, loyaltyCard: $loyaltyCard, locations: $locations)';
 }
 
 

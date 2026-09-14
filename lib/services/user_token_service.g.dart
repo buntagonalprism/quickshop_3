@@ -13,7 +13,7 @@ part of 'user_token_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userTokenService)
-const userTokenServiceProvider = UserTokenServiceProvider._();
+final userTokenServiceProvider = UserTokenServiceProvider._();
 
 final class UserTokenServiceProvider
     extends
@@ -23,7 +23,7 @@ final class UserTokenServiceProvider
           UserTokenService
         >
     with $Provider<UserTokenService> {
-  const UserTokenServiceProvider._()
+  UserTokenServiceProvider._()
     : super(
         from: null,
         argument: null,

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_item_raw_data.dart';
@@ -9,6 +9,7 @@ part of 'shopping_item_raw_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ShoppingItemRawDataCopyWith<ShoppingItemRawData> get copyWith => _$ShoppingItem
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemRawData&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category));
+  final _this = this as ShoppingItemRawData;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemRawData&&(identical(other.product, _this.product) || other.product == _this.product)&&(identical(other.quantity, _this.quantity) || other.quantity == _this.quantity)&&(identical(other.category, _this.category) || other.category == _this.category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,category);
+int get hashCode {
+  final _this = this as ShoppingItemRawData;
+  return Object.hash(runtimeType,_this.product,_this.quantity,_this.category);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemRawData(product: $product, quantity: $quantity, category: $category)';
+  final _this = this as ShoppingItemRawData;
+  return 'ShoppingItemRawData(product: ${_this.product}, quantity: ${_this.quantity}, category: ${_this.category})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ShoppingItemRawDataCopyWithImpl<$Res>
 /// Create a copy of ShoppingItemRawData
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? product = null,Object? quantity = null,Object? category = null,}) {
-  return _then(_self.copyWith(
+  return _then(ShoppingItemRawData(
 product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
@@ -225,16 +231,18 @@ _$ShoppingItemRawDataCopyWith<_ShoppingItemRawData> get copyWith => __$ShoppingI
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemRawData&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemRawData&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,product,quantity,category);
+int get hashCode {
+    return Object.hash(runtimeType,product,quantity,category);
+}
 
 @override
 String toString() {
-  return 'ShoppingItemRawData(product: $product, quantity: $quantity, category: $category)';
+    return 'ShoppingItemRawData(product: $product, quantity: $quantity, category: $category)';
 }
 
 

@@ -13,7 +13,7 @@ part of 'shopping_item_edit_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(shoppingItemEditViewModel)
-const shoppingItemEditViewModelProvider = ShoppingItemEditViewModelFamily._();
+final shoppingItemEditViewModelProvider = ShoppingItemEditViewModelFamily._();
 
 final class ShoppingItemEditViewModelProvider
     extends
@@ -23,7 +23,7 @@ final class ShoppingItemEditViewModelProvider
           ShoppingItemEditModel
         >
     with $Provider<ShoppingItemEditModel> {
-  const ShoppingItemEditViewModelProvider._({
+  ShoppingItemEditViewModelProvider._({
     required ShoppingItemEditViewModelFamily super.from,
     required (String, String) super.argument,
   }) : super(
@@ -81,7 +81,7 @@ String _$shoppingItemEditViewModelHash() =>
 
 final class ShoppingItemEditViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingItemEditModel, (String, String)> {
-  const ShoppingItemEditViewModelFamily._()
+  ShoppingItemEditViewModelFamily._()
     : super(
         retry: null,
         name: r'shoppingItemEditViewModelProvider',
