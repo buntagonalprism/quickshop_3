@@ -27,15 +27,7 @@ class _ChecklistEditingViewState extends ConsumerState<ChecklistEditingView> {
   Widget build(BuildContext context) {
     return ReorderableListView.builder(
       buildDefaultDragHandles: false,
-      onReorder: (oldIndex, newIndex) {
-        // A known issue with ReorderableListView is that the newIndex is one too large when an item
-        // is moved down. See https://github.com/flutter/flutter/issues/24786
-        // Unfortunately the fix will not be merged even though its very simple because it would
-        // introduce a breaking change to everyone that had already implemented a workaround
-        // See https://github.com/flutter/flutter/pull/93146
-        if (newIndex > oldIndex) {
-          newIndex -= 1;
-        }
+      onReorderItem: (oldIndex, newIndex) {
         ref
             .read(checklistEntryProvider(widget.list.id).notifier)
             .moveEntry(widget.items[oldIndex - 1], (newIndex - 1).clamp(0, widget.items.length - 1));
