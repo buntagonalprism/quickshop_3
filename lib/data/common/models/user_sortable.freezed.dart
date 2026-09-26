@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'user_sortable.dart';
@@ -9,6 +9,7 @@ part of 'user_sortable.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $UserSortKeyCopyWith<UserSortKey> get copyWith => _$UserSortKeyCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSortKey&&(identical(other.primary, primary) || other.primary == primary)&&(identical(other.secondary, secondary) || other.secondary == secondary));
+  final _this = this as UserSortKey;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSortKey&&(identical(other.primary, _this.primary) || other.primary == _this.primary)&&(identical(other.secondary, _this.secondary) || other.secondary == _this.secondary));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,primary,secondary);
+int get hashCode {
+  final _this = this as UserSortKey;
+  return Object.hash(runtimeType,_this.primary,_this.secondary);
+}
 
 @override
 String toString() {
-  return 'UserSortKey(primary: $primary, secondary: $secondary)';
+  final _this = this as UserSortKey;
+  return 'UserSortKey(primary: ${_this.primary}, secondary: ${_this.secondary})';
 }
 
 
@@ -63,7 +69,7 @@ class _$UserSortKeyCopyWithImpl<$Res>
 /// Create a copy of UserSortKey
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? primary = null,Object? secondary = null,}) {
-  return _then(_self.copyWith(
+  return _then(UserSortKey(
 primary: null == primary ? _self.primary : primary // ignore: cast_nullable_to_non_nullable
 as int,secondary: null == secondary ? _self.secondary : secondary // ignore: cast_nullable_to_non_nullable
 as String,
@@ -223,16 +229,18 @@ _$UserSortKeyCopyWith<_UserSortKey> get copyWith => __$UserSortKeyCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSortKey&&(identical(other.primary, primary) || other.primary == primary)&&(identical(other.secondary, secondary) || other.secondary == secondary));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSortKey&&(identical(other.primary, primary) || other.primary == primary)&&(identical(other.secondary, secondary) || other.secondary == secondary));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,primary,secondary);
+int get hashCode {
+    return Object.hash(runtimeType,primary,secondary);
+}
 
 @override
 String toString() {
-  return 'UserSortKey(primary: $primary, secondary: $secondary)';
+    return 'UserSortKey(primary: $primary, secondary: $secondary)';
 }
 
 

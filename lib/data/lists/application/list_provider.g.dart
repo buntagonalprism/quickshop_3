@@ -13,7 +13,7 @@ part of 'list_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(list)
-const listProvider = ListFamily._();
+final listProvider = ListFamily._();
 
 final class ListProvider
     extends
@@ -23,7 +23,7 @@ final class ListProvider
           AsyncValue<ListSummary?>
         >
     with $Provider<AsyncValue<ListSummary?>> {
-  const ListProvider._({
+  ListProvider._({
     required ListFamily super.from,
     required String super.argument,
   }) : super(
@@ -79,7 +79,7 @@ String _$listHash() => r'ec8fc89a3c6fcba1b400f05cbc136b8ec4c74ec9';
 
 final class ListFamily extends $Family
     with $FunctionalFamilyOverride<AsyncValue<ListSummary?>, String> {
-  const ListFamily._()
+  ListFamily._()
     : super(
         retry: null,
         name: r'listProvider',

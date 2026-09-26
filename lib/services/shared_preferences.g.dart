@@ -13,7 +13,7 @@ part of 'shared_preferences.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(sharedPrefs)
-const sharedPrefsProvider = SharedPrefsProvider._();
+final sharedPrefsProvider = SharedPrefsProvider._();
 
 final class SharedPrefsProvider
     extends
@@ -23,7 +23,7 @@ final class SharedPrefsProvider
           SharedPreferencesWithCache
         >
     with $Provider<SharedPreferencesWithCache> {
-  const SharedPrefsProvider._()
+  SharedPrefsProvider._()
     : super(
         from: null,
         argument: null,

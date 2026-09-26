@@ -13,12 +13,12 @@ part of 'crash_reporter.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(crashReporter)
-const crashReporterProvider = CrashReporterProvider._();
+final crashReporterProvider = CrashReporterProvider._();
 
 final class CrashReporterProvider
     extends $FunctionalProvider<CrashReporter, CrashReporter, CrashReporter>
     with $Provider<CrashReporter> {
-  const CrashReporterProvider._()
+  CrashReporterProvider._()
     : super(
         from: null,
         argument: null,

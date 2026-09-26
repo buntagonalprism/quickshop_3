@@ -13,11 +13,11 @@ part of 'settings_notifier.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(SettingsNotifier)
-const settingsProvider = SettingsNotifierProvider._();
+final settingsProvider = SettingsNotifierProvider._();
 
 final class SettingsNotifierProvider
     extends $NotifierProvider<SettingsNotifier, Settings> {
-  const SettingsNotifierProvider._()
+  SettingsNotifierProvider._()
     : super(
         from: null,
         argument: null,
@@ -50,8 +50,7 @@ abstract class _$SettingsNotifier extends $Notifier<Settings> {
   Settings build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<Settings, Settings>;
     final element =
         ref.element
@@ -61,6 +60,6 @@ abstract class _$SettingsNotifier extends $Notifier<Settings> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

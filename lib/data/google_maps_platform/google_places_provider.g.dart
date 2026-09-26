@@ -13,7 +13,7 @@ part of 'google_places_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(googlePlacesAutocomplete)
-const googlePlacesAutocompleteProvider = GooglePlacesAutocompleteFamily._();
+final googlePlacesAutocompleteProvider = GooglePlacesAutocompleteFamily._();
 
 final class GooglePlacesAutocompleteProvider
     extends
@@ -25,7 +25,7 @@ final class GooglePlacesAutocompleteProvider
     with
         $FutureModifier<List<GooglePlaceResult>>,
         $FutureProvider<List<GooglePlaceResult>> {
-  const GooglePlacesAutocompleteProvider._({
+  GooglePlacesAutocompleteProvider._({
     required GooglePlacesAutocompleteFamily super.from,
     required (String, {Coordinates? location}) super.argument,
   }) : super(
@@ -83,7 +83,7 @@ final class GooglePlacesAutocompleteFamily extends $Family
           FutureOr<List<GooglePlaceResult>>,
           (String, {Coordinates? location})
         > {
-  const GooglePlacesAutocompleteFamily._()
+  GooglePlacesAutocompleteFamily._()
     : super(
         retry: null,
         name: r'googlePlacesAutocompleteProvider',
@@ -105,7 +105,7 @@ final class GooglePlacesAutocompleteFamily extends $Family
 }
 
 @ProviderFor(googlePlaceCoordinates)
-const googlePlaceCoordinatesProvider = GooglePlaceCoordinatesFamily._();
+final googlePlaceCoordinatesProvider = GooglePlaceCoordinatesFamily._();
 
 final class GooglePlaceCoordinatesProvider
     extends
@@ -115,7 +115,7 @@ final class GooglePlaceCoordinatesProvider
           FutureOr<Coordinates?>
         >
     with $FutureModifier<Coordinates?>, $FutureProvider<Coordinates?> {
-  const GooglePlaceCoordinatesProvider._({
+  GooglePlaceCoordinatesProvider._({
     required GooglePlaceCoordinatesFamily super.from,
     required String super.argument,
   }) : super(
@@ -165,7 +165,7 @@ String _$googlePlaceCoordinatesHash() =>
 
 final class GooglePlaceCoordinatesFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Coordinates?>, String> {
-  const GooglePlaceCoordinatesFamily._()
+  GooglePlaceCoordinatesFamily._()
     : super(
         retry: null,
         name: r'googlePlaceCoordinatesProvider',

@@ -13,7 +13,7 @@ part of 'firestore.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(firestore)
-const firestoreProvider = FirestoreProvider._();
+final firestoreProvider = FirestoreProvider._();
 
 final class FirestoreProvider
     extends
@@ -23,7 +23,7 @@ final class FirestoreProvider
           FirebaseFirestore
         >
     with $Provider<FirebaseFirestore> {
-  const FirestoreProvider._()
+  FirestoreProvider._()
     : super(
         from: null,
         argument: null,

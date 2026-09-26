@@ -13,12 +13,12 @@ part of 'settings_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(settingsRepo)
-const settingsRepoProvider = SettingsRepoProvider._();
+final settingsRepoProvider = SettingsRepoProvider._();
 
 final class SettingsRepoProvider
     extends $FunctionalProvider<SettingsRepo, SettingsRepo, SettingsRepo>
     with $Provider<SettingsRepo> {
-  const SettingsRepoProvider._()
+  SettingsRepoProvider._()
     : super(
         from: null,
         argument: null,

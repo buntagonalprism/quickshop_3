@@ -13,11 +13,11 @@ part of 'category_selector_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(CategoryFilter)
-const categoryFilterProvider = CategoryFilterFamily._();
+final categoryFilterProvider = CategoryFilterFamily._();
 
 final class CategoryFilterProvider
     extends $NotifierProvider<CategoryFilter, String> {
-  const CategoryFilterProvider._({
+  CategoryFilterProvider._({
     required CategoryFilterFamily super.from,
     required String super.argument,
   }) : super(
@@ -65,7 +65,7 @@ String _$categoryFilterHash() => r'ae8e51b251d456d6cf88eb8ed5da494c81bf0e3e';
 
 final class CategoryFilterFamily extends $Family
     with $ClassFamilyOverride<CategoryFilter, String, String, String, String> {
-  const CategoryFilterFamily._()
+  CategoryFilterFamily._()
     : super(
         retry: null,
         name: r'categoryFilterProvider',
@@ -88,8 +88,7 @@ abstract class _$CategoryFilter extends $Notifier<String> {
   String build(String listId);
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<String, String>;
     final element =
         ref.element
@@ -99,12 +98,12 @@ abstract class _$CategoryFilter extends $Notifier<String> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, () => build(_$args));
   }
 }
 
 @ProviderFor(categoryAutocomplete)
-const categoryAutocompleteProvider = CategoryAutocompleteFamily._();
+final categoryAutocompleteProvider = CategoryAutocompleteFamily._();
 
 final class CategoryAutocompleteProvider
     extends
@@ -116,7 +115,7 @@ final class CategoryAutocompleteProvider
     with
         $FutureModifier<List<ShoppingCategoryAutocomplete>>,
         $FutureProvider<List<ShoppingCategoryAutocomplete>> {
-  const CategoryAutocompleteProvider._({
+  CategoryAutocompleteProvider._({
     required CategoryAutocompleteFamily super.from,
     required String super.argument,
   }) : super(
@@ -169,7 +168,7 @@ final class CategoryAutocompleteFamily extends $Family
           FutureOr<List<ShoppingCategoryAutocomplete>>,
           String
         > {
-  const CategoryAutocompleteFamily._()
+  CategoryAutocompleteFamily._()
     : super(
         retry: null,
         name: r'categoryAutocompleteProvider',

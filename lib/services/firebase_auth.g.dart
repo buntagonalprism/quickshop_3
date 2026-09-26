@@ -13,12 +13,12 @@ part of 'firebase_auth.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(firebaseAuth)
-const firebaseAuthProvider = FirebaseAuthProvider._();
+final firebaseAuthProvider = FirebaseAuthProvider._();
 
 final class FirebaseAuthProvider
     extends $FunctionalProvider<FirebaseAuth, FirebaseAuth, FirebaseAuth>
     with $Provider<FirebaseAuth> {
-  const FirebaseAuthProvider._()
+  FirebaseAuthProvider._()
     : super(
         from: null,
         argument: null,

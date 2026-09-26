@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'list_invite.dart';
@@ -9,6 +9,7 @@ part of 'list_invite.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ListInviteCopyWith<ListInvite> get copyWith => _$ListInviteCopyWithImpl<ListInv
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListInvite&&(identical(other.id, id) || other.id == id)&&(identical(other.listId, listId) || other.listId == listId)&&(identical(other.listType, listType) || other.listType == listType)&&(identical(other.listName, listName) || other.listName == listName)&&(identical(other.inviterId, inviterId) || other.inviterId == inviterId)&&(identical(other.inviterName, inviterName) || other.inviterName == inviterName));
+  final _this = this as ListInvite;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListInvite&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.listId, _this.listId) || other.listId == _this.listId)&&(identical(other.listType, _this.listType) || other.listType == _this.listType)&&(identical(other.listName, _this.listName) || other.listName == _this.listName)&&(identical(other.inviterId, _this.inviterId) || other.inviterId == _this.inviterId)&&(identical(other.inviterName, _this.inviterName) || other.inviterName == _this.inviterName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,listId,listType,listName,inviterId,inviterName);
+int get hashCode {
+  final _this = this as ListInvite;
+  return Object.hash(runtimeType,_this.id,_this.listId,_this.listType,_this.listName,_this.inviterId,_this.inviterName);
+}
 
 @override
 String toString() {
-  return 'ListInvite(id: $id, listId: $listId, listType: $listType, listName: $listName, inviterId: $inviterId, inviterName: $inviterName)';
+  final _this = this as ListInvite;
+  return 'ListInvite(id: ${_this.id}, listId: ${_this.listId}, listType: ${_this.listType}, listName: ${_this.listName}, inviterId: ${_this.inviterId}, inviterName: ${_this.inviterName})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ListInviteCopyWithImpl<$Res>
 /// Create a copy of ListInvite
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? listId = null,Object? listType = null,Object? listName = null,Object? inviterId = null,Object? inviterName = null,}) {
-  return _then(_self.copyWith(
+  return _then(ListInvite(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,listId: null == listId ? _self.listId : listId // ignore: cast_nullable_to_non_nullable
 as String,listType: null == listType ? _self.listType : listType // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ _$ListInviteCopyWith<_ListInvite> get copyWith => __$ListInviteCopyWithImpl<_Lis
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListInvite&&(identical(other.id, id) || other.id == id)&&(identical(other.listId, listId) || other.listId == listId)&&(identical(other.listType, listType) || other.listType == listType)&&(identical(other.listName, listName) || other.listName == listName)&&(identical(other.inviterId, inviterId) || other.inviterId == inviterId)&&(identical(other.inviterName, inviterName) || other.inviterName == inviterName));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListInvite&&(identical(other.id, id) || other.id == id)&&(identical(other.listId, listId) || other.listId == listId)&&(identical(other.listType, listType) || other.listType == listType)&&(identical(other.listName, listName) || other.listName == listName)&&(identical(other.inviterId, inviterId) || other.inviterId == inviterId)&&(identical(other.inviterName, inviterName) || other.inviterName == inviterName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,listId,listType,listName,inviterId,inviterName);
+int get hashCode {
+    return Object.hash(runtimeType,id,listId,listType,listName,inviterId,inviterName);
+}
 
 @override
 String toString() {
-  return 'ListInvite(id: $id, listId: $listId, listType: $listType, listName: $listName, inviterId: $inviterId, inviterName: $inviterName)';
+    return 'ListInvite(id: $id, listId: $listId, listType: $listType, listName: $listName, inviterId: $inviterId, inviterName: $inviterName)';
 }
 
 

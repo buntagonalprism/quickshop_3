@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'shopping_items_notifier.dart';
@@ -9,6 +9,7 @@ part of 'shopping_items_notifier.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -20,7 +21,7 @@ mixin _$AddItemResult {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddItemResult);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is AddItemResult);
 }
 
 
@@ -29,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AddItemResult()';
+    return 'AddItemResult()';
 }
 
 
@@ -202,16 +203,18 @@ _$AddItemResultSuccessCopyWith<_AddItemResultSuccess> get copyWith => __$AddItem
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddItemResultSuccess&&(identical(other.item, item) || other.item == item));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddItemResultSuccess&&(identical(other.item, item) || other.item == item));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,item);
+int get hashCode {
+    return Object.hash(runtimeType,item);
+}
 
 @override
 String toString() {
-  return 'AddItemResult.success(item: $item)';
+    return 'AddItemResult.success(item: $item)';
 }
 
 
@@ -272,7 +275,7 @@ class _AddItemResultCategoryRequired extends AddItemResult {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddItemResultCategoryRequired);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddItemResultCategoryRequired);
 }
 
 
@@ -281,7 +284,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AddItemResult.categoryRequired()';
+    return 'AddItemResult.categoryRequired()';
 }
 
 
@@ -309,16 +312,18 @@ _$AddItemResultAlreadyOnListCopyWith<_AddItemResultAlreadyOnList> get copyWith =
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddItemResultAlreadyOnList&&(identical(other.productName, productName) || other.productName == productName));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddItemResultAlreadyOnList&&(identical(other.productName, productName) || other.productName == productName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,productName);
+int get hashCode {
+    return Object.hash(runtimeType,productName);
+}
 
 @override
 String toString() {
-  return 'AddItemResult.alreadyOnList(productName: $productName)';
+    return 'AddItemResult.alreadyOnList(productName: $productName)';
 }
 
 

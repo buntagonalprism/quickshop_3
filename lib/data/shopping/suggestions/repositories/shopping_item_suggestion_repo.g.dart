@@ -13,7 +13,7 @@ part of 'shopping_item_suggestion_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(shoppingItemSuggestionRepo)
-const shoppingItemSuggestionRepoProvider =
+final shoppingItemSuggestionRepoProvider =
     ShoppingItemSuggestionRepoProvider._();
 
 final class ShoppingItemSuggestionRepoProvider
@@ -24,7 +24,7 @@ final class ShoppingItemSuggestionRepoProvider
           ShoppingItemSuggestionRepo
         >
     with $Provider<ShoppingItemSuggestionRepo> {
-  const ShoppingItemSuggestionRepoProvider._()
+  ShoppingItemSuggestionRepoProvider._()
     : super(
         from: null,
         argument: null,

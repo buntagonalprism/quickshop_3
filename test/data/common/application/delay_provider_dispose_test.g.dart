@@ -34,7 +34,7 @@ part of 'delay_provider_dispose_test.dart';
 /// [ProviderContainer] which scopes all providers to the test.
 
 @ProviderFor(upstream)
-const upstreamProvider = UpstreamProvider._();
+final upstreamProvider = UpstreamProvider._();
 
 /// A simplistic representation of an upstream data source. keepAlive is set to true because:
 /// - When upstream data changes, all keepalive links are removed from the downstream provider
@@ -82,7 +82,7 @@ final class UpstreamProvider
   ///
   /// Each test is still able to access an independent value of this provider, thanks to the use of a
   /// [ProviderContainer] which scopes all providers to the test.
-  const UpstreamProvider._()
+  UpstreamProvider._()
     : super(
         from: null,
         argument: null,
@@ -110,11 +110,11 @@ final class UpstreamProvider
 String _$upstreamHash() => r'3d1046e2d3f9a4dc479a0115258d2e87059de9c3';
 
 @ProviderFor(delayDispose)
-const delayDisposeProvider = DelayDisposeProvider._();
+final delayDisposeProvider = DelayDisposeProvider._();
 
 final class DelayDisposeProvider extends $FunctionalProvider<int, int, int>
     with $Provider<int> {
-  const DelayDisposeProvider._()
+  DelayDisposeProvider._()
     : super(
         from: null,
         argument: null,

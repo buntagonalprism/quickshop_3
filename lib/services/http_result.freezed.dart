@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'http_result.dart';
@@ -9,6 +9,7 @@ part of 'http_result.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $HttpResultCopyWith<HttpResult> get copyWith => _$HttpResultCopyWithImpl<HttpRes
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpResult&&(identical(other.uri, uri) || other.uri == uri));
+  final _this = this as HttpResult;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpResult&&(identical(other.uri, _this.uri) || other.uri == _this.uri));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,uri);
+int get hashCode {
+  final _this = this as HttpResult;
+  return Object.hash(runtimeType,_this.uri);
+}
 
 @override
 String toString() {
-  return 'HttpResult(uri: $uri)';
+  final _this = this as HttpResult;
+  return 'HttpResult(uri: ${_this.uri})';
 }
 
 
@@ -229,16 +235,18 @@ $HttpResultSuccessCopyWith<HttpResultSuccess> get copyWith => _$HttpResultSucces
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpResultSuccess&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.response, response) || other.response == response)&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpResultSuccess&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.response, response) || other.response == response)&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,uri,response,statusCode);
+int get hashCode {
+    return Object.hash(runtimeType,uri,response,statusCode);
+}
 
 @override
 String toString() {
-  return 'HttpResult.success(uri: $uri, response: $response, statusCode: $statusCode)';
+    return 'HttpResult.success(uri: $uri, response: $response, statusCode: $statusCode)';
 }
 
 
@@ -298,16 +306,18 @@ $HttpResultErrorCopyWith<HttpResultError> get copyWith => _$HttpResultErrorCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpResultError&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.error, error) || other.error == error));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpResultError&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,uri,error);
+int get hashCode {
+    return Object.hash(runtimeType,uri,error);
+}
 
 @override
 String toString() {
-  return 'HttpResult.error(uri: $uri, error: $error)';
+    return 'HttpResult.error(uri: $uri, error: $error)';
 }
 
 
@@ -364,7 +374,7 @@ mixin _$HttpError {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpError);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is HttpError);
 }
 
 
@@ -373,7 +383,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'HttpError()';
+    return 'HttpError()';
 }
 
 
@@ -547,7 +557,7 @@ class _HttpErrorTimeout extends HttpError {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorTimeout);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorTimeout);
 }
 
 
@@ -556,7 +566,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'HttpError.timeout()';
+    return 'HttpError.timeout()';
 }
 
 
@@ -584,16 +594,18 @@ _$HttpErrorNetworkErrorCopyWith<_HttpErrorNetworkError> get copyWith => __$HttpE
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorNetworkError&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorNetworkError&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,errorMessage);
+int get hashCode {
+    return Object.hash(runtimeType,errorMessage);
+}
 
 @override
 String toString() {
-  return 'HttpError.connectionFailed(errorMessage: $errorMessage)';
+    return 'HttpError.connectionFailed(errorMessage: $errorMessage)';
 }
 
 
@@ -651,16 +663,18 @@ _$HttpErrorServerBusyCopyWith<_HttpErrorServerBusy> get copyWith => __$HttpError
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorServerBusy&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode)&&(identical(other.response, response) || other.response == response));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorServerBusy&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode)&&(identical(other.response, response) || other.response == response));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,statusCode,response);
+int get hashCode {
+    return Object.hash(runtimeType,statusCode,response);
+}
 
 @override
 String toString() {
-  return 'HttpError.retryLater(statusCode: $statusCode, response: $response)';
+    return 'HttpError.retryLater(statusCode: $statusCode, response: $response)';
 }
 
 
@@ -719,16 +733,18 @@ _$HttpErrorUnknownCopyWith<_HttpErrorUnknown> get copyWith => __$HttpErrorUnknow
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorUnknown&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode)&&(identical(other.response, response) || other.response == response));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HttpErrorUnknown&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode)&&(identical(other.response, response) || other.response == response));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,statusCode,response);
+int get hashCode {
+    return Object.hash(runtimeType,statusCode,response);
+}
 
 @override
 String toString() {
-  return 'HttpError.unknownError(statusCode: $statusCode, response: $response)';
+    return 'HttpError.unknownError(statusCode: $statusCode, response: $response)';
 }
 
 

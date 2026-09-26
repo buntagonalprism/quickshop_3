@@ -13,11 +13,11 @@ part of 'debug_settings_notifier.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(DebugSettingsNotifier)
-const debugSettingsProvider = DebugSettingsNotifierFamily._();
+final debugSettingsProvider = DebugSettingsNotifierFamily._();
 
 final class DebugSettingsNotifierProvider
     extends $NotifierProvider<DebugSettingsNotifier, bool> {
-  const DebugSettingsNotifierProvider._({
+  DebugSettingsNotifierProvider._({
     required DebugSettingsNotifierFamily super.from,
     required DebugSetting super.argument,
   }) : super(
@@ -73,7 +73,7 @@ final class DebugSettingsNotifierFamily extends $Family
           bool,
           DebugSetting
         > {
-  const DebugSettingsNotifierFamily._()
+  DebugSettingsNotifierFamily._()
     : super(
         retry: null,
         name: r'debugSettingsProvider',
@@ -96,8 +96,7 @@ abstract class _$DebugSettingsNotifier extends $Notifier<bool> {
   bool build(DebugSetting type);
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -107,6 +106,6 @@ abstract class _$DebugSettingsNotifier extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, () => build(_$args));
   }
 }

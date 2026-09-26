@@ -13,11 +13,11 @@ part of 'tooltips_notifier.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(TooltipsNotifier)
-const tooltipsProvider = TooltipsNotifierFamily._();
+final tooltipsProvider = TooltipsNotifierFamily._();
 
 final class TooltipsNotifierProvider
     extends $NotifierProvider<TooltipsNotifier, bool> {
-  const TooltipsNotifierProvider._({
+  TooltipsNotifierProvider._({
     required TooltipsNotifierFamily super.from,
     required TooltipType super.argument,
   }) : super(
@@ -65,7 +65,7 @@ String _$tooltipsNotifierHash() => r'c55eabee712fe4436d22d0c43c351d779efc5c68';
 
 final class TooltipsNotifierFamily extends $Family
     with $ClassFamilyOverride<TooltipsNotifier, bool, bool, bool, TooltipType> {
-  const TooltipsNotifierFamily._()
+  TooltipsNotifierFamily._()
     : super(
         retry: null,
         name: r'tooltipsProvider',
@@ -88,8 +88,7 @@ abstract class _$TooltipsNotifier extends $Notifier<bool> {
   bool build(TooltipType type);
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -99,6 +98,6 @@ abstract class _$TooltipsNotifier extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, () => build(_$args));
   }
 }

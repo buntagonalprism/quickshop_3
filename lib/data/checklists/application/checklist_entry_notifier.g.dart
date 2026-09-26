@@ -13,12 +13,12 @@ part of 'checklist_entry_notifier.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ChecklistEntryNotifier)
-const checklistEntryProvider = ChecklistEntryNotifierFamily._();
+final checklistEntryProvider = ChecklistEntryNotifierFamily._();
 
 final class ChecklistEntryNotifierProvider
     extends
         $StreamNotifierProvider<ChecklistEntryNotifier, List<ChecklistEntry>> {
-  const ChecklistEntryNotifierProvider._({
+  ChecklistEntryNotifierProvider._({
     required ChecklistEntryNotifierFamily super.from,
     required String super.argument,
   }) : super(
@@ -67,7 +67,7 @@ final class ChecklistEntryNotifierFamily extends $Family
           Stream<List<ChecklistEntry>>,
           String
         > {
-  const ChecklistEntryNotifierFamily._()
+  ChecklistEntryNotifierFamily._()
     : super(
         retry: null,
         name: r'checklistEntryProvider',
@@ -91,8 +91,7 @@ abstract class _$ChecklistEntryNotifier
   Stream<List<ChecklistEntry>> build(String listId);
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
+  WhenComplete runBuild() {
     final ref =
         this.ref
             as $Ref<AsyncValue<List<ChecklistEntry>>, List<ChecklistEntry>>;
@@ -107,6 +106,6 @@ abstract class _$ChecklistEntryNotifier
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, () => build(_$args));
   }
 }

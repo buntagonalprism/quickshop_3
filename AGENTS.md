@@ -11,7 +11,7 @@ This guide captures the architectural decisions, code patterns, and conventions 
 ```bash
 # Correct
 fvm flutter pub get
-fvm dart run build_runner build --delete-conflicting-outputs
+fvm dart run build_runner build
 
 # Wrong — uses the system Flutter, which may be a different version
 flutter pub get
@@ -118,7 +118,7 @@ abstract class MyModel with _$MyModel {
 
 Run code generation after adding/modifying models:
 ```bash
-fvm dart run build_runner build --delete-conflicting-outputs
+fvm dart run build_runner build
 ```
 
 ### Services — stateless, keepAlive
@@ -315,7 +315,7 @@ fvm dart format lib/
 After modifying any file with `@freezed`, `@riverpod`, `@Riverpod`, `@JsonSerializable`, or Drift table definitions, run:
 
 ```bash
-fvm dart run build_runner build --delete-conflicting-outputs
+fvm dart run build_runner build
 ```
 
 Commit the generated `*.freezed.dart`, `*.g.dart`, and `*.drift.dart` files alongside the source changes.

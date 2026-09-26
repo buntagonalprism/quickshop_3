@@ -16,7 +16,7 @@ part of 'list_invite_providers.dart';
 /// Will return null if the invite does not exist.
 
 @ProviderFor(listInviteById)
-const listInviteByIdProvider = ListInviteByIdFamily._();
+final listInviteByIdProvider = ListInviteByIdFamily._();
 
 /// Load a list invite by its id.
 ///
@@ -33,7 +33,7 @@ final class ListInviteByIdProvider
   /// Load a list invite by its id.
   ///
   /// Will return null if the invite does not exist.
-  const ListInviteByIdProvider._({
+  ListInviteByIdProvider._({
     required ListInviteByIdFamily super.from,
     required String super.argument,
   }) : super(
@@ -85,7 +85,7 @@ String _$listInviteByIdHash() => r'c2abf08b6388e864c7d6a153a44981095218306c';
 
 final class ListInviteByIdFamily extends $Family
     with $FunctionalFamilyOverride<Stream<ListInvite?>, String> {
-  const ListInviteByIdFamily._()
+  ListInviteByIdFamily._()
     : super(
         retry: null,
         name: r'listInviteByIdProvider',
@@ -110,7 +110,7 @@ final class ListInviteByIdFamily extends $Family
 /// Will return null if the user has not created a sharing link for the list.
 
 @ProviderFor(userListInviteByListId)
-const userListInviteByListIdProvider = UserListInviteByListIdFamily._();
+final userListInviteByListIdProvider = UserListInviteByListIdFamily._();
 
 /// Load the currently authenticated user's personal list invite for sharing a given list.
 ///
@@ -127,7 +127,7 @@ final class UserListInviteByListIdProvider
   /// Load the currently authenticated user's personal list invite for sharing a given list.
   ///
   /// Will return null if the user has not created a sharing link for the list.
-  const UserListInviteByListIdProvider._({
+  UserListInviteByListIdProvider._({
     required UserListInviteByListIdFamily super.from,
     required String super.argument,
   }) : super(
@@ -181,7 +181,7 @@ String _$userListInviteByListIdHash() =>
 
 final class UserListInviteByListIdFamily extends $Family
     with $FunctionalFamilyOverride<Stream<ListInvite?>, String> {
-  const UserListInviteByListIdFamily._()
+  UserListInviteByListIdFamily._()
     : super(
         retry: null,
         name: r'userListInviteByListIdProvider',

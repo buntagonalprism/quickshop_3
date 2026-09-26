@@ -13,7 +13,7 @@ part of 'hidden_suggestions_use_case.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(hiddenSuggestionsUseCase)
-const hiddenSuggestionsUseCaseProvider = HiddenSuggestionsUseCaseProvider._();
+final hiddenSuggestionsUseCaseProvider = HiddenSuggestionsUseCaseProvider._();
 
 final class HiddenSuggestionsUseCaseProvider
     extends
@@ -23,7 +23,7 @@ final class HiddenSuggestionsUseCaseProvider
           HiddenSuggestionsUseCase
         >
     with $Provider<HiddenSuggestionsUseCase> {
-  const HiddenSuggestionsUseCaseProvider._()
+  HiddenSuggestionsUseCaseProvider._()
     : super(
         from: null,
         argument: null,

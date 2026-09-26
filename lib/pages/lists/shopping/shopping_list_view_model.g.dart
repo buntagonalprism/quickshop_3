@@ -13,7 +13,7 @@ part of 'shopping_list_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(shoppingListViewModel)
-const shoppingListViewModelProvider = ShoppingListViewModelFamily._();
+final shoppingListViewModelProvider = ShoppingListViewModelFamily._();
 
 final class ShoppingListViewModelProvider
     extends
@@ -23,7 +23,7 @@ final class ShoppingListViewModelProvider
           ShoppingListViewModel
         >
     with $Provider<ShoppingListViewModel> {
-  const ShoppingListViewModelProvider._({
+  ShoppingListViewModelProvider._({
     required ShoppingListViewModelFamily super.from,
     required String super.argument,
   }) : super(
@@ -80,7 +80,7 @@ String _$shoppingListViewModelHash() =>
 
 final class ShoppingListViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingListViewModel, String> {
-  const ShoppingListViewModelFamily._()
+  ShoppingListViewModelFamily._()
     : super(
         retry: null,
         name: r'shoppingListViewModelProvider',

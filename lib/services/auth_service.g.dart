@@ -13,12 +13,12 @@ part of 'auth_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userAuth)
-const userAuthProvider = UserAuthProvider._();
+final userAuthProvider = UserAuthProvider._();
 
 final class UserAuthProvider
     extends $FunctionalProvider<UserAuth?, UserAuth?, UserAuth?>
     with $Provider<UserAuth?> {
-  const UserAuthProvider._()
+  UserAuthProvider._()
     : super(
         from: null,
         argument: null,
@@ -54,11 +54,11 @@ final class UserAuthProvider
 String _$userAuthHash() => r'd09107fbcd90aa2b617715896daec9eca73c8848';
 
 @ProviderFor(loggedIn)
-const loggedInProvider = LoggedInProvider._();
+final loggedInProvider = LoggedInProvider._();
 
 final class LoggedInProvider extends $FunctionalProvider<bool, bool, bool>
     with $Provider<bool> {
-  const LoggedInProvider._()
+  LoggedInProvider._()
     : super(
         from: null,
         argument: null,
@@ -94,12 +94,12 @@ final class LoggedInProvider extends $FunctionalProvider<bool, bool, bool>
 String _$loggedInHash() => r'efc49d11dafa9d39a67f2def5288cb699afc283b';
 
 @ProviderFor(userId)
-const userIdProvider = UserIdProvider._();
+final userIdProvider = UserIdProvider._();
 
 final class UserIdProvider
     extends $FunctionalProvider<String?, String?, String?>
     with $Provider<String?> {
-  const UserIdProvider._()
+  UserIdProvider._()
     : super(
         from: null,
         argument: null,
@@ -135,12 +135,12 @@ final class UserIdProvider
 String _$userIdHash() => r'1e21e394c541b58f830ae26963cd59f6b9feab1d';
 
 @ProviderFor(authService)
-const authServiceProvider = AuthServiceProvider._();
+final authServiceProvider = AuthServiceProvider._();
 
 final class AuthServiceProvider
     extends $FunctionalProvider<AuthService, AuthService, AuthService>
     with $Provider<AuthService> {
-  const AuthServiceProvider._()
+  AuthServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -176,13 +176,13 @@ final class AuthServiceProvider
 String _$authServiceHash() => r'98dc7cde0ebdafb8c5919d17f420a276cc9bc56a';
 
 @ProviderFor(_authUserStream)
-const _authUserStreamProvider = _AuthUserStreamProvider._();
+final _authUserStreamProvider = _AuthUserStreamProvider._();
 
 final class _AuthUserStreamProvider
     extends
         $FunctionalProvider<AsyncValue<DateTime>, DateTime, Stream<DateTime>>
     with $FutureModifier<DateTime>, $StreamProvider<DateTime> {
-  const _AuthUserStreamProvider._()
+  _AuthUserStreamProvider._()
     : super(
         from: null,
         argument: null,

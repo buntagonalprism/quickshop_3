@@ -13,7 +13,7 @@ part of 'list_invite_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(listInviteState)
-const listInviteStateProvider = ListInviteStateFamily._();
+final listInviteStateProvider = ListInviteStateFamily._();
 
 final class ListInviteStateProvider
     extends
@@ -23,7 +23,7 @@ final class ListInviteStateProvider
           ListInviteViewModel
         >
     with $Provider<ListInviteViewModel> {
-  const ListInviteStateProvider._({
+  ListInviteStateProvider._({
     required ListInviteStateFamily super.from,
     required String super.argument,
   }) : super(
@@ -79,7 +79,7 @@ String _$listInviteStateHash() => r'288905b47e8d1afaef2dfdc57b81467701ecb77c';
 
 final class ListInviteStateFamily extends $Family
     with $FunctionalFamilyOverride<ListInviteViewModel, String> {
-  const ListInviteStateFamily._()
+  ListInviteStateFamily._()
     : super(
         retry: null,
         name: r'listInviteStateProvider',

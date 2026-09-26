@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'checklist_view_model.dart';
@@ -9,6 +9,7 @@ part of 'checklist_view_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -20,7 +21,7 @@ mixin _$ChecklistViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistViewModel);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistViewModel);
 }
 
 
@@ -29,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ChecklistViewModel()';
+    return 'ChecklistViewModel()';
 }
 
 
@@ -203,7 +204,7 @@ class _Error extends ChecklistViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
 }
 
 
@@ -212,7 +213,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ChecklistViewModel.error()';
+    return 'ChecklistViewModel.error()';
 }
 
 
@@ -235,7 +236,7 @@ class _Loading extends ChecklistViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
 }
 
 
@@ -244,7 +245,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ChecklistViewModel.loading()';
+    return 'ChecklistViewModel.loading()';
 }
 
 
@@ -267,7 +268,7 @@ class _NotFound extends ChecklistViewModel {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
 }
 
 
@@ -276,7 +277,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ChecklistViewModel.notFound()';
+    return 'ChecklistViewModel.notFound()';
 }
 
 
@@ -289,7 +290,7 @@ String toString() {
 
 
 class _Checklist extends ChecklistViewModel {
-  const _Checklist({required this.list, required final  List<ChecklistEntry> entries}): _entries = entries,super._();
+  const _Checklist({required this.list, required  List<ChecklistEntry> entries}): _entries = entries,super._();
   
 
  final  ListSummary list;
@@ -311,16 +312,18 @@ _$ChecklistCopyWith<_Checklist> get copyWith => __$ChecklistCopyWithImpl<_Checkl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Checklist&&(identical(other.list, list) || other.list == list)&&const DeepCollectionEquality().equals(other._entries, _entries));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Checklist&&(identical(other.list, list) || other.list == list)&&const DeepCollectionEquality().equals(other.entries, _entries));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,list,const DeepCollectionEquality().hash(_entries));
+int get hashCode {
+    return Object.hash(runtimeType,list,const DeepCollectionEquality().hash(_entries));
+}
 
 @override
 String toString() {
-  return 'ChecklistViewModel.success(list: $list, entries: $entries)';
+    return 'ChecklistViewModel.success(list: $list, entries: $entries)';
 }
 
 

@@ -13,7 +13,7 @@ part of 'user_history_loader_use_case.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userAutcompleteLoaderUseCase)
-const userAutcompleteLoaderUseCaseProvider =
+final userAutcompleteLoaderUseCaseProvider =
     UserAutcompleteLoaderUseCaseProvider._();
 
 final class UserAutcompleteLoaderUseCaseProvider
@@ -24,7 +24,7 @@ final class UserAutcompleteLoaderUseCaseProvider
           UserHistoryLoaderUseCase
         >
     with $Provider<UserHistoryLoaderUseCase> {
-  const UserAutcompleteLoaderUseCaseProvider._()
+  UserAutcompleteLoaderUseCaseProvider._()
     : super(
         from: null,
         argument: null,

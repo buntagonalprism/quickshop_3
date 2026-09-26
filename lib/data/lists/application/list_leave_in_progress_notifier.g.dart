@@ -17,7 +17,7 @@ part of 'list_leave_in_progress_notifier.dart';
 /// to read the list.
 
 @ProviderFor(ListLeaveInProgressNotifier)
-const listLeaveInProgressProvider = ListLeaveInProgressNotifierProvider._();
+final listLeaveInProgressProvider = ListLeaveInProgressNotifierProvider._();
 
 /// A repository that stores the list IDs of lists that are in progress of being left. This allows
 /// other repositories to unsubscribe from Firestore before the list is actually left, avoiding
@@ -29,7 +29,7 @@ final class ListLeaveInProgressNotifierProvider
   /// other repositories to unsubscribe from Firestore before the list is actually left, avoiding
   /// the permission-denied error that would otherwise occur once the user no longer has permission
   /// to read the list.
-  const ListLeaveInProgressNotifierProvider._()
+  ListLeaveInProgressNotifierProvider._()
     : super(
         from: null,
         argument: null,
@@ -68,8 +68,7 @@ abstract class _$ListLeaveInProgressNotifier extends $Notifier<Set<ListId>> {
   Set<ListId> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<Set<ListId>, Set<ListId>>;
     final element =
         ref.element
@@ -79,6 +78,6 @@ abstract class _$ListLeaveInProgressNotifier extends $Notifier<Set<ListId>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

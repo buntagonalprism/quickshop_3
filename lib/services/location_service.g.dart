@@ -18,7 +18,7 @@ part of 'location_service.dart';
 ///   message should the UI call getLocationWithPermissionRequest to enable location.
 
 @ProviderFor(canGetOrAutoRequestLocation)
-const canGetOrAutoRequestLocationProvider =
+final canGetOrAutoRequestLocationProvider =
     CanGetOrAutoRequestLocationProvider._();
 
 /// - `true` when location can be obtained or permission can be requested for the first time. We only request permission
@@ -35,7 +35,7 @@ final class CanGetOrAutoRequestLocationProvider
   /// - `false` when location permissions have already been requested and denied. The UI should indicate that location
   ///   features are unavailable. Only if the user then interacts with a location-specific action or location-disabled
   ///   message should the UI call getLocationWithPermissionRequest to enable location.
-  const CanGetOrAutoRequestLocationProvider._()
+  CanGetOrAutoRequestLocationProvider._()
     : super(
         from: null,
         argument: null,
@@ -72,13 +72,13 @@ String _$canGetOrAutoRequestLocationHash() =>
     r'312ee3ae1f2fb936cea0b3b7d7324125072c968b';
 
 @ProviderFor(locationService)
-const locationServiceProvider = LocationServiceProvider._();
+final locationServiceProvider = LocationServiceProvider._();
 
 final class LocationServiceProvider
     extends
         $FunctionalProvider<LocationService, LocationService, LocationService>
     with $Provider<LocationService> {
-  const LocationServiceProvider._()
+  LocationServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -118,7 +118,7 @@ String _$locationServiceHash() => r'847326110fa07375530e78934a1f1898e67a47cf';
 /// permission requests and location retrieval with appropriate dialogs.
 
 @ProviderFor(_LocationStatusNotifier)
-const _locationStatusProvider = _LocationStatusNotifierProvider._();
+final _locationStatusProvider = _LocationStatusNotifierProvider._();
 
 /// Notifier to maintain current [LocationStatus]. Widgets that need location should interact with the status via
 /// [canGetOrAutoRequestLocationProvider] and call [LocationService.getLocationWithPermissionRequest] to trigger
@@ -128,7 +128,7 @@ final class _LocationStatusNotifierProvider
   /// Notifier to maintain current [LocationStatus]. Widgets that need location should interact with the status via
   /// [canGetOrAutoRequestLocationProvider] and call [LocationService.getLocationWithPermissionRequest] to trigger
   /// permission requests and location retrieval with appropriate dialogs.
-  const _LocationStatusNotifierProvider._()
+  _LocationStatusNotifierProvider._()
     : super(
         from: null,
         argument: null,
@@ -166,8 +166,7 @@ abstract class _$LocationStatusNotifier extends $Notifier<LocationStatus> {
   LocationStatus build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<LocationStatus, LocationStatus>;
     final element =
         ref.element
@@ -177,6 +176,6 @@ abstract class _$LocationStatusNotifier extends $Notifier<LocationStatus> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

@@ -13,7 +13,7 @@ part of 'checklist_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(checklistViewModel)
-const checklistViewModelProvider = ChecklistViewModelFamily._();
+final checklistViewModelProvider = ChecklistViewModelFamily._();
 
 final class ChecklistViewModelProvider
     extends
@@ -23,7 +23,7 @@ final class ChecklistViewModelProvider
           ChecklistViewModel
         >
     with $Provider<ChecklistViewModel> {
-  const ChecklistViewModelProvider._({
+  ChecklistViewModelProvider._({
     required ChecklistViewModelFamily super.from,
     required String super.argument,
   }) : super(
@@ -80,7 +80,7 @@ String _$checklistViewModelHash() =>
 
 final class ChecklistViewModelFamily extends $Family
     with $FunctionalFamilyOverride<ChecklistViewModel, String> {
-  const ChecklistViewModelFamily._()
+  ChecklistViewModelFamily._()
     : super(
         retry: null,
         name: r'checklistViewModelProvider',

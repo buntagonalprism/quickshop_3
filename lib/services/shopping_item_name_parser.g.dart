@@ -13,7 +13,7 @@ part of 'shopping_item_name_parser.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(shoppingItemNameParser)
-const shoppingItemNameParserProvider = ShoppingItemNameParserProvider._();
+final shoppingItemNameParserProvider = ShoppingItemNameParserProvider._();
 
 final class ShoppingItemNameParserProvider
     extends
@@ -23,7 +23,7 @@ final class ShoppingItemNameParserProvider
           ShoppingItemNameParser
         >
     with $Provider<ShoppingItemNameParser> {
-  const ShoppingItemNameParserProvider._()
+  ShoppingItemNameParserProvider._()
     : super(
         from: null,
         argument: null,

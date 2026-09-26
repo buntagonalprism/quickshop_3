@@ -13,7 +13,7 @@ part of 'shopping_item_history_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(shoppingItemHistoryRepo)
-const shoppingItemHistoryRepoProvider = ShoppingItemHistoryRepoProvider._();
+final shoppingItemHistoryRepoProvider = ShoppingItemHistoryRepoProvider._();
 
 final class ShoppingItemHistoryRepoProvider
     extends
@@ -23,7 +23,7 @@ final class ShoppingItemHistoryRepoProvider
           ShoppingItemHistoryRepo
         >
     with $Provider<ShoppingItemHistoryRepo> {
-  const ShoppingItemHistoryRepoProvider._()
+  ShoppingItemHistoryRepoProvider._()
     : super(
         from: null,
         argument: null,

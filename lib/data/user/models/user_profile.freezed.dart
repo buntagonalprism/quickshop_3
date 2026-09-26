@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'user_profile.dart';
@@ -9,6 +9,7 @@ part of 'user_profile.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $UserProfileCopyWith<UserProfile> get copyWith => _$UserProfileCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.lastHistoryUpdate, lastHistoryUpdate) || other.lastHistoryUpdate == lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == hiddenSuggestionsVersion)&&const DeepCollectionEquality().equals(other.completedTutorials, completedTutorials));
+  final _this = this as UserProfile;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.userId, _this.userId) || other.userId == _this.userId)&&(identical(other.lastHistoryUpdate, _this.lastHistoryUpdate) || other.lastHistoryUpdate == _this.lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, _this.hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == _this.hiddenSuggestionsVersion)&&const DeepCollectionEquality().equals(other.completedTutorials, _this.completedTutorials));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,lastHistoryUpdate,hiddenSuggestionsVersion,const DeepCollectionEquality().hash(completedTutorials));
+int get hashCode {
+  final _this = this as UserProfile;
+  return Object.hash(runtimeType,_this.userId,_this.lastHistoryUpdate,_this.hiddenSuggestionsVersion,const DeepCollectionEquality().hash(_this.completedTutorials));
+}
 
 @override
 String toString() {
-  return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestionsVersion: $hiddenSuggestionsVersion, completedTutorials: $completedTutorials)';
+  final _this = this as UserProfile;
+  return 'UserProfile(userId: ${_this.userId}, lastHistoryUpdate: ${_this.lastHistoryUpdate}, hiddenSuggestionsVersion: ${_this.hiddenSuggestionsVersion}, completedTutorials: ${_this.completedTutorials})';
 }
 
 
@@ -63,7 +69,7 @@ class _$UserProfileCopyWithImpl<$Res>
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? lastHistoryUpdate = freezed,Object? hiddenSuggestionsVersion = freezed,Object? completedTutorials = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(UserProfile(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,lastHistoryUpdate: freezed == lastHistoryUpdate ? _self.lastHistoryUpdate : lastHistoryUpdate // ignore: cast_nullable_to_non_nullable
 as DateTime?,hiddenSuggestionsVersion: freezed == hiddenSuggestionsVersion ? _self.hiddenSuggestionsVersion : hiddenSuggestionsVersion // ignore: cast_nullable_to_non_nullable
@@ -209,7 +215,7 @@ return $default(_that.userId,_that.lastHistoryUpdate,_that.hiddenSuggestionsVers
 
 
 class _UserProfile extends UserProfile {
-  const _UserProfile({required this.userId, this.lastHistoryUpdate, this.hiddenSuggestionsVersion, final  List<String>? completedTutorials}): _completedTutorials = completedTutorials,super._();
+  const _UserProfile({required this.userId, this.lastHistoryUpdate, this.hiddenSuggestionsVersion,  List<String>? completedTutorials}): _completedTutorials = completedTutorials,super._();
   
 
 @override final  String userId;
@@ -235,16 +241,18 @@ _$UserProfileCopyWith<_UserProfile> get copyWith => __$UserProfileCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.lastHistoryUpdate, lastHistoryUpdate) || other.lastHistoryUpdate == lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == hiddenSuggestionsVersion)&&const DeepCollectionEquality().equals(other._completedTutorials, _completedTutorials));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.lastHistoryUpdate, lastHistoryUpdate) || other.lastHistoryUpdate == lastHistoryUpdate)&&(identical(other.hiddenSuggestionsVersion, hiddenSuggestionsVersion) || other.hiddenSuggestionsVersion == hiddenSuggestionsVersion)&&const DeepCollectionEquality().equals(other.completedTutorials, _completedTutorials));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,lastHistoryUpdate,hiddenSuggestionsVersion,const DeepCollectionEquality().hash(_completedTutorials));
+int get hashCode {
+    return Object.hash(runtimeType,userId,lastHistoryUpdate,hiddenSuggestionsVersion,const DeepCollectionEquality().hash(_completedTutorials));
+}
 
 @override
 String toString() {
-  return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestionsVersion: $hiddenSuggestionsVersion, completedTutorials: $completedTutorials)';
+    return 'UserProfile(userId: $userId, lastHistoryUpdate: $lastHistoryUpdate, hiddenSuggestionsVersion: $hiddenSuggestionsVersion, completedTutorials: $completedTutorials)';
 }
 
 

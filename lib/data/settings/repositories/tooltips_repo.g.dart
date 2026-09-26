@@ -13,12 +13,12 @@ part of 'tooltips_repo.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(tooltipsRepo)
-const tooltipsRepoProvider = TooltipsRepoProvider._();
+final tooltipsRepoProvider = TooltipsRepoProvider._();
 
 final class TooltipsRepoProvider
     extends $FunctionalProvider<TooltipsRepo, TooltipsRepo, TooltipsRepo>
     with $Provider<TooltipsRepo> {
-  const TooltipsRepoProvider._()
+  TooltipsRepoProvider._()
     : super(
         from: null,
         argument: null,
