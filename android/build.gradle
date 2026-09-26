@@ -5,8 +5,6 @@ allprojects {
     }
 }
 
-// Resolved against the default build directory (android/build), so "../../build"
-// places outputs in the repository root build folder.
 def newBuildDir = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
