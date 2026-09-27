@@ -82,6 +82,16 @@ CHROME_EXECUTABLE=$PWD/tool/headless_chrome.sh fvm flutter run -d chrome --dart-
 
 Connect Marionette to the `ws://` URI printed after "Debug service listening on". Sign in with the email and password test account rather than Google, whose sign-in popup cannot be automated. Google Maps is not yet configured for web.
 
+To hot restart, send `R` to the `flutter run` process. The Dart MCP `hot_restart` tool does not work for web apps, because it calls the debug service's restart without `flutter run` recompiling first. When running `flutter run` in the background, feed its stdin from a named pipe so that commands can be sent to it:
+
+```bash
+mkfifo /tmp/flutter_in
+tail -f /tmp/flutter_in | CHROME_EXECUTABLE=$PWD/tool/headless_chrome.sh fvm flutter run -d chrome ...
+echo R > /tmp/flutter_in
+```
+
+Each `flutter run` launches Chrome with a fresh profile, so sign-in does not persist between runs, but it does persist across hot restarts.
+
 ---
 
 ## Formatting
