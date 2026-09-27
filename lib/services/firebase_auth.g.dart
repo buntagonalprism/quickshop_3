@@ -24,7 +24,7 @@ final class FirebaseAuthProvider
         argument: null,
         retry: null,
         name: r'firebaseAuthProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -51,4 +51,4 @@ final class FirebaseAuthProvider
   }
 }
 
-String _$firebaseAuthHash() => r'8f84097cccd00af817397c1715c5f537399ba780';
+String _$firebaseAuthHash() => r'8c3e9d11b27110ca96130356b5ef4d5d34a5ffc2';

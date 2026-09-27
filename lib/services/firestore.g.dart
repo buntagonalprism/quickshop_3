@@ -29,7 +29,7 @@ final class FirestoreProvider
         argument: null,
         retry: null,
         name: r'firestoreProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -57,4 +57,4 @@ final class FirestoreProvider
   }
 }
 
-String _$firestoreHash() => r'2eecd5544b9c86db45995b92e5e5d48821af75b9';
+String _$firestoreHash() => r'077a594f7990b10580931617bea84188d28c0fa0';

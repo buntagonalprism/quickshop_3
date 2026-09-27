@@ -10,7 +10,7 @@ import '../../../services/firestore.dart';
 
 part 'list_invite_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ListInviteRepo listInviteRepo(Ref ref) {
   return ListInviteRepo(ref);
 }

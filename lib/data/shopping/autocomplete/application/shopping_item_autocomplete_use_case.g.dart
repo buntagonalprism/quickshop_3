@@ -30,7 +30,7 @@ final class ShoppingItemAutocompleteUseCaseProvider
   }) : super(
          retry: null,
          name: r'shoppingItemAutocompleteUseCaseProvider',
-         isAutoDispose: true,
+         isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
@@ -80,7 +80,7 @@ final class ShoppingItemAutocompleteUseCaseProvider
 }
 
 String _$shoppingItemAutocompleteUseCaseHash() =>
-    r'088948c54c14d865ae941cdc03ff96a95e3ad014';
+    r'5d520061d5749f2c8a94360010dbf713a6167700';
 
 final class ShoppingItemAutocompleteUseCaseFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingItemAutocompleteUseCase, String> {
@@ -90,7 +90,7 @@ final class ShoppingItemAutocompleteUseCaseFamily extends $Family
         name: r'shoppingItemAutocompleteUseCaseProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
-        isAutoDispose: true,
+        isAutoDispose: false,
       );
 
   ShoppingItemAutocompleteUseCaseProvider call(String listId) =>
