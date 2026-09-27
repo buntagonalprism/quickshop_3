@@ -38,6 +38,10 @@ class DatabaseFileNameConfig extends AppDatabaseConfig {
         // database files in `getApplicationDocumentsDirectory()`.
         databaseDirectory: getApplicationSupportDirectory,
       ),
+      web: DriftWebOptions(
+        sqlite3Wasm: Uri.parse('sqlite3.wasm'),
+        driftWorker: Uri.parse('drift_worker.js'),
+      ),
     );
   }
 }

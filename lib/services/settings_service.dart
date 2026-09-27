@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'settings_service.g.dart';
@@ -26,10 +25,12 @@ class SettingsService {
   }
 
   Future<DeviceType> _getDeviceType() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      return DeviceType.web;
+    } else if (defaultTargetPlatform == TargetPlatform.android) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       return androidInfo.isPhysicalDevice == true ? DeviceType.androidPhysical : DeviceType.androidEmulator;
-    } else if (Platform.isIOS) {
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       final iosInfo = await DeviceInfoPlugin().iosInfo;
       return iosInfo.isPhysicalDevice == true ? DeviceType.iosPhysical : DeviceType.iosSimulator;
     } else {
@@ -46,6 +47,7 @@ class SettingsService {
           return '10.0.2.2';
 
         case DeviceType.iosSimulator:
+        case DeviceType.web:
           return 'localhost';
 
         // Physical devices need to use the host machine's local network IP address.
@@ -62,4 +64,4 @@ class SettingsService {
   }
 }
 
-enum DeviceType { androidEmulator, androidPhysical, iosSimulator, iosPhysical }
+enum DeviceType { androidEmulator, androidPhysical, iosSimulator, iosPhysical, web }
