@@ -564,6 +564,8 @@ void main() {
       await itemsController.addAndPump(MockQuerySnapshot(entries));
       container.read(provider.notifier).uncheckAll();
 
+      // The updates should be made in the transaction's batch, not a separate uncommitted batch
+      verify(() => mockFirestore.batch()).called(1);
       // The batch should update only the checked items to be unchecked
       verify(() => batch.update(docRefs[0], {'completed': false})).called(1);
       verify(() => batch.update(docRefs[2], {'completed': false})).called(1);

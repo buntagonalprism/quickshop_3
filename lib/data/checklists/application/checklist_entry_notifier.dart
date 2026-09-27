@@ -27,28 +27,28 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
 
   Future<void> addHeading(String headingName, ChecklistAddPosition position) {
     final tx = ref.read(firestoreTransactionProvider)();
-    _entryRepo.addHeading(tx, headingName, position);
+    _entryRepo.addHeading(tx, state.requireValue, headingName, position);
     _listsNotifier.updateListModified(tx, listId);
     return tx.commit();
   }
 
   Future<void> addHeadingAfter(String itemName, ChecklistEntry afterEntry) {
     final tx = ref.read(firestoreTransactionProvider)();
-    _entryRepo.addHeadingAfter(tx, itemName, afterEntry);
+    _entryRepo.addHeadingAfter(tx, state.requireValue, itemName, afterEntry);
     _listsNotifier.updateListModified(tx, listId);
     return tx.commit();
   }
 
   Future<void> addItem(String itemName, ChecklistAddPosition position) {
     final tx = ref.read(firestoreTransactionProvider)();
-    _entryRepo.addItem(tx, itemName, position);
+    _entryRepo.addItem(tx, state.requireValue, itemName, position);
     _listsNotifier.incrementListItemCount(tx, listId, 1);
     return tx.commit();
   }
 
   Future<void> addItemAfter(String itemName, ChecklistEntry afterEntry) {
     final tx = ref.read(firestoreTransactionProvider)();
-    _entryRepo.addItemAfter(tx, itemName, afterEntry);
+    _entryRepo.addItemAfter(tx, state.requireValue, itemName, afterEntry);
     _listsNotifier.incrementListItemCount(tx, listId, 1);
     return tx.commit();
   }
@@ -74,14 +74,15 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
   }
 
   Future<void> moveEntry(ChecklistEntry entry, int newIndex) {
-    final entries = state.requireValue.toList();
+    final originalEntries = state.requireValue;
+    final entries = originalEntries.toList();
     final currentIndex = entries.indexOf(entry);
     entries.removeAt(currentIndex);
     entries.insert(newIndex, entry);
     state = AsyncValue.data(entries);
     final tx = ref.read(firestoreTransactionProvider)();
     _listsNotifier.updateListModified(tx, listId);
-    _entryRepo.moveEntry(tx, entry, newIndex);
+    _entryRepo.moveEntry(tx, originalEntries, entry, newIndex);
     return tx.commit();
   }
 
@@ -96,7 +97,7 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
     state = AsyncValue.data(uncheckedEntries.toList());
     final tx = ref.read(firestoreTransactionProvider)();
     _listsNotifier.incrementListItemCount(tx, listId, entries.length - uncheckedEntries.length);
-    _entryRepo.removeCheckedItems(tx);
+    _entryRepo.removeCheckedItems(tx, entries);
     return tx.commit();
   }
 
@@ -138,7 +139,7 @@ class ChecklistEntryNotifier extends _$ChecklistEntryNotifier {
     state = AsyncValue.data(updatedEntries.toList());
     final tx = ref.read(firestoreTransactionProvider)();
     _listsNotifier.updateListModified(tx, listId);
-    _entryRepo.uncheckAll(tx);
+    _entryRepo.uncheckAll(tx, entries);
     return tx.commit();
   }
 }
