@@ -27,35 +27,30 @@ class ChecklistEntryRepo {
 
   ChecklistEntryRepo(this.ref, this.listId);
 
-  final _listEntries = <String, List<ChecklistEntry>>{};
-
   Stream<List<ChecklistEntry>> entriesStream() {
-    final fs = ref.watch(firestoreProvider);
+    final fs = ref.read(firestoreProvider);
     final stream = fs.collection('lists/$listId/items').snapshots();
-    return stream.map((snapshot) {
-      final entries = snapshot.docs.map(_fromFirestore);
-      _listEntries[listId] = entries.toList()..userSort();
-      return _listEntries[listId]!;
-    });
+    return stream.map((snapshot) => snapshot.docs.map(_fromFirestore).toList()..userSort());
   }
 
-  void addItem(FirestoreTransaction tx, String itemName, ChecklistAddPosition position) {
+  // Methods which position entries take the list's current [entries], in sorted order, to calculate
+  // sort keys.
+
+  void addItem(FirestoreTransaction tx, List<ChecklistEntry> entries, String itemName, ChecklistAddPosition position) {
     return switch (position) {
-      ChecklistAddPosition.start => _addItemAtIndex(tx, itemName, 0),
-      ChecklistAddPosition.end => _addItemAtIndex(tx, itemName, _listEntries[listId]!.length),
+      ChecklistAddPosition.start => _addItemAtIndex(tx, entries, itemName, 0),
+      ChecklistAddPosition.end => _addItemAtIndex(tx, entries, itemName, entries.length),
     };
   }
 
-  void addItemAfter(FirestoreTransaction tx, String itemName, ChecklistEntry afterEntry) {
-    final entries = _listEntries[listId]!;
+  void addItemAfter(FirestoreTransaction tx, List<ChecklistEntry> entries, String itemName, ChecklistEntry afterEntry) {
     final index = entries.indexOf(afterEntry);
-    _addItemAtIndex(tx, itemName, index + 1);
+    _addItemAtIndex(tx, entries, itemName, index + 1);
   }
 
-  void _addItemAtIndex(FirestoreTransaction tx, String itemName, int index) {
+  void _addItemAtIndex(FirestoreTransaction tx, List<ChecklistEntry> entries, String itemName, int index) {
     final fs = ref.read(firestoreProvider);
 
-    final entries = _listEntries[listId]!;
     final insertUpdates = _KeyInsertUpdates(entries, index);
 
     final newItem = ChecklistItem(
@@ -72,23 +67,31 @@ class ChecklistEntryRepo {
     _logIfDuplicateKeysFound(insertUpdates);
   }
 
-  void addHeading(FirestoreTransaction tx, String headingName, ChecklistAddPosition position) {
+  void addHeading(
+    FirestoreTransaction tx,
+    List<ChecklistEntry> entries,
+    String headingName,
+    ChecklistAddPosition position,
+  ) {
     return switch (position) {
-      ChecklistAddPosition.start => _addHeadingAtIndex(tx, headingName, 0),
-      ChecklistAddPosition.end => _addHeadingAtIndex(tx, headingName, _listEntries[listId]!.length),
+      ChecklistAddPosition.start => _addHeadingAtIndex(tx, entries, headingName, 0),
+      ChecklistAddPosition.end => _addHeadingAtIndex(tx, entries, headingName, entries.length),
     };
   }
 
-  void addHeadingAfter(FirestoreTransaction tx, String headingName, ChecklistEntry afterEntry) {
-    final entries = _listEntries[listId]!;
+  void addHeadingAfter(
+    FirestoreTransaction tx,
+    List<ChecklistEntry> entries,
+    String headingName,
+    ChecklistEntry afterEntry,
+  ) {
     final index = entries.indexOf(afterEntry);
-    _addHeadingAtIndex(tx, headingName, index + 1);
+    _addHeadingAtIndex(tx, entries, headingName, index + 1);
   }
 
-  void _addHeadingAtIndex(FirestoreTransaction tx, String headingName, int index) {
+  void _addHeadingAtIndex(FirestoreTransaction tx, List<ChecklistEntry> entries, String headingName, int index) {
     final fs = ref.read(firestoreProvider);
 
-    final entries = _listEntries[listId]!;
     final insertUpdates = _KeyInsertUpdates(entries, index);
 
     final newHeading = ChecklistHeading(
@@ -124,10 +127,11 @@ class ChecklistEntryRepo {
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingDeleted());
   }
 
-  void moveEntry(FirestoreTransaction tx, ChecklistEntry entry, int newIndex) {
+  /// Moves [entry] to [newIndex], where [entries] is the list's order before the move.
+  void moveEntry(FirestoreTransaction tx, List<ChecklistEntry> entries, ChecklistEntry entry, int newIndex) {
     final fs = ref.read(firestoreProvider);
 
-    final entries = _listEntries[listId]!.toList();
+    entries = entries.toList();
     final currentIndex = entries.indexOf(entry);
     entries.removeAt(currentIndex);
     final insertUpdates = _KeyInsertUpdates(entries, newIndex);
@@ -168,15 +172,13 @@ class ChecklistEntryRepo {
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistHeadingUpdated());
   }
 
-  void uncheckAll(FirestoreTransaction tx) {
+  void uncheckAll(FirestoreTransaction tx, List<ChecklistEntry> entries) {
     final fs = ref.read(firestoreProvider);
-    final batch = fs.batch();
-    final entries = _listEntries[listId]!;
     for (var entry in entries) {
       entry.maybeWhen(
         item: (item) {
           if (item.completed) {
-            batch.update(fs.doc('lists/$listId/items/${item.id}'), {
+            tx.batch.update(fs.doc('lists/$listId/items/${item.id}'), {
               _Fields.completed: false,
             });
           }
@@ -187,9 +189,8 @@ class ChecklistEntryRepo {
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.checklistItemsBatchUnchecked());
   }
 
-  void removeCheckedItems(FirestoreTransaction tx) async {
+  void removeCheckedItems(FirestoreTransaction tx, List<ChecklistEntry> entries) async {
     final fs = ref.read(firestoreProvider);
-    final entries = _listEntries[listId]!;
     int itemsRemoved = 0;
     entries.forEachIndexed((index, entry) {
       entry.when(
