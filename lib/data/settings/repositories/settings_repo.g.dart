@@ -51,4 +51,4 @@ final class SettingsRepoProvider
   }
 }
 
-String _$settingsRepoHash() => r'01b2a0422b1d330323a9a1a2f83b0cdc4a080f99';
+String _$settingsRepoHash() => r'6144ef919390ba7379c979063f8e35be9934482c';

@@ -156,7 +156,7 @@ final class _LocationStatusNotifierProvider
 }
 
 String _$_locationStatusNotifierHash() =>
-    r'9aaef31504999c696df6b4704debde8440bd30d3';
+    r'1d6ac9645cb3afd9e50469585c8a3f7eb9f9f233';
 
 /// Notifier to maintain current [LocationStatus]. Widgets that need location should interact with the status via
 /// [canGetOrAutoRequestLocationProvider] and call [LocationService.getLocationWithPermissionRequest] to trigger
