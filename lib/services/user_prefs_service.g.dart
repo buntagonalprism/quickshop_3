@@ -56,4 +56,4 @@ final class UserPrefsServiceProvider
   }
 }
 
-String _$userPrefsServiceHash() => r'a41e184fd60f05ecf64724ab8f4d02b5871a4522';
+String _$userPrefsServiceHash() => r'bfa7b3bcfd10d3482b5fc18f66a17f868ea1d55e';

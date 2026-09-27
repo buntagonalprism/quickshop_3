@@ -20,11 +20,12 @@ import 'package:quickshop/pages/lists/shopping/items/shopping_item_edit_page.dar
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
-import 'package:quickshop/services/shared_preferences.dart';
+import 'package:quickshop/services/unauth_prefs_service.dart';
+import 'package:quickshop/services/user_prefs_service.dart';
 
 import '../../../fakes/fake_firebase_auth.dart';
 import '../../../fakes/fake_list_items_transaction.dart';
-import '../../../fakes/fake_shared_preferences.dart';
+import '../../../fakes/fake_prefs_services.dart';
 
 class MockAnalytics extends Mock implements Analytics {}
 
@@ -45,7 +46,6 @@ void main() {
   late MockAnalytics analytics;
   late MockCategoryAutocompleteRepo categoryAutocompleteRepo;
   late FakeFirebaseAuth auth;
-  late FakeSharedPreferences prefs;
 
   final userId = 'user123';
 
@@ -85,7 +85,6 @@ void main() {
     when(() => listRepo.getAllLists()).thenAnswer((_) => Stream.value([list]));
     router = MockRouter();
     auth = FakeFirebaseAuth(user: buildUser());
-    prefs = FakeSharedPreferences();
     analytics = MockAnalytics();
     categoryAutocompleteRepo = MockCategoryAutocompleteRepo();
   });
@@ -106,7 +105,8 @@ void main() {
             routerProvider.overrideWithValue(router),
             firestoreTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
             firebaseAuthProvider.overrideWithValue(auth),
-            sharedPrefsProvider.overrideWithValue(prefs),
+            userPrefsServiceProvider.overrideWithValue(FakeUserPrefsService()),
+            unauthPrefsServiceProvider.overrideWithValue(FakeUnauthPrefsService()),
             analyticsProvider.overrideWithValue(analytics),
             shoppingCategoryAutocompleteUseCaseProvider(listId).overrideWithValue(categoryAutocompleteRepo),
             crashReporterProvider.overrideWithValue(MockCrashReporter()),

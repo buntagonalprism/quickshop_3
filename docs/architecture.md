@@ -76,7 +76,7 @@ Local preferences are stored with SharedPreferences, through one of two services
 - **`UserPrefsService`** for values that belong to the signed in user, such as values describing the contents of their local database. Keys are prefixed with the user ID, looked up on every call, so each user has their own values. While nobody is signed in, values belong to an `unauthenticated` user, matching `appDatabaseProvider`.
 - **`UnauthPrefsService`** for values that belong to the device, whoever is signed in, such as the theme or whether the location permission rationale has been shown.
 
-Nothing else uses `sharedPrefsProvider` directly. Choosing a service at each use makes the owner of every value explicit, and a value stored for the wrong owner either leaks between users or is lost when they switch.
+`SharedPreferencesWithCache` needs async initialisation, so `main.dart` creates it, constructs both services around it, and overrides their providers. Nothing else can reach the underlying instance, so every value has to go through one of the services. Choosing a service at each use makes the owner of every value explicit, and a value stored for the wrong owner either leaks between users or is lost when they switch.
 
 ---
 
@@ -301,6 +301,7 @@ PopScope(
 
 - Unit tests use `mocktail` for mocks.
 - Database tests use a real in-memory Drift database. Never mock the database.
+- Fake our own wrapper services rather than the libraries they wrap, so tests don't depend on how a wrapper works inside. For example, only the preferences services' own tests fake `SharedPreferencesWithCache`; every other test overrides the services with `FakeUserPrefsService` and `FakeUnauthPrefsService`.
 - Use `fake_async` for time-dependent logic.
 
 ---
