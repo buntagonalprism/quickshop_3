@@ -2,8 +2,12 @@
   "mcpServers": {
     "marionette": {
       "type": "stdio",
-      "command": "fvm dart run marionette_mcp",
-      "args": []
+      "command": "fvm",
+      "args": [
+        "dart",
+        "run",
+        "marionette_mcp"
+      ]
     },
     "dart": {
       "type": "stdio",

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
@@ -110,8 +109,9 @@ class FunctionsHttpClient {
       analytics.logEvent(event);
       return HttpResult.error(uri: uri.toString(), error: const HttpError.timeout());
     }
-    // Log connection failures to analytics
-    on SocketException catch (e) {
+    // Log connection failures to analytics. On native platforms, socket errors are wrapped in a
+    // ClientException that also implements SocketException.
+    on http.ClientException catch (e) {
       final event = AnalyticsEvent.httpConnectionError(
         uri: uri.toString(),
         statusCode: connectionErrorStatusCode,
@@ -151,8 +151,8 @@ class FunctionsHttpClient {
         return false;
       },
       whenError: (error, _) {
-        if (error is SocketException) {
-          _logHttpRetry(uri, 'SocketException: ${error.message}');
+        if (error is http.ClientException) {
+          _logHttpRetry(uri, 'ClientException: ${error.message}');
           return true;
         } else if (error is TimeoutException) {
           _logHttpRetry(uri, 'TimeoutException: ${error.message}');
