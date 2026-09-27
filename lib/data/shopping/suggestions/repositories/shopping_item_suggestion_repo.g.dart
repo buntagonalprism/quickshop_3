@@ -59,4 +59,4 @@ final class ShoppingItemSuggestionRepoProvider
 }
 
 String _$shoppingItemSuggestionRepoHash() =>
-    r'eaf88145bd78c0ba7a3b3544c130ddad736e6454';
+    r'e3398306de49ed88b5f3b9c8300c0fd1451ca973';

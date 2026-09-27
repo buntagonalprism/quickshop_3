@@ -61,4 +61,4 @@ final class ShoppingCategorySuggestionRepoProvider
 }
 
 String _$shoppingCategorySuggestionRepoHash() =>
-    r'2245182e4d104446e280b6e22b82030903aca753';
+    r'e22ee2985b65ae1a76c6f1348efbd3f8a1422fa8';

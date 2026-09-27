@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../analytics/logger.dart';
+import '../../../../services/auth_service.dart';
 import '../../../../services/firestore.dart';
 import '../../../../services/locale_service.dart';
 import '../../../../services/shared_preferences.dart';
@@ -17,7 +17,15 @@ part 'shopping_item_suggestion_repo.g.dart';
 
 @riverpod
 ShoppingItemSuggestionRepo shoppingItemSuggestionRepo(Ref ref) {
-  return ShoppingItemSuggestionRepo(ref);
+  // Suggestions are stored in the per-user database, so only sync them while a user is signed in,
+  // and start again when the user changes.
+  final userId = ref.watch(userIdProvider);
+  final repo = ShoppingItemSuggestionRepo(ref);
+  if (userId != null) {
+    repo._syncSuggestions();
+  }
+  ref.onDispose(repo._dispose);
+  return repo;
 }
 
 class ShoppingItemSuggestionRepo {
@@ -25,13 +33,15 @@ class ShoppingItemSuggestionRepo {
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider('$ShoppingItemSuggestionRepo'));
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
-  SharedPreferencesWithCache get _prefs => _ref.read(sharedPrefsProvider);
+  UserSharedPreferences get _prefs => _ref.read(userSharedPrefsProvider);
 
   String? _currentLangCode;
   static const _suggestionsLangCodeKey = 'itemSuggestionsLangCode';
   StreamSubscription? _summarySub;
 
-  ShoppingItemSuggestionRepo(this._ref) {
+  ShoppingItemSuggestionRepo(this._ref);
+
+  void _syncSuggestions() {
     _currentLangCode = _prefs.getString(_suggestionsLangCodeKey);
     _ref.listen(
       localeServiceProvider,
@@ -48,9 +58,18 @@ class ShoppingItemSuggestionRepo {
     );
   }
 
+  void _dispose() {
+    _summarySub?.cancel();
+  }
+
   void _watchSuggestions(String langCode) async {
     final loadProgress =
         await _db.loadProgressDao.get(LoadProgressType.itemSuggestion) ?? DateTime.fromMillisecondsSinceEpoch(0);
+
+    // The user may have changed while loading progress, disposing this repo.
+    if (!_ref.mounted) {
+      return;
+    }
 
     _summarySub?.cancel();
     _summarySub = _fs.collection('suggestions').doc('items').snapshots().listen((snapshot) {
@@ -105,7 +124,8 @@ class ShoppingItemSuggestionRepo {
       }
     } while (pageResults.size == pageSize);
 
-    if (allDocs.isEmpty) {
+    // The user may have changed while fetching, disposing this repo.
+    if (!_ref.mounted || allDocs.isEmpty) {
       return;
     }
 
