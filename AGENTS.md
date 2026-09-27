@@ -4,7 +4,7 @@ This guide covers the tools and workflow for AI agents working on this project. 
 
 ## Architecture
 
-**Before changing anything under `lib/`, read [`docs/architecture.md`](docs/architecture.md).** It defines where state, subscriptions and logic belong, with the reasoning behind each rule, and lists existing code that doesn't follow the rules and shouldn't be copied.
+**Before changing anything under `lib/`, read [`docs/architecture.md`](docs/architecture.md).** It defines where state, subscriptions and logic belong, with the reasoning behind each rule.
 
 The rules most often broken, summarised from that document (which is authoritative if they ever disagree):
 

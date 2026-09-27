@@ -182,7 +182,7 @@ Future<List<MyResult>> myQuery(Ref ref, String param) async {
 
 Use cases coordinate between repositories without caching the results in memory, for example aggregating queries over datasets too large to cache, or observing one dataset to trigger loading of another. Like repositories, they are `keepAlive` singletons whose providers watch nothing.
 
-Unlike repositories, a use case may react to changes, using `ref.listen` to watch providers such as the user profile or locale and driving repositories in response. `UserHistoryLoaderUseCase` is an example: it listens to the user profile and tells the history repositories to fetch new history. Use cases follow the same lifetime rules as repositories: state that lives as long as the app is fine, user data is not. A use case may hold a subscription to global Firestore data for the life of the app, but should get user data by listening to a notifier or provider, which owns that subscription.
+Unlike repositories, a use case may react to changes, using `ref.listen` to watch providers such as the user profile or locale and driving repositories in response. `UserHistoryLoaderUseCase` is an example: it listens to the user profile and tells the history repositories to fetch new history. `SuggestionsSyncUseCase` is another: it watches the global suggestion summaries in Firestore for the life of the app, and downloads suggestions into the signed in user's database whenever the summaries, the user or the locale change. Use cases follow the same lifetime rules as repositories: state that lives as long as the app is fine, user data is not. A use case may hold a subscription to global Firestore data for the life of the app, but should get user data by listening to a notifier or provider, which owns that subscription.
 
 ---
 
@@ -303,14 +303,3 @@ PopScope(
 - Database tests use a real in-memory Drift database. Never mock the database.
 - Fake our own wrapper services rather than the libraries they wrap, so tests don't depend on how a wrapper works inside. For example, only the preferences services' own tests fake `SharedPreferencesWithCache`; every other test overrides the services with `FakeUserPrefsService` and `FakeUnauthPrefsService`.
 - Use `fake_async` for time-dependent logic.
-
----
-
-## Known deviations
-
-Some existing code predates these rules. Don't copy it as an example, and remove each entry here once it's fixed.
-
-- **Suggestion repositories** (`ShoppingItemSuggestionRepo`, `ShoppingCategorySuggestionRepo`) sync suggestions themselves, starting at app launch, which breaks rule 5. Suggestions are missing after a first sign-in until the next launch.
-- **History repositories** (`ShoppingItemHistoryRepo`, `ShoppingCategoryHistoryRepo`) cache the user's download progress in memory, which breaks rule 3. After switching accounts, the second user's older history is never downloaded.
-- **`UserProfileRepo`** caches the user profile as a side effect of mapping the profile stream, which breaks rule 3. Code that needs the profile should read `userProfileProvider` instead.
-- **Auto-dispose providers for repositories and use cases** (`ListInviteRepo`, `ShoppingListItemsRepo`, `TooltipsRepo`, the suggestion repositories, `ShoppingItemAutocompleteUseCase` and `ShoppingCategoryAutocompleteUseCase`) break rule 1, as a consumer holding one after it is disposed gets errors from its disposed `Ref`.
