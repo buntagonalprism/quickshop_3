@@ -26,7 +26,6 @@ class ShoppingCategoryHistoryRepo {
   String get _userId => _ref.read(userAuthProvider)!.id;
 
   static final _zeroTime = DateTime.fromMillisecondsSinceEpoch(0);
-  DateTime _retrievedUntil = _zeroTime;
 
   static const String collectionName = 'categoryHistory';
 
@@ -47,15 +46,14 @@ class ShoppingCategoryHistoryRepo {
   }
 
   void onUserHistoryUpdated(DateTime lastHistoryUpdate) async {
-    if (_retrievedUntil == _zeroTime) {
-      final progress = await _db.loadProgressDao.get(LoadProgressType.categoryHistory);
-      if (progress != null) {
-        _retrievedUntil = progress;
-      }
-    }
-    if (_retrievedUntil.isBefore(lastHistoryUpdate)) {
-      _log.log('Fetching user category history since $_retrievedUntil');
-      _fetchHistory(_userId, _retrievedUntil);
+    // Capture the user's database and ID before any await, so that if the user changes part way
+    // through, the download finishes against the user it started for.
+    final db = _db;
+    final userId = _userId;
+    final retrievedUntil = await db.loadProgressDao.get(LoadProgressType.categoryHistory) ?? _zeroTime;
+    if (retrievedUntil.isBefore(lastHistoryUpdate)) {
+      _log.log('Fetching user category history since $retrievedUntil');
+      _fetchHistory(db, userId, retrievedUntil);
     }
   }
 
@@ -85,7 +83,7 @@ class ShoppingCategoryHistoryRepo {
     );
   }
 
-  Future<void> _fetchHistory(String userId, DateTime since) async {
+  Future<void> _fetchHistory(AppDatabase db, String userId, DateTime since) async {
     const pageSize = 100;
     final baseQuery = _fs
         .collection(UserProfileRepo.collectionName)
@@ -116,7 +114,7 @@ class ShoppingCategoryHistoryRepo {
       return data[_Fields.deleted] != true;
     }).toList();
 
-    await _db.categoryHistoryDao.insert(
+    await db.categoryHistoryDao.insert(
       notDeletedDocs.map((doc) {
         final data = doc.data()!;
         return CategoryHistoryRow(
@@ -133,15 +131,12 @@ class ShoppingCategoryHistoryRepo {
       final data = doc.data()!;
       return data[_Fields.deleted] == true;
     }).toList();
-    await _db.categoryHistoryDao.deleteByIds(deletedDocs.map((doc) => doc.id).toList());
+    await db.categoryHistoryDao.deleteByIds(deletedDocs.map((doc) => doc.id).toList());
 
-    _retrievedUntil = DateTime.fromMillisecondsSinceEpoch(
+    final retrievedUntil = DateTime.fromMillisecondsSinceEpoch(
       allDocs.last.data()!['lastUsed'],
     );
-    await _db.loadProgressDao.save(
-      LoadProgressType.categoryHistory,
-      _retrievedUntil,
-    );
+    await db.loadProgressDao.save(LoadProgressType.categoryHistory, retrievedUntil);
   }
 }
 
