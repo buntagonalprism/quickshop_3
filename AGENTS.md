@@ -10,7 +10,7 @@ The rules most often broken, summarised from that document (which is authoritati
 
 - Service, repository and use case providers are `keepAlive` and watch nothing, so each is a stable singleton.
 - Repositories look up user-dependent values such as `appDatabaseProvider` when a method runs, and capture them at the start of async operations.
-- Singletons may hold state that lives as long as the app, but not user data. User data lives in the per-user database, or in memory only when keyed by user ID.
+- Singletons may hold state that lives as long as the app, but not user data. User data lives in the per-user database or `UserPrefsService`, or in memory only when keyed by user ID.
 - Repositories return streams and never subscribe to user data. Notifiers own those subscriptions and rebuild when the user changes.
 - Repositories are passive. Background work that reacts to changes belongs in a use case.
 
