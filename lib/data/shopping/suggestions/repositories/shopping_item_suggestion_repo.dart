@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../analytics/logger.dart';
 import '../../../../services/firestore.dart';
 import '../../../../services/locale_service.dart';
-import '../../../../services/shared_preferences.dart';
+import '../../../../services/user_prefs_service.dart';
 import '../../../app_database.dart';
 import '../../../app_database_provider.dart';
 import '../../../common/database/load_progress_table.dart';
@@ -25,7 +24,7 @@ class ShoppingItemSuggestionRepo {
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider('$ShoppingItemSuggestionRepo'));
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
-  SharedPreferencesWithCache get _prefs => _ref.read(sharedPrefsProvider);
+  UserPrefsService get _prefs => _ref.read(userPrefsServiceProvider);
 
   String? _currentLangCode;
   static const _suggestionsLangCodeKey = 'itemSuggestionsLangCode';

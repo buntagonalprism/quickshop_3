@@ -67,6 +67,16 @@ Examples of existing services in `lib/services/`:
 - `AuthService`: Firebase auth state and user operations
 - `LocationService`: Geolocator permission checks and location retrieval
 - `FunctionsHttpClient`: authenticated HTTP calls to Firebase Cloud Functions
+- `UserPrefsService` and `UnauthPrefsService`: local key-value preferences
+
+### Preferences
+
+Local preferences are stored with SharedPreferences, through one of two services. Choose by asking whose value it is:
+
+- **`UserPrefsService`** for values that belong to the signed in user, such as values describing the contents of their local database. Keys are prefixed with the user ID, looked up on every call, so each user has their own values. While nobody is signed in, values belong to an `unauthenticated` user, matching `appDatabaseProvider`.
+- **`UnauthPrefsService`** for values that belong to the device, whoever is signed in, such as the theme or whether the location permission rationale has been shown.
+
+Nothing else uses `sharedPrefsProvider` directly. Choosing a service at each use makes the owner of every value explicit, and a value stored for the wrong owner either leaks between users or is lost when they switch.
 
 ---
 
@@ -84,7 +94,7 @@ A clean repository interface also makes the application layer easy to unit test,
 
 2. **Look up user-dependent values when a method runs, and capture them at the start of async operations.** Use a getter such as `AppDatabase get _db => _ref.read(appDatabaseProvider)` rather than storing the database in a field. Within a single async operation, read the value once at the start and keep using it after each `await`. If the user changes part way through, the operation then finishes against the original user's database, which is still correct for that user, rather than writing one user's data into another user's database.
 
-3. **Repositories may hold state that lives as long as the app, but not user data.** A cache of global data is fine. User-specific data belongs in the per-user database, read when needed. An in-memory copy of it outlives a sign-out and leaks into the next user's session. If user-specific data really must be cached in memory, key it by user ID, as `appDatabaseProvider` does with its databases.
+3. **Repositories may hold state that lives as long as the app, but not user data.** A cache of global data is fine. User-specific data belongs in the per-user database or `UserPrefsService`, read when needed. An in-memory copy of it outlives a sign-out and leaks into the next user's session. If user-specific data really must be cached in memory, key it by user ID, as `appDatabaseProvider` does with its databases.
 
 4. **Repositories return streams; they never subscribe to user data themselves.** A Firestore snapshot subscription needs an owner that cancels it, and the owner's lifetime decides when that happens. A subscription to user data must end when the user signs out, otherwise it leaks and fails with permission-denied errors once auth changes. Repositories should return a new stream per call and leave the act of subscribing to that stream to notifiers/providers, as Riverpod is able to automatically cancel stream subscriptions when the listening notifier/provider rebuilds or is disposed.
 
