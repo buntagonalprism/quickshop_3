@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'common/database/load_progress_dao.dart';
 import 'common/database/load_progress_table.dart';
+import 'shopping/suggestions/database/suggestion_type.dart';
 import 'common/database/token_table.dart';
 import 'settings/database/db_preferences_table.dart';
 import 'shopping/history/database/category_history_dao.dart';
@@ -171,15 +172,17 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
-  Future<void> clearAllSuggestions() {
-    final suggestionProgressTypes = [
-      LoadProgressType.categorySuggestion.value,
-      LoadProgressType.itemSuggestion.value,
-    ];
+  /// Deletes all suggestions of [type], and resets their load progress so they are downloaded again.
+  Future<void> clearSuggestions(SuggestionType type) {
     return batch((batch) {
-      batch.deleteAll(categorySuggestionsTable);
-      batch.deleteAll(itemSuggestionsTable);
-      batch.deleteWhere(loadProgressTable, (t) => t.type.isIn(suggestionProgressTypes));
+      switch (type) {
+        case SuggestionType.item:
+          batch.deleteAll(itemSuggestionsTable);
+          batch.deleteWhere(loadProgressTable, (t) => t.type.equals(LoadProgressType.itemSuggestion.value));
+        case SuggestionType.category:
+          batch.deleteAll(categorySuggestionsTable);
+          batch.deleteWhere(loadProgressTable, (t) => t.type.equals(LoadProgressType.categorySuggestion.value));
+      }
     });
   }
 
