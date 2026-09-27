@@ -26,7 +26,6 @@ class UserProfileRepo {
   final Ref _ref;
   UserProfileRepo(this._ref);
 
-  late UserProfile _cachedUserProfile;
   static const collectionName = 'users';
   late final _log = _ref.read(loggerProvider('$UserProfileRepo'));
 
@@ -44,18 +43,15 @@ class UserProfileRepo {
         // Cloud Function triggered on user creation.
         _log.log('Creating user');
         httpClient.put('/createUser');
-        _cachedUserProfile = UserProfile(
-          userId: user.id,
-        );
-      } else {
-        _cachedUserProfile = _fromFirestore(user.id, snapshot);
+        return UserProfile(userId: user.id);
       }
-      return _cachedUserProfile;
+      return _fromFirestore(user.id, snapshot);
     });
   }
 
   void incrementHiddenSuggestionsVersion(FirestoreTransaction tx) async {
-    _log.log('Incrementing hidden suggestions vesion, was: ${_cachedUserProfile.hiddenSuggestionsVersion}');
+    final currentVersion = _ref.read(userProfileProvider).value?.hiddenSuggestionsVersion;
+    _log.log('Incrementing hidden suggestions version, was: $currentVersion');
     final user = _ref.read(userAuthProvider);
     if (user == null) {
       throw Exception('User not signed in');
@@ -68,8 +64,12 @@ class UserProfileRepo {
 
   void setLastHistoryUpdate(FirestoreTransaction tx, DateTime newUpdateTime) {
     _log.log('Setting last history update: $newUpdateTime');
+    final user = _ref.read(userAuthProvider);
+    if (user == null) {
+      throw Exception('User not signed in');
+    }
     final fs = _ref.read(firestoreProvider);
-    final userRef = fs.collection(collectionName).doc(_cachedUserProfile.userId);
+    final userRef = fs.collection(collectionName).doc(user.id);
     tx.batch.update(userRef, {_Fields.lastHistoryUpdate: newUpdateTime.millisecondsSinceEpoch});
   }
 

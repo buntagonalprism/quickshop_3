@@ -15,7 +15,7 @@ abstract class ParsedShoppingItem with _$ParsedShoppingItem {
   }) = _ParsedShoppingItem;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 ShoppingItemNameParser shoppingItemNameParser(Ref ref) {
   return ShoppingItemNameParser();
 }

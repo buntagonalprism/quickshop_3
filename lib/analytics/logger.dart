@@ -4,7 +4,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 part 'logger.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Logger logger(Ref ref, String source) {
   return Logger._(source);
 }

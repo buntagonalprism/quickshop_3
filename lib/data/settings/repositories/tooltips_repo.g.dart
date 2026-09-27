@@ -24,7 +24,7 @@ final class TooltipsRepoProvider
         argument: null,
         retry: null,
         name: r'tooltipsRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -51,4 +51,4 @@ final class TooltipsRepoProvider
   }
 }
 
-String _$tooltipsRepoHash() => r'148098fa072737592c41ae425904b0a4ded65df5';
+String _$tooltipsRepoHash() => r'0f32ff93c9f669eccde379f45d0018d303f5926e';

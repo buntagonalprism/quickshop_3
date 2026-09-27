@@ -6,7 +6,7 @@ import '../services/auth_service.dart';
 
 part 'crash_reporter.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 CrashReporter crashReporter(Ref ref) {
   ref.listen(
     userAuthProvider,
