@@ -29,7 +29,7 @@ final class ShoppingListItemsRepoProvider
   }) : super(
          retry: null,
          name: r'shoppingListItemsRepoProvider',
-         isAutoDispose: true,
+         isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
@@ -76,7 +76,7 @@ final class ShoppingListItemsRepoProvider
 }
 
 String _$shoppingListItemsRepoHash() =>
-    r'4c5da7c94b6bcad2d0b190a1899def0f6e1a8f19';
+    r'5db9a40d58be9ef80015842b165e948dbbf4282c';
 
 final class ShoppingListItemsRepoFamily extends $Family
     with $FunctionalFamilyOverride<ShoppingListItemsRepo, String> {
@@ -86,7 +86,7 @@ final class ShoppingListItemsRepoFamily extends $Family
         name: r'shoppingListItemsRepoProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
-        isAutoDispose: true,
+        isAutoDispose: false,
       );
 
   ShoppingListItemsRepoProvider call(String listId) =>

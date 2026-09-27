@@ -24,7 +24,7 @@ final class ListInviteRepoProvider
         argument: null,
         retry: null,
         name: r'listInviteRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -51,4 +51,4 @@ final class ListInviteRepoProvider
   }
 }
 
-String _$listInviteRepoHash() => r'05576e133a43a8018739672e680b984c37c4542c';
+String _$listInviteRepoHash() => r'cd59dfed1cba6b1b77ac17ddbb3a017074b55173';

@@ -5,7 +5,7 @@ import 'settings_service.dart';
 
 part 'firestore.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FirebaseFirestore firestore(Ref ref) {
   final fs = FirebaseFirestore.instance;
   final settings = ref.read(settingsServiceProvider);
