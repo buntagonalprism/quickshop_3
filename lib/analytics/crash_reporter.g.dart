@@ -24,7 +24,7 @@ final class CrashReporterProvider
         argument: null,
         retry: null,
         name: r'crashReporterProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -51,4 +51,4 @@ final class CrashReporterProvider
   }
 }
 
-String _$crashReporterHash() => r'1af6dd1eb36380d0d1f3d5766cdc0c50b30c7b31';
+String _$crashReporterHash() => r'2f25522bd636419bd86ed17d0fef716c0e562554';

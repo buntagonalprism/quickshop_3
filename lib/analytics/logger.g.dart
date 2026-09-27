@@ -23,7 +23,7 @@ final class LoggerProvider extends $FunctionalProvider<Logger, Logger, Logger>
   }) : super(
          retry: null,
          name: r'loggerProvider',
-         isAutoDispose: true,
+         isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
@@ -68,7 +68,7 @@ final class LoggerProvider extends $FunctionalProvider<Logger, Logger, Logger>
   }
 }
 
-String _$loggerHash() => r'a6c7d6f22ceba2259989a272958f676dc7813475';
+String _$loggerHash() => r'2c718a938abc96656438569cb99933d55b5b026e';
 
 final class LoggerFamily extends $Family
     with $FunctionalFamilyOverride<Logger, String> {
@@ -78,7 +78,7 @@ final class LoggerFamily extends $Family
         name: r'loggerProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
-        isAutoDispose: true,
+        isAutoDispose: false,
       );
 
   LoggerProvider call(String source) =>
