@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:quickshop/services/auth_service.dart';
-import 'package:quickshop/services/shared_preferences.dart';
 import 'package:quickshop/services/unauth_prefs_service.dart';
 import 'package:quickshop/services/user_prefs_service.dart';
+import 'package:riverpod/riverpod.dart';
 
 import '../fakes/fake_shared_preferences.dart';
 import '../utilities/create_provider_container.dart';
@@ -18,7 +17,8 @@ void main() {
     userId = 'user-a';
     container = createContainer(
       overrides: [
-        sharedPrefsProvider.overrideWithValue(prefs),
+        userPrefsServiceProvider.overrideWith((ref) => UserPrefsService(ref, prefs)),
+        unauthPrefsServiceProvider.overrideWithValue(UnauthPrefsService(prefs)),
         userIdProvider.overrideWith((ref) => userId),
       ],
     );

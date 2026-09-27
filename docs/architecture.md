@@ -76,7 +76,7 @@ Local preferences are stored with SharedPreferences, through one of two services
 - **`UserPrefsService`** for values that belong to the signed in user, such as values describing the contents of their local database. Keys are prefixed with the user ID, looked up on every call, so each user has their own values. While nobody is signed in, values belong to an `unauthenticated` user, matching `appDatabaseProvider`.
 - **`UnauthPrefsService`** for values that belong to the device, whoever is signed in, such as the theme or whether the location permission rationale has been shown.
 
-Nothing else uses `sharedPrefsProvider` directly. Choosing a service at each use makes the owner of every value explicit, and a value stored for the wrong owner either leaks between users or is lost when they switch.
+`SharedPreferencesWithCache` needs async initialisation, so `main.dart` creates it, constructs both services around it, and overrides their providers. Nothing else can reach the underlying instance, so every value has to go through one of the services. Choosing a service at each use makes the owner of every value explicit, and a value stored for the wrong owner either leaks between users or is lost when they switch.
 
 ---
 
@@ -308,9 +308,11 @@ PopScope(
 ## Testing
 
 - Unit tests use `mocktail` for mocks.
-- Database tests use a real in-memory Drift database. Never mock the database.
-- For testing providers and notifiers, mock the repositories which wrap the database/firestore. 
-- Use `fake_async` for time-dependent logic.
+- To test providers and notifiers, mock repositories or our own wrapper services, never mock an external system. Tests of our own domain logic shouldn't depend on the behaviour of an external library.
+- To test local database queries and DAO methods, use a real in-memory drift database - see `app_database_test.dart`. 
+- Most repositories should be thin wrappers with minimal logic such that any unit tests would be redundant restatements of the code itself. Any logic should be extracted to pure functions which can be tested seperately, or extracted into the application layer as a use-case/notifier. 
+- Only when testing on of our wrapper services should an external system be mocked/faked. For example the preferences service tests fake `SharedPreferencesWithCache` from `package:shared_preferences`
+- Use `fake_async` for time-dependent logic and ensure that the code under test uses `clock.now` instead of `DateTime.now`
 
 ---
 
