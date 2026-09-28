@@ -73,10 +73,8 @@ Examples of existing services in `lib/services/`:
 
 Local preferences are stored with SharedPreferences, through one of two services. Choose by asking whose value it is:
 
-- **`UserPrefsService`** for values that belong to the signed in user, such as values describing the contents of their local database. Keys are prefixed with the user ID, looked up on every call, so each user has their own values. While nobody is signed in, values belong to an `unauthenticated` user, matching `appDatabaseProvider`.
-- **`UnauthPrefsService`** for values that belong to the device, whoever is signed in, such as the theme or whether the location permission rationale has been shown.
-
-`SharedPreferencesWithCache` needs async initialisation, so `main.dart` creates it, constructs both services around it, and overrides their providers. Nothing else can reach the underlying instance, so every value has to go through one of the services. Choosing a service at each use makes the owner of every value explicit, and a value stored for the wrong owner either leaks between users or is lost when they switch.
+- **`UserPrefsService`** for values that belong to the signed in user, such as values describing the contents of their local database or personal preferences.
+- **`UnauthPrefsService`** for values that belong to the device, regardless of who is signed in, such as the system theme or whether the location permission rationale has been shown.
 
 ---
 
