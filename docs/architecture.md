@@ -1,6 +1,6 @@
 # QuickShop 3 Architecture
 
-This document describes how the QuickShop 3 codebase is structured, and why. It is the authoritative reference for where code belongs and how the layers interact, for both human developers and AI agents. [`README.md`](../README.md) covers the tech stack and project setup, and [`AGENTS.md`](../AGENTS.md) covers the tooling workflow for agents.
+This document describes how the QuickShop 3 codebase is structured, and why, for both human developers and AI agents. [`README.md`](../README.md) covers the tech stack and project setup, and [`AGENTS.md`](../AGENTS.md) covers the tooling workflow for agents.
 
 The rules here explain their reasoning so that they can be applied to situations they don't explicitly cover. When the reasoning and a rule seem to disagree for a new case, follow the reasoning and update this document.
 
@@ -14,8 +14,8 @@ lib/
   data/             # Data layer: models, repositories, application logic
     <feature>/
       models/       # Freezed data models for this feature
-      repositories/ # Data access wrappers around Firestore, HTTP and the local database
-      application/  # Notifiers, read-only providers and use cases
+      repositories/ # Data access wrappers around Firestore, HTTP, and the local database
+      application/  # Notifiers, read-only providers, and use cases
       database/     # Drift table schemas and DAOs, if the feature uses the local database
   pages/            # UI pages: full-screen widgets, or widgets filling a tab
     <feature>/
@@ -28,7 +28,7 @@ lib/
   widgets/          # Shared widgets reused across multiple pages
 ```
 
-Create a `lib/pages/<feature>/<page_name>/` subfolder when a page contains multiple distinct sub-views or tabs, such as a landing view, a search view and a detail view, with each sub-view in its own `_view.dart` file. Simple single-screen pages may be a single file directly in `lib/pages/<feature>/`.
+Create a `lib/pages/<feature>/<page_name>/` subfolder when a page contains multiple distinct sub-views or tabs, such as a landing view, a search view and a detail view, with each sub-view in its own `_view.dart` file. Simple single-screen pages may be a single file directly in `lib/pages/<feature>/<page_name>_page.dart`.
 
 ---
 
@@ -36,22 +36,22 @@ Create a `lib/pages/<feature>/<page_name>/` subfolder when a page contains multi
 
 Riverpod is used for two different things in this app, and they follow different rules.
 
-- **Dependency injection.** Services, repositories and use cases are classes that other code calls. Riverpod only locates them. Their providers are `keepAlive` and watch nothing, so each is a stable singleton: any consumer can read it at any time and always get the same instance.
-- **State management.** Notifiers, read-only providers and view models hold data. Their providers watch their inputs and rebuild when those change, which is how Riverpod keeps state up to date and how it cancels and restarts the work behind that state.
+- **Dependency injection.** Services, repositories, and use cases are classes that other code calls. Riverpod only locates them. Their providers are `keepAlive` and watch nothing, so each is a stable singleton: any consumer can read it at any time and always get the same instance.
+- **State management.** Notifiers, read-only providers, and view models hold data. Their providers can watch other inputs and automatically rebuild when those inputs change, which is how Riverpod keeps state up to date. 
 
-Mixing the two causes bugs. A class that other code calls should never be replaced underneath its callers because some input changed. State that depends on an input, such as the signed-in user, must be rebuilt when that input changes, and a singleton won't do that on its own.
+Mixing the two causes bugs. A class that other code calls should never be replaced underneath its callers because of a change to some input value, and a state that depends on an input, such as the signed-in user, must be rebuilt when that input changes, which a singleton won't do on its own.
 
 ### The signed-in user
 
-Most of the app's data belongs to the signed-in user, and the user can change while the app is running, by signing out and signing in as someone else. Each user has their own Drift database, provided by `appDatabaseProvider`.
+Most of the app's data belongs to the signed-in user, and the user can change while the app is running, by signing out and signing in as someone else. Each user has their own Drift database, provided by `appDatabaseProvider`
 
-This is the most common source of lifetime bugs in this codebase. A singleton lives for the whole app, but user data only lives as long as a user is signed in. Anything that holds user data, or a subscription to it, must either belong to something that is rebuilt when the user changes, or look the user up afresh each time.
+This is a common source of data-caching bugs, especially when switching accounts during testing. A singleton service or repository lives for the whole app, but user data only lives as long as a user is signed in. Anything that holds user data, or a subscription to it, must either belong to something that is rebuilt when the user changes, or look up the user data afresh for each access.
 
 ---
 
 ## Services
 
-Services wrap a single external system, such as Firebase Auth, Geolocator or HTTP calls to Cloud Functions. They are `keepAlive` singletons.
+Services wrap a single external system, such as Firebase Auth, Geolocator or HTTP calls to Cloud Functions. They are `keepAlive` singletons which watch nothing.
 
 ```dart
 @Riverpod(keepAlive: true)
@@ -62,7 +62,7 @@ class MyService {
 }
 ```
 
-Existing services in `lib/services/` include:
+Examples of existing services in `lib/services/`:
 
 - `AuthService`: Firebase auth state and user operations
 - `LocationService`: Geolocator permission checks and location retrieval
@@ -72,13 +72,13 @@ Existing services in `lib/services/` include:
 
 ## Repositories
 
-Repositories are lightweight wrappers around data sources: Firestore, HTTP and the local database. They handle serialisation and expose clean methods for the application layer to call. There is generally one repository per data model type. Repositories do not call each other; coordinating between them is the job of notifiers and use cases.
+Repositories are lightweight wrappers around data sources: Firestore, HTTP calls, and the local database. They handle serialisation and expose clean methods for the application layer to call. There is generally one repository per data model type. Repositories do not call each other; coordinating between them is the job of notifiers and use cases.
 
-A clean repository interface also makes the application layer easy to unit test, as repositories are much simpler to mock than Firestore or Drift.
+A clean repository interface also makes the application layer easy to unit test, as repositories with named and statically typed methods are much simpler to mock than a Firestore client, API calls, or Drift database operations.
 
 ### Rules
 
-1. **Repository providers are `keepAlive` and watch nothing.** Read dependencies through `ref.read` when a method needs them, not with `ref.watch` in the provider. Watching something that changes, such as the user ID, rebuilds the provider and replaces the repository underneath anything holding it.
+1. **Repository providers are `keepAlive` and watch nothing.** Read dependencies through `ref.read` when a method needs them, not with `ref.watch` in the provider. Watching something that changes, such as the user ID, rebuilds the provider and replaces the repository underneath anything holding a reference to it.
 
    Family repositories keyed by an entity ID, such as `checklistEntryRepoProvider(listId)`, follow the same rule for each key: one stable instance per entity.
 
@@ -86,14 +86,14 @@ A clean repository interface also makes the application layer easy to unit test,
 
 3. **Repositories may hold state that lives as long as the app, but not user data.** A cache of global data is fine. User-specific data belongs in the per-user database, read when needed. An in-memory copy of it outlives a sign-out and leaks into the next user's session. If user-specific data really must be cached in memory, key it by user ID, as `appDatabaseProvider` does with its databases.
 
-4. **Repositories return streams; they never subscribe to user data themselves.** A Firestore snapshot subscription needs an owner that cancels it, and the owner's lifetime decides when that happens. A subscription to user data must end when the user signs out, otherwise it leaks and fails with permission-denied errors once auth changes. Repositories should return a new stream per call and leave subscribing to notifiers and stream providers, which Riverpod cancels when they rebuild or are disposed.
+4. **Repositories return streams; they never subscribe to user data themselves.** A Firestore snapshot subscription needs an owner that cancels it, and the owner's lifetime decides when that happens. A subscription to user data must end when the user signs out, otherwise it leaks and fails with permission-denied errors once auth changes. Repositories should return a new stream per call and leave the act of subscribing to that stream to notifiers/providers, as Riverpod is able to automatically cancel stream subscriptions when the listening notifier/provider rebuilds or is disposed.
 
 5. **Repositories are passive.** They don't start work in their constructors or listen to other providers. Background work that reacts to changes, such as syncing data into the local database, belongs in a use case.
 
 ### Conventions
 
-- Accept a `FirestoreTransaction` for write operations, and never commit transactions: the caller that created the transaction commits it.
-- Use a private `_Fields` class for Firestore field name constants.
+- Accept a `FirestoreTransaction` when a write operation needs to span multiple data types. Respositories do not commit transactions: the caller that created the transaction commits it.
+- Use a private `_Fields` class for Firestore field name constants to support querying/setting fields consistently by name.
 - Keep serialisation helpers such as `_fromFirestore` and `_toFirestore` private.
 
 ```dart
@@ -133,8 +133,8 @@ For data types used across multiple pages, or small enough to cache entirely in 
 
 Notifiers own subscriptions to user data: `build()` returns the repository's stream, Riverpod subscribes to it, and Riverpod cancels the subscription when the notifier is rebuilt or disposed. A notifier of user data that outlives the pages using it must rebuild when the user changes:
 
-- A `keepAlive` notifier watches `userAuthProvider` or `userIdProvider` in `build()`, as `ListsNotifier` and `userProfileProvider` do.
-- A notifier that should stay in memory briefly after its last listener leaves uses `ref.delayDispose(...)`, which watches the user ID for you.
+- A `keepAlive` notifier should watch `userAuthProvider` or `userIdProvider` in `build()`, as `ListsNotifier` and `userProfileProvider` do.
+- A notifier that should stay in memory briefly after its last listener leaves (so the data is already in memory if the user comes back) uses `ref.delayDispose(...)`, which watches the user ID for you. 
 
 ```dart
 @riverpod
@@ -147,32 +147,40 @@ class MyNotifier extends _$MyNotifier {
 
   Future<void> addItem(MyModel item) async {
     // 1. Optionally apply an optimistic update to state
-    // 2. Create a transaction, call the repository, commit
+    state = AsyncValue.data([...state.value, item]);
+    // 2. Optionally create a transaction before calling the repository
     final tx = ref.read(firestoreTransactionProvider)();
+    // 3. Invoke the update operation on the repository
     ref.read(myRepoProvider(entityId)).create(tx, item);
+    // 4. Optionally invoke other notifiers that need to participate in the transaction
+    ref.read(myStatsNotifierProvider.notifier).updateStats(tx, item);
+    // 5. Optionally commit the transaction
     await tx.commit();
   }
 }
 ```
 
-Writes spanning multiple data types are orchestrated by the notifier that initiates them, calling methods on the other notifiers to inform them of the update. If a transaction is needed, the initiating notifier creates it, passes it to the others to pass down to their repositories, and commits it.
+Write operations that span multiple data types are orchestrated by the notifier that initiates them, by calling methods on the other notifiers to inform them of the update. If a transaction is needed, the initiating notifier creates it, and passes it to the other notifiers for them to pass down to their repositories. The initiating notifier is responsible for committing the transaction.
 
 ### Read-only providers
 
-Function providers give live-updating, read-only views of data: queries against repositories, filtered subsets of notifier data, or transformations of it. Unless several pages need the view, it usually belongs in a view model instead.
+Read-only providers are defined as a single top-level function using Riverpod code generation. They return live-updating, read-only views of data, e.g.: direct queries against repositories, filtered subsets of notifier data, or transformations of it. Unless several pages need the same view, this behaviour often belongs in a view model instead.
 
 ```dart
 @riverpod
 Future<List<MyResult>> myQuery(Ref ref, String param) async {
   // Fetches, transforms or filters data. Auto-disposes when no longer watched.
+  final rawData = await ref.read(myRepositoryProvider).queryData(param);
+  final transformed = rawData.map(transformer);
+  return transformed;
 }
 ```
 
 ### Use cases
 
-Use cases coordinate between repositories without caching the results in memory, for example aggregating queries over datasets too large to cache, or observing one dataset to trigger loading of another. Like repositories, they are `keepAlive` singletons whose providers watch nothing.
+Use cases coordinate between repositories without caching the results in memory, for example aggregating queries over datasets that are too large to cache, or observing one dataset to trigger loading of another. Like repositories, they are `keepAlive` singletons whose providers watch nothing.
 
-Unlike repositories, a use case may react to changes, using `ref.listen` to watch providers such as the user profile or locale and driving repositories in response. `UserHistoryLoaderUseCase` is an example: it listens to the user profile and tells the history repositories to fetch new history. Use cases follow the same lifetime rules as repositories: state that lives as long as the app is fine, user data is not. A use case may hold a subscription to global Firestore data for the life of the app, but should get user data by listening to a notifier or provider, which owns that subscription.
+Unlike repositories, a use case may react to changes, using `ref.listen` to watch providers such as the user profile or locale and driving repository methods in response. `UserHistoryLoaderUseCase` is an example: it listens to the user profile and tells the history repositories to fetch new history. Use cases follow the same lifetime rules as repositories: state that lives as long as the app is fine, user data is not. A use case may hold a subscription to global Firestore data for the life of the app, but should get user data by listening to a notifier or provider.
 
 ---
 
@@ -180,7 +188,7 @@ Unlike repositories, a use case may react to changes, using `ref.listen` to watc
 
 A page is either a full-screen widget, or a widget which fills the contents of a tabbed view.
 
-View models are co-located with their page, and aggregate and transform data from application state and repositories for that page. A view model is used only by its own page and the views within it. Depending on the page, it may be a read-only provider or a mutable notifier.
+View models are co-located with their page, and aggregate and transform data from application state and repositories for that page. A view model is used only by its own page and the views or child widgets within it. Depending on the page, it may be a read-only provider or a mutable notifier.
 
 ```dart
 // my_feature/my_page/my_page_view_model.dart
@@ -291,6 +299,7 @@ PopScope(
 
 - Unit tests use `mocktail` for mocks.
 - Database tests use a real in-memory Drift database. Never mock the database.
+- For testing providers and notifiers, mock the repositories which wrap the database/firestore. 
 - Use `fake_async` for time-dependent logic.
 
 ---
