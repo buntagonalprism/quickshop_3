@@ -312,7 +312,7 @@ PopScope(
 - To test local database queries and DAO methods, use a real in-memory drift database - see `app_database_test.dart`. 
 - Most repositories should be thin wrappers with minimal logic such that any unit tests would be redundant restatements of the code itself. Any logic should be extracted to pure functions which can be tested seperately, or extracted into the application layer as a use-case/notifier. 
 - Only when testing on of our wrapper services should an external system be mocked/faked. For example the preferences service tests fake `SharedPreferencesWithCache` from `package:shared_preferences`
-- Use `fake_async` for time-dependent logic and ensure that the code under test uses `clock.now` instead of `DateTime.now`
+- Use `fake_async` for time-dependent logic.
 
 ---
 
