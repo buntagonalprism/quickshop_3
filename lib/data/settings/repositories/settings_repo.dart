@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/settings.dart';
-import '../../../services/shared_preferences.dart';
+import '../../../services/unauth_prefs_service.dart';
 
 part 'settings_repo.g.dart';
 
 @Riverpod(keepAlive: true)
-SettingsRepo settingsRepo(Ref ref) => SettingsRepo(ref.read(sharedPrefsProvider));
+SettingsRepo settingsRepo(Ref ref) => SettingsRepo(ref.read(unauthPrefsServiceProvider));
 
 class SettingsRepo {
-  final SharedPreferencesWithCache _prefs;
+  final UnauthPrefsService _prefs;
   SettingsRepo(this._prefs);
 
   final String _themeModeKey = 'themeMode';

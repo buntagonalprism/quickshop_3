@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/common/models/coordinates.dart';
 import '../widgets/location_dialogs.dart';
-import 'shared_preferences.dart';
+import 'unauth_prefs_service.dart';
 
 part 'location_service.g.dart';
 
@@ -132,7 +132,7 @@ class _LocationStatusNotifier extends _$LocationStatusNotifier {
 
   @override
   LocationStatus build() {
-    final prefs = ref.read(sharedPrefsProvider);
+    final prefs = ref.read(unauthPrefsServiceProvider);
     // Restore the cached status synchronously so it's immediately available.
     final cached = LocationStatus.values.where((e) => e.name == prefs.getString(_statusKey)).firstOrNull;
     // Update in background in case the user changed settings while the app was closed.
@@ -146,7 +146,7 @@ class _LocationStatusNotifier extends _$LocationStatusNotifier {
   }
 
   LocationStatus _applyPermission(LocationPermission permission) {
-    final prefs = ref.read(sharedPrefsProvider);
+    final prefs = ref.read(unauthPrefsServiceProvider);
     final newStatus = switch (permission) {
       LocationPermission.always || LocationPermission.whileInUse => LocationStatus.granted,
       LocationPermission.deniedForever => LocationStatus.deniedForever,
@@ -159,11 +159,11 @@ class _LocationStatusNotifier extends _$LocationStatusNotifier {
 
   void _setState(LocationStatus newStatus) {
     state = newStatus;
-    ref.read(sharedPrefsProvider).setString(_statusKey, newStatus.name);
+    ref.read(unauthPrefsServiceProvider).setString(_statusKey, newStatus.name);
   }
 
   void _onRationaleShown(bool agreed) {
-    ref.read(sharedPrefsProvider).setBool(_rationaleShownKey, true);
+    ref.read(unauthPrefsServiceProvider).setBool(_rationaleShownKey, true);
     if (!agreed && state == LocationStatus.deniedNotRequested) {
       _setState(LocationStatus.deniedRequested);
     }

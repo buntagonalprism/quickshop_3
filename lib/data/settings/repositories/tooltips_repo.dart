@@ -1,16 +1,15 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/tooltip_type.dart';
-import '../../../services/shared_preferences.dart';
+import '../../../services/unauth_prefs_service.dart';
 
 part 'tooltips_repo.g.dart';
 
 @riverpod
-TooltipsRepo tooltipsRepo(Ref ref) => TooltipsRepo(ref.read(sharedPrefsProvider));
+TooltipsRepo tooltipsRepo(Ref ref) => TooltipsRepo(ref.read(unauthPrefsServiceProvider));
 
 class TooltipsRepo {
-  final SharedPreferencesWithCache _prefs;
+  final UnauthPrefsService _prefs;
   TooltipsRepo(this._prefs);
 
   bool get(TooltipType type) {

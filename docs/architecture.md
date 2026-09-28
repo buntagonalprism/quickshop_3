@@ -37,13 +37,13 @@ Create a `lib/pages/<feature>/<page_name>/` subfolder when a page contains multi
 Riverpod is used for two different things in this app, and they follow different rules.
 
 - **Dependency injection.** Services, repositories, and use cases are classes that other code calls. Riverpod only locates them. Their providers are `keepAlive` and watch nothing, so each is a stable singleton: any consumer can read it at any time and always get the same instance.
-- **State management.** Notifiers, read-only providers, and view models hold data. Their providers can watch other inputs and automatically rebuild when those inputs change, which is how Riverpod keeps state up to date. 
+- **State management.** Notifiers, read-only providers, and view models hold data. Their providers can watch other inputs and automatically rebuild when those inputs change, which is how Riverpod keeps state up to date.
 
-Mixing the two causes bugs. A class that other code calls should never be replaced underneath its callers because of a change to some input value, and a state that depends on an input, such as the signed-in user, must be rebuilt when that input changes, which a singleton won't do on its own.
+Mixing the two causes bugs. A class that other code calls should never be replaced underneath its callers because of a change to some input value, and state that depends on an input, such as the signed-in user, must be rebuilt when that input changes, which a singleton won't do on its own.
 
 ### The signed-in user
 
-Most of the app's data belongs to the signed-in user, and the user can change while the app is running, by signing out and signing in as someone else. Each user has their own Drift database, provided by `appDatabaseProvider`
+Most of the app's data belongs to the signed-in user, and the user can change while the app is running, by signing out and signing in as someone else. Each user has their own Drift database, provided by `appDatabaseProvider`.
 
 This is a common source of data-caching bugs, especially when switching accounts during testing. A singleton service or repository lives for the whole app, but user data only lives as long as a user is signed in. Anything that holds user data, or a subscription to it, must either belong to something that is rebuilt when the user changes, or look up the user data afresh for each access.
 
@@ -67,6 +67,14 @@ Examples of existing services in `lib/services/`:
 - `AuthService`: Firebase auth state and user operations
 - `LocationService`: Geolocator permission checks and location retrieval
 - `FunctionsHttpClient`: authenticated HTTP calls to Firebase Cloud Functions
+- `UserPrefsService` and `UnauthPrefsService`: local key-value preferences
+
+### Preferences
+
+Local preferences are stored with SharedPreferences, through one of two services. Choose by asking whose value it is:
+
+- **`UserPrefsService`** for values that belong to the signed in user, such as values describing the contents of their local database or personal preferences.
+- **`UnauthPrefsService`** for values that belong to the device, regardless of who is signed in, such as the system theme or whether the location permission rationale has been shown.
 
 ---
 
@@ -84,7 +92,7 @@ A clean repository interface also makes the application layer easy to unit test,
 
 2. **Look up user-dependent values when a method runs, and capture them at the start of async operations.** Use a getter such as `AppDatabase get _db => _ref.read(appDatabaseProvider)` rather than storing the database in a field. Within a single async operation, read the value once at the start and keep using it after each `await`. If the user changes part way through, the operation then finishes against the original user's database, which is still correct for that user, rather than writing one user's data into another user's database.
 
-3. **Repositories may hold state that lives as long as the app, but not user data.** A cache of global data is fine. User-specific data belongs in the per-user database, read when needed. An in-memory copy of it outlives a sign-out and leaks into the next user's session. If user-specific data really must be cached in memory, key it by user ID, as `appDatabaseProvider` does with its databases.
+3. **Repositories may hold state that lives as long as the app, but not user data.** A cache of global data is fine. User-specific data belongs in the per-user database or `UserPrefsService`, read when needed. An in-memory copy of it outlives a sign-out and leaks into the next user's session. If user-specific data really must be cached in memory, key it by user ID, as `appDatabaseProvider` does with its databases.
 
 4. **Repositories return streams; they never subscribe to user data themselves.** A Firestore snapshot subscription needs an owner that cancels it, and the owner's lifetime decides when that happens. A subscription to user data must end when the user signs out, otherwise it leaks and fails with permission-denied errors once auth changes. Repositories should return a new stream per call and leave the act of subscribing to that stream to notifiers/providers, as Riverpod is able to automatically cancel stream subscriptions when the listening notifier/provider rebuilds or is disposed.
 
@@ -92,7 +100,7 @@ A clean repository interface also makes the application layer easy to unit test,
 
 ### Conventions
 
-- Accept a `FirestoreTransaction` when a write operation needs to span multiple data types. Respositories do not commit transactions: the caller that created the transaction commits it.
+- Accept a `FirestoreTransaction` when a write operation needs to span multiple data types. Repositories do not commit transactions: the caller that created the transaction commits it.
 - Use a private `_Fields` class for Firestore field name constants to support querying/setting fields consistently by name.
 - Keep serialisation helpers such as `_fromFirestore` and `_toFirestore` private.
 
@@ -111,9 +119,11 @@ class MyRepo {
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
 
   Stream<List<MyModel>> get dataStream { ... }
+  Future<void> update(MyModel model) { ... }
+  Future<void> delete(String id) { ... }
+
+  // Creating a model also updates other data types, so it takes a transaction
   void create(FirestoreTransaction tx, MyModel model) { ... }
-  void update(FirestoreTransaction tx, MyModel model) { ... }
-  void delete(FirestoreTransaction tx, String id) { ... }
 }
 
 class _Fields {
@@ -134,7 +144,7 @@ For data types used across multiple pages, or small enough to cache entirely in 
 Notifiers own subscriptions to user data: `build()` returns the repository's stream, Riverpod subscribes to it, and Riverpod cancels the subscription when the notifier is rebuilt or disposed. A notifier of user data that outlives the pages using it must rebuild when the user changes:
 
 - A `keepAlive` notifier should watch `userAuthProvider` or `userIdProvider` in `build()`, as `ListsNotifier` and `userProfileProvider` do.
-- A notifier that should stay in memory briefly after its last listener leaves (so the data is already in memory if the user comes back) uses `ref.delayDispose(...)`, which watches the user ID for you. 
+- A notifier that should stay in memory briefly after its last listener leaves (so the data is already in memory if the user comes back) uses `ref.delayDispose(...)`, which watches the user ID for you.
 
 ```dart
 @riverpod
@@ -145,17 +155,27 @@ class MyNotifier extends _$MyNotifier {
     return ref.watch(myRepoProvider(entityId)).dataStream;
   }
 
-  Future<void> addItem(MyModel item) async {
+  Future<void> updateItem(MyModel item) {
     // 1. Optionally apply an optimistic update to state
-    state = AsyncValue.data([...state.value, item]);
-    // 2. Optionally create a transaction before calling the repository
+    state = AsyncValue.data([
+      for (final existing in state.value ?? <MyModel>[]) existing.id == item.id ? item : existing,
+    ]);
+    // 2. Persist the update through the repository
+    return ref.read(myRepoProvider(entityId)).update(item);
+  }
+
+  // A write spanning multiple data types uses a transaction
+  Future<void> addItem(MyModel item) {
+    // 1. Optionally apply an optimistic update to state
+    state = AsyncValue.data([...?state.value, item]);
+    // 2. Create a transaction
     final tx = ref.read(firestoreTransactionProvider)();
-    // 3. Invoke the update operation on the repository
+    // 3. Add this notifier's writes through its repository
     ref.read(myRepoProvider(entityId)).create(tx, item);
-    // 4. Optionally invoke other notifiers that need to participate in the transaction
-    ref.read(myStatsNotifierProvider.notifier).updateStats(tx, item);
-    // 5. Optionally commit the transaction
-    await tx.commit();
+    // 4. Tell other notifiers about the update, so they can add their writes to the transaction
+    ref.read(myStatsProvider.notifier).onItemAdded(tx, item);
+    // 5. Commit the transaction
+    return tx.commit();
   }
 }
 ```
@@ -298,8 +318,10 @@ PopScope(
 ## Testing
 
 - Unit tests use `mocktail` for mocks.
-- Database tests use a real in-memory Drift database. Never mock the database.
-- For testing providers and notifiers, mock the repositories which wrap the database/firestore. 
+- To test providers and notifiers, mock repositories or our own wrapper services, never mock an external system. Tests of our own domain logic shouldn't depend on the behaviour of an external library.
+- To test local database queries and DAO methods, use a real in-memory Drift database. See `app_database_test.dart`.
+- Most repositories should be thin wrappers with minimal logic such that any unit tests would be redundant restatements of the code itself. Any logic should be extracted to pure functions which can be tested separately, or extracted into the application layer as a use case or notifier.
+- Only when testing one of our wrapper services should an external system be mocked or faked. For example, the preferences service tests fake `SharedPreferencesWithCache` from `package:shared_preferences`.
 - Use `fake_async` for time-dependent logic.
 
 ---
@@ -310,5 +332,6 @@ Some existing code predates these rules. Don't copy it as an example, and remove
 
 - **Suggestion repositories** (`ShoppingItemSuggestionRepo`, `ShoppingCategorySuggestionRepo`) sync suggestions themselves, starting at app launch, which breaks rule 5. Suggestions are missing after a first sign-in until the next launch.
 - **History repositories** (`ShoppingItemHistoryRepo`, `ShoppingCategoryHistoryRepo`) cache the user's download progress in memory, which breaks rule 3. After switching accounts, the second user's older history is never downloaded.
+- **`ChecklistEntryRepo`** holds the checklist's ordering logic (sort-key placement, duplicate keys, which entries "remove checked" deletes) and caches each list's entries, breaking rule 3 and the Testing guidance that repositories stay thin. As a result, `checklist_entry_notifier_test.dart` tests the repository by mocking Firestore rather than mocking the repository. Its `uncheckAll` also writes to a separate batch that is never committed. Tracked in [#16](https://github.com/buntagonalprism/quickshop_3/issues/16).
 - **`UserProfileRepo`** caches the user profile as a side effect of mapping the profile stream, which breaks rule 3. Code that needs the profile should read `userProfileProvider` instead.
 - **Auto-dispose providers for repositories and use cases** (`ListInviteRepo`, `ShoppingListItemsRepo`, `TooltipsRepo`, the suggestion repositories, `ShoppingItemAutocompleteUseCase` and `ShoppingCategoryAutocompleteUseCase`) break rule 1, as a consumer holding one after it is disposed gets errors from its disposed `Ref`.

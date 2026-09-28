@@ -3,7 +3,7 @@
 // coverage:ignore-file
 // dart format off
 
-part of 'shared_preferences.dart';
+part of 'unauth_prefs_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -12,49 +12,50 @@ part of 'shared_preferences.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(sharedPrefs)
-final sharedPrefsProvider = SharedPrefsProvider._();
+@ProviderFor(unauthPrefsService)
+final unauthPrefsServiceProvider = UnauthPrefsServiceProvider._();
 
-final class SharedPrefsProvider
+final class UnauthPrefsServiceProvider
     extends
         $FunctionalProvider<
-          SharedPreferencesWithCache,
-          SharedPreferencesWithCache,
-          SharedPreferencesWithCache
+          UnauthPrefsService,
+          UnauthPrefsService,
+          UnauthPrefsService
         >
-    with $Provider<SharedPreferencesWithCache> {
-  SharedPrefsProvider._()
+    with $Provider<UnauthPrefsService> {
+  UnauthPrefsServiceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'sharedPrefsProvider',
+        name: r'unauthPrefsServiceProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$sharedPrefsHash();
+  String debugGetCreateSourceHash() => _$unauthPrefsServiceHash();
 
   @$internal
   @override
-  $ProviderElement<SharedPreferencesWithCache> $createElement(
+  $ProviderElement<UnauthPrefsService> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SharedPreferencesWithCache create(Ref ref) {
-    return sharedPrefs(ref);
+  UnauthPrefsService create(Ref ref) {
+    return unauthPrefsService(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SharedPreferencesWithCache value) {
+  Override overrideWithValue(UnauthPrefsService value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SharedPreferencesWithCache>(value),
+      providerOverride: $SyncValueProvider<UnauthPrefsService>(value),
     );
   }
 }
 
-String _$sharedPrefsHash() => r'56f9d658fa5945f9b6356a7d0a9f08060a9eca3e';
+String _$unauthPrefsServiceHash() =>
+    r'457f0ee917a6761c4f6d032a19172d7061a8c600';

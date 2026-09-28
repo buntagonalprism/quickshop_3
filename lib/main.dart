@@ -11,7 +11,8 @@ import 'analytics/logger.dart';
 import 'app.dart';
 import 'services/firebase/options.dart';
 import 'services/settings_service.dart';
-import 'services/shared_preferences.dart';
+import 'services/unauth_prefs_service.dart';
+import 'services/user_prefs_service.dart';
 
 Future<void> main() async {
   // Only initalise sentry in release mode
@@ -52,7 +53,8 @@ Future<void> _main() async {
   runApp(
     ProviderScope(
       overrides: [
-        sharedPrefsProvider.overrideWithValue(prefs),
+        userPrefsServiceProvider.overrideWith((ref) => UserPrefsService(ref, prefs)),
+        unauthPrefsServiceProvider.overrideWithValue(UnauthPrefsService(prefs)),
         settingsServiceProvider.overrideWithValue(settings),
       ],
       child: const MyApp(),

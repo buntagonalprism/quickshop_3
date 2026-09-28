@@ -24,11 +24,12 @@ import 'package:quickshop/pages/lists/shopping/items/shopping_item_create_view_m
 import 'package:quickshop/pages/lists/shopping/items/shopping_item_view.dart';
 import 'package:quickshop/router.dart';
 import 'package:quickshop/services/firebase_auth.dart';
-import 'package:quickshop/services/shared_preferences.dart';
+import 'package:quickshop/services/unauth_prefs_service.dart';
+import 'package:quickshop/services/user_prefs_service.dart';
 
 import '../../../fakes/fake_firebase_auth.dart';
 import '../../../fakes/fake_list_items_transaction.dart';
-import '../../../fakes/fake_shared_preferences.dart';
+import '../../../fakes/fake_prefs_services.dart';
 import '../../../utilities/answerer.dart';
 
 class MockItemAutocompleteRepo extends Mock implements ShoppingItemAutocompleteUseCase {}
@@ -68,7 +69,6 @@ void main() {
   late MockListRepo listRepo;
   late MockUserProfileRepo userProfileRepo;
   late MockRouter router;
-  late FakeSharedPreferences prefs;
   late FakeFirebaseAuth auth;
 
   setUp(() {
@@ -82,7 +82,6 @@ void main() {
     when(() => userProfileRepo.getProfile()).thenAnswer((_) => Stream.value(UserProfile(userId: 'test-user-id')));
     when(() => userProfileRepo.setTutorialCompleted(any())).thenAnswer((_) => Future.value());
     router = MockRouter();
-    prefs = FakeSharedPreferences();
     auth = FakeFirebaseAuth(user: buildUser());
   });
 
@@ -101,7 +100,8 @@ void main() {
             shoppingListItemsRepoProvider(listId).overrideWithValue(itemsRepo),
             listRepoProvider.overrideWithValue(listRepo),
             routerProvider.overrideWithValue(router),
-            sharedPrefsProvider.overrideWithValue(prefs),
+            userPrefsServiceProvider.overrideWithValue(FakeUserPrefsService()),
+            unauthPrefsServiceProvider.overrideWithValue(FakeUnauthPrefsService()),
             firebaseAuthProvider.overrideWithValue(auth),
             userProfileRepoProvider.overrideWithValue(userProfileRepo),
             firestoreTransactionProvider.overrideWithValue(() => FakeListItemsTransaction()),
