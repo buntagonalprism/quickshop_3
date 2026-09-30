@@ -74,21 +74,18 @@ Web is not a production target for this app. It exists so that agents can verify
 
 `tool/headless_chrome.sh` launches Chrome headlessly with a phone-sized (412px wide) viewport. It expects [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/) unpacked at `~/lib/chrome-for-testing/chrome-linux64/chrome`, or at the path in `CHROME_BINARY`. On Ubuntu 23.10+, Chrome's sandbox also needs an AppArmor profile granting `userns` to that binary; see Ubuntu's `/etc/apparmor.d/chrome` for the shape of it.
 
-Flavors are not supported on web, so omit `--flavor`:
+Use `tool/run_web.sh` to run and control the app:
 
 ```bash
-CHROME_EXECUTABLE=$PWD/tool/headless_chrome.sh fvm flutter run -d chrome --dart-define-from-file=settings/app_secrets_dev.json --dart-define-from-file=settings/app_settings_dev.json
+tool/run_web.sh start      # Run in the background: blocks until the app exits
+tool/run_web.sh uri        # Waits for startup, then prints the URI to connect Marionette to
+tool/run_web.sh restart    # Hot restart (also: reload)
+tool/run_web.sh quit       # Stop the app and close Chrome
 ```
 
-Connect Marionette to the `ws://` URI printed after "Debug service listening on". Sign in with the email and password test account rather than Google, whose sign-in popup cannot be automated. Google Maps is not yet configured for web.
+`start` runs the dev environment, and passes any extra arguments to `flutter run`, such as `--dart-define-from-file=settings/app_settings_local.json`. Output goes to the log file printed on start, `/tmp/quickshop_web/flutter_run.log` unless `TMPDIR` is set. Don't use the Dart MCP `hot_restart` tool: it doesn't work for web apps, because it restarts without `flutter run` recompiling first.
 
-To hot restart, send `R` to the `flutter run` process. The Dart MCP `hot_restart` tool does not work for web apps, because it calls the debug service's restart without `flutter run` recompiling first. When running `flutter run` in the background, feed its stdin from a named pipe so that commands can be sent to it:
-
-```bash
-mkfifo /tmp/flutter_in
-tail -f /tmp/flutter_in | CHROME_EXECUTABLE=$PWD/tool/headless_chrome.sh fvm flutter run -d chrome ...
-echo R > /tmp/flutter_in
-```
+Sign in with the email and password test account rather than Google, whose sign-in popup cannot be automated. Google Maps is not yet configured for web.
 
 Each `flutter run` launches Chrome with a fresh profile, so sign-in does not persist between runs, but it does persist across hot restarts.
 
