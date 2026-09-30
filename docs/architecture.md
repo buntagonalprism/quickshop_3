@@ -241,20 +241,18 @@ Examples of existing use cases in `lib/data/`:
 
 A page is either a full-screen widget, or a widget which fills the contents of a tabbed view.
 
-A page's view model is a file, `<page_name>_view_model.dart`, co-located with the page. It holds the collection of small notifiers and providers that the page and its views need. It isn't necessarily a single class. Everything in it is used only by that page and the views and child widgets within it.
+A page's view model is a file, `<page_name>_view_model.dart`, co-located with the page. It holds a collection of notifiers and providers that the page and its views need. It isn't necessarily a single class. Everything in it is used only by that page and the views and child widgets within it.
 
 A view model contains two kinds of provider, which must stay separate:
 
-- **Screen state notifiers** hold state the screen owns, such as search text, the selected tab or form fields. Their `build()` returns an initial value and watches nothing, and they are auto-dispose, so the state resets when the screen closes. Split screen state by concern rather than keeping it in one notifier, so a change to one value doesn't rebuild widgets that only depend on another.
-- **Derived providers** compute what the screen shows, by watching application layer notifiers and providers together with the screen state notifiers. They hold nothing, so they can be recomputed whenever their inputs change.
+- **Screen state notifiers** hold state the screen owns, such as search text, the selected tab or form fields. Their `build()` returns an initial value and watches nothing, and they are auto-dispose, so the state resets when the screen closes. Split screen state by concern rather than keeping it in one notifier, so a change to one value doesn't rebuild widgets that only depend on another value.
+- **Derived providers** compute data the screen needs to display, e.g. by watching and reacting to screen state notifiers, watching and transforming application layer notifiers, or directly fetching data from repositories or use cases. They hold nothing, so they can be recomputed whenever their inputs change.
 
-Keeping them separate matters because Riverpod runs a notifier's `build()` again whenever anything it watches changes, and replaces its state with the result. A notifier that watched application data and also held screen state would lose the screen state, such as the user's search text, whenever the data changed, for example when another user edits a shared list.
-
-Actions that change application data call application layer notifiers directly. Actions that change screen state are methods on the screen state notifiers. Widgets watch the narrowest provider they need, using `select` when they only depend on part of a value.
+Actions that change application data should call application layer notifiers directly. Actions that change screen state should call methods on the screen state notifiers. Widgets watch the narrowest provider they need, using `select` when they only depend on part of a value.
 
 Name providers for what they hold, not after the view model: `searchFilterProvider` and `filteredItemsProvider`, not `myPageViewModelProvider`.
 
-Because those names are generic, different pages will reuse them. Import a view model with the `vm` prefix in its page and views, so it's clear which providers belong to the screen and which come from the application layer, and so typing `vm.` only suggests the screen's own providers. The IDE doesn't add the prefix when it adds an import automatically, so add it by hand. When a page also uses another view model, such as a shared child widget's, give that one a prefix describing it, such as `categoryVm`.
+Because those names are generic, different pages will reuse them. Import a view model with the `vm` prefix in its page and views, so it's clear which providers belong to the screen and which come from the application layer. When a page also uses another view model, give that library import a descriptive prefix to differentiate it, such as `categoryVm`.
 
 ```dart
 // my_feature/my_page/my_page_view_model.dart
