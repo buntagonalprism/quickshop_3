@@ -241,20 +241,44 @@ Examples of existing use cases in `lib/data/`:
 
 A page is either a full-screen widget, or a widget which fills the contents of a tabbed view.
 
-View models are co-located with their page, and aggregate and transform data from application state and repositories for that page. A view model is used only by its own page and the views or child widgets within it. Depending on the page, it may be a read-only provider or a mutable notifier.
+A page's view model is a file, `<page_name>_view_model.dart`, co-located with the page. It holds the collection of small notifiers and providers that the page and its views need. It isn't necessarily a single class. Everything in it is used only by that page and the views and child widgets within it.
+
+A view model contains two kinds of provider, which must stay separate:
+
+- **Screen state notifiers** hold state the screen owns, such as search text, the selected tab or form fields. Their `build()` returns an initial value and watches nothing, and they are auto-dispose, so the state resets when the screen closes. Split screen state by concern rather than keeping it in one notifier, so a change to one value doesn't rebuild widgets that only depend on another.
+- **Derived providers** compute what the screen shows, by watching application layer notifiers and providers together with the screen state notifiers. They hold nothing, so they can be recomputed whenever their inputs change.
+
+Keeping them separate matters because Riverpod runs a notifier's `build()` again whenever anything it watches changes, and replaces its state with the result. A notifier that watched application data and also held screen state would lose the screen state, such as the user's search text, whenever the data changed, for example when another user edits a shared list.
+
+Actions that change application data call application layer notifiers directly. Actions that change screen state are methods on the screen state notifiers. Widgets watch the narrowest provider they need, using `select` when they only depend on part of a value.
+
+Providers in a view model are private by default, so they don't appear in code completion across the rest of the app. Make one public only when a view in a separate file needs to watch it, and name it with the page as a prefix, such as `shoppingListFilterProvider`.
+
+Name providers for what they hold, not after the view model: `_searchFilterProvider` and `_filteredItemsProvider`, not `myPageViewModelProvider`.
 
 ```dart
 // my_feature/my_page/my_page_view_model.dart
-@riverpod
-class MyPageViewModel extends _$MyPageViewModel {
-  @override
-  MyPageState build() { ... }
 
-  void setSomething(String value) {
-    state = state.copyWith(something: value);
-  }
+// Screen state: owned by the page, reset when it closes
+@riverpod
+class _SearchFilter extends _$SearchFilter {
+  @override
+  String build() => '';
+
+  void set(String filter) => state = filter;
+}
+
+// Derived data: recomputed when the application data or the filter changes
+@riverpod
+AsyncValue<List<MyModel>> _filteredItems(Ref ref, String entityId) {
+  final filter = ref.watch(_searchFilterProvider).trim().toLowerCase();
+  return ref
+      .watch(myProvider(entityId))
+      .whenData((items) => items.where((item) => item.name.toLowerCase().contains(filter)).toList());
 }
 ```
+
+`category_selector_view_model.dart` follows this pattern: a `CategoryFilter` notifier holds the typed filter, and a separate provider watches it to produce the matching categories.
 
 ---
 
