@@ -7,7 +7,7 @@ import '../../../user/repositories/user_profile_repo.dart';
 part 'user_history_loader_use_case.g.dart';
 
 @Riverpod(keepAlive: true)
-UserHistoryLoaderUseCase userAutcompleteLoaderUseCase(Ref ref) {
+UserHistoryLoaderUseCase userHistoryLoaderUseCase(Ref ref) {
   return UserHistoryLoaderUseCase(ref);
 }
 

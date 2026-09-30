@@ -12,11 +12,10 @@ part of 'user_history_loader_use_case.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(userAutcompleteLoaderUseCase)
-final userAutcompleteLoaderUseCaseProvider =
-    UserAutcompleteLoaderUseCaseProvider._();
+@ProviderFor(userHistoryLoaderUseCase)
+final userHistoryLoaderUseCaseProvider = UserHistoryLoaderUseCaseProvider._();
 
-final class UserAutcompleteLoaderUseCaseProvider
+final class UserHistoryLoaderUseCaseProvider
     extends
         $FunctionalProvider<
           UserHistoryLoaderUseCase,
@@ -24,19 +23,19 @@ final class UserAutcompleteLoaderUseCaseProvider
           UserHistoryLoaderUseCase
         >
     with $Provider<UserHistoryLoaderUseCase> {
-  UserAutcompleteLoaderUseCaseProvider._()
+  UserHistoryLoaderUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'userAutcompleteLoaderUseCaseProvider',
+        name: r'userHistoryLoaderUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$userAutcompleteLoaderUseCaseHash();
+  String debugGetCreateSourceHash() => _$userHistoryLoaderUseCaseHash();
 
   @$internal
   @override
@@ -46,7 +45,7 @@ final class UserAutcompleteLoaderUseCaseProvider
 
   @override
   UserHistoryLoaderUseCase create(Ref ref) {
-    return userAutcompleteLoaderUseCase(ref);
+    return userHistoryLoaderUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -58,5 +57,5 @@ final class UserAutcompleteLoaderUseCaseProvider
   }
 }
 
-String _$userAutcompleteLoaderUseCaseHash() =>
-    r'0aab69bf4a547faec20094376bfd2c81c1299689';
+String _$userHistoryLoaderUseCaseHash() =>
+    r'1d958bd847c907afe42edbc26c8bbe09a8fc30d7';

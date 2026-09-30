@@ -96,7 +96,7 @@ class _EagerInitProviders extends ConsumerWidget {
     ref.watch(crashReporterProvider);
     ref.watch(appDatabaseProvider);
     ref.watch(userAuthProvider);
-    ref.watch(userAutcompleteLoaderUseCaseProvider);
+    ref.watch(userHistoryLoaderUseCaseProvider);
     ref.watch(shoppingCategorySuggestionRepoProvider);
     ref.watch(shoppingItemSuggestionRepoProvider);
     ref.watch(tutorialsProvider);
