@@ -200,7 +200,7 @@ Future<List<MyResult>> myQuery(Ref ref, String param) async {
 
 Use cases coordinate between repositories without caching the results in memory, for example aggregating queries over datasets that are too large to cache, or observing one dataset to trigger loading of another. Like repositories, they are `keepAlive` singletons whose providers watch nothing.
 
-Unlike repositories, a use case may react to changes, using `ref.listen` to watch providers such as the user profile or locale and driving repository methods in response. `UserHistoryLoaderUseCase` is an example: it listens to the user profile and tells the history repositories to fetch new history. Use cases follow the same lifetime rules as repositories: state that lives as long as the app is fine, user data is not. A use case may hold a subscription to global Firestore data for the life of the app, but should get user data by listening to a notifier or provider.
+Unlike repositories, a use case may react to changes, using `ref.listen` to watch providers such as the user profile or locale and driving repository methods in response. `UserHistoryLoaderUseCase` is an example: it listens to the user profile and tells the history repositories to fetch new history. Use cases follow the same lifetime rules as repositories: state that lives as long as the app is fine, user data is not. A use case may hold a subscription to global Firestore data for the life of the app. A use case should not get user-specific data by subscribing to a repository stream or Firestore directly, as the singleton use case would continue to hold the original subscription when the user switches to a different account. Instead, use cases should listen to the currently signed in user if they need to react to user-specific data.
 
 ```dart
 @Riverpod(keepAlive: true)
@@ -208,7 +208,7 @@ MyLoaderUseCase myLoaderUseCase(Ref ref) => MyLoaderUseCase(ref);
 
 class MyLoaderUseCase {
   MyLoaderUseCase(this._ref) {
-    // React to changes by listening to a provider, which owns the subscription to the user's data
+    // Listen to the signed in user's profile, rather than subscribing to Firestore directly
     _ref.listen(userProfileProvider, (_, profileAsync) {
       final lastUpdated = profileAsync.value?.lastUpdated;
       if (lastUpdated != null) {
