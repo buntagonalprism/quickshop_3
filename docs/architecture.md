@@ -254,6 +254,8 @@ Actions that change application data call application layer notifiers directly. 
 
 Name providers for what they hold, not after the view model: `searchFilterProvider` and `filteredItemsProvider`, not `myPageViewModelProvider`.
 
+Because those names are generic, different pages will reuse them. Import a view model with the `vm` prefix in its page and views, so it's clear which providers belong to the screen and which come from the application layer, and so typing `vm.` only suggests the screen's own providers. The IDE doesn't add the prefix when it adds an import automatically, so add it by hand. When a page also uses another view model, such as a shared child widget's, give that one a prefix describing it, such as `categoryVm`.
+
 ```dart
 // my_feature/my_page/my_page_view_model.dart
 
@@ -273,6 +275,25 @@ AsyncValue<List<MyModel>> filteredItems(Ref ref, String entityId) {
   return ref
       .watch(myProvider(entityId))
       .whenData((items) => items.where((item) => item.name.toLowerCase().contains(filter)).toList());
+}
+```
+
+```dart
+// my_feature/my_page/my_page.dart
+import 'my_page_view_model.dart' as vm;
+
+class MyPage extends ConsumerWidget {
+  const MyPage({super.key, required this.entityId});
+
+  final String entityId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final items = ref.watch(vm.filteredItemsProvider(entityId));
+    ...
+    TextField(onChanged: ref.read(vm.searchFilterProvider.notifier).set);
+    ...
+  }
 }
 ```
 
