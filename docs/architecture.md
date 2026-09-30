@@ -241,20 +241,61 @@ Examples of existing use cases in `lib/data/`:
 
 A page is either a full-screen widget, or a widget which fills the contents of a tabbed view.
 
-View models are co-located with their page, and aggregate and transform data from application state and repositories for that page. A view model is used only by its own page and the views or child widgets within it. Depending on the page, it may be a read-only provider or a mutable notifier.
+A page's view model is a file, `<page_name>_view_model.dart`, co-located with the page. It holds a collection of notifiers and providers that the page and its views need. It isn't necessarily a single class. Everything in it is used only by that page and the views and child widgets within it.
+
+A view model contains two kinds of provider, which must stay separate:
+
+- **Screen state notifiers** hold state the screen owns, such as search text, the selected tab or form fields. Their `build()` returns an initial value and watches nothing, and they are auto-dispose, so the state resets when the screen closes. Split screen state by concern rather than keeping it in one notifier, so a change to one value doesn't rebuild widgets that only depend on another value.
+- **Derived providers** compute data the screen needs to display, e.g. by watching and reacting to screen state notifiers, watching and transforming application layer notifiers, or directly fetching data from repositories or use cases. They hold nothing, so they can be recomputed whenever their inputs change.
+
+Actions that change application data should call application layer notifiers directly. Actions that change screen state should call methods on the screen state notifiers. Widgets watch the narrowest provider they need, using `select` when they only depend on part of a value.
+
+Name providers for what they hold, not after the view model: `searchFilterProvider` and `filteredItemsProvider`, not `myPageViewModelProvider`.
+
+Because those names are generic, different pages will reuse them. Import a view model with the `vm` prefix in its page and views, so it's clear which providers belong to the screen and which come from the application layer. When a page also uses another view model, give that library import a descriptive prefix to differentiate it, such as `categoryVm`.
 
 ```dart
 // my_feature/my_page/my_page_view_model.dart
-@riverpod
-class MyPageViewModel extends _$MyPageViewModel {
-  @override
-  MyPageState build() { ... }
 
-  void setSomething(String value) {
-    state = state.copyWith(something: value);
+// Screen state: owned by the page, reset when it closes
+@riverpod
+class SearchFilter extends _$SearchFilter {
+  @override
+  String build() => '';
+
+  void set(String filter) => state = filter;
+}
+
+// Derived data: recomputed when the application data or the filter changes
+@riverpod
+AsyncValue<List<MyModel>> filteredItems(Ref ref, String entityId) {
+  final filter = ref.watch(searchFilterProvider).trim().toLowerCase();
+  return ref
+      .watch(myProvider(entityId))
+      .whenData((items) => items.where((item) => item.name.toLowerCase().contains(filter)).toList());
+}
+```
+
+```dart
+// my_feature/my_page/my_page.dart
+import 'my_page_view_model.dart' as vm;
+
+class MyPage extends ConsumerWidget {
+  const MyPage({super.key, required this.entityId});
+
+  final String entityId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final items = ref.watch(vm.filteredItemsProvider(entityId));
+    ...
+    TextField(onChanged: ref.read(vm.searchFilterProvider.notifier).set);
+    ...
   }
 }
 ```
+
+`category_selector_view_model.dart` follows this pattern: a `CategoryFilter` notifier holds the typed filter, and a separate provider watches it to produce the matching categories.
 
 ---
 
