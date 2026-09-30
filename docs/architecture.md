@@ -252,16 +252,14 @@ Keeping them separate matters because Riverpod runs a notifier's `build()` again
 
 Actions that change application data call application layer notifiers directly. Actions that change screen state are methods on the screen state notifiers. Widgets watch the narrowest provider they need, using `select` when they only depend on part of a value.
 
-Providers in a view model are private by default, so they don't appear in code completion across the rest of the app. Make one public only when a view in a separate file needs to watch it, and name it with the page as a prefix, such as `shoppingListFilterProvider`.
-
-Name providers for what they hold, not after the view model: `_searchFilterProvider` and `_filteredItemsProvider`, not `myPageViewModelProvider`.
+Name providers for what they hold, not after the view model: `searchFilterProvider` and `filteredItemsProvider`, not `myPageViewModelProvider`.
 
 ```dart
 // my_feature/my_page/my_page_view_model.dart
 
 // Screen state: owned by the page, reset when it closes
 @riverpod
-class _SearchFilter extends _$SearchFilter {
+class SearchFilter extends _$SearchFilter {
   @override
   String build() => '';
 
@@ -270,8 +268,8 @@ class _SearchFilter extends _$SearchFilter {
 
 // Derived data: recomputed when the application data or the filter changes
 @riverpod
-AsyncValue<List<MyModel>> _filteredItems(Ref ref, String entityId) {
-  final filter = ref.watch(_searchFilterProvider).trim().toLowerCase();
+AsyncValue<List<MyModel>> filteredItems(Ref ref, String entityId) {
+  final filter = ref.watch(searchFilterProvider).trim().toLowerCase();
   return ref
       .watch(myProvider(entityId))
       .whenData((items) => items.where((item) => item.name.toLowerCase().contains(filter)).toList());
