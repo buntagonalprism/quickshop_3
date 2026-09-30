@@ -4,6 +4,7 @@
 #   tool/run_web.sh start [flutter run args...]  Start the app. Blocks until it exits, so run it in
 #                                                the background. Extra arguments are passed to
 #                                                `flutter run`, e.g. another --dart-define-from-file.
+#                                                Serves on port 8123 unless --web-port is given.
 #   tool/run_web.sh wait                         Wait until the app is ready, then print the VM
 #                                                service URI to connect Marionette to.
 #   tool/run_web.sh restart                      Hot restart, and wait until it has finished.
@@ -12,6 +13,10 @@
 #
 # `flutter run` reads its commands (R, r, q) from a named pipe, since it runs in the background
 # without a terminal. Its output goes to the log file printed on start.
+#
+# Flutter saves Chrome's profile to .dart_tool/chrome-device when Chrome exits, and restores it on
+# the next run. Browser storage is per origin, including the port, so serving on a fixed port keeps
+# sign-in and the local database between runs.
 set -euo pipefail
 
 dir="${TMPDIR:-/tmp}/quickshop_web"
@@ -71,6 +76,9 @@ case "${1:-}" in
     # never sees the end of its input.
     exec 3<>"$pipe"
     cd "$(dirname "$0")/.."
+    if [[ " $* " != *" --web-port"* ]]; then
+      set -- --web-port=8123 "$@"
+    fi
     CHROME_EXECUTABLE="$PWD/tool/headless_chrome.sh" fvm flutter run -d chrome \
       --dart-define-from-file=settings/app_secrets_dev.json \
       --dart-define-from-file=settings/app_settings_dev.json \
@@ -100,7 +108,7 @@ case "${1:-}" in
     echo q > "$pipe"
     ;;
   *)
-    sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
     exit 1
     ;;
 esac

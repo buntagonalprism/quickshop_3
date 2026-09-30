@@ -84,11 +84,11 @@ tool/run_web.sh restart    # Hot restart (resets state, reruns main)
 tool/run_web.sh quit       # Stop the app and close Chrome
 ```
 
-`start` runs the dev environment, and passes any extra arguments to `flutter run`, such as `--dart-define-from-file=settings/app_settings_local.json`. Output goes to the log file printed on start, `/tmp/quickshop_web/flutter_run.log` unless `TMPDIR` is set. `reload` and `restart` wait until they have finished, and print any compile errors if they fail. Don't use the Dart MCP `hot_restart` tool: it doesn't work for web apps, because it restarts without `flutter run` recompiling first.
+`start` runs the dev environment on port 8123, and passes any extra arguments to `flutter run`, such as `--dart-define-from-file=settings/app_settings_local.json`. Output goes to the log file printed on start, `/tmp/quickshop_web/flutter_run.log` unless `TMPDIR` is set. `reload` and `restart` wait until they have finished, and print any compile errors if they fail. Don't use the Dart MCP `hot_restart` tool: it doesn't work for web apps, because it restarts without `flutter run` recompiling first.
 
 Sign in with the email and password test account rather than Google, whose sign-in popup cannot be automated. Google Maps is not yet configured for web.
 
-Each `flutter run` launches Chrome with a fresh profile, so sign-in does not persist between runs, but it does persist across hot restarts.
+Sign-in and the app's local database persist between runs. When Chrome exits, Flutter saves its profile to `.dart_tool/chrome-device`, and restores it on the next run; browser storage is per origin, so this relies on the fixed port. The profile is only saved on a clean exit, so stop the app with `quit`. To start from a clean browser, delete `.dart_tool/chrome-device` or pass a different `--web-port`.
 
 ---
 
