@@ -108,7 +108,7 @@ To connect to a running application for runtime capabilities:
 2. Instruct your agent to connect to the dart tooling deamon using that URI, e.g. *Use the dart MCP server to connect to the dart tooling deamon with URI: ws://127.0.0.1:60537/7-ov0spwEfA=*
 
 #### Headless web testing
-Agents verify UI changes by running the app in a headless Chrome browser at phone size, rather than on an Android emulator, using `tool/run_web.sh` (see `AGENTS.md`). Web is not a production target for this app. This currently needs Linux, and a one-off setup on each machine:
+Agents can verify UI changes by running the app in a headless Chrome browser at phone size, as a lightweight alternative to running against an emulator or physical device, using `tool/run_web.sh` (see `AGENTS.md`). Web is not a production target for this app. This currently needs Linux, and a one-off setup on each machine:
 
 1. Download [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/), a version of Chrome built for automation that doesn't update itself, and unpack it to `~/lib/chrome-for-testing`:
    ```bash
@@ -134,7 +134,7 @@ Agents verify UI changes by running the app in a headless Chrome browser at phon
    ```
 3. Agents sign in with an email and password test account on the dev Firebase project, since Google sign-in's popup can't be automated.
 
-`tool/headless_chrome.sh` launches Chrome with the right flags for this, and `tool/run_web.sh` uses it, so neither needs configuring.
+`tool/headless_chrome.sh` launches Chrome with the right flags to run a headless mobile-size window, and `tool/run_web.sh` uses this script, so neither needs configuring.
 
 ## Assets
 The `assets` directory houses images, fonts, and any other files you want to

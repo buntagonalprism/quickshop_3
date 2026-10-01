@@ -88,7 +88,7 @@ tool/run_web.sh quit       # Stop the app and close Chrome
 
 Sign in with the email and password test account rather than Google, whose sign-in popup cannot be automated. Google Maps is not yet configured for web.
 
-Sign-in and the app's local database persist between runs. When Chrome exits, Flutter saves its profile to `.dart_tool/chrome-device`, and restores it on the next run; browser storage is per origin, so this relies on the fixed port. The profile is only saved on a clean exit, so stop the app with `quit`. To start from a clean browser, delete `.dart_tool/chrome-device` or pass a different `--web-port`.
+Sign-in and the app's local database persist between runs when a fixed port is used and a clean exit is performed, so always stop the app with `quit`. To start from a clean browser, delete `.dart_tool/chrome-device` or pass a different `--web-port`.
 
 ---
 
