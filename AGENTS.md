@@ -72,7 +72,7 @@ fvm flutter run --flavor dev --dart-define-from-file=settings/app_secrets_dev.js
 
 Web is not a production target for this app. It exists so that agents can verify UI changes in a headless Chrome session, driven by Marionette, instead of booting an Android emulator.
 
-`tool/headless_chrome.sh` launches Chrome headlessly with a phone-sized (412px wide) viewport. It expects [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/) unpacked at `~/lib/chrome-for-testing/chrome-linux64/chrome`, or at the path in `CHROME_BINARY`. On Ubuntu 23.10+, Chrome's sandbox also needs an AppArmor profile granting `userns` to that binary; see Ubuntu's `/etc/apparmor.d/chrome` for the shape of it.
+It needs Chrome for Testing installed, as described under "Headless web testing" in `README.md`. If `start` fails to launch Chrome, check that setup.
 
 Use `tool/run_web.sh` to run and control the app:
 
