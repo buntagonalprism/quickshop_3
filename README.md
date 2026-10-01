@@ -107,6 +107,35 @@ To connect to a running application for runtime capabilities:
 1. Open the VSCode command pallete (CTRL + SHIFT + P) and select **Dart: Copy DTD Uri to Clipboard**. Note that this is a different URI to the VM Service URI for marionette. 
 2. Instruct your agent to connect to the dart tooling deamon using that URI, e.g. *Use the dart MCP server to connect to the dart tooling deamon with URI: ws://127.0.0.1:60537/7-ov0spwEfA=*
 
+#### Headless web testing
+Agents can verify UI changes by running the app in a headless Chrome browser at phone size, as a lightweight alternative to running against an emulator or physical device, using `tool/run_web.sh` (see `AGENTS.md`). Web is not a production target for this app. This currently needs Linux, and a one-off setup on each machine:
+
+1. Download [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/), a version of Chrome built for automation that doesn't update itself, and unpack it to `~/lib/chrome-for-testing`:
+   ```bash
+   url=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json \
+     | python3 -c "import json,sys; print(next(d['url'] for d in json.load(sys.stdin)['channels']['Stable']['downloads']['chrome'] if d['platform'] == 'linux64'))")
+   mkdir -p ~/lib/chrome-for-testing && cd ~/lib/chrome-for-testing
+   curl -sSfo chrome.zip "$url" && unzip -qo chrome.zip && rm chrome.zip
+   ```
+   To use a Chrome binary somewhere else, set `CHROME_BINARY` to its path.
+2. On Ubuntu 23.10 and later, Chrome's sandbox needs permission to create user namespaces, which AppArmor only grants to listed programs. Add a profile for the Chrome for Testing binary, modelled on Ubuntu's own `/etc/apparmor.d/chrome`:
+   ```bash
+   sudo tee /etc/apparmor.d/chrome-for-testing > /dev/null <<EOF
+   abi <abi/5.0>,
+   include <tunables/global>
+
+   profile chrome-for-testing $HOME/lib/chrome-for-testing/chrome-linux64/chrome flags=(unconfined) {
+     userns,
+
+     include if exists <local/chrome-for-testing>
+   }
+   EOF
+   sudo apparmor_parser -r /etc/apparmor.d/chrome-for-testing
+   ```
+3. Agents sign in with an email and password test account on the dev Firebase project, since Google sign-in's popup can't be automated.
+
+`tool/headless_chrome.sh` launches Chrome with the right flags to run a headless mobile-size window, and `tool/run_web.sh` uses this script, so neither needs configuring.
+
 ## Assets
 The `assets` directory houses images, fonts, and any other files you want to
 include with your application.

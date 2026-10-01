@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -68,7 +69,12 @@ class AuthService {
     // To force showing the account selection again, we disconnect the google sign in account. See
     // https://github.com/flutter/flutter/issues/161476#issuecomment-2591358974
     // This method has no effect if the user is not signed in with Google.
-    GoogleSignIn().disconnect();
+    //
+    // On web, Google sign in uses a Firebase Auth popup rather than GoogleSignIn, so there is no
+    // GoogleSignIn account to disconnect.
+    if (!kIsWeb) {
+      GoogleSignIn().disconnect();
+    }
   }
 
   void setUserName(String name) {

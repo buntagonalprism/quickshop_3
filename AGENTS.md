@@ -68,6 +68,28 @@ fvm dart run tool/setup_local_settings.dart
 fvm flutter run --flavor dev --dart-define-from-file=settings/app_secrets_dev.json --dart-define-from-file=settings/app_settings_dev.json --dart-define-from-file=settings/app_settings_local.json
 ```
 
+### Running on web for UI testing
+
+Web is not a production target for this app. It exists so that agents can verify UI changes in a headless Chrome session, driven by Marionette, instead of booting an Android emulator.
+
+It needs Chrome for Testing installed, as described under "Headless web testing" in `README.md`. If `start` fails to launch Chrome, check that setup.
+
+Use `tool/run_web.sh` to run and control the app:
+
+```bash
+tool/run_web.sh start      # Run in the background: blocks until the app exits
+tool/run_web.sh wait       # Waits until the app is ready, then prints the URI to connect Marionette to
+tool/run_web.sh reload     # Hot reload (keeps state, updates code)
+tool/run_web.sh restart    # Hot restart (resets state, reruns main)
+tool/run_web.sh quit       # Stop the app and close Chrome
+```
+
+`start` runs the dev environment on port 8123, and passes any extra arguments to `flutter run`, such as `--dart-define-from-file=settings/app_settings_local.json`. Output goes to the log file printed on start, `/tmp/quickshop_web/flutter_run.log` unless `TMPDIR` is set. `reload` and `restart` wait until they have finished, and print any compile errors if they fail. Don't use the Dart MCP `hot_restart` tool: it doesn't work for web apps, because it restarts without `flutter run` recompiling first.
+
+Sign in with the email and password test account rather than Google, whose sign-in popup cannot be automated. Google Maps is not yet configured for web.
+
+Sign-in and the app's local database persist between runs when a fixed port is used and a clean exit is performed, so always stop the app with `quit`. To start from a clean browser, delete `.dart_tool/chrome-device` or pass a different `--web-port`.
+
 ---
 
 ## Formatting
