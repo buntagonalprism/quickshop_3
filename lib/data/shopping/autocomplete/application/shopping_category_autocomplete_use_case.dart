@@ -9,7 +9,7 @@ import '../models/shopping_category_autocomplete.dart';
 
 part 'shopping_category_autocomplete_use_case.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ShoppingCategoryAutocompleteUseCase shoppingCategoryAutocompleteUseCase(Ref ref, String listId) {
   return ShoppingCategoryAutocompleteUseCase(ref, listId);
 }

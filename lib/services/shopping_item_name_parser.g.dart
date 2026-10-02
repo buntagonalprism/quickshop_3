@@ -29,7 +29,7 @@ final class ShoppingItemNameParserProvider
         argument: null,
         retry: null,
         name: r'shoppingItemNameParserProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -58,4 +58,4 @@ final class ShoppingItemNameParserProvider
 }
 
 String _$shoppingItemNameParserHash() =>
-    r'7f0c5ae4fce460af93d084240b9684939d1eadf0';
+    r'7abd9360e745aa47a7dd1ffc60ed80bcb307b8c3';

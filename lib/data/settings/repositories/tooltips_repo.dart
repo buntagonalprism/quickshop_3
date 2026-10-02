@@ -5,7 +5,7 @@ import '../../../services/unauth_prefs_service.dart';
 
 part 'tooltips_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 TooltipsRepo tooltipsRepo(Ref ref) => TooltipsRepo(ref.read(unauthPrefsServiceProvider));
 
 class TooltipsRepo {

@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../services/shopping_item_name_parser.dart';
-import '../../../common/application/delay_provider_dispose.dart';
 import '../../../common/application/firestore_transaction.dart';
 import '../../../user/repositories/user_profile_repo.dart';
 import '../../history/repositories/shopping_item_history_repo.dart';
@@ -12,9 +11,8 @@ import '../models/shopping_item_autocomplete.dart';
 
 part 'shopping_item_autocomplete_use_case.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ShoppingItemAutocompleteUseCase shoppingItemAutocompleteUseCase(Ref ref, String listId) {
-  ref.delayDispose(const Duration(minutes: 15));
   return ShoppingItemAutocompleteUseCase._(ref, listId);
 }
 

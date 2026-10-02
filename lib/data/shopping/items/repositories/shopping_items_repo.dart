@@ -10,7 +10,7 @@ import '../models/shopping_item_raw_data.dart';
 
 part 'shopping_items_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ShoppingListItemsRepo shoppingListItemsRepo(Ref ref, String listId) {
   return ShoppingListItemsRepo(listId: listId, ref: ref);
 }
@@ -22,7 +22,7 @@ class ShoppingListItemsRepo {
   ShoppingListItemsRepo({required this.listId, required this.ref});
 
   Stream<List<ShoppingItem>> get itemsStream {
-    final fs = ref.watch(firestoreProvider);
+    final fs = ref.read(firestoreProvider);
     return fs.collection('lists/$listId/items').snapshots().map((snapshot) {
       return snapshot.docs.map(_fromFirestore).toList();
     });

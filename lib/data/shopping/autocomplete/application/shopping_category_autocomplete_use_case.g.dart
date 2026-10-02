@@ -30,7 +30,7 @@ final class ShoppingCategoryAutocompleteUseCaseProvider
   }) : super(
          retry: null,
          name: r'shoppingCategoryAutocompleteUseCaseProvider',
-         isAutoDispose: true,
+         isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
@@ -81,7 +81,7 @@ final class ShoppingCategoryAutocompleteUseCaseProvider
 }
 
 String _$shoppingCategoryAutocompleteUseCaseHash() =>
-    r'3a8bcaf29ac47ea9e9234c64df78c4beee891c00';
+    r'42f743cc13692d273af231604c573e0e94fef7b6';
 
 final class ShoppingCategoryAutocompleteUseCaseFamily extends $Family
     with
@@ -92,7 +92,7 @@ final class ShoppingCategoryAutocompleteUseCaseFamily extends $Family
         name: r'shoppingCategoryAutocompleteUseCaseProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
-        isAutoDispose: true,
+        isAutoDispose: false,
       );
 
   ShoppingCategoryAutocompleteUseCaseProvider call(String listId) =>

@@ -9,7 +9,7 @@ import '../data/lists/models/list_summary.dart';
 
 part 'analytics.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Analytics analytics(Ref ref) {
   return Analytics._();
 }
