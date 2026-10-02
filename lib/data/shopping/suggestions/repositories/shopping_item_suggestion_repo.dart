@@ -1,116 +1,60 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../analytics/logger.dart';
 import '../../../../services/firestore.dart';
-import '../../../../services/locale_service.dart';
 import '../../../../services/user_prefs_service.dart';
 import '../../../app_database.dart';
 import '../../../app_database_provider.dart';
 import '../../../common/database/load_progress_table.dart';
+import '../database/suggestion_type.dart';
 import '../models/shopping_item_suggestion.dart';
+import 'suggestions_download.dart';
 
 part 'shopping_item_suggestion_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ShoppingItemSuggestionRepo shoppingItemSuggestionRepo(Ref ref) {
   return ShoppingItemSuggestionRepo(ref);
 }
 
-class ShoppingItemSuggestionRepo {
+class ShoppingItemSuggestionRepo implements SuggestionsDownload {
   final Ref _ref;
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider('$ShoppingItemSuggestionRepo'));
   FirebaseFirestore get _fs => _ref.read(firestoreProvider);
   UserPrefsService get _prefs => _ref.read(userPrefsServiceProvider);
 
-  String? _currentLangCode;
   static const _suggestionsLangCodeKey = 'itemSuggestionsLangCode';
-  StreamSubscription? _summarySub;
 
-  ShoppingItemSuggestionRepo(this._ref) {
-    _currentLangCode = _prefs.getString(_suggestionsLangCodeKey);
-    _ref.listen(
-      localeServiceProvider,
-      (_, locale) async {
-        final newLangCode = locale.languageCode;
-        if (_currentLangCode != newLangCode) {
-          _currentLangCode = newLangCode;
+  ShoppingItemSuggestionRepo(this._ref);
 
-          await _db.clearAllSuggestions();
-        }
-        _watchSuggestions(newLangCode);
-      },
-      fireImmediately: true,
-    );
+  @override
+  Stream<Map<String, DateTime>> watchLastUpdated() {
+    return _fs.collection('suggestions').doc('items').snapshots().map(parseLastUpdated);
   }
 
-  void _watchSuggestions(String langCode) async {
-    final loadProgress =
-        await _db.loadProgressDao.get(LoadProgressType.itemSuggestion) ?? DateTime.fromMillisecondsSinceEpoch(0);
+  @override
+  Future<void> download(String langCode, DateTime lastUpdated) async {
+    // Capture the user's database, and read and write their preferences, before any await, so
+    // that if the user changes part way through the download finishes against the same user.
+    final db = _db;
+    if (_prefs.getString(_suggestionsLangCodeKey) != langCode) {
+      _prefs.setString(_suggestionsLangCodeKey, langCode);
+      await db.clearSuggestions(SuggestionType.item);
+    }
 
-    _summarySub?.cancel();
-    _summarySub = _fs.collection('suggestions').doc('items').snapshots().listen((snapshot) {
-      if (snapshot.exists) {
-        final data = snapshot.data();
-        if (data != null && _currentLangCode != null) {
-          final lastUpdatedTimestamp = data['lastUpdated'][_currentLangCode!] ?? 0;
-          final lastUpdated = DateTime.fromMillisecondsSinceEpoch(lastUpdatedTimestamp);
-          if (loadProgress.isBefore(lastUpdated)) {
-            _log.log('Fetching item suggestions for locale "$_currentLangCode" since $lastUpdated');
-            _fetchSuggestions(_currentLangCode!, loadProgress, lastUpdated);
-          }
-        }
-      }
-    });
-  }
-
-  Future<List<ShoppingItemSuggestion>> searchSuggestions(String query) async {
-    final span = _log.startSpan('searchSuggestions');
-    final itemSuggestionsData = await _db.suggestionsDao.queryItems(query);
-    await span.finish();
-    return itemSuggestionsData.map((entry) {
-      return ShoppingItemSuggestion(
-        id: entry.id,
-        name: entry.name,
-        langCode: _currentLangCode ?? '',
-        category: entry.category,
-        popularity: entry.popularity,
-      );
-    }).toList();
-  }
-
-  Future<void> _fetchSuggestions(String langCode, DateTime since, DateTime lastUpdated) async {
-    const pageSize = 100;
-    final baseQuery = _fs
-        .collection('suggestions')
-        .doc('items')
-        .collection(langCode)
-        .where('updated', isGreaterThan: since.millisecondsSinceEpoch)
-        .orderBy('updated')
-        .orderBy(FieldPath.documentId)
-        .limit(pageSize);
-
-    Query<Map<String, dynamic>> pageQuery = baseQuery;
-    List<DocumentSnapshot<Map<String, dynamic>>> allDocs = [];
-    QuerySnapshot<Map<String, dynamic>> pageResults;
-    do {
-      pageResults = await pageQuery.get();
-      allDocs.addAll(pageResults.docs);
-      if (pageResults.docs.isNotEmpty) {
-        pageQuery = baseQuery.startAfterDocument(pageResults.docs.last);
-      }
-    } while (pageResults.size == pageSize);
-
-    if (allDocs.isEmpty) {
+    final since =
+        await db.loadProgressDao.get(LoadProgressType.itemSuggestion) ?? DateTime.fromMillisecondsSinceEpoch(0);
+    if (!since.isBefore(lastUpdated)) {
       return;
     }
 
-    if (_currentLangCode == langCode) {
-      await _db.suggestionsDao.insertItems(
-        allDocs.map((doc) {
+    _log.log('Fetching item suggestions for locale "$langCode" since $since');
+    final docs = await fetchUpdatedSince(_fs.collection('suggestions').doc('items').collection(langCode), since);
+    if (docs.isNotEmpty) {
+      await db.suggestionsDao.insertItems(
+        docs.map((doc) {
           final data = doc.data()!;
           return ItemSuggestionsRow(
             id: doc.id,
@@ -122,9 +66,22 @@ class ShoppingItemSuggestionRepo {
           );
         }).toList(),
       );
-
-      await _prefs.setString(_suggestionsLangCodeKey, langCode);
-      await _db.loadProgressDao.save(LoadProgressType.itemSuggestion, lastUpdated);
     }
+    await db.loadProgressDao.save(LoadProgressType.itemSuggestion, lastUpdated);
+  }
+
+  Future<List<ShoppingItemSuggestion>> searchSuggestions(String query) async {
+    final span = _log.startSpan('searchSuggestions');
+    final suggestions = await _db.suggestionsDao.queryItems(query);
+    await span.finish();
+    return suggestions.map((row) {
+      return ShoppingItemSuggestion(
+        id: row.id,
+        name: row.name,
+        langCode: _prefs.getString(_suggestionsLangCodeKey) ?? '',
+        category: row.category,
+        popularity: row.popularity,
+      );
+    }).toList();
   }
 }
