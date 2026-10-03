@@ -11,62 +11,66 @@ part of 'list_invite_view_model.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// The status of the invite with [inviteId], or null if there is no such invite.
 
-@ProviderFor(listInviteState)
-final listInviteStateProvider = ListInviteStateFamily._();
+@ProviderFor(inviteStatus)
+final inviteStatusProvider = InviteStatusFamily._();
 
-final class ListInviteStateProvider
+/// The status of the invite with [inviteId], or null if there is no such invite.
+
+final class InviteStatusProvider
     extends
         $FunctionalProvider<
-          ListInviteViewModel,
-          ListInviteViewModel,
-          ListInviteViewModel
+          AsyncValue<InviteStatus?>,
+          AsyncValue<InviteStatus?>,
+          AsyncValue<InviteStatus?>
         >
-    with $Provider<ListInviteViewModel> {
-  ListInviteStateProvider._({
-    required ListInviteStateFamily super.from,
+    with $Provider<AsyncValue<InviteStatus?>> {
+  /// The status of the invite with [inviteId], or null if there is no such invite.
+  InviteStatusProvider._({
+    required InviteStatusFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'listInviteStateProvider',
+         name: r'inviteStatusProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$listInviteStateHash();
+  String debugGetCreateSourceHash() => _$inviteStatusHash();
 
   @override
   String toString() {
-    return r'listInviteStateProvider'
+    return r'inviteStatusProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  $ProviderElement<ListInviteViewModel> $createElement(
+  $ProviderElement<AsyncValue<InviteStatus?>> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  ListInviteViewModel create(Ref ref) {
+  AsyncValue<InviteStatus?> create(Ref ref) {
     final argument = this.argument as String;
-    return listInviteState(ref, argument);
+    return inviteStatus(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ListInviteViewModel value) {
+  Override overrideWithValue(AsyncValue<InviteStatus?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ListInviteViewModel>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<InviteStatus?>>(value),
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ListInviteStateProvider && other.argument == argument;
+    return other is InviteStatusProvider && other.argument == argument;
   }
 
   @override
@@ -75,22 +79,26 @@ final class ListInviteStateProvider
   }
 }
 
-String _$listInviteStateHash() => r'288905b47e8d1afaef2dfdc57b81467701ecb77c';
+String _$inviteStatusHash() => r'6ef9ef354eef921153f240cbff17bd5bb7731f32';
 
-final class ListInviteStateFamily extends $Family
-    with $FunctionalFamilyOverride<ListInviteViewModel, String> {
-  ListInviteStateFamily._()
+/// The status of the invite with [inviteId], or null if there is no such invite.
+
+final class InviteStatusFamily extends $Family
+    with $FunctionalFamilyOverride<AsyncValue<InviteStatus?>, String> {
+  InviteStatusFamily._()
     : super(
         retry: null,
-        name: r'listInviteStateProvider',
+        name: r'inviteStatusProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  ListInviteStateProvider call(String inviteId) =>
-      ListInviteStateProvider._(argument: inviteId, from: this);
+  /// The status of the invite with [inviteId], or null if there is no such invite.
+
+  InviteStatusProvider call(String inviteId) =>
+      InviteStatusProvider._(argument: inviteId, from: this);
 
   @override
-  String toString() => r'listInviteStateProvider';
+  String toString() => r'inviteStatusProvider';
 }

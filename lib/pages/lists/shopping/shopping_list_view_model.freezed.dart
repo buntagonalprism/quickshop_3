@@ -13,37 +13,83 @@ part of 'shopping_list_view_model.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$ShoppingListViewModel {
+mixin _$ShoppingList {
 
-
+ ListSummary get list; List<ShoppingListRow> get rows;
+/// Create a copy of ShoppingList
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ShoppingListCopyWith<ShoppingList> get copyWith => _$ShoppingListCopyWithImpl<ShoppingList>(this as ShoppingList, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingListViewModel);
+  final _this = this as ShoppingList;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingList&&(identical(other.list, _this.list) || other.list == _this.list)&&const DeepCollectionEquality().equals(other.rows, _this.rows));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode {
+  final _this = this as ShoppingList;
+  return Object.hash(runtimeType,_this.list,const DeepCollectionEquality().hash(_this.rows));
+}
 
 @override
 String toString() {
-    return 'ShoppingListViewModel()';
+  final _this = this as ShoppingList;
+  return 'ShoppingList(list: ${_this.list}, rows: ${_this.rows})';
 }
 
 
 }
 
 /// @nodoc
-class $ShoppingListViewModelCopyWith<$Res>  {
-$ShoppingListViewModelCopyWith(ShoppingListViewModel _, $Res Function(ShoppingListViewModel) __);
+abstract mixin class $ShoppingListCopyWith<$Res>  {
+  factory $ShoppingListCopyWith(ShoppingList value, $Res Function(ShoppingList) _then) = _$ShoppingListCopyWithImpl;
+@useResult
+$Res call({
+ ListSummary list, List<ShoppingListRow> rows
+});
+
+
+$ListSummaryCopyWith<$Res> get list;
+
+}
+/// @nodoc
+class _$ShoppingListCopyWithImpl<$Res>
+    implements $ShoppingListCopyWith<$Res> {
+  _$ShoppingListCopyWithImpl(this._self, this._then);
+
+  final ShoppingList _self;
+  final $Res Function(ShoppingList) _then;
+
+/// Create a copy of ShoppingList
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? list = null,Object? rows = null,}) {
+  return _then(ShoppingList(
+list: null == list ? _self.list : list // ignore: cast_nullable_to_non_nullable
+as ListSummary,rows: null == rows ? _self.rows : rows // ignore: cast_nullable_to_non_nullable
+as List<ShoppingListRow>,
+  ));
+}
+/// Create a copy of ShoppingList
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ListSummaryCopyWith<$Res> get list {
+  
+  return $ListSummaryCopyWith<$Res>(_self.list, (value) {
+    return _then(_self.copyWith(list: value));
+  });
+}
 }
 
 
-/// Adds pattern-matching-related methods to [ShoppingListViewModel].
-extension ShoppingListViewModelPatterns on ShoppingListViewModel {
+/// Adds pattern-matching-related methods to [ShoppingList].
+extension ShoppingListPatterns on ShoppingList {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -56,14 +102,11 @@ extension ShoppingListViewModelPatterns on ShoppingListViewModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Error value)?  error,TResult Function( _Loading value)?  loading,TResult Function( _NotFound value)?  notFound,TResult Function( _ShoppingList value)?  success,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ShoppingList value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error(_that);case _Loading() when loading != null:
-return loading(_that);case _NotFound() when notFound != null:
-return notFound(_that);case _ShoppingList() when success != null:
-return success(_that);case _:
+case _ShoppingList() when $default != null:
+return $default(_that);case _:
   return orElse();
 
 }
@@ -81,14 +124,11 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Error value)  error,required TResult Function( _Loading value)  loading,required TResult Function( _NotFound value)  notFound,required TResult Function( _ShoppingList value)  success,}){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ShoppingList value)  $default,){
 final _that = this;
 switch (_that) {
-case _Error():
-return error(_that);case _Loading():
-return loading(_that);case _NotFound():
-return notFound(_that);case _ShoppingList():
-return success(_that);case _:
+case _ShoppingList():
+return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -105,14 +145,11 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Error value)?  error,TResult? Function( _Loading value)?  loading,TResult? Function( _NotFound value)?  notFound,TResult? Function( _ShoppingList value)?  success,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ShoppingList value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error(_that);case _Loading() when loading != null:
-return loading(_that);case _NotFound() when notFound != null:
-return notFound(_that);case _ShoppingList() when success != null:
-return success(_that);case _:
+case _ShoppingList() when $default != null:
+return $default(_that);case _:
   return null;
 
 }
@@ -129,13 +166,10 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  error,TResult Function()?  loading,TResult Function()?  notFound,TResult Function( ListSummary list,  List<ShoppingListPageItem> items)?  success,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ListSummary list,  List<ShoppingListRow> rows)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error();case _Loading() when loading != null:
-return loading();case _NotFound() when notFound != null:
-return notFound();case _ShoppingList() when success != null:
-return success(_that.list,_that.items);case _:
+case _ShoppingList() when $default != null:
+return $default(_that.list,_that.rows);case _:
   return orElse();
 
 }
@@ -153,13 +187,10 @@ return success(_that.list,_that.items);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  error,required TResult Function()  loading,required TResult Function()  notFound,required TResult Function( ListSummary list,  List<ShoppingListPageItem> items)  success,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ListSummary list,  List<ShoppingListRow> rows)  $default,) {final _that = this;
 switch (_that) {
-case _Error():
-return error();case _Loading():
-return loading();case _NotFound():
-return notFound();case _ShoppingList():
-return success(_that.list,_that.items);case _:
+case _ShoppingList():
+return $default(_that.list,_that.rows);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -176,13 +207,10 @@ return success(_that.list,_that.items);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  error,TResult? Function()?  loading,TResult? Function()?  notFound,TResult? Function( ListSummary list,  List<ShoppingListPageItem> items)?  success,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ListSummary list,  List<ShoppingListRow> rows)?  $default,) {final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error();case _Loading() when loading != null:
-return loading();case _NotFound() when notFound != null:
-return notFound();case _ShoppingList() when success != null:
-return success(_that.list,_that.items);case _:
+case _ShoppingList() when $default != null:
+return $default(_that.list,_that.rows);case _:
   return null;
 
 }
@@ -193,118 +221,22 @@ return success(_that.list,_that.items);case _:
 /// @nodoc
 
 
-class _Error extends ShoppingListViewModel {
-  const _Error(): super._();
+class _ShoppingList implements ShoppingList {
+  const _ShoppingList({required this.list, required  List<ShoppingListRow> rows}): _rows = rows;
   
 
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ShoppingListViewModel.error()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _Loading extends ShoppingListViewModel {
-  const _Loading(): super._();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ShoppingListViewModel.loading()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _NotFound extends ShoppingListViewModel {
-  const _NotFound(): super._();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ShoppingListViewModel.notFound()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _ShoppingList extends ShoppingListViewModel {
-  const _ShoppingList({required this.list, required  List<ShoppingListPageItem> items}): _items = items,super._();
-  
-
- final  ListSummary list;
- final  List<ShoppingListPageItem> _items;
- List<ShoppingListPageItem> get items {
-  if (_items is EqualUnmodifiableListView) return _items;
+@override final  ListSummary list;
+ final  List<ShoppingListRow> _rows;
+@override List<ShoppingListRow> get rows {
+  if (_rows is EqualUnmodifiableListView) return _rows;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_items);
+  return EqualUnmodifiableListView(_rows);
 }
 
 
-/// Create a copy of ShoppingListViewModel
+/// Create a copy of ShoppingList
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$ShoppingListCopyWith<_ShoppingList> get copyWith => __$ShoppingListCopyWithImpl<_ShoppingList>(this, _$identity);
 
@@ -312,33 +244,33 @@ _$ShoppingListCopyWith<_ShoppingList> get copyWith => __$ShoppingListCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingList&&(identical(other.list, list) || other.list == list)&&const DeepCollectionEquality().equals(other.items, _items));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingList&&(identical(other.list, list) || other.list == list)&&const DeepCollectionEquality().equals(other.rows, _rows));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,list,const DeepCollectionEquality().hash(_items));
+    return Object.hash(runtimeType,list,const DeepCollectionEquality().hash(_rows));
 }
 
 @override
 String toString() {
-    return 'ShoppingListViewModel.success(list: $list, items: $items)';
+    return 'ShoppingList(list: $list, rows: $rows)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ShoppingListCopyWith<$Res> implements $ShoppingListViewModelCopyWith<$Res> {
+abstract mixin class _$ShoppingListCopyWith<$Res> implements $ShoppingListCopyWith<$Res> {
   factory _$ShoppingListCopyWith(_ShoppingList value, $Res Function(_ShoppingList) _then) = __$ShoppingListCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
- ListSummary list, List<ShoppingListPageItem> items
+ ListSummary list, List<ShoppingListRow> rows
 });
 
 
-$ListSummaryCopyWith<$Res> get list;
+@override $ListSummaryCopyWith<$Res> get list;
 
 }
 /// @nodoc
@@ -349,17 +281,17 @@ class __$ShoppingListCopyWithImpl<$Res>
   final _ShoppingList _self;
   final $Res Function(_ShoppingList) _then;
 
-/// Create a copy of ShoppingListViewModel
+/// Create a copy of ShoppingList
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? list = null,Object? items = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? list = null,Object? rows = null,}) {
   return _then(_ShoppingList(
 list: null == list ? _self.list : list // ignore: cast_nullable_to_non_nullable
-as ListSummary,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<ShoppingListPageItem>,
+as ListSummary,rows: null == rows ? _self._rows : rows // ignore: cast_nullable_to_non_nullable
+as List<ShoppingListRow>,
   ));
 }
 
-/// Create a copy of ShoppingListViewModel
+/// Create a copy of ShoppingList
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -372,7 +304,7 @@ $ListSummaryCopyWith<$Res> get list {
 }
 
 /// @nodoc
-mixin _$ShoppingListPageItem {
+mixin _$ShoppingListRow {
 
 
 
@@ -380,7 +312,7 @@ mixin _$ShoppingListPageItem {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingListPageItem);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingListRow);
 }
 
 
@@ -389,20 +321,20 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-    return 'ShoppingListPageItem()';
+    return 'ShoppingListRow()';
 }
 
 
 }
 
 /// @nodoc
-class $ShoppingListPageItemCopyWith<$Res>  {
-$ShoppingListPageItemCopyWith(ShoppingListPageItem _, $Res Function(ShoppingListPageItem) __);
+class $ShoppingListRowCopyWith<$Res>  {
+$ShoppingListRowCopyWith(ShoppingListRow _, $Res Function(ShoppingListRow) __);
 }
 
 
-/// Adds pattern-matching-related methods to [ShoppingListPageItem].
-extension ShoppingListPageItemPatterns on ShoppingListPageItem {
+/// Adds pattern-matching-related methods to [ShoppingListRow].
+extension ShoppingListRowPatterns on ShoppingListRow {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -443,10 +375,7 @@ final _that = this;
 switch (_that) {
 case _Item():
 return item(_that);case _Category():
-return category(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return category(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -508,10 +437,7 @@ return category(_that.name);case _:
 switch (_that) {
 case _Item():
 return item(_that.item);case _Category():
-return category(_that.name);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return category(_that.name);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -540,13 +466,13 @@ return category(_that.name);case _:
 /// @nodoc
 
 
-class _Item implements ShoppingListPageItem {
+class _Item implements ShoppingListRow {
   const _Item({required this.item});
   
 
  final  ShoppingItem item;
 
-/// Create a copy of ShoppingListPageItem
+/// Create a copy of ShoppingListRow
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -567,14 +493,14 @@ int get hashCode {
 
 @override
 String toString() {
-    return 'ShoppingListPageItem.item(item: $item)';
+    return 'ShoppingListRow.item(item: $item)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ItemCopyWith<$Res> implements $ShoppingListPageItemCopyWith<$Res> {
+abstract mixin class _$ItemCopyWith<$Res> implements $ShoppingListRowCopyWith<$Res> {
   factory _$ItemCopyWith(_Item value, $Res Function(_Item) _then) = __$ItemCopyWithImpl;
 @useResult
 $Res call({
@@ -593,7 +519,7 @@ class __$ItemCopyWithImpl<$Res>
   final _Item _self;
   final $Res Function(_Item) _then;
 
-/// Create a copy of ShoppingListPageItem
+/// Create a copy of ShoppingListRow
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? item = null,}) {
   return _then(_Item(
@@ -602,7 +528,7 @@ as ShoppingItem,
   ));
 }
 
-/// Create a copy of ShoppingListPageItem
+/// Create a copy of ShoppingListRow
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -617,13 +543,13 @@ $ShoppingItemCopyWith<$Res> get item {
 /// @nodoc
 
 
-class _Category implements ShoppingListPageItem {
+class _Category implements ShoppingListRow {
   const _Category({required this.name});
   
 
  final  String name;
 
-/// Create a copy of ShoppingListPageItem
+/// Create a copy of ShoppingListRow
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -644,14 +570,14 @@ int get hashCode {
 
 @override
 String toString() {
-    return 'ShoppingListPageItem.category(name: $name)';
+    return 'ShoppingListRow.category(name: $name)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$CategoryCopyWith<$Res> implements $ShoppingListPageItemCopyWith<$Res> {
+abstract mixin class _$CategoryCopyWith<$Res> implements $ShoppingListRowCopyWith<$Res> {
   factory _$CategoryCopyWith(_Category value, $Res Function(_Category) _then) = __$CategoryCopyWithImpl;
 @useResult
 $Res call({
@@ -670,7 +596,7 @@ class __$CategoryCopyWithImpl<$Res>
   final _Category _self;
   final $Res Function(_Category) _then;
 
-/// Create a copy of ShoppingListPageItem
+/// Create a copy of ShoppingListRow
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? name = null,}) {
   return _then(_Category(

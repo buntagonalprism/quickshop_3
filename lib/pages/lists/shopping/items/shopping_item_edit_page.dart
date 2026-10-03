@@ -6,7 +6,7 @@ import '../../../../data/shopping/items/models/shopping_item.dart';
 import '../../../../data/shopping/items/models/shopping_item_raw_data.dart';
 import '../../../../router.dart';
 import 'models/shopping_item_errors.dart';
-import 'shopping_item_edit_view_model.dart';
+import 'shopping_item_edit_view_model.dart' as vm;
 import 'shopping_item_view.dart';
 
 class ShoppingItemEditPage extends ConsumerStatefulWidget {
@@ -24,7 +24,7 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final editVm = ref.watch(shoppingItemEditViewModelProvider(widget.listId, widget.itemId));
+    final itemAsync = ref.watch(vm.itemProvider(widget.listId, widget.itemId));
 
     return Scaffold(
       appBar: AppBar(
@@ -34,19 +34,21 @@ class _ShoppingItemEditPageState extends ConsumerState<ShoppingItemEditPage> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              editVm.maybeWhen(
-                success: (item) => _showDeleteConfirmationDialog(context, ref, item),
-                orElse: () {},
-              );
+              final item = itemAsync.value;
+              if (item != null) {
+                _showDeleteConfirmationDialog(context, ref, item);
+              }
             },
           ),
         ],
       ),
-      body: editVm.when(
+      body: itemAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: () => const Center(child: Text('Error loading item')),
-        notFound: () => const Center(child: Text('Item not found')),
-        success: (item) {
+        error: (_, _) => const Center(child: Text('Error loading item')),
+        data: (item) {
+          if (item == null) {
+            return const Center(child: Text('Item not found'));
+          }
           return Column(
             children: [
               Expanded(

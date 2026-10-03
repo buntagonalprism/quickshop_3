@@ -250,7 +250,9 @@ A view model contains two kinds of provider, which must stay separate:
 
 Actions that change application data should call application layer notifiers directly. Actions that change screen state should call methods on the screen state notifiers. Widgets watch the narrowest provider they need, using `select` when they only depend on part of a value.
 
-Name providers for what they hold, not after the view model: `searchFilterProvider` and `filteredItemsProvider`, not `myPageViewModelProvider`.
+Name providers and the types they hold for what they hold, not after the view model: `searchFilterProvider` and `filteredItemsProvider`, not `myPageViewModelProvider`, and `Checklist`, not `ChecklistViewModel`.
+
+A derived provider that loads data returns an `AsyncValue`, rather than its own union of loading, error and loaded states. If the data might not exist, such as a list that has been deleted, return `AsyncValue<T?>` with null meaning not found. `checklistProvider` in `checklist_view_model.dart` is an example.
 
 Because those names are generic, different pages will reuse them. Import a view model with the `vm` prefix in its page and views, so it's clear which providers belong to the screen and which come from the application layer. When a page also uses another view model, give that library import a descriptive prefix to differentiate it, such as `categoryVm`.
 

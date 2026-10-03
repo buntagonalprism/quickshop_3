@@ -9,7 +9,7 @@ import '../../../router.dart';
 import '../../../services/http_result.dart';
 import '../../../widgets/button_progress_indicator.dart';
 import '../../../widgets/http_error_dialog.dart';
-import 'list_invite_view_model.dart';
+import 'list_invite_view_model.dart' as vm;
 
 class ListInviteDetailsPage extends ConsumerWidget {
   const ListInviteDetailsPage({super.key, required this.inviteId});
@@ -17,25 +17,28 @@ class ListInviteDetailsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(listInviteStateProvider(inviteId));
+    final statusAsync = ref.watch(vm.inviteStatusProvider(inviteId));
     return Scaffold(
       appBar: AppBar(
         title: const Text('List invitation'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
-        child: state.when(
+        child: statusAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: () => const Center(
+          error: (_, _) => const Center(
             child: Text(
               'Invitation could not be loaded. Please check your network connection.',
               textAlign: TextAlign.center,
             ),
           ),
-          notFound: () => const Center(child: Text('Invitation not found. It may have been deleted.')),
-          isOwner: (invite) => _IsOwnerView(invite: invite),
-          pending: (invite) => _PendingInvitationView(invite: invite),
-          accepted: (invite) => _InvitationAcceptedView(invite: invite),
+          data: (status) => status == null
+              ? const Center(child: Text('Invitation not found. It may have been deleted.'))
+              : status.when(
+                  isOwner: (invite) => _IsOwnerView(invite: invite),
+                  pending: (invite) => _PendingInvitationView(invite: invite),
+                  accepted: (invite) => _InvitationAcceptedView(invite: invite),
+                ),
         ),
       ),
     );

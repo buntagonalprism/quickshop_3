@@ -11,50 +11,48 @@ part 'shopping_list_view_model.freezed.dart';
 part 'shopping_list_view_model.g.dart';
 
 @freezed
-class ShoppingListViewModel with _$ShoppingListViewModel {
-  const ShoppingListViewModel._();
-
-  const factory ShoppingListViewModel.error() = _Error;
-  const factory ShoppingListViewModel.loading() = _Loading;
-  const factory ShoppingListViewModel.notFound() = _NotFound;
-  const factory ShoppingListViewModel.success({
+abstract class ShoppingList with _$ShoppingList {
+  const factory ShoppingList({
     required ListSummary list,
-    required List<ShoppingListPageItem> items,
+    required List<ShoppingListRow> rows,
   }) = _ShoppingList;
 }
 
+/// A row on the shopping list page: either an item, or the header of the category below it.
 @freezed
-class ShoppingListPageItem with _$ShoppingListPageItem {
-  const factory ShoppingListPageItem.item({
+sealed class ShoppingListRow with _$ShoppingListRow {
+  const factory ShoppingListRow.item({
     required ShoppingItem item,
   }) = _Item;
-  const factory ShoppingListPageItem.category({
+  const factory ShoppingListRow.category({
     required String name,
   }) = _Category;
 }
 
+/// The shopping list with [listId] and its items grouped by category, or null if there is no such
+/// list.
 @riverpod
-ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
+AsyncValue<ShoppingList?> shoppingList(Ref ref, String listId) {
   final listAsyncValue = ref.watch(listProvider(listId));
   if (listAsyncValue.isLoading) {
-    return const ShoppingListViewModel.loading();
+    return const AsyncLoading();
   }
 
   if (listAsyncValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(listAsyncValue);
-    return const ShoppingListViewModel.error();
+    return AsyncError(listAsyncValue.error!, listAsyncValue.stackTrace!);
   }
 
   final list = listAsyncValue.requireValue;
   if (list == null) {
-    return const ShoppingListViewModel.notFound();
+    return const AsyncData(null);
   }
 
   if (list.listType != ListType.shoppingList) {
     ref
         .read(crashReporterProvider)
         .report(
-          'ShoppingListViewModel was invoked with list id $listId, which is not a shopping list',
+          'shoppingListProvider was invoked with list id $listId, which is not a shopping list',
           StackTrace.current,
         );
   }
@@ -62,12 +60,12 @@ ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
   final itemsAsyncValue = ref.watch(shoppingItemsProvider(list.id));
 
   if (itemsAsyncValue.isLoading) {
-    return const ShoppingListViewModel.loading();
+    return const AsyncLoading();
   }
 
   if (itemsAsyncValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(itemsAsyncValue);
-    return const ShoppingListViewModel.error();
+    return AsyncError(itemsAsyncValue.error!, itemsAsyncValue.stackTrace!);
   }
 
   final items = itemsAsyncValue.requireValue;
@@ -84,12 +82,12 @@ ShoppingListViewModel shoppingListViewModel(Ref ref, String listId) {
     value.sort((a, b) => a.product.compareTo(b.product));
   });
   final categoryKeys = categoryItems.keys.toList()..sort();
-  final pageItems = <ShoppingListPageItem>[];
+  final rows = <ShoppingListRow>[];
   for (final key in categoryKeys) {
-    pageItems.add(ShoppingListPageItem.category(name: key));
+    rows.add(ShoppingListRow.category(name: key));
     for (final item in categoryItems[key]!) {
-      pageItems.add(ShoppingListPageItem.item(item: item));
+      rows.add(ShoppingListRow.item(item: item));
     }
   }
-  return ShoppingListViewModel.success(list: list, items: pageItems);
+  return AsyncData(ShoppingList(list: list, rows: rows));
 }

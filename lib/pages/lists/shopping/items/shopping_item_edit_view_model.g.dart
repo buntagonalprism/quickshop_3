@@ -11,63 +11,66 @@ part of 'shopping_item_edit_view_model.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// The item being edited, or null if there is no item with [itemId] in the list.
 
-@ProviderFor(shoppingItemEditViewModel)
-final shoppingItemEditViewModelProvider = ShoppingItemEditViewModelFamily._();
+@ProviderFor(item)
+final itemProvider = ItemFamily._();
 
-final class ShoppingItemEditViewModelProvider
+/// The item being edited, or null if there is no item with [itemId] in the list.
+
+final class ItemProvider
     extends
         $FunctionalProvider<
-          ShoppingItemEditModel,
-          ShoppingItemEditModel,
-          ShoppingItemEditModel
+          AsyncValue<ShoppingItem?>,
+          AsyncValue<ShoppingItem?>,
+          AsyncValue<ShoppingItem?>
         >
-    with $Provider<ShoppingItemEditModel> {
-  ShoppingItemEditViewModelProvider._({
-    required ShoppingItemEditViewModelFamily super.from,
+    with $Provider<AsyncValue<ShoppingItem?>> {
+  /// The item being edited, or null if there is no item with [itemId] in the list.
+  ItemProvider._({
+    required ItemFamily super.from,
     required (String, String) super.argument,
   }) : super(
          retry: null,
-         name: r'shoppingItemEditViewModelProvider',
+         name: r'itemProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$shoppingItemEditViewModelHash();
+  String debugGetCreateSourceHash() => _$itemHash();
 
   @override
   String toString() {
-    return r'shoppingItemEditViewModelProvider'
+    return r'itemProvider'
         ''
         '$argument';
   }
 
   @$internal
   @override
-  $ProviderElement<ShoppingItemEditModel> $createElement(
+  $ProviderElement<AsyncValue<ShoppingItem?>> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  ShoppingItemEditModel create(Ref ref) {
+  AsyncValue<ShoppingItem?> create(Ref ref) {
     final argument = this.argument as (String, String);
-    return shoppingItemEditViewModel(ref, argument.$1, argument.$2);
+    return item(ref, argument.$1, argument.$2);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ShoppingItemEditModel value) {
+  Override overrideWithValue(AsyncValue<ShoppingItem?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ShoppingItemEditModel>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<ShoppingItem?>>(value),
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ShoppingItemEditViewModelProvider &&
-        other.argument == argument;
+    return other is ItemProvider && other.argument == argument;
   }
 
   @override
@@ -76,26 +79,27 @@ final class ShoppingItemEditViewModelProvider
   }
 }
 
-String _$shoppingItemEditViewModelHash() =>
-    r'5733fecf23bf0b81a491f633ab8752f45c2d0ff2';
+String _$itemHash() => r'a992fddbaca98bfd69dfdd222253e6813b237a30';
 
-final class ShoppingItemEditViewModelFamily extends $Family
-    with $FunctionalFamilyOverride<ShoppingItemEditModel, (String, String)> {
-  ShoppingItemEditViewModelFamily._()
+/// The item being edited, or null if there is no item with [itemId] in the list.
+
+final class ItemFamily extends $Family
+    with
+        $FunctionalFamilyOverride<AsyncValue<ShoppingItem?>, (String, String)> {
+  ItemFamily._()
     : super(
         retry: null,
-        name: r'shoppingItemEditViewModelProvider',
+        name: r'itemProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  ShoppingItemEditViewModelProvider call(String listId, String itemId) =>
-      ShoppingItemEditViewModelProvider._(
-        argument: (listId, itemId),
-        from: this,
-      );
+  /// The item being edited, or null if there is no item with [itemId] in the list.
+
+  ItemProvider call(String listId, String itemId) =>
+      ItemProvider._(argument: (listId, itemId), from: this);
 
   @override
-  String toString() => r'shoppingItemEditViewModelProvider';
+  String toString() => r'itemProvider';
 }
