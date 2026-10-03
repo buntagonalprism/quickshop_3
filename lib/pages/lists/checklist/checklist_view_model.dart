@@ -11,53 +11,49 @@ part 'checklist_view_model.freezed.dart';
 part 'checklist_view_model.g.dart';
 
 @freezed
-class ChecklistViewModel with _$ChecklistViewModel {
-  const ChecklistViewModel._();
-
-  const factory ChecklistViewModel.error() = _Error;
-  const factory ChecklistViewModel.loading() = _Loading;
-  const factory ChecklistViewModel.notFound() = _NotFound;
-  const factory ChecklistViewModel.success({
+abstract class Checklist with _$Checklist {
+  const factory Checklist({
     required ListSummary list,
     required List<ChecklistEntry> entries,
   }) = _Checklist;
 }
 
+/// The checklist with [listId] and its entries, or null if there is no such checklist.
 @riverpod
-ChecklistViewModel checklistViewModel(Ref ref, String listId) {
+AsyncValue<Checklist?> checklist(Ref ref, String listId) {
   final listAsyncValue = ref.watch(listProvider(listId));
   if (listAsyncValue.isLoading) {
-    return const ChecklistViewModel.loading();
+    return const AsyncLoading();
   }
 
   if (listAsyncValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(listAsyncValue);
-    return const ChecklistViewModel.error();
+    return AsyncError(listAsyncValue.error!, listAsyncValue.stackTrace!);
   }
 
   final list = listAsyncValue.requireValue;
   if (list == null) {
-    return const ChecklistViewModel.notFound();
+    return const AsyncData(null);
   }
 
   if (list.listType != ListType.checklist) {
     ref
         .read(crashReporterProvider)
         .report(
-          'ChecklistViewModel was invoked with list id $listId, which is not a checklist',
+          'checklistProvider was invoked with list id $listId, which is not a checklist',
           StackTrace.current,
         );
-    return const ChecklistViewModel.notFound();
+    return const AsyncData(null);
   }
 
   final entriesAsyncValue = ref.watch(checklistEntryProvider(list.id));
   if (entriesAsyncValue.isLoading) {
-    return const ChecklistViewModel.loading();
+    return const AsyncLoading();
   }
   if (entriesAsyncValue.hasError) {
     ref.read(crashReporterProvider).reportAsyncError(entriesAsyncValue);
-    return const ChecklistViewModel.error();
+    return AsyncError(entriesAsyncValue.error!, entriesAsyncValue.stackTrace!);
   }
   final entries = entriesAsyncValue.requireValue;
-  return ChecklistViewModel.success(list: list, entries: entries);
+  return AsyncData(Checklist(list: list, entries: entries));
 }

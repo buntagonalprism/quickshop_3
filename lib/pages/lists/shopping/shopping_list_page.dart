@@ -8,7 +8,7 @@ import '../../../data/shopping/items/models/shopping_item.dart';
 import '../../../router.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
-import 'shopping_list_view_model.dart';
+import 'shopping_list_view_model.dart' as vm;
 
 class ShoppingListPage extends ConsumerWidget {
   const ShoppingListPage({required this.listId, super.key});
@@ -17,11 +17,8 @@ class ShoppingListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(shoppingListViewModelProvider(listId));
-    final listTitle = state.maybeWhen(
-      success: (list, _) => list.name,
-      orElse: () => '',
-    );
+    final shoppingListAsync = ref.watch(vm.shoppingListProvider(listId));
+    final listTitle = shoppingListAsync.value?.list.name ?? '';
     return Scaffold(
       appBar: AppBar(
         title: Text(listTitle),
@@ -52,20 +49,21 @@ class ShoppingListPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: state.when(
-        notFound: () => const Center(child: Text('List not found')),
-        error: () => const Center(child: Text('Failed to load list')),
+      body: shoppingListAsync.when(
+        error: (_, _) => const Center(child: Text('Failed to load list')),
         loading: () => const Center(child: CircularProgressIndicator()),
-        success: (list, items) => ShoppingListContentsView(list: list, items: items),
+        data: (shoppingList) => shoppingList == null
+            ? const Center(child: Text('List not found'))
+            : ShoppingListContentsView(list: shoppingList.list, rows: shoppingList.rows),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Add item'),
         icon: const Icon(Icons.add),
         onPressed: () {
-          state.maybeWhen(
-            success: (list, _) => ref.read(routerProvider).go(Routes.shoppingListNewItem(list.id).path),
-            orElse: () {},
-          );
+          final shoppingList = shoppingListAsync.value;
+          if (shoppingList != null) {
+            ref.read(routerProvider).go(Routes.shoppingListNewItem(shoppingList.list.id).path);
+          }
         },
       ),
     );
@@ -88,24 +86,24 @@ class ShoppingListPage extends ConsumerWidget {
 
 @visibleForTesting
 class ShoppingListContentsView extends StatelessWidget {
-  const ShoppingListContentsView({required this.list, required this.items, super.key});
+  const ShoppingListContentsView({required this.list, required this.rows, super.key});
   final ListSummary list;
-  final List<ShoppingListPageItem> items;
+  final List<vm.ShoppingListRow> rows;
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) {
+    if (rows.isEmpty) {
       return const ShoppingListEmptyView();
     }
     return ListView.builder(
-      itemCount: items.length + 1,
+      itemCount: rows.length + 1,
       itemBuilder: (context, index) {
         // Add a spacer at the bottom so that we can overscroll the list, preventing the FAB
         // from covering the last list item
-        if (index == items.length) {
+        if (index == rows.length) {
           return const SizedBox(height: 80);
         }
-        return items[index].when(
+        return rows[index].when(
           item: (item) => ShoppingItemTile(list: list, item: item),
           category: (category) => ShoppingCategoryHeader(categoryName: category),
         );

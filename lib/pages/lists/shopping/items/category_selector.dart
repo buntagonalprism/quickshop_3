@@ -7,7 +7,7 @@ import '../../../../data/shopping/history/repositories/shopping_category_history
 import '../../../../data/shopping/suggestions/application/hidden_suggestions_use_case.dart';
 import '../../../../widgets/confirmation_dialog.dart';
 import '../history/shopping_history_category_edit_dialog.dart';
-import 'category_selector_view_model.dart';
+import 'category_selector_view_model.dart' as vm;
 
 class CategorySelector extends ConsumerStatefulWidget {
   const CategorySelector({
@@ -37,7 +37,7 @@ class CategorySelector extends ConsumerStatefulWidget {
 class _CategorySelectorState extends ConsumerState<CategorySelector> {
   @override
   Widget build(BuildContext context) {
-    final filter = ref.watch(categoryFilterProvider(widget.listId));
+    final filter = ref.watch(vm.categoryFilterProvider(widget.listId));
     return Column(
       children: [
         Padding(
@@ -50,7 +50,7 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
             focusNode: widget.focusNode,
             controller: widget.controller,
             onChanged: (newValue) {
-              ref.read(categoryFilterProvider(widget.listId).notifier).setFilter(newValue);
+              ref.read(vm.categoryFilterProvider(widget.listId).notifier).setFilter(newValue);
             },
             onSubmitted: (_) => widget.onSubmit(),
             textCapitalization: TextCapitalization.sentences,
@@ -102,7 +102,7 @@ class _CategorySuggestionsListState extends ConsumerState<CategorySuggestionsLis
 
   @override
   Widget build(BuildContext context) {
-    final autocompleteAsync = ref.watch(categoryAutocompleteProvider(widget.listId));
+    final autocompleteAsync = ref.watch(vm.categoryAutocompleteProvider(widget.listId));
     if (autocompleteAsync.isLoading && !autocompleteAsync.hasValue) {
       return CategoryAutocompleteLoading();
     }
@@ -233,7 +233,7 @@ class _CategoryAutocompleteEntryState extends ConsumerState<CategoryAutocomplete
     );
     if (didConfirm) {
       await ref.read(shoppingCategoryAutocompleteUseCaseProvider(widget.listId)).removeHistoryEntry(historyEntry);
-      ref.invalidate(categoryAutocompleteProvider(widget.listId));
+      ref.invalidate(vm.categoryAutocompleteProvider(widget.listId));
     }
   }
 
@@ -248,7 +248,7 @@ class _CategoryAutocompleteEntryState extends ConsumerState<CategoryAutocomplete
     );
     if (didConfirm) {
       await ref.read(hiddenSuggestionsUseCaseProvider).hideCategorySuggestion(suggestion);
-      ref.invalidate(categoryAutocompleteProvider(widget.listId));
+      ref.invalidate(vm.categoryAutocompleteProvider(widget.listId));
     }
   }
 
@@ -257,7 +257,7 @@ class _CategoryAutocompleteEntryState extends ConsumerState<CategoryAutocomplete
     if (mounted) {
       await ShoppingHistoryCategoryEditDialog.show(context, history);
       if (mounted) {
-        ref.invalidate(categoryAutocompleteProvider(widget.listId));
+        ref.invalidate(vm.categoryAutocompleteProvider(widget.listId));
       }
     }
   }

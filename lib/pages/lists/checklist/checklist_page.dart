@@ -10,7 +10,7 @@ import '../../../data/settings/application/debug_settings_notifier.dart';
 import '../../../widgets/center_scrollable_column.dart';
 import '../list_detail_drawer.dart';
 import 'checklist_editing_view.dart';
-import 'checklist_view_model.dart';
+import 'checklist_view_model.dart' as vm;
 
 class ChecklistPage extends ConsumerStatefulWidget {
   const ChecklistPage({required this.listId, super.key});
@@ -25,11 +25,8 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(checklistViewModelProvider(widget.listId));
-    final listTitle = state.maybeWhen(
-      success: (list, _) => list.name,
-      orElse: () => '',
-    );
+    final checklistAsync = ref.watch(vm.checklistProvider(widget.listId));
+    final listTitle = checklistAsync.value?.list.name ?? '';
     return Scaffold(
       appBar: AppBar(
         title: Text(listTitle),
@@ -80,16 +77,17 @@ class _ChecklistPageState extends ConsumerState<ChecklistPage> {
             ),
         ],
       ),
-      body: state.when(
-        notFound: () => const Center(child: Text('List not found')),
-        error: () => const Center(child: Text('Failed to load list')),
+      body: checklistAsync.when(
+        error: (_, _) => const Center(child: Text('Failed to load list')),
         loading: () => const Center(child: CircularProgressIndicator()),
-        success: (list, items) => ChecklistContentsView(
-          list: list,
-          items: items,
-          isEditing: isEditing,
-          onLongPress: () => setState(() => isEditing = true),
-        ),
+        data: (checklist) => checklist == null
+            ? const Center(child: Text('List not found'))
+            : ChecklistContentsView(
+                list: checklist.list,
+                items: checklist.entries,
+                isEditing: isEditing,
+                onLongPress: () => setState(() => isEditing = true),
+              ),
       ),
     );
   }

@@ -13,37 +13,83 @@ part of 'checklist_view_model.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$ChecklistViewModel {
+mixin _$Checklist {
 
-
+ ListSummary get list; List<ChecklistEntry> get entries;
+/// Create a copy of Checklist
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ChecklistCopyWith<Checklist> get copyWith => _$ChecklistCopyWithImpl<Checklist>(this as Checklist, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistViewModel);
+  final _this = this as Checklist;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Checklist&&(identical(other.list, _this.list) || other.list == _this.list)&&const DeepCollectionEquality().equals(other.entries, _this.entries));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode {
+  final _this = this as Checklist;
+  return Object.hash(runtimeType,_this.list,const DeepCollectionEquality().hash(_this.entries));
+}
 
 @override
 String toString() {
-    return 'ChecklistViewModel()';
+  final _this = this as Checklist;
+  return 'Checklist(list: ${_this.list}, entries: ${_this.entries})';
 }
 
 
 }
 
 /// @nodoc
-class $ChecklistViewModelCopyWith<$Res>  {
-$ChecklistViewModelCopyWith(ChecklistViewModel _, $Res Function(ChecklistViewModel) __);
+abstract mixin class $ChecklistCopyWith<$Res>  {
+  factory $ChecklistCopyWith(Checklist value, $Res Function(Checklist) _then) = _$ChecklistCopyWithImpl;
+@useResult
+$Res call({
+ ListSummary list, List<ChecklistEntry> entries
+});
+
+
+$ListSummaryCopyWith<$Res> get list;
+
+}
+/// @nodoc
+class _$ChecklistCopyWithImpl<$Res>
+    implements $ChecklistCopyWith<$Res> {
+  _$ChecklistCopyWithImpl(this._self, this._then);
+
+  final Checklist _self;
+  final $Res Function(Checklist) _then;
+
+/// Create a copy of Checklist
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? list = null,Object? entries = null,}) {
+  return _then(Checklist(
+list: null == list ? _self.list : list // ignore: cast_nullable_to_non_nullable
+as ListSummary,entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
+as List<ChecklistEntry>,
+  ));
+}
+/// Create a copy of Checklist
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ListSummaryCopyWith<$Res> get list {
+  
+  return $ListSummaryCopyWith<$Res>(_self.list, (value) {
+    return _then(_self.copyWith(list: value));
+  });
+}
 }
 
 
-/// Adds pattern-matching-related methods to [ChecklistViewModel].
-extension ChecklistViewModelPatterns on ChecklistViewModel {
+/// Adds pattern-matching-related methods to [Checklist].
+extension ChecklistPatterns on Checklist {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -56,14 +102,11 @@ extension ChecklistViewModelPatterns on ChecklistViewModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Error value)?  error,TResult Function( _Loading value)?  loading,TResult Function( _NotFound value)?  notFound,TResult Function( _Checklist value)?  success,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Checklist value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error(_that);case _Loading() when loading != null:
-return loading(_that);case _NotFound() when notFound != null:
-return notFound(_that);case _Checklist() when success != null:
-return success(_that);case _:
+case _Checklist() when $default != null:
+return $default(_that);case _:
   return orElse();
 
 }
@@ -81,14 +124,11 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Error value)  error,required TResult Function( _Loading value)  loading,required TResult Function( _NotFound value)  notFound,required TResult Function( _Checklist value)  success,}){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Checklist value)  $default,){
 final _that = this;
 switch (_that) {
-case _Error():
-return error(_that);case _Loading():
-return loading(_that);case _NotFound():
-return notFound(_that);case _Checklist():
-return success(_that);case _:
+case _Checklist():
+return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -105,14 +145,11 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Error value)?  error,TResult? Function( _Loading value)?  loading,TResult? Function( _NotFound value)?  notFound,TResult? Function( _Checklist value)?  success,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Checklist value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error(_that);case _Loading() when loading != null:
-return loading(_that);case _NotFound() when notFound != null:
-return notFound(_that);case _Checklist() when success != null:
-return success(_that);case _:
+case _Checklist() when $default != null:
+return $default(_that);case _:
   return null;
 
 }
@@ -129,13 +166,10 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  error,TResult Function()?  loading,TResult Function()?  notFound,TResult Function( ListSummary list,  List<ChecklistEntry> entries)?  success,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ListSummary list,  List<ChecklistEntry> entries)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error();case _Loading() when loading != null:
-return loading();case _NotFound() when notFound != null:
-return notFound();case _Checklist() when success != null:
-return success(_that.list,_that.entries);case _:
+case _Checklist() when $default != null:
+return $default(_that.list,_that.entries);case _:
   return orElse();
 
 }
@@ -153,13 +187,10 @@ return success(_that.list,_that.entries);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  error,required TResult Function()  loading,required TResult Function()  notFound,required TResult Function( ListSummary list,  List<ChecklistEntry> entries)  success,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ListSummary list,  List<ChecklistEntry> entries)  $default,) {final _that = this;
 switch (_that) {
-case _Error():
-return error();case _Loading():
-return loading();case _NotFound():
-return notFound();case _Checklist():
-return success(_that.list,_that.entries);case _:
+case _Checklist():
+return $default(_that.list,_that.entries);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -176,13 +207,10 @@ return success(_that.list,_that.entries);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  error,TResult? Function()?  loading,TResult? Function()?  notFound,TResult? Function( ListSummary list,  List<ChecklistEntry> entries)?  success,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ListSummary list,  List<ChecklistEntry> entries)?  $default,) {final _that = this;
 switch (_that) {
-case _Error() when error != null:
-return error();case _Loading() when loading != null:
-return loading();case _NotFound() when notFound != null:
-return notFound();case _Checklist() when success != null:
-return success(_that.list,_that.entries);case _:
+case _Checklist() when $default != null:
+return $default(_that.list,_that.entries);case _:
   return null;
 
 }
@@ -193,118 +221,22 @@ return success(_that.list,_that.entries);case _:
 /// @nodoc
 
 
-class _Error extends ChecklistViewModel {
-  const _Error(): super._();
+class _Checklist implements Checklist {
+  const _Checklist({required this.list, required  List<ChecklistEntry> entries}): _entries = entries;
   
 
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ChecklistViewModel.error()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _Loading extends ChecklistViewModel {
-  const _Loading(): super._();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ChecklistViewModel.loading()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _NotFound extends ChecklistViewModel {
-  const _NotFound(): super._();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ChecklistViewModel.notFound()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _Checklist extends ChecklistViewModel {
-  const _Checklist({required this.list, required  List<ChecklistEntry> entries}): _entries = entries,super._();
-  
-
- final  ListSummary list;
+@override final  ListSummary list;
  final  List<ChecklistEntry> _entries;
- List<ChecklistEntry> get entries {
+@override List<ChecklistEntry> get entries {
   if (_entries is EqualUnmodifiableListView) return _entries;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_entries);
 }
 
 
-/// Create a copy of ChecklistViewModel
+/// Create a copy of Checklist
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$ChecklistCopyWith<_Checklist> get copyWith => __$ChecklistCopyWithImpl<_Checklist>(this, _$identity);
 
@@ -323,22 +255,22 @@ int get hashCode {
 
 @override
 String toString() {
-    return 'ChecklistViewModel.success(list: $list, entries: $entries)';
+    return 'Checklist(list: $list, entries: $entries)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ChecklistCopyWith<$Res> implements $ChecklistViewModelCopyWith<$Res> {
+abstract mixin class _$ChecklistCopyWith<$Res> implements $ChecklistCopyWith<$Res> {
   factory _$ChecklistCopyWith(_Checklist value, $Res Function(_Checklist) _then) = __$ChecklistCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  ListSummary list, List<ChecklistEntry> entries
 });
 
 
-$ListSummaryCopyWith<$Res> get list;
+@override $ListSummaryCopyWith<$Res> get list;
 
 }
 /// @nodoc
@@ -349,9 +281,9 @@ class __$ChecklistCopyWithImpl<$Res>
   final _Checklist _self;
   final $Res Function(_Checklist) _then;
 
-/// Create a copy of ChecklistViewModel
+/// Create a copy of Checklist
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? list = null,Object? entries = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? list = null,Object? entries = null,}) {
   return _then(_Checklist(
 list: null == list ? _self.list : list // ignore: cast_nullable_to_non_nullable
 as ListSummary,entries: null == entries ? _self._entries : entries // ignore: cast_nullable_to_non_nullable
@@ -359,7 +291,7 @@ as List<ChecklistEntry>,
   ));
 }
 
-/// Create a copy of ChecklistViewModel
+/// Create a copy of Checklist
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')

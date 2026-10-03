@@ -13,42 +13,42 @@ part of 'shopping_item_create_view_model.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$ShoppingItemCreateModel {
+mixin _$ItemFormData {
 
  String get filter; ShoppingItemRawData get data; String? get filterError; ShoppingItemErrors? get itemErrors;
-/// Create a copy of ShoppingItemCreateModel
+/// Create a copy of ItemFormData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ShoppingItemCreateModelCopyWith<ShoppingItemCreateModel> get copyWith => _$ShoppingItemCreateModelCopyWithImpl<ShoppingItemCreateModel>(this as ShoppingItemCreateModel, _$identity);
+$ItemFormDataCopyWith<ItemFormData> get copyWith => _$ItemFormDataCopyWithImpl<ItemFormData>(this as ItemFormData, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  final _this = this as ShoppingItemCreateModel;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShoppingItemCreateModel&&(identical(other.filter, _this.filter) || other.filter == _this.filter)&&(identical(other.data, _this.data) || other.data == _this.data)&&(identical(other.filterError, _this.filterError) || other.filterError == _this.filterError)&&(identical(other.itemErrors, _this.itemErrors) || other.itemErrors == _this.itemErrors));
+  final _this = this as ItemFormData;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ItemFormData&&(identical(other.filter, _this.filter) || other.filter == _this.filter)&&(identical(other.data, _this.data) || other.data == _this.data)&&(identical(other.filterError, _this.filterError) || other.filterError == _this.filterError)&&(identical(other.itemErrors, _this.itemErrors) || other.itemErrors == _this.itemErrors));
 }
 
 
 @override
 int get hashCode {
-  final _this = this as ShoppingItemCreateModel;
+  final _this = this as ItemFormData;
   return Object.hash(runtimeType,_this.filter,_this.data,_this.filterError,_this.itemErrors);
 }
 
 @override
 String toString() {
-  final _this = this as ShoppingItemCreateModel;
-  return 'ShoppingItemCreateModel(filter: ${_this.filter}, data: ${_this.data}, filterError: ${_this.filterError}, itemErrors: ${_this.itemErrors})';
+  final _this = this as ItemFormData;
+  return 'ItemFormData(filter: ${_this.filter}, data: ${_this.data}, filterError: ${_this.filterError}, itemErrors: ${_this.itemErrors})';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ShoppingItemCreateModelCopyWith<$Res>  {
-  factory $ShoppingItemCreateModelCopyWith(ShoppingItemCreateModel value, $Res Function(ShoppingItemCreateModel) _then) = _$ShoppingItemCreateModelCopyWithImpl;
+abstract mixin class $ItemFormDataCopyWith<$Res>  {
+  factory $ItemFormDataCopyWith(ItemFormData value, $Res Function(ItemFormData) _then) = _$ItemFormDataCopyWithImpl;
 @useResult
 $Res call({
  String filter, ShoppingItemRawData data, String? filterError, ShoppingItemErrors? itemErrors
@@ -59,17 +59,17 @@ $ShoppingItemRawDataCopyWith<$Res> get data;
 
 }
 /// @nodoc
-class _$ShoppingItemCreateModelCopyWithImpl<$Res>
-    implements $ShoppingItemCreateModelCopyWith<$Res> {
-  _$ShoppingItemCreateModelCopyWithImpl(this._self, this._then);
+class _$ItemFormDataCopyWithImpl<$Res>
+    implements $ItemFormDataCopyWith<$Res> {
+  _$ItemFormDataCopyWithImpl(this._self, this._then);
 
-  final ShoppingItemCreateModel _self;
-  final $Res Function(ShoppingItemCreateModel) _then;
+  final ItemFormData _self;
+  final $Res Function(ItemFormData) _then;
 
-/// Create a copy of ShoppingItemCreateModel
+/// Create a copy of ItemFormData
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? filter = null,Object? data = null,Object? filterError = freezed,Object? itemErrors = freezed,}) {
-  return _then(ShoppingItemCreateModel(
+  return _then(ItemFormData(
 filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
 as String,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as ShoppingItemRawData,filterError: freezed == filterError ? _self.filterError : filterError // ignore: cast_nullable_to_non_nullable
@@ -77,7 +77,7 @@ as String?,itemErrors: freezed == itemErrors ? _self.itemErrors : itemErrors // 
 as ShoppingItemErrors?,
   ));
 }
-/// Create a copy of ShoppingItemCreateModel
+/// Create a copy of ItemFormData
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -90,8 +90,8 @@ $ShoppingItemRawDataCopyWith<$Res> get data {
 }
 
 
-/// Adds pattern-matching-related methods to [ShoppingItemCreateModel].
-extension ShoppingItemCreateModelPatterns on ShoppingItemCreateModel {
+/// Adds pattern-matching-related methods to [ItemFormData].
+extension ItemFormDataPatterns on ItemFormData {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -104,10 +104,10 @@ extension ShoppingItemCreateModelPatterns on ShoppingItemCreateModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ShoppingItemCreateData value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ItemFormData value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _ShoppingItemCreateData() when $default != null:
+case _ItemFormData() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -126,10 +126,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ShoppingItemCreateData value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ItemFormData value)  $default,){
 final _that = this;
 switch (_that) {
-case _ShoppingItemCreateData():
+case _ItemFormData():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -147,10 +147,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ShoppingItemCreateData value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ItemFormData value)?  $default,){
 final _that = this;
 switch (_that) {
-case _ShoppingItemCreateData() when $default != null:
+case _ItemFormData() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -170,7 +170,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String filter,  ShoppingItemRawData data,  String? filterError,  ShoppingItemErrors? itemErrors)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _ShoppingItemCreateData() when $default != null:
+case _ItemFormData() when $default != null:
 return $default(_that.filter,_that.data,_that.filterError,_that.itemErrors);case _:
   return orElse();
 
@@ -191,7 +191,7 @@ return $default(_that.filter,_that.data,_that.filterError,_that.itemErrors);case
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String filter,  ShoppingItemRawData data,  String? filterError,  ShoppingItemErrors? itemErrors)  $default,) {final _that = this;
 switch (_that) {
-case _ShoppingItemCreateData():
+case _ItemFormData():
 return $default(_that.filter,_that.data,_that.filterError,_that.itemErrors);case _:
   throw StateError('Unexpected subclass');
 
@@ -211,7 +211,7 @@ return $default(_that.filter,_that.data,_that.filterError,_that.itemErrors);case
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String filter,  ShoppingItemRawData data,  String? filterError,  ShoppingItemErrors? itemErrors)?  $default,) {final _that = this;
 switch (_that) {
-case _ShoppingItemCreateData() when $default != null:
+case _ItemFormData() when $default != null:
 return $default(_that.filter,_that.data,_that.filterError,_that.itemErrors);case _:
   return null;
 
@@ -223,8 +223,8 @@ return $default(_that.filter,_that.data,_that.filterError,_that.itemErrors);case
 /// @nodoc
 
 
-class _ShoppingItemCreateData extends ShoppingItemCreateModel {
-  const _ShoppingItemCreateData({required this.filter, required this.data, this.filterError, this.itemErrors}): super._();
+class _ItemFormData extends ItemFormData {
+  const _ItemFormData({required this.filter, required this.data, this.filterError, this.itemErrors}): super._();
   
 
 @override final  String filter;
@@ -232,17 +232,17 @@ class _ShoppingItemCreateData extends ShoppingItemCreateModel {
 @override final  String? filterError;
 @override final  ShoppingItemErrors? itemErrors;
 
-/// Create a copy of ShoppingItemCreateModel
+/// Create a copy of ItemFormData
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ShoppingItemCreateDataCopyWith<_ShoppingItemCreateData> get copyWith => __$ShoppingItemCreateDataCopyWithImpl<_ShoppingItemCreateData>(this, _$identity);
+_$ItemFormDataCopyWith<_ItemFormData> get copyWith => __$ItemFormDataCopyWithImpl<_ItemFormData>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShoppingItemCreateData&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.data, data) || other.data == data)&&(identical(other.filterError, filterError) || other.filterError == filterError)&&(identical(other.itemErrors, itemErrors) || other.itemErrors == itemErrors));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ItemFormData&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.data, data) || other.data == data)&&(identical(other.filterError, filterError) || other.filterError == filterError)&&(identical(other.itemErrors, itemErrors) || other.itemErrors == itemErrors));
 }
 
 
@@ -253,15 +253,15 @@ int get hashCode {
 
 @override
 String toString() {
-    return 'ShoppingItemCreateModel(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
+    return 'ItemFormData(filter: $filter, data: $data, filterError: $filterError, itemErrors: $itemErrors)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ShoppingItemCreateDataCopyWith<$Res> implements $ShoppingItemCreateModelCopyWith<$Res> {
-  factory _$ShoppingItemCreateDataCopyWith(_ShoppingItemCreateData value, $Res Function(_ShoppingItemCreateData) _then) = __$ShoppingItemCreateDataCopyWithImpl;
+abstract mixin class _$ItemFormDataCopyWith<$Res> implements $ItemFormDataCopyWith<$Res> {
+  factory _$ItemFormDataCopyWith(_ItemFormData value, $Res Function(_ItemFormData) _then) = __$ItemFormDataCopyWithImpl;
 @override @useResult
 $Res call({
  String filter, ShoppingItemRawData data, String? filterError, ShoppingItemErrors? itemErrors
@@ -272,17 +272,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$ShoppingItemCreateDataCopyWithImpl<$Res>
-    implements _$ShoppingItemCreateDataCopyWith<$Res> {
-  __$ShoppingItemCreateDataCopyWithImpl(this._self, this._then);
+class __$ItemFormDataCopyWithImpl<$Res>
+    implements _$ItemFormDataCopyWith<$Res> {
+  __$ItemFormDataCopyWithImpl(this._self, this._then);
 
-  final _ShoppingItemCreateData _self;
-  final $Res Function(_ShoppingItemCreateData) _then;
+  final _ItemFormData _self;
+  final $Res Function(_ItemFormData) _then;
 
-/// Create a copy of ShoppingItemCreateModel
+/// Create a copy of ItemFormData
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? filter = null,Object? data = null,Object? filterError = freezed,Object? itemErrors = freezed,}) {
-  return _then(_ShoppingItemCreateData(
+  return _then(_ItemFormData(
 filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
 as String,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as ShoppingItemRawData,filterError: freezed == filterError ? _self.filterError : filterError // ignore: cast_nullable_to_non_nullable
@@ -291,7 +291,7 @@ as ShoppingItemErrors?,
   ));
 }
 
-/// Create a copy of ShoppingItemCreateModel
+/// Create a copy of ItemFormData
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
