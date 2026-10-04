@@ -12,23 +12,23 @@ part 'shopping_item_create_view_model.g.dart';
 
 @riverpod
 Future<List<ShoppingItemAutocomplete>> itemAutocomplete(Ref ref, String listId) {
-  final filter = ref.watch(shoppingItemCreateViewModelProvider).filter.trim().toLowerCase();
+  final filter = ref.watch(itemFormProvider).filter.trim().toLowerCase();
   final repo = ref.read(shoppingItemAutocompleteUseCaseProvider(listId));
   return repo.getAutocomplete(filter);
 }
 
 @freezed
-abstract class ShoppingItemCreateModel with _$ShoppingItemCreateModel {
-  const ShoppingItemCreateModel._();
+abstract class ItemFormData with _$ItemFormData {
+  const ItemFormData._();
 
-  const factory ShoppingItemCreateModel({
+  const factory ItemFormData({
     required String filter,
     required ShoppingItemRawData data,
     String? filterError,
     ShoppingItemErrors? itemErrors,
-  }) = _ShoppingItemCreateData;
+  }) = _ItemFormData;
 
-  factory ShoppingItemCreateModel.empty() => ShoppingItemCreateModel(
+  factory ItemFormData.empty() => ItemFormData(
     filter: '',
     data: ShoppingItemRawData.empty(),
   );
@@ -37,16 +37,16 @@ abstract class ShoppingItemCreateModel with _$ShoppingItemCreateModel {
 }
 
 @riverpod
-class ShoppingItemCreateViewModel extends _$ShoppingItemCreateViewModel {
+class ItemForm extends _$ItemForm {
   bool _autoValidate = false;
 
   @override
-  ShoppingItemCreateModel build() {
-    return ShoppingItemCreateModel.empty();
+  ItemFormData build() {
+    return ItemFormData.empty();
   }
 
   void reset() {
-    state = ShoppingItemCreateModel.empty();
+    state = ItemFormData.empty();
     _autoValidate = false;
   }
 

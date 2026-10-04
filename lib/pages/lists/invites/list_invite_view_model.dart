@@ -10,26 +10,23 @@ import '../../../services/auth_service.dart';
 part 'list_invite_view_model.freezed.dart';
 part 'list_invite_view_model.g.dart';
 
+/// The signed in user's relationship to an invite they have opened.
 @freezed
-class ListInviteViewModel with _$ListInviteViewModel {
-  const ListInviteViewModel._();
-
-  const factory ListInviteViewModel.loading() = _Loading;
-  const factory ListInviteViewModel.error() = _Error;
-  const factory ListInviteViewModel.notFound() = _NotFound;
-  const factory ListInviteViewModel.isOwner(ListInvite invite) = _IsOwner;
-  const factory ListInviteViewModel.pending(ListInvite invite) = _Pending;
-  const factory ListInviteViewModel.accepted(ListInvite invite) = _Accepted;
+sealed class InviteStatus with _$InviteStatus {
+  const factory InviteStatus.isOwner(ListInvite invite) = _IsOwner;
+  const factory InviteStatus.pending(ListInvite invite) = _Pending;
+  const factory InviteStatus.accepted(ListInvite invite) = _Accepted;
 }
 
+/// The status of the invite with [inviteId], or null if there is no such invite.
 @riverpod
-ListInviteViewModel listInviteState(Ref ref, String inviteId) {
+AsyncValue<InviteStatus?> inviteStatus(Ref ref, String inviteId) {
   final inviteAsyncValue = ref.watch(listInviteByIdProvider(inviteId));
   final listsAsyncValue = ref.watch(listsProvider);
   final user = ref.watch(userAuthProvider);
 
   if (inviteAsyncValue.isLoading || listsAsyncValue.isLoading) {
-    return const ListInviteViewModel.loading();
+    return const AsyncLoading();
   }
 
   if (inviteAsyncValue.hasError || listsAsyncValue.hasError) {
@@ -39,21 +36,22 @@ ListInviteViewModel listInviteState(Ref ref, String inviteId) {
     if (listsAsyncValue.hasError) {
       ref.read(crashReporterProvider).reportAsyncError(listsAsyncValue);
     }
-    return const ListInviteViewModel.error();
+    final AsyncValue<Object?> failed = inviteAsyncValue.hasError ? inviteAsyncValue : listsAsyncValue;
+    return AsyncError(failed.error!, failed.stackTrace!);
   }
 
   final invite = inviteAsyncValue.requireValue;
   final lists = listsAsyncValue.requireValue;
   if (invite == null) {
-    return const ListInviteViewModel.notFound();
+    return const AsyncData(null);
   }
 
   if (invite.inviterId == user?.id) {
-    return ListInviteViewModel.isOwner(invite);
+    return AsyncData(InviteStatus.isOwner(invite));
   }
 
   if (lists.any((list) => list.id == invite.listId)) {
-    return ListInviteViewModel.accepted(invite);
+    return AsyncData(InviteStatus.accepted(invite));
   }
-  return ListInviteViewModel.pending(invite);
+  return AsyncData(InviteStatus.pending(invite));
 }

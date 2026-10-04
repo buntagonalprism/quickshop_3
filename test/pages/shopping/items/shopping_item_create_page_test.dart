@@ -164,7 +164,7 @@ void main() {
       await pumpScreen(tester);
       await tester.tap(doneButtonFinder);
       await tester.pump();
-      expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
+      expect(find.text(ItemForm.itemError), findsOneWidget);
     });
 
     testWidgets('GIVEN item error displayed after tapping done '
@@ -173,10 +173,10 @@ void main() {
       await pumpScreen(tester);
       await tester.tap(doneButtonFinder);
       await tester.pump();
-      expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
+      expect(find.text(ItemForm.itemError), findsOneWidget);
       await tester.enterText(itemInputFinder, 'Test Item');
       await tester.pump();
-      expect(find.text(ShoppingItemCreateViewModel.itemError), findsNothing);
+      expect(find.text(ItemForm.itemError), findsNothing);
     });
 
     testWidgets('GIVEN no item name is entered '
@@ -185,7 +185,7 @@ void main() {
       await pumpScreen(tester);
       await tester.tap(addMoreButtonFinder);
       await tester.pump();
-      expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
+      expect(find.text(ItemForm.itemError), findsOneWidget);
     });
 
     testWidgets('GIVEN item error displayed after tapping add more '
@@ -194,10 +194,10 @@ void main() {
       await pumpScreen(tester);
       await tester.tap(addMoreButtonFinder);
       await tester.pump();
-      expect(find.text(ShoppingItemCreateViewModel.itemError), findsOneWidget);
+      expect(find.text(ItemForm.itemError), findsOneWidget);
       await tester.enterText(itemInputFinder, 'Test Item');
       await tester.pump();
-      expect(find.text(ShoppingItemCreateViewModel.itemError), findsNothing);
+      expect(find.text(ItemForm.itemError), findsNothing);
     });
   });
 

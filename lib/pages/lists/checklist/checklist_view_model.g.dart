@@ -11,62 +11,66 @@ part of 'checklist_view_model.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// The checklist with [listId] and its entries, or null if there is no such checklist.
 
-@ProviderFor(checklistViewModel)
-final checklistViewModelProvider = ChecklistViewModelFamily._();
+@ProviderFor(checklist)
+final checklistProvider = ChecklistFamily._();
 
-final class ChecklistViewModelProvider
+/// The checklist with [listId] and its entries, or null if there is no such checklist.
+
+final class ChecklistProvider
     extends
         $FunctionalProvider<
-          ChecklistViewModel,
-          ChecklistViewModel,
-          ChecklistViewModel
+          AsyncValue<Checklist?>,
+          AsyncValue<Checklist?>,
+          AsyncValue<Checklist?>
         >
-    with $Provider<ChecklistViewModel> {
-  ChecklistViewModelProvider._({
-    required ChecklistViewModelFamily super.from,
+    with $Provider<AsyncValue<Checklist?>> {
+  /// The checklist with [listId] and its entries, or null if there is no such checklist.
+  ChecklistProvider._({
+    required ChecklistFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'checklistViewModelProvider',
+         name: r'checklistProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$checklistViewModelHash();
+  String debugGetCreateSourceHash() => _$checklistHash();
 
   @override
   String toString() {
-    return r'checklistViewModelProvider'
+    return r'checklistProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  $ProviderElement<ChecklistViewModel> $createElement(
+  $ProviderElement<AsyncValue<Checklist?>> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  ChecklistViewModel create(Ref ref) {
+  AsyncValue<Checklist?> create(Ref ref) {
     final argument = this.argument as String;
-    return checklistViewModel(ref, argument);
+    return checklist(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ChecklistViewModel value) {
+  Override overrideWithValue(AsyncValue<Checklist?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ChecklistViewModel>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<Checklist?>>(value),
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ChecklistViewModelProvider && other.argument == argument;
+    return other is ChecklistProvider && other.argument == argument;
   }
 
   @override
@@ -75,23 +79,26 @@ final class ChecklistViewModelProvider
   }
 }
 
-String _$checklistViewModelHash() =>
-    r'1779e113ec6caee33bc4f591c133ba5e2c4d8343';
+String _$checklistHash() => r'3a9e5d868d03afa0258b60c67b90df341bfb22e9';
 
-final class ChecklistViewModelFamily extends $Family
-    with $FunctionalFamilyOverride<ChecklistViewModel, String> {
-  ChecklistViewModelFamily._()
+/// The checklist with [listId] and its entries, or null if there is no such checklist.
+
+final class ChecklistFamily extends $Family
+    with $FunctionalFamilyOverride<AsyncValue<Checklist?>, String> {
+  ChecklistFamily._()
     : super(
         retry: null,
-        name: r'checklistViewModelProvider',
+        name: r'checklistProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  ChecklistViewModelProvider call(String listId) =>
-      ChecklistViewModelProvider._(argument: listId, from: this);
+  /// The checklist with [listId] and its entries, or null if there is no such checklist.
+
+  ChecklistProvider call(String listId) =>
+      ChecklistProvider._(argument: listId, from: this);
 
   @override
-  String toString() => r'checklistViewModelProvider';
+  String toString() => r'checklistProvider';
 }

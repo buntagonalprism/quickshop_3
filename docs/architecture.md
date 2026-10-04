@@ -246,13 +246,14 @@ A page's view model is a file, `<page_name>_view_model.dart`, co-located with th
 A view model contains two kinds of provider, which must stay separate:
 
 - **Screen state notifiers** hold state the screen owns, such as search text, the selected tab or form fields. Their `build()` returns an initial value and watches nothing, and they are auto-dispose, so the state resets when the screen closes. Split screen state by concern rather than keeping it in one notifier, so a change to one value doesn't rebuild widgets that only depend on another value.
-- **Derived providers** compute data the screen needs to display, e.g. by watching and reacting to screen state notifiers, watching and transforming application layer notifiers, or directly fetching data from repositories or use cases. They hold nothing, so they can be recomputed whenever their inputs change.
+- **Derived providers** compute or query data the screen needs to display, e.g. by watching and reacting to screen state notifiers, watching and transforming application layer notifiers, or directly fetching data from repositories or use cases. They hold nothing, so they can be recomputed whenever their inputs change.
 
 Actions that change application data should call application layer notifiers directly. Actions that change screen state should call methods on the screen state notifiers. Widgets watch the narrowest provider they need, using `select` when they only depend on part of a value.
 
-Name providers for what they hold, not after the view model: `searchFilterProvider` and `filteredItemsProvider`, not `myPageViewModelProvider`.
+Name providers and the types they hold for what they hold, without any prefix of the screen name: `searchFilterProvider`, `filteredItemsProvider`, `inviteStatusProvider`. Because those names are generic, different pages will reuse them. Import a view model library file with the `vm` prefix in its page and views, so it's clear which providers belong to the screen and which come from the application layer. When a page uses mutiple view models, import each with a short distinguishing prefix, like `categoryVm`.
 
-Because those names are generic, different pages will reuse them. Import a view model with the `vm` prefix in its page and views, so it's clear which providers belong to the screen and which come from the application layer. When a page also uses another view model, give that library import a descriptive prefix to differentiate it, such as `categoryVm`.
+Derived providers that work with asynchronous data should return an `AsyncValue`. If the data is a single item might not exist, such as a list that has been deleted, return `AsyncValue<T?>` with null meaning not found. `checklistProvider` in `checklist_view_model.dart` is an example.
+
 
 ```dart
 // my_feature/my_page/my_page_view_model.dart

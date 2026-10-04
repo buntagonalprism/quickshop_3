@@ -13,37 +13,82 @@ part of 'list_invite_view_model.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$ListInviteViewModel {
+mixin _$InviteStatus {
 
-
+ ListInvite get invite;
+/// Create a copy of InviteStatus
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$InviteStatusCopyWith<InviteStatus> get copyWith => _$InviteStatusCopyWithImpl<InviteStatus>(this as InviteStatus, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is ListInviteViewModel);
+  final _this = this as InviteStatus;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is InviteStatus&&(identical(other.invite, _this.invite) || other.invite == _this.invite));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode {
+  final _this = this as InviteStatus;
+  return Object.hash(runtimeType,_this.invite);
+}
 
 @override
 String toString() {
-    return 'ListInviteViewModel()';
+  final _this = this as InviteStatus;
+  return 'InviteStatus(invite: ${_this.invite})';
 }
 
 
 }
 
 /// @nodoc
-class $ListInviteViewModelCopyWith<$Res>  {
-$ListInviteViewModelCopyWith(ListInviteViewModel _, $Res Function(ListInviteViewModel) __);
+abstract mixin class $InviteStatusCopyWith<$Res>  {
+  factory $InviteStatusCopyWith(InviteStatus value, $Res Function(InviteStatus) _then) = _$InviteStatusCopyWithImpl;
+@useResult
+$Res call({
+ ListInvite invite
+});
+
+
+$ListInviteCopyWith<$Res> get invite;
+
+}
+/// @nodoc
+class _$InviteStatusCopyWithImpl<$Res>
+    implements $InviteStatusCopyWith<$Res> {
+  _$InviteStatusCopyWithImpl(this._self, this._then);
+
+  final InviteStatus _self;
+  final $Res Function(InviteStatus) _then;
+
+/// Create a copy of InviteStatus
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? invite = null,}) {
+  return _then(_self.copyWith(
+invite: null == invite ? _self.invite : invite // ignore: cast_nullable_to_non_nullable
+as ListInvite,
+  ));
+}
+/// Create a copy of InviteStatus
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ListInviteCopyWith<$Res> get invite {
+  
+  return $ListInviteCopyWith<$Res>(_self.invite, (value) {
+    return _then(_self.copyWith(invite: value));
+  });
+}
 }
 
 
-/// Adds pattern-matching-related methods to [ListInviteViewModel].
-extension ListInviteViewModelPatterns on ListInviteViewModel {
+/// Adds pattern-matching-related methods to [InviteStatus].
+extension InviteStatusPatterns on InviteStatus {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -56,13 +101,10 @@ extension ListInviteViewModelPatterns on ListInviteViewModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Loading value)?  loading,TResult Function( _Error value)?  error,TResult Function( _NotFound value)?  notFound,TResult Function( _IsOwner value)?  isOwner,TResult Function( _Pending value)?  pending,TResult Function( _Accepted value)?  accepted,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _IsOwner value)?  isOwner,TResult Function( _Pending value)?  pending,TResult Function( _Accepted value)?  accepted,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading(_that);case _Error() when error != null:
-return error(_that);case _NotFound() when notFound != null:
-return notFound(_that);case _IsOwner() when isOwner != null:
+case _IsOwner() when isOwner != null:
 return isOwner(_that);case _Pending() when pending != null:
 return pending(_that);case _Accepted() when accepted != null:
 return accepted(_that);case _:
@@ -83,19 +125,13 @@ return accepted(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Loading value)  loading,required TResult Function( _Error value)  error,required TResult Function( _NotFound value)  notFound,required TResult Function( _IsOwner value)  isOwner,required TResult Function( _Pending value)  pending,required TResult Function( _Accepted value)  accepted,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _IsOwner value)  isOwner,required TResult Function( _Pending value)  pending,required TResult Function( _Accepted value)  accepted,}){
 final _that = this;
 switch (_that) {
-case _Loading():
-return loading(_that);case _Error():
-return error(_that);case _NotFound():
-return notFound(_that);case _IsOwner():
+case _IsOwner():
 return isOwner(_that);case _Pending():
 return pending(_that);case _Accepted():
-return accepted(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return accepted(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -109,13 +145,10 @@ return accepted(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Loading value)?  loading,TResult? Function( _Error value)?  error,TResult? Function( _NotFound value)?  notFound,TResult? Function( _IsOwner value)?  isOwner,TResult? Function( _Pending value)?  pending,TResult? Function( _Accepted value)?  accepted,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _IsOwner value)?  isOwner,TResult? Function( _Pending value)?  pending,TResult? Function( _Accepted value)?  accepted,}){
 final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading(_that);case _Error() when error != null:
-return error(_that);case _NotFound() when notFound != null:
-return notFound(_that);case _IsOwner() when isOwner != null:
+case _IsOwner() when isOwner != null:
 return isOwner(_that);case _Pending() when pending != null:
 return pending(_that);case _Accepted() when accepted != null:
 return accepted(_that);case _:
@@ -135,12 +168,9 @@ return accepted(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function()?  error,TResult Function()?  notFound,TResult Function( ListInvite invite)?  isOwner,TResult Function( ListInvite invite)?  pending,TResult Function( ListInvite invite)?  accepted,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ListInvite invite)?  isOwner,TResult Function( ListInvite invite)?  pending,TResult Function( ListInvite invite)?  accepted,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading();case _Error() when error != null:
-return error();case _NotFound() when notFound != null:
-return notFound();case _IsOwner() when isOwner != null:
+case _IsOwner() when isOwner != null:
 return isOwner(_that.invite);case _Pending() when pending != null:
 return pending(_that.invite);case _Accepted() when accepted != null:
 return accepted(_that.invite);case _:
@@ -161,18 +191,12 @@ return accepted(_that.invite);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function()  error,required TResult Function()  notFound,required TResult Function( ListInvite invite)  isOwner,required TResult Function( ListInvite invite)  pending,required TResult Function( ListInvite invite)  accepted,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ListInvite invite)  isOwner,required TResult Function( ListInvite invite)  pending,required TResult Function( ListInvite invite)  accepted,}) {final _that = this;
 switch (_that) {
-case _Loading():
-return loading();case _Error():
-return error();case _NotFound():
-return notFound();case _IsOwner():
+case _IsOwner():
 return isOwner(_that.invite);case _Pending():
 return pending(_that.invite);case _Accepted():
-return accepted(_that.invite);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return accepted(_that.invite);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -186,12 +210,9 @@ return accepted(_that.invite);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function()?  error,TResult? Function()?  notFound,TResult? Function( ListInvite invite)?  isOwner,TResult? Function( ListInvite invite)?  pending,TResult? Function( ListInvite invite)?  accepted,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ListInvite invite)?  isOwner,TResult? Function( ListInvite invite)?  pending,TResult? Function( ListInvite invite)?  accepted,}) {final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading();case _Error() when error != null:
-return error();case _NotFound() when notFound != null:
-return notFound();case _IsOwner() when isOwner != null:
+case _IsOwner() when isOwner != null:
 return isOwner(_that.invite);case _Pending() when pending != null:
 return pending(_that.invite);case _Accepted() when accepted != null:
 return accepted(_that.invite);case _:
@@ -205,111 +226,15 @@ return accepted(_that.invite);case _:
 /// @nodoc
 
 
-class _Loading extends ListInviteViewModel {
-  const _Loading(): super._();
+class _IsOwner implements InviteStatus {
+  const _IsOwner(this.invite);
   
 
+@override final  ListInvite invite;
 
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ListInviteViewModel.loading()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _Error extends ListInviteViewModel {
-  const _Error(): super._();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ListInviteViewModel.error()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _NotFound extends ListInviteViewModel {
-  const _NotFound(): super._();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotFound);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-    return 'ListInviteViewModel.notFound()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _IsOwner extends ListInviteViewModel {
-  const _IsOwner(this.invite): super._();
-  
-
- final  ListInvite invite;
-
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$IsOwnerCopyWith<_IsOwner> get copyWith => __$IsOwnerCopyWithImpl<_IsOwner>(this, _$identity);
 
@@ -328,22 +253,22 @@ int get hashCode {
 
 @override
 String toString() {
-    return 'ListInviteViewModel.isOwner(invite: $invite)';
+    return 'InviteStatus.isOwner(invite: $invite)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$IsOwnerCopyWith<$Res> implements $ListInviteViewModelCopyWith<$Res> {
+abstract mixin class _$IsOwnerCopyWith<$Res> implements $InviteStatusCopyWith<$Res> {
   factory _$IsOwnerCopyWith(_IsOwner value, $Res Function(_IsOwner) _then) = __$IsOwnerCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  ListInvite invite
 });
 
 
-$ListInviteCopyWith<$Res> get invite;
+@override $ListInviteCopyWith<$Res> get invite;
 
 }
 /// @nodoc
@@ -354,16 +279,16 @@ class __$IsOwnerCopyWithImpl<$Res>
   final _IsOwner _self;
   final $Res Function(_IsOwner) _then;
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? invite = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? invite = null,}) {
   return _then(_IsOwner(
 null == invite ? _self.invite : invite // ignore: cast_nullable_to_non_nullable
 as ListInvite,
   ));
 }
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -378,15 +303,15 @@ $ListInviteCopyWith<$Res> get invite {
 /// @nodoc
 
 
-class _Pending extends ListInviteViewModel {
-  const _Pending(this.invite): super._();
+class _Pending implements InviteStatus {
+  const _Pending(this.invite);
   
 
- final  ListInvite invite;
+@override final  ListInvite invite;
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$PendingCopyWith<_Pending> get copyWith => __$PendingCopyWithImpl<_Pending>(this, _$identity);
 
@@ -405,22 +330,22 @@ int get hashCode {
 
 @override
 String toString() {
-    return 'ListInviteViewModel.pending(invite: $invite)';
+    return 'InviteStatus.pending(invite: $invite)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$PendingCopyWith<$Res> implements $ListInviteViewModelCopyWith<$Res> {
+abstract mixin class _$PendingCopyWith<$Res> implements $InviteStatusCopyWith<$Res> {
   factory _$PendingCopyWith(_Pending value, $Res Function(_Pending) _then) = __$PendingCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  ListInvite invite
 });
 
 
-$ListInviteCopyWith<$Res> get invite;
+@override $ListInviteCopyWith<$Res> get invite;
 
 }
 /// @nodoc
@@ -431,16 +356,16 @@ class __$PendingCopyWithImpl<$Res>
   final _Pending _self;
   final $Res Function(_Pending) _then;
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? invite = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? invite = null,}) {
   return _then(_Pending(
 null == invite ? _self.invite : invite // ignore: cast_nullable_to_non_nullable
 as ListInvite,
   ));
 }
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -455,15 +380,15 @@ $ListInviteCopyWith<$Res> get invite {
 /// @nodoc
 
 
-class _Accepted extends ListInviteViewModel {
-  const _Accepted(this.invite): super._();
+class _Accepted implements InviteStatus {
+  const _Accepted(this.invite);
   
 
- final  ListInvite invite;
+@override final  ListInvite invite;
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$AcceptedCopyWith<_Accepted> get copyWith => __$AcceptedCopyWithImpl<_Accepted>(this, _$identity);
 
@@ -482,22 +407,22 @@ int get hashCode {
 
 @override
 String toString() {
-    return 'ListInviteViewModel.accepted(invite: $invite)';
+    return 'InviteStatus.accepted(invite: $invite)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$AcceptedCopyWith<$Res> implements $ListInviteViewModelCopyWith<$Res> {
+abstract mixin class _$AcceptedCopyWith<$Res> implements $InviteStatusCopyWith<$Res> {
   factory _$AcceptedCopyWith(_Accepted value, $Res Function(_Accepted) _then) = __$AcceptedCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  ListInvite invite
 });
 
 
-$ListInviteCopyWith<$Res> get invite;
+@override $ListInviteCopyWith<$Res> get invite;
 
 }
 /// @nodoc
@@ -508,16 +433,16 @@ class __$AcceptedCopyWithImpl<$Res>
   final _Accepted _self;
   final $Res Function(_Accepted) _then;
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? invite = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? invite = null,}) {
   return _then(_Accepted(
 null == invite ? _self.invite : invite // ignore: cast_nullable_to_non_nullable
 as ListInvite,
   ));
 }
 
-/// Create a copy of ListInviteViewModel
+/// Create a copy of InviteStatus
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')

@@ -11,62 +11,69 @@ part of 'shopping_list_view_model.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// The shopping list with [listId] and its items grouped by category, or null if there is no such
+/// list.
 
-@ProviderFor(shoppingListViewModel)
-final shoppingListViewModelProvider = ShoppingListViewModelFamily._();
+@ProviderFor(shoppingList)
+final shoppingListProvider = ShoppingListFamily._();
 
-final class ShoppingListViewModelProvider
+/// The shopping list with [listId] and its items grouped by category, or null if there is no such
+/// list.
+
+final class ShoppingListProvider
     extends
         $FunctionalProvider<
-          ShoppingListViewModel,
-          ShoppingListViewModel,
-          ShoppingListViewModel
+          AsyncValue<ShoppingList?>,
+          AsyncValue<ShoppingList?>,
+          AsyncValue<ShoppingList?>
         >
-    with $Provider<ShoppingListViewModel> {
-  ShoppingListViewModelProvider._({
-    required ShoppingListViewModelFamily super.from,
+    with $Provider<AsyncValue<ShoppingList?>> {
+  /// The shopping list with [listId] and its items grouped by category, or null if there is no such
+  /// list.
+  ShoppingListProvider._({
+    required ShoppingListFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'shoppingListViewModelProvider',
+         name: r'shoppingListProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$shoppingListViewModelHash();
+  String debugGetCreateSourceHash() => _$shoppingListHash();
 
   @override
   String toString() {
-    return r'shoppingListViewModelProvider'
+    return r'shoppingListProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  $ProviderElement<ShoppingListViewModel> $createElement(
+  $ProviderElement<AsyncValue<ShoppingList?>> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  ShoppingListViewModel create(Ref ref) {
+  AsyncValue<ShoppingList?> create(Ref ref) {
     final argument = this.argument as String;
-    return shoppingListViewModel(ref, argument);
+    return shoppingList(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ShoppingListViewModel value) {
+  Override overrideWithValue(AsyncValue<ShoppingList?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ShoppingListViewModel>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<ShoppingList?>>(value),
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ShoppingListViewModelProvider && other.argument == argument;
+    return other is ShoppingListProvider && other.argument == argument;
   }
 
   @override
@@ -75,23 +82,28 @@ final class ShoppingListViewModelProvider
   }
 }
 
-String _$shoppingListViewModelHash() =>
-    r'0523d5d3047bcf02c7e2b14ac97d5bc571c15bab';
+String _$shoppingListHash() => r'1f88d75900736819e3cb421a8031fdcd62e530ee';
 
-final class ShoppingListViewModelFamily extends $Family
-    with $FunctionalFamilyOverride<ShoppingListViewModel, String> {
-  ShoppingListViewModelFamily._()
+/// The shopping list with [listId] and its items grouped by category, or null if there is no such
+/// list.
+
+final class ShoppingListFamily extends $Family
+    with $FunctionalFamilyOverride<AsyncValue<ShoppingList?>, String> {
+  ShoppingListFamily._()
     : super(
         retry: null,
-        name: r'shoppingListViewModelProvider',
+        name: r'shoppingListProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  ShoppingListViewModelProvider call(String listId) =>
-      ShoppingListViewModelProvider._(argument: listId, from: this);
+  /// The shopping list with [listId] and its items grouped by category, or null if there is no such
+  /// list.
+
+  ShoppingListProvider call(String listId) =>
+      ShoppingListProvider._(argument: listId, from: this);
 
   @override
-  String toString() => r'shoppingListViewModelProvider';
+  String toString() => r'shoppingListProvider';
 }

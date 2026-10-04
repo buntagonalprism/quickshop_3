@@ -14,7 +14,7 @@ import '../../../../widgets/padding.dart';
 import '../../../../widgets/tooltip_button.dart';
 import '../history/shopping_history_item_edit_dialog.dart';
 import 'category_selector.dart';
-import 'shopping_item_create_view_model.dart';
+import 'shopping_item_create_view_model.dart' as vm;
 import 'shopping_item_view.dart';
 
 class ShoppingItemCreatePageKeys {
@@ -47,7 +47,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   @override
   Widget build(BuildContext context) {
-    final model = ref.watch(shoppingItemCreateViewModelProvider);
+    final form = ref.watch(vm.itemFormProvider);
     final screenTitle = ['New item', 'Select category', 'Edit item details'][tabController.index];
     return PopScope(
       canPop: tabController.index == 0,
@@ -91,14 +91,14 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
                     listId: widget.listId,
                     data: ShoppingItemViewCreateData(
                       rawData: ShoppingItemRawData(
-                        product: model.data.product,
-                        quantity: model.data.quantity,
-                        category: model.data.category,
+                        product: form.data.product,
+                        quantity: form.data.quantity,
+                        category: form.data.category,
                       ),
                     ),
-                    errors: showErrorsOnTab == 2 ? model.itemErrors : null,
+                    errors: showErrorsOnTab == 2 ? form.itemErrors : null,
                     onDataChanged: (rawData) {
-                      ref.read(shoppingItemCreateViewModelProvider.notifier).setRawData(rawData);
+                      ref.read(vm.itemFormProvider.notifier).setRawData(rawData);
                     },
                     onSubmitted: () => onDone(addMore: false),
                   ),
@@ -150,15 +150,15 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
   void onDone({bool addMore = false}) async {
     final itemStore = ref.read(shoppingItemsProvider(widget.listId).notifier);
-    ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
-    final model = ref.read(shoppingItemCreateViewModelProvider);
+    ref.read(vm.itemFormProvider.notifier).setAutoValidation(true);
+    final form = ref.read(vm.itemFormProvider);
 
     if (tabController.index == 0) {
-      if (model.filterError != null) {
+      if (form.filterError != null) {
         setState(() => showErrorsOnTab = 0);
         return;
       }
-      final result = await itemStore.addItemByName(model.filter);
+      final result = await itemStore.addItemByName(form.filter);
       result.when(
         categoryRequired: () => moveToTab(1),
         alreadyOnList: (product) {
@@ -174,12 +174,12 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
         },
       );
     } else {
-      if (model.itemErrors?.hasErrors ?? false) {
+      if (form.itemErrors?.hasErrors ?? false) {
         setState(() => showErrorsOnTab = tabController.index);
         return;
       }
-      itemStore.addItem(model.data);
-      onAddedItem(model.data.displayName, addMore);
+      itemStore.addItem(form.data);
+      onAddedItem(form.data.displayName, addMore);
     }
   }
 
@@ -197,7 +197,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
   void resetPage() {
     moveToTab(0);
 
-    ref.read(shoppingItemCreateViewModelProvider.notifier).reset();
+    ref.read(vm.itemFormProvider.notifier).reset();
     setState(() {
       childrenResetKey = DateTime.now().millisecondsSinceEpoch;
     });
@@ -207,7 +207,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
     tabController.animateTo(index);
     // When switching tabs, don't immediately show any errors - give the user a
     // chance to enter input into the fields, and only show errors on submit.
-    ref.read(shoppingItemCreateViewModelProvider.notifier).setAutoValidation(true);
+    ref.read(vm.itemFormProvider.notifier).setAutoValidation(true);
     setState(() => showErrorsOnTab = -1);
   }
 }
@@ -237,13 +237,13 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
   void initState() {
     super.initState();
     nameController = TextEditingController(
-      text: ref.read(shoppingItemCreateViewModelProvider).filter,
+      text: ref.read(vm.itemFormProvider).filter,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final model = ref.watch(shoppingItemCreateViewModelProvider);
+    final form = ref.watch(vm.itemFormProvider);
     return Column(
       children: [
         Padding(
@@ -252,12 +252,12 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
             key: _Keys.itemInputField,
             decoration: InputDecoration(
               labelText: 'Enter item name',
-              errorText: widget.showErrors ? model.filterError : null,
+              errorText: widget.showErrors ? form.filterError : null,
             ),
             autofocus: true,
             controller: nameController,
             onChanged: (newValue) {
-              ref.read(shoppingItemCreateViewModelProvider.notifier).setFilter(newValue);
+              ref.read(vm.itemFormProvider.notifier).setFilter(newValue);
             },
             textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.done,
@@ -265,7 +265,7 @@ class _ShoppingItemSearchViewState extends ConsumerState<ShoppingItemSearchView>
           ),
         ),
         Expanded(
-          child: model.filter.isEmpty
+          child: form.filter.isEmpty
               ? const ItemAutocompletePlaceholder()
               : ItemSuggestionsList(
                   listId: widget.listId,
@@ -299,7 +299,7 @@ class _ItemSuggestionsListState extends ConsumerState<ItemSuggestionsList> {
 
   @override
   Widget build(BuildContext context) {
-    final autocompleteAsync = ref.watch(itemAutocompleteProvider(widget.listId));
+    final autocompleteAsync = ref.watch(vm.itemAutocompleteProvider(widget.listId));
     if (autocompleteAsync.isLoading && !autocompleteAsync.hasValue) {
       return ItemAutocompleteLoading();
     }
@@ -442,7 +442,7 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
     );
     if (didConfirm) {
       await ref.read(shoppingItemAutocompleteUseCaseProvider(widget.listId)).removeHistoryEntry(historyEntry);
-      ref.invalidate(itemAutocompleteProvider(widget.listId));
+      ref.invalidate(vm.itemAutocompleteProvider(widget.listId));
     }
   }
 
@@ -457,7 +457,7 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
     );
     if (didConfirm) {
       await ref.read(hiddenSuggestionsUseCaseProvider).hideItemSuggestion(suggestion);
-      ref.invalidate(itemAutocompleteProvider(widget.listId));
+      ref.invalidate(vm.itemAutocompleteProvider(widget.listId));
     }
   }
 
@@ -466,7 +466,7 @@ class _ItemAutocompleteEntryState extends ConsumerState<ItemAutocompleteEntry> {
     if (mounted) {
       await ShoppingHistoryItemEditDialog.show(context, history);
       if (mounted) {
-        ref.invalidate(itemAutocompleteProvider(widget.listId));
+        ref.invalidate(vm.itemAutocompleteProvider(widget.listId));
       }
     }
   }
@@ -565,7 +565,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
     super.initState();
     shouldShowTutorial = !ref.read(tutorialsProvider).contains(Tutorial.categorySelection);
     controller.addListener(() {
-      ref.read(shoppingItemCreateViewModelProvider.notifier).setCategory(controller.text);
+      ref.read(vm.itemFormProvider.notifier).setCategory(controller.text);
     });
   }
 
@@ -606,8 +606,8 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
   Widget build(BuildContext context) {
     final bodyStyle = Theme.of(context).textTheme.bodyMedium;
     final bodyBoldStyle = bodyStyle?.copyWith(fontWeight: FontWeight.bold);
-    final model = ref.watch(shoppingItemCreateViewModelProvider);
-    categoryError = widget.showErrors ? model.itemErrors?.categoryError : null;
+    final form = ref.watch(vm.itemFormProvider);
+    categoryError = widget.showErrors ? form.itemErrors?.categoryError : null;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -626,7 +626,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                           text: 'Base product name: ',
                           style: bodyBoldStyle,
                           children: [
-                            TextSpan(text: model.data.product, style: bodyStyle),
+                            TextSpan(text: form.data.product, style: bodyStyle),
                           ],
                         ),
                       ),
@@ -637,7 +637,7 @@ class _ShoppingItemCategorySelectViewState extends ConsumerState<ShoppingItemCat
                           style: bodyBoldStyle,
                           children: [
                             TextSpan(
-                              text: model.data.quantity.isNotEmpty ? model.data.quantity : 'Not specified',
+                              text: form.data.quantity.isNotEmpty ? form.data.quantity : 'Not specified',
                               style: bodyStyle,
                             ),
                           ],

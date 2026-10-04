@@ -69,7 +69,7 @@ final class ItemAutocompleteProvider
   }
 }
 
-String _$itemAutocompleteHash() => r'b998e68ec71e3f30958e9804524840d52f6f4055';
+String _$itemAutocompleteHash() => r'4c8ca87f469891f1e2a6f1996e4544c47342304f';
 
 final class ItemAutocompleteFamily extends $Family
     with
@@ -93,59 +93,50 @@ final class ItemAutocompleteFamily extends $Family
   String toString() => r'itemAutocompleteProvider';
 }
 
-@ProviderFor(ShoppingItemCreateViewModel)
-final shoppingItemCreateViewModelProvider =
-    ShoppingItemCreateViewModelProvider._();
+@ProviderFor(ItemForm)
+final itemFormProvider = ItemFormProvider._();
 
-final class ShoppingItemCreateViewModelProvider
-    extends
-        $NotifierProvider<
-          ShoppingItemCreateViewModel,
-          ShoppingItemCreateModel
-        > {
-  ShoppingItemCreateViewModelProvider._()
+final class ItemFormProvider extends $NotifierProvider<ItemForm, ItemFormData> {
+  ItemFormProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'shoppingItemCreateViewModelProvider',
+        name: r'itemFormProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$shoppingItemCreateViewModelHash();
+  String debugGetCreateSourceHash() => _$itemFormHash();
 
   @$internal
   @override
-  ShoppingItemCreateViewModel create() => ShoppingItemCreateViewModel();
+  ItemForm create() => ItemForm();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ShoppingItemCreateModel value) {
+  Override overrideWithValue(ItemFormData value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ShoppingItemCreateModel>(value),
+      providerOverride: $SyncValueProvider<ItemFormData>(value),
     );
   }
 }
 
-String _$shoppingItemCreateViewModelHash() =>
-    r'0b077739ccc6323ae912c042d47079f6491b1caf';
+String _$itemFormHash() => r'332407c869f44664e9c6c92b7a84177683cec935';
 
-abstract class _$ShoppingItemCreateViewModel
-    extends $Notifier<ShoppingItemCreateModel> {
-  ShoppingItemCreateModel build();
+abstract class _$ItemForm extends $Notifier<ItemFormData> {
+  ItemFormData build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref =
-        this.ref as $Ref<ShoppingItemCreateModel, ShoppingItemCreateModel>;
+    final ref = this.ref as $Ref<ItemFormData, ItemFormData>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<ShoppingItemCreateModel, ShoppingItemCreateModel>,
-              ShoppingItemCreateModel,
+              AnyNotifier<ItemFormData, ItemFormData>,
+              ItemFormData,
               Object?,
               Object?
             >;
