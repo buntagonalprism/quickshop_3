@@ -30,7 +30,7 @@ final class ShoppingItemSuggestionRepoProvider
         argument: null,
         retry: null,
         name: r'shoppingItemSuggestionRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -59,4 +59,4 @@ final class ShoppingItemSuggestionRepoProvider
 }
 
 String _$shoppingItemSuggestionRepoHash() =>
-    r'eaf88145bd78c0ba7a3b3544c130ddad736e6454';
+    r'1648f6834de7c51b3c04bc47cb57f3b080fbae6f';
