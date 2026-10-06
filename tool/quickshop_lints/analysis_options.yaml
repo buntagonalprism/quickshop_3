@@ -1,0 +1,4 @@
+# The plugin is its own package, so it doesn't use the app's Flutter lints.
+formatter:
+  page_width: 120
+  trailing_commas: preserve

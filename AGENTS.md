@@ -108,6 +108,20 @@ fvm dart format lib/
 
 ---
 
+## Analysis and lint rules
+
+Before finishing a change, check it with:
+
+```bash
+fvm dart analyze --fatal-infos
+```
+
+CI runs the same command and fails on any issue, lints included. Use `dart analyze` rather than `flutter analyze`: only `dart analyze` reports the project's own lint rules.
+
+Project-specific lint rules live in the analyzer plugin at `tool/quickshop_lints`, and are enabled under `plugins` in `analysis_options.yaml`. When a convention in `docs/architecture.md` can be checked mechanically, prefer adding a rule there over relying on the doc alone. Each rule has tests in `tool/quickshop_lints/test`, run with `fvm dart test` from that directory.
+
+---
+
 ## Code Generation
 
 After modifying any file with `@freezed`, `@riverpod`, `@Riverpod`, `@JsonSerializable`, or Drift table definitions, run:
@@ -136,4 +150,4 @@ When running with an MCP-compatible agent:
 - **Marionette** (`mcp__marionette__*`): interact with the running Flutter app (tap, enter text, screenshot, logs). Connect via VM service URI from the Flutter debug output.
 - **Dart MCP** (`mcp__dart__*`): analyze files, run tests, pub commands, hot reload. Connect to the Dart Tooling Daemon via DTD URI from VSCode command palette.
 - Use `mcp__dart__pub` with `roots: [{root: "file://c:\\src\\quickshop\\quickshop_3"}]` for pub commands.
-- Use `mcp__dart__analyze_files` to check for errors after code changes.
+- Use `mcp__dart__analyze_files` to check for errors while editing, and `fvm dart analyze --fatal-infos` before finishing, as it also reports the project's lint rules.
