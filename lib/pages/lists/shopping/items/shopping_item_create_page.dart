@@ -43,7 +43,7 @@ class ShoppingItemCreatePage extends ConsumerStatefulWidget {
 class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage> with SingleTickerProviderStateMixin {
   late final tabController = TabController(length: 3, vsync: this);
   int showErrorsOnTab = -1;
-  int childrenResetKey = DateTime.now().millisecondsSinceEpoch;
+  int childrenResetKey = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +199,7 @@ class _ShoppingItemCreatePageState extends ConsumerState<ShoppingItemCreatePage>
 
     ref.read(vm.itemFormProvider.notifier).reset();
     setState(() {
-      childrenResetKey = DateTime.now().millisecondsSinceEpoch;
+      childrenResetKey++;
     });
   }
 

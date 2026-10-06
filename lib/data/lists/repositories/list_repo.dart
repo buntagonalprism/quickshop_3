@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -51,7 +52,7 @@ class ListRepo {
       editorIds: [user.id],
       editors: [user],
       itemCount: 0,
-      lastModified: {user.id: DateTime.now().millisecondsSinceEpoch},
+      lastModified: {user.id: clock.now().millisecondsSinceEpoch},
       listType: listType,
     );
     final listDoc = await fs.collection('lists').add(_toFirestore(list));
@@ -64,7 +65,7 @@ class ListRepo {
     final user = ref.read(userAuthProvider);
     await fs.collection('lists').doc(list.id).update({
       _Fields.name: name,
-      '${_Fields.lastModified}.${user!.id}': DateTime.now().millisecondsSinceEpoch,
+      '${_Fields.lastModified}.${user!.id}': clock.now().millisecondsSinceEpoch,
     });
     ref.read(analyticsProvider).logEvent(AnalyticsEvent.listRenamed(list.listType));
   }

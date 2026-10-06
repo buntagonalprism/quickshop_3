@@ -46,6 +46,7 @@ dependencies:
   google_maps_flutter: ^2.10.0
   words_to_numbers:
     git: https://github.com/buntagonalprism/words_to_numbers
+  clock: ^1.1.3
 
 # Both overrides exist to keep desktop_webview_auth out of the build. It is
 # archived upstream and its Android module applies the Kotlin Gradle Plugin

@@ -45,15 +45,13 @@ class _LocalSpan implements Span {
   final String source;
   final String operation;
   final String? description;
-  late final DateTime startTime;
+  final _stopwatch = Stopwatch()..start();
 
   _LocalSpan({
     required this.source,
     required this.operation,
     this.description,
-  }) {
-    startTime = DateTime.now();
-  }
+  });
 
   @override
   void setError(dynamic error) {
@@ -68,8 +66,7 @@ class _LocalSpan implements Span {
   @override
   Future<void> finish() async {
     if (kDebugMode) {
-      final now = DateTime.now();
-      final elapsedMs = now.difference(startTime).inMilliseconds;
+      final elapsedMs = _stopwatch.elapsedMilliseconds;
       final message = '$source:$operation${description != null ? ' ($description)' : ''}';
       print('[QSLog-Perf] $message took ${elapsedMs}ms');
     }
