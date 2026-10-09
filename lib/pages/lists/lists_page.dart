@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -165,7 +166,7 @@ class ListSummaryTile extends ConsumerWidget {
   }
 
   bool isToday(DateTime time) {
-    final now = DateTime.now();
+    final now = clock.now();
     return now.day == time.day && now.month == time.month && now.year == time.year;
   }
 }

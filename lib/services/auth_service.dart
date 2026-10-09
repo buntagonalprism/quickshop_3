@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -95,5 +96,5 @@ class AuthService {
 
 @Riverpod(keepAlive: true)
 Stream<DateTime> _authUserStream(Ref ref) {
-  return ref.read(authServiceProvider).userChanges.map((_) => DateTime.now());
+  return ref.read(authServiceProvider).userChanges.map((_) => clock.now());
 }

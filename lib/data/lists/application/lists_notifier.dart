@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../services/auth_service.dart';
@@ -60,7 +61,7 @@ class ListsNotifier extends _$ListsNotifier {
 
   void updateListModified(FirestoreTransaction tx, String listId) {
     final lists = state.requireValue;
-    final now = DateTime.now();
+    final now = clock.now();
     state = AsyncData(
       replaceById(
         lists,
@@ -78,7 +79,7 @@ class ListsNotifier extends _$ListsNotifier {
 
   void incrementListItemCount(FirestoreTransaction tx, String listId, int delta) {
     final lists = state.requireValue;
-    final now = DateTime.now();
+    final now = clock.now();
     state = AsyncData(
       replaceById(
         lists,

@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -39,7 +40,7 @@ class ShoppingListItemsRepo {
       category: data.category,
       addedByUserId: user!.id,
       lastModifiedByUserId: user.id,
-      lastModifiedAt: DateTime.now(),
+      lastModifiedAt: clock.now(),
       completed: false,
     );
     final itemDoc = fs.collection('lists/$listId/items').doc();
@@ -66,7 +67,7 @@ class ShoppingListItemsRepo {
       _Fields.quantity: updatedData.quantity,
       _Fields.category: updatedData.category,
       _Fields.lastModifiedByUserId: ref.read(userAuthProvider)!.id,
-      _Fields.lastModifiedAt: DateTime.now().millisecondsSinceEpoch,
+      _Fields.lastModifiedAt: clock.now().millisecondsSinceEpoch,
     });
     ref.read(analyticsProvider).logEvent(const AnalyticsEvent.shoppingItemUpdated());
   }
@@ -84,7 +85,7 @@ class ShoppingListItemsRepo {
     // document triggers a cloud function that checks the item count and updates it if needed.
     final deleteDoc = fs.collection('lists/$listId/_itemDeletes').doc();
     tx.batch.set(deleteDoc, {
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
+      'timestamp': clock.now().millisecondsSinceEpoch,
       'userId': user!.id,
       'deletedCount': items.length,
       'items': items.map((item) => _toFirestore(item)).toList(),

@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,7 +50,7 @@ class _ShoppingHistoryCategoryEditDialogState extends ConsumerState<ShoppingHist
         widget.categoryHistory.id,
         nameController.text.trim(),
       );
-      ref.read(userProfileRepoProvider).setLastHistoryUpdate(tx, DateTime.now());
+      ref.read(userProfileRepoProvider).setLastHistoryUpdate(tx, clock.now());
       tx.commit();
       Navigator.of(context).pop();
     }

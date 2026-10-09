@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -124,7 +125,7 @@ class HiddenSuggestionsRepo {
   }) {
     final updates = <String, dynamic>{
       _Fields.locale: locale.languageCode,
-      _Fields.lastUpdated: DateTime.now().millisecondsSinceEpoch,
+      _Fields.lastUpdated: clock.now().millisecondsSinceEpoch,
     };
     if (items != null) {
       updates[_Fields.items] = FieldValue.arrayUnion(items);

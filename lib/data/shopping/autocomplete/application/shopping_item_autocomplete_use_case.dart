@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../services/shopping_item_name_parser.dart';
@@ -91,7 +92,7 @@ class ShoppingItemAutocompleteUseCase {
     assert(historyEntry.source == ShoppingItemAutocompleteSource.history, 'Only history entries can be removed');
 
     final tx = _ref.read(firestoreTransactionProvider)();
-    final now = DateTime.now();
+    final now = clock.now();
     _historyRepo.deleteHistoryEntry(tx, historyEntry.sourceId, now);
     _userProfileRepo.setLastHistoryUpdate(tx, now);
     await tx.commit();
