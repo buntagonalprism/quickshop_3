@@ -1,9 +1,10 @@
-
 name: Test
 on:
   push:
     branches:
       - main
+  # Every pull request, including those stacked on another branch
+  pull_request:
 
 jobs:
   test:
@@ -18,6 +19,20 @@ jobs:
 
       - name: Run Flutter doctor
         run: flutter doctor -v
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      # dart analyze rather than flutter analyze, because flutter analyze doesn't report diagnostics
+      # from analyzer plugins such as tool/quickshop_lints. --fatal-infos fails on lints too.
+      - name: Analyze
+        run: dart analyze --fatal-infos
+
+      - name: Test lint rules
+        working-directory: tool/quickshop_lints
+        run: |
+          dart pub get
+          dart test
 
       - name: Run Flutter tests
         run: flutter test --coverage

@@ -34,6 +34,15 @@ analyzer:
     - android/**
     - ios/**
     - web/**
+    # The lint plugin is its own package, analyzed and tested on its own
+    - tool/quickshop_lints/**
+
+# Project-specific lint rules, defined in tool/quickshop_lints
+plugins:
+  quickshop_lints:
+    path: tool/quickshop_lints
+    diagnostics:
+      avoid_datetime_now: true
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
