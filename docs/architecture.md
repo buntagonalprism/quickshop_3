@@ -397,7 +397,7 @@ PopScope(
 - To test local database queries and DAO methods, use a real in-memory Drift database. See `app_database_test.dart`.
 - Most repositories should be thin wrappers with minimal logic such that any unit tests would be redundant restatements of the code itself. Any logic should be extracted to pure functions which can be tested separately, or extracted into the application layer as a use case or notifier.
 - Only when testing one of our wrapper services should an external system be mocked or faked. For example, the preferences service tests fake `SharedPreferencesWithCache` from `package:shared_preferences`.
-- Use `fake_async` for time-dependent logic. Code under `lib/` gets the current time from `clock.now()` (`package:clock`) rather than `DateTime.now()`, because `fake_async` controls `clock` but can't change the system clock. To measure how long something takes, use a `Stopwatch`. The `avoid_datetime_now` lint enforces this.
+- Use `fake_async` for time-dependent logic. Code under `lib/` must get the current time from `clock.now()` (`package:clock`) rather than `DateTime.now()`, so `fake_async` can override it in tests. To measure durations, use a `Stopwatch`.
 
 ---
 
