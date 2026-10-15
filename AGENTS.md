@@ -118,6 +118,13 @@ fvm dart run build_runner build
 
 Commit the generated `*.freezed.dart`, `*.g.dart`, and `*.drift.dart` files alongside the source changes.
 
+In Claude Code, the project hooks in `.claude/settings.json` (implemented in `tool/claude_hooks.sh`) do this for you:
+
+- When a session starts, they run `build_runner watch` in the background, which rebuilds generated code within a few seconds of each change. You don't need to run `build_runner` yourself. Its log is `.dart_tool/claude_hooks/watch.log`.
+- When you finish a turn that changed Dart files, they wait for the watcher's build to finish, then run `fvm flutter analyze --fatal-infos`. If code generation failed or the analyzer found issues, you're shown them and can't stop until they're fixed.
+
+Generated files may show errors in the middle of a change, until the watcher catches up. Only the check when you finish counts.
+
 ---
 
 ## Testing
