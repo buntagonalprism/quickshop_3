@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../analytics/logger.dart';
 import '../../../data/stores/models/store.dart';
 import '../../../router.dart';
 import 'add_manually_view.dart';
@@ -29,7 +30,7 @@ class _StoreAddPageState extends ConsumerState<StoreAddPage> {
   void _goBack() => setState(() => _currentView = _StoreAddView.initial);
 
   void _onStoreDone(Store store) {
-    print('Store created: $store');
+    ref.read(loggerProvider('$StoreAddPage')).log('Store created: $store');
     ref.read(routerProvider).pop();
   }
 
@@ -42,7 +43,7 @@ class _StoreAddPageState extends ConsumerState<StoreAddPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Add store'),
+          title: Text(_title),
         ),
         body: AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
