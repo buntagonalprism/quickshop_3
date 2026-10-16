@@ -24,7 +24,7 @@ abstract class SuggestionsSyncRequest with _$SuggestionsSyncRequest {
 }
 
 @Riverpod(keepAlive: true)
-SuggestionsDownloader suggestionsDownload(Ref ref, SuggestionType type) {
+SuggestionsDownloader suggestionsDownloader(Ref ref, SuggestionType type) {
   return switch (type) {
     SuggestionType.item => ref.read(shoppingItemSuggestionRepoProvider),
     SuggestionType.category => ref.read(shoppingCategorySuggestionRepoProvider),
@@ -34,7 +34,7 @@ SuggestionsDownloader suggestionsDownload(Ref ref, SuggestionType type) {
 /// The time suggestions of [type] were last updated in Firestore, keyed by language code.
 @riverpod
 Stream<Map<String, DateTime>> suggestionsLastUpdated(Ref ref, SuggestionType type) {
-  return ref.watch(suggestionsDownloadProvider(type)).lastUpdatedByLangCode();
+  return ref.watch(suggestionsDownloaderProvider(type)).lastUpdatedByLangCode();
 }
 
 /// Combines the signed in user, the locale and the Firestore summary into what suggestions of [type]
@@ -48,11 +48,11 @@ SuggestionsSyncRequest? suggestionsSyncRequest(Ref ref, SuggestionType type) {
   if (userId == null) {
     return null;
   }
-  final summary = ref.watch(suggestionsLastUpdatedProvider(type));
-  if (summary.error case final error?) {
-    Error.throwWithStackTrace(error, summary.stackTrace!);
+  final lastUpdatedAsync = ref.watch(suggestionsLastUpdatedProvider(type));
+  if (lastUpdatedAsync.error case final error?) {
+    Error.throwWithStackTrace(error, lastUpdatedAsync.stackTrace!);
   }
-  final lastUpdated = summary.value;
+  final lastUpdated = lastUpdatedAsync.value;
   if (lastUpdated == null) {
     return null;
   }
@@ -99,7 +99,7 @@ class SuggestionsSyncUseCase {
           if (_ref.read(userIdProvider) != request.userId) {
             return null;
           }
-          return _ref.read(suggestionsDownloadProvider(type)).download(request.langCode, request.lastUpdated);
+          return _ref.read(suggestionsDownloaderProvider(type)).download(request.langCode, request.lastUpdated);
         })
         .catchError((Object error, StackTrace stackTrace) {
           _ref.read(crashReporterProvider).report(error, stackTrace);

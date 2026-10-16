@@ -12,10 +12,10 @@ part of 'suggestions_sync_use_case.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(suggestionsDownload)
-final suggestionsDownloadProvider = SuggestionsDownloadFamily._();
+@ProviderFor(suggestionsDownloader)
+final suggestionsDownloaderProvider = SuggestionsDownloaderFamily._();
 
-final class SuggestionsDownloadProvider
+final class SuggestionsDownloaderProvider
     extends
         $FunctionalProvider<
           SuggestionsDownloader,
@@ -23,23 +23,23 @@ final class SuggestionsDownloadProvider
           SuggestionsDownloader
         >
     with $Provider<SuggestionsDownloader> {
-  SuggestionsDownloadProvider._({
-    required SuggestionsDownloadFamily super.from,
+  SuggestionsDownloaderProvider._({
+    required SuggestionsDownloaderFamily super.from,
     required SuggestionType super.argument,
   }) : super(
          retry: null,
-         name: r'suggestionsDownloadProvider',
+         name: r'suggestionsDownloaderProvider',
          isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$suggestionsDownloadHash();
+  String debugGetCreateSourceHash() => _$suggestionsDownloaderHash();
 
   @override
   String toString() {
-    return r'suggestionsDownloadProvider'
+    return r'suggestionsDownloaderProvider'
         ''
         '($argument)';
   }
@@ -53,7 +53,7 @@ final class SuggestionsDownloadProvider
   @override
   SuggestionsDownloader create(Ref ref) {
     final argument = this.argument as SuggestionType;
-    return suggestionsDownload(ref, argument);
+    return suggestionsDownloader(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -66,7 +66,7 @@ final class SuggestionsDownloadProvider
 
   @override
   bool operator ==(Object other) {
-    return other is SuggestionsDownloadProvider && other.argument == argument;
+    return other is SuggestionsDownloaderProvider && other.argument == argument;
   }
 
   @override
@@ -75,25 +75,25 @@ final class SuggestionsDownloadProvider
   }
 }
 
-String _$suggestionsDownloadHash() =>
-    r'7bd1a482008b43eb9ef7f874493ab9cbf187f9da';
+String _$suggestionsDownloaderHash() =>
+    r'4e39c711e26c86cf6eb0166cab6e02d7ad684005';
 
-final class SuggestionsDownloadFamily extends $Family
+final class SuggestionsDownloaderFamily extends $Family
     with $FunctionalFamilyOverride<SuggestionsDownloader, SuggestionType> {
-  SuggestionsDownloadFamily._()
+  SuggestionsDownloaderFamily._()
     : super(
         retry: null,
-        name: r'suggestionsDownloadProvider',
+        name: r'suggestionsDownloaderProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: false,
       );
 
-  SuggestionsDownloadProvider call(SuggestionType type) =>
-      SuggestionsDownloadProvider._(argument: type, from: this);
+  SuggestionsDownloaderProvider call(SuggestionType type) =>
+      SuggestionsDownloaderProvider._(argument: type, from: this);
 
   @override
-  String toString() => r'suggestionsDownloadProvider';
+  String toString() => r'suggestionsDownloaderProvider';
 }
 
 /// The time suggestions of [type] were last updated in Firestore, keyed by language code.
@@ -160,7 +160,7 @@ final class SuggestionsLastUpdatedProvider
 }
 
 String _$suggestionsLastUpdatedHash() =>
-    r'7131eca05e3b1ae0bfa8957f66c08118ba75e407';
+    r'592b1aa7fdf8b50c2daa32c238c890a4bfd10475';
 
 /// The time suggestions of [type] were last updated in Firestore, keyed by language code.
 
@@ -270,7 +270,7 @@ final class SuggestionsSyncRequestProvider
 }
 
 String _$suggestionsSyncRequestHash() =>
-    r'f62d44279b6e85a73f00613a6c0829a96ea13dfc';
+    r'fa357479b34add3e1b59c45c351f27b8ba2510d8';
 
 /// Combines the signed in user, the locale and the Firestore summary into what suggestions of [type]
 /// should be synced to, or null while signed out or until the summary has loaded.
