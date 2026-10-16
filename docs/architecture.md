@@ -229,9 +229,35 @@ class MyLoaderUseCase {
 }
 ```
 
+If a use case reacts to more than one input, combine the inputs in a provider and have the use case listen to that provider. The provider should return a single object with all the information needed to execute the use case. That object should have value equality, for example with Freezed, so that a rebuild producing the same value doesn't notify the use case again. Putting the aggregation in a provider also means that inputs can be watched only when needed.
+
+```dart
+@riverpod
+MySyncRequest? mySyncRequest(Ref ref) {
+  final userId = ref.watch(userIdProvider);
+  if (userId == null) {
+    return null;
+  }
+  final langCode = ref.watch(localeServiceProvider.select((locale) => locale.languageCode));
+  return MySyncRequest(userId: userId, langCode: langCode);
+}
+
+class MySyncUseCase {
+  MySyncUseCase(this._ref) {
+    _ref.listen(mySyncRequestProvider, (_, request) {
+      if (request != null) {
+        _myRepo.sync(request.langCode);
+      }
+    }, fireImmediately: true);
+  }
+  ...
+}
+```
+
 Examples of existing use cases in `lib/data/`:
 
 - `UserHistoryLoaderUseCase`: downloads the user's shopping history when their profile shows it has changed
+- `SuggestionsSyncUseCase`: downloads suggestions into the signed in user's database when the suggestions in Firestore, the user or the locale change. `suggestionsSyncRequestProvider` combines those inputs.
 - `HiddenSuggestionsUseCase`: hides suggestions, and applies suggestions hidden on other devices
 - `ShoppingItemAutocompleteUseCase` and `ShoppingCategoryAutocompleteUseCase`: combine list items, history and suggestions into autocomplete results
 
@@ -405,5 +431,4 @@ PopScope(
 
 Some existing code predates these rules. Don't copy it as an example, and remove each entry here once it's fixed.
 
-- **Suggestion repositories** (`ShoppingItemSuggestionRepo`, `ShoppingCategorySuggestionRepo`) sync suggestions themselves, starting at app launch, which breaks rule 5. Suggestions are missing after a first sign-in until the next launch. Their providers are also auto-dispose, which breaks rule 1.
 - **`ChecklistEntryRepo`** holds the checklist's ordering logic (sort-key placement, duplicate keys, which entries "remove checked" deletes), breaking the Testing guidance that repositories stay thin. As a result, `checklist_entry_notifier_test.dart` tests the repository by mocking Firestore rather than mocking the repository. Tracked in [#16](https://github.com/buntagonalprism/quickshop_3/issues/16).
