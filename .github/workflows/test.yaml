@@ -24,7 +24,8 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      # --fatal-infos fails on lints too, not just errors and warnings
+      # --fatal-infos fails on lints too, not just errors and warnings.
+      # To do comments are still allowed - they don't count as an info, warning, or error.
       - name: Analyze
         run: flutter analyze --fatal-infos
 

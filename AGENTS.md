@@ -136,4 +136,4 @@ When running with an MCP-compatible agent:
 - **Marionette** (`mcp__marionette__*`): interact with the running Flutter app (tap, enter text, screenshot, logs). Connect via VM service URI from the Flutter debug output.
 - **Dart MCP** (`mcp__dart__*`): analyze files, run tests, pub commands, hot reload. Connect to the Dart Tooling Daemon via DTD URI from VSCode command palette.
 - Use `mcp__dart__pub` with `roots: [{root: "file://c:\\src\\quickshop\\quickshop_3"}]` for pub commands.
-- Use `mcp__dart__analyze_files` to check for errors after code changes, and run `fvm flutter analyze --fatal-infos` before finishing. CI runs the same check on every pull request, and fails on any issue, lints included.
+- Use `mcp__dart__analyze_files` to check for errors after code changes, and run `fvm flutter analyze --fatal-infos` before finishing. CI runs the same check on every pull request, and fails on any issue, lints included. Todo comments are still allowed.
