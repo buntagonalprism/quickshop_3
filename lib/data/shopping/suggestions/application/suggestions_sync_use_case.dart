@@ -8,7 +8,7 @@ import '../../../../services/locale_service.dart';
 import '../database/suggestion_type.dart';
 import '../repositories/shopping_category_suggestion_repo.dart';
 import '../repositories/shopping_item_suggestion_repo.dart';
-import '../repositories/suggestions_download.dart';
+import '../repositories/suggestions_downloader.dart';
 
 part 'suggestions_sync_use_case.freezed.dart';
 part 'suggestions_sync_use_case.g.dart';
@@ -24,7 +24,7 @@ abstract class SuggestionsSyncRequest with _$SuggestionsSyncRequest {
 }
 
 @Riverpod(keepAlive: true)
-SuggestionsDownload suggestionsDownload(Ref ref, SuggestionType type) {
+SuggestionsDownloader suggestionsDownload(Ref ref, SuggestionType type) {
   return switch (type) {
     SuggestionType.item => ref.read(shoppingItemSuggestionRepoProvider),
     SuggestionType.category => ref.read(shoppingCategorySuggestionRepoProvider),
@@ -34,7 +34,7 @@ SuggestionsDownload suggestionsDownload(Ref ref, SuggestionType type) {
 /// The time suggestions of [type] were last updated in Firestore, keyed by language code.
 @riverpod
 Stream<Map<String, DateTime>> suggestionsLastUpdated(Ref ref, SuggestionType type) {
-  return ref.watch(suggestionsDownloadProvider(type)).watchLastUpdated();
+  return ref.watch(suggestionsDownloadProvider(type)).lastUpdatedByLangCode();
 }
 
 /// Combines the signed in user, the locale and the Firestore summary into what suggestions of [type]

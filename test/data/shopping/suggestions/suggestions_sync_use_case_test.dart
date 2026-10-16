@@ -42,8 +42,8 @@ void main() {
     crashReporter = MockCrashReporter();
     itemSummary = StreamController();
     categorySummary = StreamController();
-    when(() => itemRepo.watchLastUpdated()).thenAnswer((_) => itemSummary.stream);
-    when(() => categoryRepo.watchLastUpdated()).thenAnswer((_) => categorySummary.stream);
+    when(() => itemRepo.lastUpdatedByLangCode()).thenAnswer((_) => itemSummary.stream);
+    when(() => categoryRepo.lastUpdatedByLangCode()).thenAnswer((_) => categorySummary.stream);
     when(() => itemRepo.download(any(), any())).thenAnswer((_) => Future.value());
     when(() => categoryRepo.download(any(), any())).thenAnswer((_) => Future.value());
     userId = null;

@@ -18,11 +18,11 @@ final suggestionsDownloadProvider = SuggestionsDownloadFamily._();
 final class SuggestionsDownloadProvider
     extends
         $FunctionalProvider<
-          SuggestionsDownload,
-          SuggestionsDownload,
-          SuggestionsDownload
+          SuggestionsDownloader,
+          SuggestionsDownloader,
+          SuggestionsDownloader
         >
-    with $Provider<SuggestionsDownload> {
+    with $Provider<SuggestionsDownloader> {
   SuggestionsDownloadProvider._({
     required SuggestionsDownloadFamily super.from,
     required SuggestionType super.argument,
@@ -46,21 +46,21 @@ final class SuggestionsDownloadProvider
 
   @$internal
   @override
-  $ProviderElement<SuggestionsDownload> $createElement(
+  $ProviderElement<SuggestionsDownloader> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SuggestionsDownload create(Ref ref) {
+  SuggestionsDownloader create(Ref ref) {
     final argument = this.argument as SuggestionType;
     return suggestionsDownload(ref, argument);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SuggestionsDownload value) {
+  Override overrideWithValue(SuggestionsDownloader value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SuggestionsDownload>(value),
+      providerOverride: $SyncValueProvider<SuggestionsDownloader>(value),
     );
   }
 
@@ -79,7 +79,7 @@ String _$suggestionsDownloadHash() =>
     r'7bd1a482008b43eb9ef7f874493ab9cbf187f9da';
 
 final class SuggestionsDownloadFamily extends $Family
-    with $FunctionalFamilyOverride<SuggestionsDownload, SuggestionType> {
+    with $FunctionalFamilyOverride<SuggestionsDownloader, SuggestionType> {
   SuggestionsDownloadFamily._()
     : super(
         retry: null,

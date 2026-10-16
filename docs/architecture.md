@@ -229,7 +229,7 @@ class MyLoaderUseCase {
 }
 ```
 
-If a use case reacts to more than one input, combine the inputs in a provider and listen to that one provider, rather than listening to each input and keeping the latest values in fields. The provider rebuilds whenever any input changes, and returns a single value describing what the use case should do. Give the value equality, for example with Freezed, so that a rebuild which produces the same value doesn't notify the use case again. Putting the decision in a provider also keeps it out of the use case, so that it can be read in one place, and the provider can watch an input only when it's needed.
+If a use case reacts to more than one input, combine the inputs in a provider and have the use case listen to that provider. The provider should return a single object with all the information needed to execute the use case. That object should have value equality, for example with Freezed, so that a rebuild producing the same value doesn't notify the use case again. Putting the aggregation in a provider also means that inputs can be watched only when needed.
 
 ```dart
 @riverpod

@@ -9,7 +9,7 @@ import '../../../app_database_provider.dart';
 import '../../../common/database/load_progress_table.dart';
 import '../database/suggestion_type.dart';
 import '../models/shopping_item_suggestion.dart';
-import 'suggestions_download.dart';
+import 'suggestions_downloader.dart';
 
 part 'shopping_item_suggestion_repo.g.dart';
 
@@ -18,7 +18,7 @@ ShoppingItemSuggestionRepo shoppingItemSuggestionRepo(Ref ref) {
   return ShoppingItemSuggestionRepo(ref);
 }
 
-class ShoppingItemSuggestionRepo implements SuggestionsDownload {
+class ShoppingItemSuggestionRepo extends SuggestionsDownloader {
   final Ref _ref;
   AppDatabase get _db => _ref.read(appDatabaseProvider);
   Logger get _log => _ref.read(loggerProvider('$ShoppingItemSuggestionRepo'));
@@ -30,7 +30,7 @@ class ShoppingItemSuggestionRepo implements SuggestionsDownload {
   ShoppingItemSuggestionRepo(this._ref);
 
   @override
-  Stream<Map<String, DateTime>> watchLastUpdated() {
+  Stream<Map<String, DateTime>> lastUpdatedByLangCode() {
     return _fs.collection('suggestions').doc('items').snapshots().map(parseLastUpdated);
   }
 
