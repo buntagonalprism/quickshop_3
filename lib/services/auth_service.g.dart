@@ -207,4 +207,4 @@ final class _AuthUserStreamProvider
   }
 }
 
-String _$_authUserStreamHash() => r'd97a156c7df1c84d4e67102c10b5b9d6d505fbb7';
+String _$_authUserStreamHash() => r'f7b885e42bb44893db0fb27f10c5e19527eac893';
