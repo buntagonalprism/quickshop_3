@@ -2,8 +2,9 @@
 # Claude Code hooks that keep generated code up to date and check the code before Claude finishes.
 # Configured in .claude/settings.json; each subcommand reads the hook's JSON input on stdin.
 #
-#   tool/claude_hooks.sh session-start   Start `build_runner watch` in the background, unless one is
-#                                        already running for this checkout.
+#   tool/claude_hooks.sh session-start   Put the FVM-pinned SDK first on PATH for Claude's Bash
+#                                        commands, and start `build_runner watch` in the background,
+#                                        unless one is already running for this checkout.
 #   tool/claude_hooks.sh prompt-submit   Mark the start of a turn, so `stop` knows which files changed.
 #   tool/claude_hooks.sh format-file     Format a Dart file after Claude edits or writes it.
 #   tool/claude_hooks.sh stop            If Dart files changed this turn, format them, wait for the
@@ -16,16 +17,6 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-
-# The SDK pinned by FVM, called directly rather than through fvm, which adds seconds of startup to
-# every command. Falls back to fvm if the .fvm/flutter_sdk link hasn't been created yet.
-if [[ -x .fvm/flutter_sdk/bin/dart ]]; then
-  dart=(.fvm/flutter_sdk/bin/dart)
-  flutter=(.fvm/flutter_sdk/bin/flutter)
-else
-  dart=(fvm dart)
-  flutter=(fvm flutter)
-fi
 
 dir=.dart_tool/claude_hooks
 log=$dir/watch.log
@@ -64,7 +55,7 @@ start_watcher() {
   : > "$log"
   # setsid gives the watcher its own process group, so stopping it also stops the Dart processes it
   # starts, and it isn't killed when the hook exits.
-  setsid "${dart[@]}" run build_runner watch --delete-conflicting-outputs < /dev/null > "$log" 2>&1 &
+  setsid fvm dart run build_runner watch --delete-conflicting-outputs < /dev/null > "$log" 2>&1 &
   echo $! > "$pid_file"
   echo "$session_id" > "$owner_file"
 }
@@ -137,6 +128,11 @@ block() {
 
 case "${1:-}" in
   session-start)
+    # Claude Code loads this file before each Bash command, so plain `flutter` and `dart` run the
+    # pinned SDK, as they do in a VS Code terminal. .fvm/flutter_sdk is FVM's link to that SDK.
+    if [[ -n ${CLAUDE_ENV_FILE:-} ]]; then
+      echo "PATH=\"$PWD/.fvm/flutter_sdk/bin:\$PATH\"" >> "$CLAUDE_ENV_FILE"
+    fi
     if watcher_running; then
       echo "build_runner watch is already running for this checkout, so generated code stays up to date. Its log is $log."
     elif external_watcher; then
@@ -154,7 +150,7 @@ case "${1:-}" in
     file=$(jq -r '.tool_input.file_path // ""' <<< "$input")
     # Only this checkout's Dart sources. A file that doesn't parse yet is left alone.
     if [[ $file == "$PWD"/*.dart ]] && ! is_generated "$file"; then
-      "${dart[@]}" format "$file" > /dev/null 2>&1 || true
+      fvm dart format "$file" > /dev/null 2>&1 || true
     fi
     ;;
   stop)
@@ -174,7 +170,7 @@ case "${1:-}" in
 
     # Format first, as reformatting a provider changes its generated code. Edits made with the Edit
     # and Write tools are already formatted, but not those made through Bash.
-    formatted=$("${dart[@]}" format "${changed[@]}" 2>/dev/null | sed -n 's/^Formatted \(.*\.dart\)$/\1/p' || true)
+    formatted=$(fvm dart format "${changed[@]}" 2>/dev/null | sed -n 's/^Formatted \(.*\.dart\)$/\1/p' || true)
     if [[ -n $formatted ]]; then
       problems+=("dart format reformatted these files. Check they're included in any commit you've made:
 $formatted")
@@ -196,7 +192,7 @@ $(last_build_errors)")
     fi
 
     # A failed build leaves generated code missing, so the analyzer would only repeat its errors.
-    if ! $build_failed && ! analysis=$("${flutter[@]}" analyze --fatal-infos 2>&1); then
+    if ! $build_failed && ! analysis=$(fvm flutter analyze --fatal-infos 2>&1); then
       problems+=("flutter analyze --fatal-infos found issues. Fix them:
 $(grep -E '^\s*(error|warning|info) •' <<< "$analysis")")
     fi

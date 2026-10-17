@@ -30,6 +30,8 @@ flutter pub get
 dart run build_runner build
 ```
 
+In Claude Code, the project's session start hook (see Code Generation) puts the pinned SDK first on `PATH` for Bash commands, so plain `flutter` and `dart` are also correct there. Using `fvm` still works, and is required everywhere else.
+
 ---
 
 ## App Settings and Secrets
