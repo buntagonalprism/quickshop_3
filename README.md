@@ -25,7 +25,7 @@ See [docs/architecture.md](docs/architecture.md) for the full structure, the rul
 This project uses Flutter Version Manager (FVM) to allow using different flutter versions in different projects on a single machine. 
 
 1. [Install Flutter](https://docs.flutter.dev/get-started/install)
-2. [Install FVM](https://fvm.app/documentation/getting-started/installation)
+2. [Install FVM](https://fvm.app/documentation/getting-started/installation), version 4.1.5 or later.
 3. On Windows, turn on Developer Mode (Settings → System → Advanced → For developers), so that FVM can create symbolic links without needing to run as an administrator.
 4. Install the project specific flutter version by running `fvm install` on the command line
 
