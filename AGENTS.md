@@ -86,11 +86,11 @@ tool/run_web.sh restart    # Hot restart (resets state, reruns main)
 tool/run_web.sh quit       # Stop the app and close Chrome
 ```
 
-`start` runs the dev environment on port 8123, and passes any extra arguments to `flutter run`, such as `--dart-define-from-file=settings/app_settings_local.json`. Output goes to the log file printed on start, `/tmp/quickshop_web/flutter_run.log` unless `TMPDIR` is set. `reload` and `restart` wait until they have finished, and print any compile errors if they fail. Don't use the Dart MCP `hot_restart` tool: it doesn't work for web apps, because it restarts without `flutter run` recompiling first.
+`start` runs the dev environment, and passes any extra arguments to `flutter run`, such as `--dart-define-from-file=settings/app_settings_local.json`. It serves on port 8123 in the main checkout, and on a port of its own in each worktree, printed by `tool/worktree.sh port`, so apps in different worktrees can run at once. Output goes to the log file printed on start, `.dart_tool/run_web/flutter_run.log`. `reload` and `restart` wait until they have finished, and print any compile errors if they fail. Don't use the Dart MCP `hot_restart` tool: it doesn't work for web apps, because it restarts without `flutter run` recompiling first.
 
 Sign in with the email and password test account rather than Google, whose sign-in popup cannot be automated. Google Maps is not yet configured for web.
 
-Sign-in and the app's local database persist between runs when a fixed port is used and a clean exit is performed, so always stop the app with `quit`. To start from a clean browser, delete `.dart_tool/chrome-device` or pass a different `--web-port`.
+Sign-in and the app's local database persist between runs, as each checkout keeps the same port, when a clean exit is performed, so always stop the app with `quit`. To start from a clean browser, delete `.dart_tool/chrome-device` or pass a different `--web-port`.
 
 ---
 
@@ -128,6 +128,19 @@ In Claude Code, the project hooks in `.claude/settings.json` (implemented in `to
 You don't need to run `build_runner` yourself, unless you need generated code in the middle of a turn, such as to run tests. Until then, generated files may be out of date and show errors. Only the check when you finish counts.
 
 If `build_runner watch` is running for the checkout, for example in an IDE terminal, the hooks leave code generation to it.
+
+---
+
+## Worktrees
+
+Several Claude Code sessions can work at once, each in its own git worktree, for example by running `claude remote-control --spawn worktree` and starting sessions from the Claude app, or with `claude --worktree <name>`. The project's `WorktreeCreate` and `WorktreeRemove` hooks, implemented in `tool/worktree.sh`, set worktrees up and remove them:
+
+- A worktree is created in `../quickshop_3-worktrees/<name>`, on a new branch `agents/<name>` from `origin/main`.
+- The settings, secrets and signing files that git doesn't track are copied from the main checkout, then the pinned Flutter SDK is installed and dependencies are fetched.
+- The worktree's first `build_runner build` starts in the background, and takes about a minute. The first stop check waits for it.
+- Removing a worktree keeps its branch, and fails if it has uncommitted changes.
+
+To create worktrees from a branch other than `origin/main`, such as one with unmerged tooling changes, set `QUICKSHOP_WORKTREE_BASE` to it before starting Claude Code.
 
 ---
 

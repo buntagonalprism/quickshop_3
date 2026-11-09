@@ -4,7 +4,8 @@
 #   tool/run_web.sh start [flutter run args...]  Start the app. Blocks until it exits, so run it in
 #                                                the background. Extra arguments are passed to
 #                                                `flutter run`, e.g. another --dart-define-from-file.
-#                                                Serves on port 8123 unless --web-port is given.
+#                                                Serves on this checkout's port from
+#                                                `tool/worktree.sh port` unless --web-port is given.
 #   tool/run_web.sh wait                         Wait until the app is ready, then print the VM
 #                                                service URI to connect Marionette to.
 #   tool/run_web.sh restart                      Hot restart, and wait until it has finished.
@@ -12,14 +13,17 @@
 #   tool/run_web.sh quit                         Stop the app and close Chrome.
 #
 # `flutter run` reads its commands (R, r, q) from a named pipe, since it runs in the background
-# without a terminal. Its output goes to the log file printed on start.
+# without a terminal. Its output goes to the log file printed on start, in .dart_tool/run_web, so
+# apps run from different worktrees don't share one.
 #
 # Flutter saves Chrome's profile to .dart_tool/chrome-device when Chrome exits, and restores it on
-# the next run. Browser storage is per origin, including the port, so serving on a fixed port keeps
-# sign-in and the local database between runs.
+# the next run. Browser storage is per origin, including the port, so serving on the same port each
+# time keeps sign-in and the local database between runs.
 set -euo pipefail
 
-dir="${TMPDIR:-/tmp}/quickshop_web"
+cd "$(dirname "$0")/.."
+
+dir=$PWD/.dart_tool/run_web
 pipe="$dir/stdin"
 log="$dir/flutter_run.log"
 pid_file="$dir/pid"
@@ -75,9 +79,8 @@ case "${1:-}" in
     # Opening the pipe for reading and writing keeps it open between commands, so `flutter run`
     # never sees the end of its input.
     exec 3<>"$pipe"
-    cd "$(dirname "$0")/.."
     if [[ " $* " != *" --web-port"* ]]; then
-      set -- --web-port=8123 "$@"
+      set -- "--web-port=$(tool/worktree.sh port)" "$@"
     fi
     CHROME_EXECUTABLE="$PWD/tool/headless_chrome.sh" fvm flutter run -d chrome \
       --dart-define-from-file=settings/app_secrets_dev.json \
@@ -108,7 +111,7 @@ case "${1:-}" in
     echo q > "$pipe"
     ;;
   *)
-    sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'
     exit 1
     ;;
 esac
