@@ -122,11 +122,12 @@ Commit the generated `*.freezed.dart`, `*.g.dart`, and `*.drift.dart` files alon
 
 In Claude Code, the project hooks in `.claude/settings.json` (implemented in `tool/claude_hooks.sh`) do this for you:
 
-- When a session starts, they run `build_runner watch` in the background, which rebuilds generated code within a few seconds of each change. You don't need to run `build_runner` yourself. Its log is `.dart_tool/claude_hooks/watch.log`.
 - After you edit or write a Dart file, they format it with `dart format`.
-- When you finish a turn that changed Dart files, they format those files (catching edits made through Bash), wait for the watcher's build to finish, then run `fvm flutter analyze --fatal-infos`. If formatting changed a file, code generation failed or the analyzer found issues, you're shown what happened and can't stop until it's dealt with. A reformatted file only needs checking that it's in any commit you've made.
+- When you finish a turn that changed Dart files, they format those files (catching edits made through Bash), run `build_runner build`, then run `fvm flutter analyze --fatal-infos`. If formatting changed a file, code generation failed or the analyzer found issues, you're shown what happened and can't stop until it's dealt with. A reformatted file only needs checking that it's in any commit you've made. The build's log is `.dart_tool/claude_hooks/build.log`.
 
-Generated files may show errors in the middle of a change, until the watcher catches up. Only the check when you finish counts.
+You don't need to run `build_runner` yourself, unless you need generated code in the middle of a turn, such as to run tests. Until then, generated files may be out of date and show errors. Only the check when you finish counts.
+
+If `build_runner watch` is running for the checkout, for example in an IDE terminal, the hooks leave code generation to it.
 
 ---
 
