@@ -25,8 +25,9 @@ See [docs/architecture.md](docs/architecture.md) for the full structure, the rul
 This project uses Flutter Version Manager (FVM) to allow using different flutter versions in different projects on a single machine. 
 
 1. [Install Flutter](https://docs.flutter.dev/get-started/install)
-1. [Install FVM](https://fvm.app/documentation/getting-started/installation), version 4.1.5 or later. Earlier 4.x versions spend several seconds checking FVM's git cache on every `fvm flutter` and `fvm dart` command.
-2. Install the project specific flutter version by running `fvm install` on the command line
+2. [Install FVM](https://fvm.app/documentation/getting-started/installation), version 4.1.5 or later.
+3. On Windows, turn on Developer Mode (Settings → System → Advanced → For developers), so that FVM can create symbolic links without needing to run as an administrator.
+4. Install the project specific flutter version by running `fvm install` on the command line
 
 FVM will download and install the Flutter SDK version specified in the `.fvmrc` file, caching that Flutter version globally on your machine. It then creates a folder `.fvm` with symbolic links to the global install location. The settings in `.vscode/settings.json` specify that the Flutter extension for VSCode should use the Flutter SDK installed by FVM. 
 
