@@ -30,6 +30,8 @@ flutter pub get
 dart run build_runner build
 ```
 
+In Claude Code, the project's session start hook (see Code Generation) puts the pinned SDK first on `PATH` for Bash commands, so plain `flutter` and `dart` are also correct there. Using `fvm` still works, and is required everywhere else.
+
 ---
 
 ## App Settings and Secrets
@@ -94,7 +96,7 @@ Sign-in and the app's local database persist between runs when a fixed port is u
 
 ## Formatting
 
-After editing any Dart file, format it with:
+In Claude Code, the project hooks format Dart files for you, as described under Code Generation below. Otherwise, after editing any Dart file, format it with:
 
 ```bash
 fvm dart format path/to/file.dart
@@ -117,6 +119,15 @@ fvm dart run build_runner build
 ```
 
 Commit the generated `*.freezed.dart`, `*.g.dart`, and `*.drift.dart` files alongside the source changes.
+
+In Claude Code, the project hooks in `.claude/settings.json` (implemented in `tool/claude_hooks.sh`) do this for you:
+
+- After you edit or write a Dart file, they format it with `dart format`.
+- When you finish a turn that changed Dart files, they format those files (catching edits made through Bash), run `build_runner build`, then run `fvm flutter analyze --fatal-infos`. If formatting changed a file, code generation failed or the analyzer found issues, you're shown what happened and can't stop until it's dealt with. A reformatted file only needs checking that it's in any commit you've made. The build's log is `.dart_tool/claude_hooks/build.log`.
+
+You don't need to run `build_runner` yourself, unless you need generated code in the middle of a turn, such as to run tests. Until then, generated files may be out of date and show errors. Only the check when you finish counts.
+
+If `build_runner watch` is running for the checkout, for example in an IDE terminal, the hooks leave code generation to it.
 
 ---
 
